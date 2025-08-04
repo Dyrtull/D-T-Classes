@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 10 - D&T IGCSE 0445</title>
+    <!-- Tailwind CSS is loaded from a CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the collapsible summary to look like a button */
+        .collapsible-summary {
+            list-style: none; /* Removes the default arrow/marker */
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            background-color: #e2e8f0;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .collapsible-summary:hover {
+            background-color: #cbd5e1;
+        }
+        details[open] .details-arrow {
+            transform: rotate(0deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">D&T IGCSE 0445</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html#about" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
+                <a href="index.html#teacher" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Teacher</a>
+                <a href="grade10.html" class="text-indigo-600 font-bold border-b-2 border-indigo-600">Grade 10</a>
+                <a href="grade11.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Grade 11</a>
+                <a href="grade12.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Grade 12</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 shadow-lg text-center">
+            <a href="index.html#about" class="block py-2 text-gray-600 hover:text-indigo-600">About</a>
+            <a href="index.html#teacher" class="block py-2 text-gray-600 hover:text-indigo-600">Teacher</a>
+            <a href="grade10.html" class="block py-2 text-indigo-600 font-bold">Grade 10</a>
+            <a href="grade11.html" class="block py-2 text-gray-600 hover:text-indigo-600">Grade 11</a>
+            <a href="grade12.html" class="block py-2 text-gray-600 hover:text-indigo-600">Grade 12</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-indigo-600 text-white py-20 md:py-32 rounded-b-3xl">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                Grade 10
+            </h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto opacity-90">
+                Your resources for classes 10A, 10B, and 10C.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content for Grade 10 -->
+    <main class="py-16 md:py-24">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h3 class="text-3xl font-bold mb-8 text-center">Term 1</h3>
+
+            <!-- Week 1 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 1: Design & Technology in Society / Need Observation</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week1" data-class="10A" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week1" data-class="10B" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week1" data-class="10C" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="https://docs.google.com/presentation/d/1i5gMdfuZUNXZZxYivLJstzGnqKoz3Hke/edit?usp=sharing&ouid=111837985556149767468&rtpof=true&sd=true" class="text-indigo-600 hover:underline">Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Introduction to D&T:</strong> Design & Technology (D&T) is a subject focused on applying practical and creative solutions to meet social, user, or technical needs. It's about solving problems and improving lives through engineered and designed products and systems.
+                        <br><br>
+                        <strong>Societal Impact:</strong> Design and engineering deeply impact society and solve real needs. This refers to the effect a product or technology has, positively or negatively, on communities and everyday life.
+                        <br><br>
+                        <strong>Need vs. Want:</strong> In product development, it's crucial to distinguish between a "need" (an essential problem) and a "want" (something desirable but not essential).
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Technology Impacting Society:</strong> Positive Impact: Mobile phones have positively impacted society by enabling instant global communication, access to information, and emergency services. Negative Impact: Mobile phones can also lead to concerns like digital addiction, privacy issues, and the environmental impact of electronic waste.
+                        <br><br>
+                        <strong>Need vs. Want:</strong> Need: Students need a comfortable, stable surface to work on in a classroom. Want: Students might want a chair that reclines, has built-in speakers, and vibrates.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Technology Analysis & Improvement:</strong> Select one technology you use daily. List two benefits and one concern related to its use. Propose one specific improvement. Be ready to share your ideas with a partner.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Bridge Impact Research:</strong> Research two different bridges. For each, list two distinct ways it has positively impacted its community.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 2 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 2: Observing Need, Design Brief</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week2" data-class="10A" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week2" data-class="10B" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week2" data-class="10C" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Observing & Communicating Needs:</strong> To create effective solutions, designers must thoroughly observe, document, and communicate real needs.
+                        <br><br>
+                        <strong>Design Brief:</strong> A document outlining the goals, intended user, design requirements, constraints, and outcomes for a project. It serves as a guiding document before starting the actual design process.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Observing Need:</strong> Students often struggle to carry multiple books and a laptop comfortably between classes...
+                        <br><br>
+                        <strong>Design Brief (for a "better classroom chair"):</strong> Project Title: Ergonomic Classroom Chair. Goal: To design and prototype a classroom chair that improves student comfort and posture...
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"Better Classroom Chair" Design Brief:</strong> Working with your team, write a three-sentence design brief for a "better classroom chair."
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>User Interview for Product Frustration:</strong> Interview a user about a product frustration, summarize their frustration, and draft a preliminary "Need Statement."
+                    </p>
+                </div>
+            </details>
+            <!-- Week 3 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 3: Product Analysis (Advanced) – Evaluate Existing Solutions</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week3" data-class="10A" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week3" data-class="10B" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week3" data-class="10C" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Product Analysis:</strong> The systematic study of an existing product’s function, design, and suitability for purpose.
+                        <br><br>
+                        <strong>ACCESSFM:</strong> A framework for product analysis covering Aesthetics, Cost, Customer, Environment, Safety, Size, Function, and Materials/Manufacture.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>ACCESSFM for a Simple Water Bottle:</strong> Aesthetics: Sleek, translucent plastic... Cost: $10 to buy... etc.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>ACCESSFM Grid for Common Objects:</strong> Work in pairs to select two common objects and complete an ACCESSFM grid for each.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Product Review Video Analysis:</strong> Watch two professional product review videos and list three comparison points, relating them to the ACCESSFM framework.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 4 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 4: Sketchbook Skills – Sketching, Annotation</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week4" data-class="10A" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week4" data-class="10B" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week4" data-class="10C" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Visual Communication in Design:</strong> Sketching is a crucial tool for designers to quickly generate, explore, and communicate ideas.
+                        <br><br>
+                        <strong>Annotation:</strong> The process of adding labels, notes, or explanations to drawings to clarify meaning.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Annotated Sketch:</strong> Imagine sketching a new chair design...
+                        <br><br>
+                        <strong>Isometric Sketch:</strong> A simple cube drawn in isometric perspective...
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Truss Joint Sketches with Notes:</strong> Produce three different freehand sketches of potential truss joints. Annotate each sketch with notes explaining materials, connections, and advantages/disadvantages.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Sketch Photography & Reflection:</strong> Photograph your best sketch and add a brief comment explaining what you like and one thing you would improve.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 5 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 5: Structures Theory I – Bridge Types, Classic Cases</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week5" data-class="10A" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week5" data-class="10B" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week5" data-class="10C" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Structure:</strong> A system of connected parts designed to support loads or forces.
+                        <br><br>
+                        <strong>Force:</strong> A push or pull exerted on an object. Main types include Tension, Compression, Shear, Bending, and Torsion.
+                        <br><br>
+                        <strong>Equilibrium:</strong> A state where all forces acting on a structure are balanced.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Identifying Forces in a Bridge:</strong> Suspension Bridge (e.g., Golden Gate Bridge): The main cables are under immense tension... Arch Bridge: The arch shape efficiently transfers vertical loads... Beam Bridge: The top of the beam is under compression...
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Truss Bridge Diagram & Forces:</strong> Draw a simple truss bridge, label its parts, and use arrows to indicate whether key members are experiencing tension or compression under a load.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Bridge Failure Documentary Reflection:</strong> Watch a video about a famous bridge failure and write a key lesson learned. Also, identify forces in two different everyday objects.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 6 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 6: Structures Theory II – Plan/Model Truss/Bridge</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week6" data-class="10A" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week6" data-class="10B" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week6" data-class="10C" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Truss:</strong> A structure of connected elements that form triangular units, making it highly efficient at distributing loads.
+                        <br><br>
+                        <strong>Truss Bridge Parts:</strong> Chords, Web Members, Joint/Node, and Deck.
+                        <br><br>
+                        <strong>Stress & Strain:</strong> Stress is force per unit area; strain is the deformation in response to stress.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Truss Types (Visual):</strong> Examples of common truss types like Pratt, Howe, Warren, and K-truss will be shown...
+                        <br><br>
+                        <strong>Force Diagram for a Simple Truss:</strong> Imagine a simple triangular truss with a weight applied to its top joint...
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Force Diagram with Central Load:</strong> Draw a force diagram for a simple symmetrical truss with a central load, indicating tension and compression in key members.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Unusual Bridge Research:</strong> Research an unusual bridge, describe its unique feature, and explain how it manages forces.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 7 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 7: Model Building – Start Model Construction</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week7" data-class="10A" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week7" data-class="10B" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week7" data-class="10C" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Prototyping in Engineering:</strong> The process of creating preliminary models to test ideas, identify flaws, and refine designs.
+                        <br><br>
+                        <strong>Safety in Model Building:</strong> Understanding proper tool usage and wearing appropriate PPE to avoid accidents.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Prototyping:</strong> Before building a full-size bridge, engineers might build a scale model to test its strength and stability...
+                        <br><br>
+                        <strong>Safety Rule Application:</strong> When using a craft knife to cut wood strips, always cut away from your body, use a cutting mat, and keep your fingers clear of the blade.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Team Model Building Checklist:</strong> As a team, create a checklist of at least five crucial steps to ensure accurate and safe model building.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Model Progress & Challenge Note:</strong> Take a photo of your model's progress and write a short note describing a challenge your team faced and how you plan to address it.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 8 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 8: Project Synthesis – Submit Analysis, Sketches, Model</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week8" data-class="10A" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week8" data-class="10B" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week8" data-class="10C" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Synthesis:</strong> Bringing together all parts of your project into a unified final product or presentation.
+                        <br><br>
+                        <strong>Peer & Self Assessment:</strong> Classmates and you evaluate your projects based on predefined criteria, providing feedback and developing critical thinking skills.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Project Synthesis Components:</strong> Your final submission might include: The original design brief, Product analysis (ACCESSFM) of existing solutions...
+                        <br><br>
+                        <strong>Using a Rubric for Peer Assessment:</strong> A rubric might have criteria like "Clarity of Design Brief," "Quality of Sketches," "Structural Integrity of Model," "Presentation Skills," with different levels of achievement.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Group Rubric & "One Thing to Improve":</strong> Review the project rubric as a group and use it to identify one specific thing your group could most improve before the final submission.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Bridge-Building Contest Video Analysis:</strong> Watch a video of a contest and note three specific strategies or design elements that contributed to the winning teams' success.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 9 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 9: Structural Critique – Testing & Peer Critique</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week9" data-class="10A" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week9" data-class="10B" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week9" data-class="10C" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Structural Test:</strong> Applying loads to a model to observe how it behaves and determine its limits before failure.
+                        <br><br>
+                        <strong>Methods of Critique:</strong> A systematic and constructive evaluation of a design to identify areas for improvement and celebrate successes.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Stress Testing:</strong> Your bridge model is placed on a testing jig...
+                        <br><br>
+                        <strong>Guided Peer Critique:</strong> After a bridge test, peers might comment: "Your arch members showed good compression resistance..."
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Written Reflection: "What Worked? What Would Improve Stability?":</strong> After testing, reflect on what worked well and identify one specific area of weakness, proposing a design change to improve it.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Improvements After Testing:</strong> Based on observations and feedback, list three specific improvements you would make to your bridge model's design or construction.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 10 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 10: Evaluate & Iterate – Revise Design/Model</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week10" data-class="10A" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week10" data-class="10B" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week10" data-class="10C" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Iteration:</strong> The repeating cycle of testing, critiquing, and improving a product or design.
+                        <br><br>
+                        <strong>Engineering Redesign:</strong> The process of using lessons learned from failures and feedback to create better, more robust products.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Iterative Design in Action:</strong> Version 1 (Prototype): Your bridge model holds 5kg before breaking...
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Design Changes & Explanation:</strong> Based on testing results, list and explain at least two specific design changes you have made or plan to make to your model, and state why you expect the change to improve its performance.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Redesign Scenarios:</strong> Describe one specific design change you would make to address scenarios like carrying a wider load or using half the material.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 11 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 11: Final Build – Polish, Last Peer Review</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week11" data-class="10A" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week11" data-class="10B" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week11" data-class="10C" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Final Steps & Documentation:</strong> The final stage of a project involves completing, checking, and thoroughly documenting your work.
+                        <br><br>
+                        <strong>Quality Assurance/Control:</strong> Systematic checks made throughout the design and build process to ensure the final product meets requirements and is safe.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Polishing the Model:</strong> Sanding any rough edges on the wood strips...
+                        <br><br>
+                        <strong>Self-Assessment Checklist:</strong> A checklist might include items like: "All measurements are accurate within 1mm."
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Model Quality Criteria Rating:</strong> Rate your final bridge model and documentation on five key quality criteria provided by the teacher, and provide a brief justification for your rating.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Presentation Slides for Extra Credit:</strong> Prepare a short set of presentation slides that summarize your bridge project, including the original design brief, key features, photos, and test results.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 12 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 12: Summative Assessment – Quiz & Reflective Essay</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week12" data-class="10A" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week12" data-class="10B" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week12" data-class="10C" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Review of Term Concepts:</strong> A review of all the concepts covered throughout the term, from the design cycle to structural forces.
+                        <br><br>
+                        <strong>Summative Assessment:</strong> A comprehensive test to measure your understanding of the term’s key concepts and your ability to apply them.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Quiz Questions:</strong> "Define 'compression' and give an example of a structural member that typically experiences this force."
+                        <br><br>
+                        <strong>Reflective Essay Prompts:</strong> "How has your understanding of how forces act on structures changed from the beginning of this term to now?"
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercise:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Quiz Practice:</strong> Participate in a short practice quiz covering key concepts, basic calculations, and diagram interpretation.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Comprehensive Concept Review:</strong> Review all your notes and handouts, paying particular attention to key definitions, examples, and processes like the design cycle or ACCESSFM.
+                    </p>
+                </div>
+            </details>
+            <!-- Week 13 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 13: End of Term</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10A-week13" data-class="10A" data-week="13" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10B-week13" data-class="10B" data-week="13" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-10C-week13" data-class="10C" data-week="13" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">10C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Final week of the term.</h5>
+                    <p class="text-gray-700">Congratulations on a successful term! We will be conducting final reviews and preparing for the next term's projects. No new content will be introduced this week.</p>
+                </div>
+            </details>
+            <!-- End of Term 1 -->
+            
+            <h3 class="text-3xl font-bold mt-12 mb-8 text-center text-indigo-600">Term 2</h3>
+            <p class="text-center text-gray-400">Content for Term 2 will go here.</p>
+
+            <h3 class="text-3xl font-bold mt-12 mb-8 text-center text-indigo-600">Term 3</h3>
+            <p class="text-center text-gray-400">Content for Term 3 will go here.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 rounded-t-3xl mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2023 [Your Name]. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu and Progress Tracking -->
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Details tag arrow rotation
+        document.querySelectorAll('details').forEach(detail => {
+            detail.addEventListener('toggle', () => {
+                const arrow = detail.querySelector('.details-arrow');
+                if (detail.open) {
+                    arrow.classList.remove('-rotate-90');
+                } else {
+                    arrow.classList.add('-rotate-90');
+                }
+            });
+        });
+
+        // Progress Tracking with LocalStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            // Load saved state on page load
+            checkboxes.forEach(checkbox => {
+                const checkboxId = checkbox.id;
+                const isChecked = localStorage.getItem(checkboxId) === 'true';
+                if (isChecked) {
+                    checkbox.checked = true;
+                }
+            });
+
+            // Save state on checkbox change
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    localStorage.setItem(event.target.id, event.target.checked);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 11 - IGCSE ICT 0417</title>
+    <!-- Tailwind CSS is loaded from a CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the collapsible summary to look like a button */
+        .collapsible-summary {
+            list-style: none; /* Removes the default arrow/marker */
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            background-color: #e2e8f0;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .collapsible-summary:hover {
+            background-color: #cbd5e1;
+        }
+        details[open] .details-arrow {
+            transform: rotate(0deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">D&T IGCSE 0445</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html#about" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
+                <a href="index.html#teacher" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Teacher</a>
+                <a href="grade10.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Grade 10</a>
+                <a href="grade11.html" class="text-indigo-600 font-bold border-b-2 border-indigo-600">Grade 11</a>
+                <a href="grade12.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Grade 12</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 shadow-lg text-center">
+            <a href="index.html#about" class="block py-2 text-gray-600 hover:text-indigo-600">About</a>
+            <a href="index.html#teacher" class="block py-2 text-gray-600 hover:text-indigo-600">Teacher</a>
+            <a href="grade10.html" class="block py-2 text-gray-600 hover:text-indigo-600">Grade 10</a>
+            <a href="grade11.html" class="block py-2 text-indigo-600 font-bold">Grade 11</a>
+            <a href="grade12.html" class="block py-2 text-gray-600 hover:text-indigo-600">Grade 12</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-indigo-600 text-white py-20 md:py-32 rounded-b-3xl">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                Grade 11
+            </h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto opacity-90">
+                Your resources for classes 11A, 11B, and 11C.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content for Grade 11 -->
+    <main class="py-16 md:py-24">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h3 class="text-3xl font-bold mb-8 text-center">Term 1</h3>
+
+            <!-- Week 1 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 1: Introduction to Computer Systems (Ch 1.1-1.2)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week1" data-class="11A" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week1" data-class="11B" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week1" data-class="11C" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="https://docs.google.com/presentation/d/1-EvHURhix0FLQYcpUYcFhWtzx3ADGluB/edit?usp=sharing&ouid=111837985556149767468&rtpof=true&sd=true" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Hardware vs. Software:</strong> Differentiate between the physical components of a computer system and the programs that run on them.
+                        <br><br>
+                        <strong>Internal and External Hardware Components:</strong> Identify and describe the functions of components like CPU, Motherboard, RAM, ROM, keyboard, mouse, etc.
+                        <br><br>
+                        <strong>RAM vs. ROM:</strong> Explain the difference between volatile (RAM) and non-volatile (ROM) memory.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"Hardware vs. Software Sort" (Group Activity):</strong> Categorize cards with names of various items as either hardware or software.
+                        <br><br>
+                        <strong>"Component Identification Challenge" (Hands-on/Visual):</strong> Identify and describe the function of components in a disassembled computer or diagram.
+                        <br><br>
+                        <strong>Basic Computer Familiarization (Practical):</strong> Practice logging in, navigating the desktop, and using a simple application.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Research & List:</strong> Find and list 3 examples of application software and 3 examples of system software.
+                        <br><br>
+                        <strong>Reflection:</strong> Explain why understanding the difference between hardware and software is important.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 2 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 2: Operating Systems & Types of Computers (Ch 1.3-1.5)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week2" data-class="11A" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week2" data-class="11B" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week2" data-class="11C" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Operating Systems:</strong> The master program that manages all computer hardware and software resources.
+                        <br><br>
+                        <strong>CLI vs. GUI:</strong> Differentiate between Command Line Interface and Graphical User Interface.
+                        <br><br>
+                        <strong>Types of Computers:</strong> Identify the characteristics and uses of desktop, mobile, and emerging computers.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"OS Function Brainstorm" (Pair Work):</strong> Brainstorm and list as many functions of an operating system as you can think of.
+                        <br><br>
+                        <strong>"Device Dilemma" (Group Scenario):</strong> Recommend the most suitable computer for a given scenario and justify your choice.
+                        <br><br>
+                        <strong>GUI Navigation Practice (Practical):</strong> Practice basic file management using a GUI.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Comparison Table:</strong> Create a table comparing GUI and CLI with at least 3 advantages and 3 disadvantages for each.
+                        <br><br>
+                        <strong>Scenario Response:</strong> Advise a school on purchasing new devices for students with different needs.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 3 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 3: Input, Output, and Storage Devices (Ch 2-3)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week3" data-class="11A" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week3" data-class="11B" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week3" data-class="11C" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Input, Output, and Direct Data Entry:</strong> Identify and describe various devices for inputting and outputting information, as well as direct data entry devices like magnetic stripe readers and barcode scanners.
+                        <br><br>
+                        <strong>Storage Media:</strong> Differentiate between magnetic (HDD), optical (CD/DVD), and solid-state (SSD) storage, and discuss their pros and cons.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"Device Function & Flow" (Group Activity):</strong> For given scenarios, identify the input, processing, and output devices involved.
+                        <br><br>
+                        <strong>"Storage Solution Challenge" (Discussion):</strong> Recommend the most suitable storage type for various data needs.
+                        <br><br>
+                        <strong>Practical Exploration:</strong> Handle and discuss the physical characteristics of different storage media.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Table Creation:</strong> Create a table of 3 direct data entry and 3 output devices with their uses, advantages, and disadvantages.
+                        <br><br>
+                        <strong>Short Essay:</strong> Explain why an SSD is preferred over an HDD for a laptop's primary storage.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 4 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 4: Networks and the Internet (Ch 4.1, 10.2)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week4" data-class="11A" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week4" data-class="11B" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week4" data-class="11C" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Network Types:</strong> Define and differentiate between LAN, WLAN, and WAN.
+                        <br><br>
+                        <strong>Network Devices:</strong> Explain the purpose of routers, switches, and NICs.
+                        <br><br>
+                        <strong>Cloud Computing:</strong> Describe the uses and issues related to cloud computing.
+                        <br><br>
+                        <strong>Internet, Intranet, Extranet:</strong> Differentiate between these network types and their access levels.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"Network Diagramming" (Individual/Pair Activity):</strong> Draw a simple home network diagram, labeling devices and connections.
+                        <br><br>
+                        <strong>"Cloud Computing Pros & Cons" (Class Debate):</strong> Debate the advantages and disadvantages of cloud storage.
+                        <br><br>
+                        <strong>"Network Scenario Matching" (Group Activity):</strong> Identify the most appropriate network type for various scenarios.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Research & Application:</strong> Find an example of a popular online service that relies on cloud computing and describe how they use it.
+                        <br><br>
+                        <strong>Define in your own words:</strong> "What is the primary difference between a hub and a switch?"
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 5 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 5: Network Issues & Communication (Ch 4.2, 10.1, 10.2 cont.)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week5" data-class="11A" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week5" data-class="11B" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week5" data-class="11C" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Security Issues:</strong> Understand common security issues related to data transfer (passwords, anti-malware).
+                        <br><br>
+                        <strong>Electronic Conferencing:</strong> Describe different methods like video, audio, and web conferencing.
+                        <br><br>
+                        <strong>Email Communication:</strong> Explain the characteristics and uses of email, including constraints and spam prevention.
+                        <br><br>
+                        <strong>Internet Functionalities & Risks:</strong> Identify key internet components (ISP, URL, web browser) and understand protocols (HTTP, HTTPS, FTP, SSL) and internet use risks.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"Strong Password Workshop" (Practical/Discussion):</strong> Practice creating strong passwords and discuss best practices.
+                        <br><br>
+                        <strong>"Email Etiquette Scenario" (Role Play/Discussion):</strong> Discuss or role-play appropriate email etiquette for different situations.
+                        <br><br>
+                        <strong>"Website Reliability Check" (Practical):</strong> Evaluate the reliability of different websites based on various criteria.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Reflection:</strong> Explain why it is important to use HTTPS for online banking.
+                        <br><br>
+                        <strong>Mini-Report:</strong> Research and explain one method to prevent computer viruses or malware.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 6 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 6: The Effects of Using IT & ICT Applications (Ch 5, 6, 9.1)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week6" data-class="11A" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week6" data-class="11B" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week6" data-class="11C" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Effects of Microprocessors:</strong> Analyze the positive and negative effects of microprocessor-controlled devices on daily life and transport.
+                        <br><br>
+                        <strong>Health Problems & Prevention:</strong> Identify potential health problems from IT use (RSI, back problems) and strategies for prevention.
+                        <br><br>
+                        <strong>ICT Applications:</strong> Describe the uses of various ICT applications (communication, modelling, etc.).
+                        <br><br>
+                        <strong>Audience Appreciation:</strong> Understand the importance of tailoring ICT solutions for a specific audience.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"Ergonomics Check-up" (Practical):</strong> Assess your own workstation setup and identify areas for improvement.
+                        <br><br>
+                        <strong>"ICT Application Scenarios" (Group Activity):</strong> Brainstorm and present a unique, real-world example of how ICT is used in a specific area.
+                        <br><br>
+                        <strong>"Audience Tailoring" (Discussion):</strong> Discuss how an instruction manual would change for different audiences.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Reflection:</strong> Choose one microprocessor-controlled device and describe one positive and one negative impact.
+                        <br><br>
+                        <strong>Design a Healthy Workstation:</strong> Draw a diagram or write a detailed description of an ideal ergonomic workstation.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 7 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 7: Copyright & File Management Basics (Ch 9.2, 11.1)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week7" data-class="11A" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week7" data-class="11B" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week7" data-class="11C" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Copyright:</strong> Explain the need for copyright legislation and methods used to prevent infringement.
+                        <br><br>
+                        <strong>File Management:</strong> Understand the importance of hierarchical folder structures and appropriate file names.
+                        <br><br>
+                        <strong>File Formats:</strong> Identify common file formats (.docx, .pdf, .jpg, etc.) and their uses.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"Copyright Dilemmas" (Group Discussion):</strong> Discuss the ethical and legal implications of various copyright scenarios.
+                        <br><br>
+                        <strong>File Management Practical (Hands-on):</strong> Create a folder structure, save and rename files, and explore file types.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Research:</strong> Find a real-world example of copyright infringement.
+                        <br><br>
+                        <strong>Practice:</strong> Create a new folder structure for organizing your school work and take a screenshot.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 8 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 8: Document Production - Page Layout & Basic Formatting (Ch 17.1-17.2)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week8" data-class="11A" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week8" data-class="11B" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week8" data-class="11C" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Page Layout:</strong> Understand and apply page layout options like page size, orientation, margins, columns, and breaks.
+                        <br><br>
+                        <strong>Text Formatting:</strong> Format text using line spacing, paragraph spacing, tabulation, indentation, and text enhancements (bold, italic, etc.).
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Word Practical - "Newsletter Section" (Hands-on):</strong> Practice setting custom margins, changing orientation, and creating a two-column layout.
+                        <br><br>
+                        <strong>Word Practical - "Poem Formatting" (Hands-on):</strong> Apply different line spacing and text enhancements to a poem.
+                        <br><br>
+                        <strong>Word Practical - "Tabulated List":</strong> Use decimal tabs to align a list of items and prices.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Practice:</strong> Recreate a short online article in Word and experiment with different spacing and text case.
+                        <br><br>
+                        <strong>Reflection:</strong> Explain why section breaks are important for documents with different page layouts.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 9 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 9: Document Production - Lists, Find & Replace, Navigation (Ch 17.2 cont., 17.3, 17.4)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week9" data-class="11A" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week9" data-class="11B" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week9" data-class="11C" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Lists:</strong> Create and edit bulleted and numbered lists, including multi-level lists.
+                        <br><br>
+                        <strong>Find and Replace:</strong> Utilize this feature for quick edits and corrections.
+                        <br><br>
+                        <strong>Navigation:</strong> Add and delete bookmarks and hyperlinks for internal and external navigation.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Word Practical - "Project Outline & To-Do List":</strong> Create a multi-level numbered list for an outline and a bulleted list for a to-do list.
+                        <br><br>
+                        <strong>Word Practical - "Document Clean-up":</strong> Use Find and Replace to correct inconsistencies in a provided document.
+                        <br><br>
+                        <strong>Word Practical - "Interactive Mini-Report":</strong> Add bookmarks and hyperlinks for internal and external navigation.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Practice:</strong> Create a document outlining a meal preparation, using lists and a hyperlink.
+                        <br><br>
+                        <strong>Challenge:</strong> Use Find and Replace to change the word "computer" to "ICT device" where it is not capitalized.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 10 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 10: Document Production - Tables, Headers & Footers (Ch 13.2, 13.3)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week10" data-class="11A" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week10" data-class="11B" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week10" data-class="11C" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Tables:</strong> Create and edit tables, including formatting options like merging cells and text wrap.
+                        <br><br>
+                        <strong>Headers & Footers:</strong> Use headers and footers to place consistent information and automated objects like page numbers and dates.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Word Practical - "Class Schedule Table" (Hands-on):</strong> Create a weekly class schedule table with merged cells and adjusted row/column sizes.
+                        <br><br>
+                        <strong>Word Practical - "Product Comparison Table" (Hands-on):</strong> Create and format a table to display product comparison data.
+                        <br><br>
+                        <strong>Word Practical - "Professional Document Header/Footer":</strong> Add a header with the document title and a footer with automated page numbers and date.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Table Design:</strong> Design a table to display information about 5 input devices, applying appropriate formatting.
+                        <br><br>
+                        <strong>Header/Footer Practice:</strong> Add a header with your name and class, and a footer with the automated file name.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 11 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 11: Document Production - Styles & Proofing & Comprehensive Project Work (Ch 14, 15, and all previous Word skills)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week11" data-class="11A" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week11" data-class="11B" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week11" data-class="11C" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Theory Concepts & Definitions:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Styles:</strong> Create, modify, and apply styles for consistent document presentation.
+                        <br><br>
+                        <strong>Proofing:</strong> Use automated tools and manual proofreading to reduce errors.
+                        <br><br>
+                        <strong>Validation vs. Verification:</strong> Differentiate between these concepts and their importance in data entry.
+                        <br><br>
+                        <strong>Comprehensive Word Project:</strong> Apply a wide range of MS Word skills in a major project.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Word Practical - "Style Master" (Hands-on):</strong> Create and apply new custom paragraph styles.
+                        <br><br>
+                        <strong>Word Practical - "Proofreading Challenge" (Hands-on):</strong> Use spell/grammar check and manual proofreading to correct errors.
+                        <br><br>
+                        <strong>Comprehensive Word Project (Dedicated Work Time):</strong> Work on the major graded project for Term 1.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Project Completion:</strong> Finalize and submit the Comprehensive Word Project.
+                        <br><br>
+                        <strong>Study:</strong> Review all Term 1 theory for the end-of-term review/quiz next week.
+                    </p>
+                </div>
+            </details>
+            
+            <!-- Week 12 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 12: Term 1 Feedback, Review & Theory Consolidation</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11A-week12" data-class="11A" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11B-week12" data-class="11B" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-11C-week12" data-class="11C" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">11C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-600 mb-4">
+                        <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Term 1 Review Activities:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>Project Feedback Overview:</strong> Discuss common strengths and areas for improvement from the Comprehensive Word Projects.
+                        <br><br>
+                        <strong>Term 1 Theory Review (Interactive):</strong> Participate in an interactive review session for all theoretical chapters covered.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                    <p class="text-gray-700 mb-4">
+                        <strong>"ICT Jeopardy!" / "Concept Map Creation" (Group Activity):</strong> Play a review game or create a concept map linking all the theoretical topics.
+                        <br><br>
+                        <strong>Q&A Session:</strong> Ask any lingering questions about theory or practical skills.
+                        <br><br>
+                        <strong>Self-Reflection Activity:</strong> Reflect on your learning journey in Term 1.
+                    </p>
+                    <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                    <p class="text-gray-700">
+                        <strong>Review:</strong> Go over any areas identified as weak during the review session.
+                        <br><br>
+                        <strong>Prepare for Term 2:</strong> Briefly look ahead at the topics for Term 2.
+                    </p>
+                </div>
+            </details>
+            
+            <h3 class="text-3xl font-bold mt-12 mb-8 text-center text-indigo-600">Term 2</h3>
+            <p class="text-center text-gray-400">Content for Term 2 will go here.</p>
+
+            <h3 class="text-3xl font-bold mt-12 mb-8 text-center text-indigo-600">Term 3</h3>
+            <p class="text-center text-gray-400">Content for Term 3 will go here.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 rounded-t-3xl mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Andrés Forero. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu and Progress Tracking -->
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Details tag arrow rotation
+        document.querySelectorAll('details').forEach(detail => {
+            detail.addEventListener('toggle', () => {
+                const arrow = detail.querySelector('svg');
+                if (detail.open) {
+                    arrow.classList.remove('-rotate-90');
+                } else {
+                    arrow.classList.add('-rotate-90');
+                }
+            });
+        });
+
+        // Progress Tracking with LocalStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            // Load saved state on page load
+            checkboxes.forEach(checkbox => {
+                const checkboxId = checkbox.id;
+                const isChecked = localStorage.getItem(checkboxId) === 'true';
+                if (isChecked) {
+                    checkbox.checked = true;
+                }
+            });
+
+            // Save state on checkbox change
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    localStorage.setItem(event.target.id, event.target.checked);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

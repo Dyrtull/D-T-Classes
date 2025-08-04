@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 12 - D&T, ICT & CS IGCSE</title>
+    <!-- Tailwind CSS is loaded from a CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .collapsible-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            background-color: #e2e8f0;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .collapsible-summary:hover {
+            background-color: #cbd5e1;
+        }
+        details[open] .details-arrow {
+            transform: rotate(0deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">D&T IGCSE 0445</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html#about" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">About</a>
+                <a href="index.html#teacher" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Teacher</a>
+                <a href="grade10.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Grade 10</a>
+                <a href="grade11.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Grade 11</a>
+                <a href="grade12.html" class="text-indigo-600 font-bold border-b-2 border-indigo-600">Grade 12</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 shadow-lg text-center">
+            <a href="index.html#about" class="block py-2 text-gray-600 hover:text-indigo-600">About</a>
+            <a href="index.html#teacher" class="block py-2 text-gray-600 hover:text-indigo-600">Teacher</a>
+            <a href="grade10.html" class="block py-2 text-gray-600 hover:text-indigo-600">Grade 10</a>
+            <a href="grade11.html" class="block py-2 text-gray-600 hover:text-indigo-600">Grade 11</a>
+            <a href="grade12.html" class="block py-2 text-indigo-600 font-bold">Grade 12</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-indigo-600 text-white py-20 md:py-32 rounded-b-3xl">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                Grade 12
+            </h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto opacity-90">
+                Your resources for your IGCSE ICT and Computer Science classes.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content for Grade 12 -->
+    <main class="py-16 md:py-24">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h3 class="text-3xl font-bold mb-8 text-center">Term 1</h3>
+
+            <!-- Week 1 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 1: ICT (Databases) & Computer Science (Data Representation)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week1" data-class="12A" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week1" data-class="12B" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week1" data-class="12C" data-week="1" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Databases - Part 1</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Understand the characteristics, uses, advantages, and disadvantages of flat-file and relational databases. Learn how to create a database structure, including setting field names, data types, and primary keys.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Database, Flat File Database, Relational Database, Primary Key, Foreign Key, Data Types, Query, Sort Data, Search and Select Data.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Data Types:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A `Price` field should be `Currency`. A `Date of Birth` field should be `Date/Time`.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Primary Key:</h6>
+                            <p class="text-gray-700 mb-4">
+                                In a `Students` table, `StudentID` would be a good primary key because each student has a unique ID number.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Query:</h6>
+                            <p class="text-gray-700 mb-4">
+                                To find all customers who live in 'London' and have a balance greater than $1000, you would use a query with the criteria `City = 'London' AND Balance > 1000`.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Database Structure Design:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Design a `Books` table for a school library. Suggest three suitable field names and their data types.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Data Import and Manipulation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Import data from a `Students.csv` file, set `StudentID` as the primary key, sort by `LastName`, and create queries to find students with a 'A' or 'B' grade, or a 'C' grade born after 2005.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Validation Rules:</h6>
+                            <p class="text-gray-700 mb-4">
+                                For the `Books` table you designed, suggest one validation rule for each of your three fields.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Database Types:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Write a short paragraph explaining the difference between a flat-file database and a relational database, including an advantage and a disadvantage of each type.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Data Representation</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Number Systems:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand and convert between denary, binary, and hexadecimal number systems. Understand the use of hexadecimal as a beneficial data representation method.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Binary Arithmetic & Two's Complement:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand binary addition and overflow. Perform logical binary shifts. Use two's complement for representing positive and negative binary integers.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Denary to Binary:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Convert 25 to 8-bit binary: 00011001.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Binary Addition (with overflow):</h6>
+                            <p class="text-gray-700 mb-4">
+                                11110000 (240) + 00010000 (16) = (1)00000000 (256) - The 9th bit is an overflow.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Logical Left Shift:</h6>
+                            <p class="text-gray-700 mb-4">
+                                00010100 (Denary 20) shifted left by 1 is 00101000 (Denary 40).
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Two's Complement:</h6>
+                            <p class="text-gray-700 mb-4">
+                                -5 in 8-bit two's complement is 11111011.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Binary Conversion Practice:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Convert the following denary numbers to their 8-bit binary equivalents: <br>
+                                a) 15 <br>
+                                b) 97 <br>
+                                c) 205 <br>
+                                Convert the following 8-bit binary numbers to denary: <br>
+                                a) 00001111 <br>
+                                b) 11000011 <br>
+                                c) 01010101 <br>
+                                Convert the following hexadecimal numbers to denary: <br>
+                                a) 7A <br>
+                                b) F3 <br>
+                                c) 1B
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Binary Addition & Two's Complement Practice:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Perform the following 8-bit binary additions. Indicate if an overflow occurs: <br>
+                                a) 00110011 + 00011001 <br>
+                                b) 10101010 + 01010101 <br>
+                                c) 11001010 + 01100110 <br>
+                                d) 01111111 + 00000010 <br>
+                                Starting with the 8-bit binary number 00110110: <br>
+                                a) Perform a logical left shift by 2 bits. What is the new binary number and its denary value? <br>
+                                b) Starting again with 00110110, perform a logical right shift by 3 bits. What is the new binary number and its denary value?
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Number Systems:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Convert your house number to 16-bit binary and hexadecimal. Research two real-world applications of hexadecimal.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Binary Arithmetic:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Explain the concept of overflow in a scenario. Research the difference between signed and unsigned integers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Week 2 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 2: ICT (Databases) & Computer Science (Data Representation & Data Storage)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week2" data-class="12A" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week2" data-class="12B" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week2" data-class="12C" data-week="2" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Calculations and Reports</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Learn how to use arithmetic operations and functions to perform calculations within a database, including creating calculated fields. Understand how to produce and format a report.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Calculated Field, Arithmetic Operations, Numeric Functions, Report, Headers and Footers, Data Alignment, Display Format.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Calculated Field:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a `Total Cost` field with the formula `[Quantity] * [UnitPrice]`.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Report Headers:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A report header might contain the title "Sales Report for Q4 2024".
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Formatting:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A `Price` field could be formatted to show two decimal places with a currency symbol (e.g., `$12.50`).
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Calculated Fields:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a calculated field named `Stock Value` and use a numeric function to find the total.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Report Generation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Design a report with a title, a page footer with your name and date, formatted numeric fields, and right-aligned numeric data.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Formulas and Functions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Write a formula for a `Net_Sales` field and the function to find the `Maximum Sales_Amount`.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Report Layout:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Describe two ways you would format a report to make it easy to read.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Data Representation & Data Storage</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Text, Sound, and Images:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand how computers represent text, sound, and images. Understand the effects of character sets, sample rate/resolution, and image resolution/colour depth.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Data Storage and Compression:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand how data storage is measured. Calculate file sizes for images and sound. Understand the purpose and need for data compression, including lossy and lossless methods.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Text:</h6>
+                            <p class="text-gray-700 mb-4">
+                                The letter 'A' in ASCII is `01000001`. Unicode allows for a wider range of characters and symbols.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Sound:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A sound recorded at 44.1 kHz has a higher fidelity than one recorded at 8 kHz.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Images:</h6>
+                            <p class="text-gray-700 mb-4">
+                                An image with resolution 1920x1080 will have more detail than an image with 640x480 pixels.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Compression:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `AAAAABBCDDD` becomes `5A2B1C3D` using Run-Length Encoding (lossless).
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Character Set Comparison & File Size Impact:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Explain why Unicode was developed when ASCII already existed, focusing on the limitations of ASCII. <br>
+                                A digital audio file has a sample rate of 44.1 kHz and a sample resolution of 16 bits. How would the file size and quality be affected if the sample rate was reduced or the sample resolution was increased? <br>
+                                An image is captured with a resolution of 1024x768 pixels and a colour depth of 8 bits. How would the file size and image quality be affected if the resolution was increased or the colour depth was increased? <br>
+                                Calculate the file size in Kibibytes (KiB) of an image with a resolution of 800x600 pixels and a colour depth of 16 bits. (Remember to use 1024 for KiB conversion). Show your working.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Data Storage Conversions & Compression Scenarios:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Perform the following data storage conversions: <br>
+                                a) How many bytes are in 3 Gibibytes (GiB)? <br>
+                                b) How many bits are in 2 Nibbles? <br>
+                                c) A file is 4096 bytes. What is its size in Kibibytes (KiB)? <br>
+                                d) Order the following storage units from smallest to largest: MiB, byte, GiB, bit, KiB, TiB. <br>
+                                Calculate the file size in Kibibytes (KiB) of a grayscale image (1 bit per pixel) with a resolution of 1280x720 pixels. <br>
+                                A mono (single channel) sound file is 30 seconds long, has a sample rate of 22050 Hz, and a sample resolution of 8 bits. Calculate its file size in Kibibytes (KiB). <br>
+                                You want to send a high-quality photograph to a printing company. Would you use lossy or lossless compression? Explain why.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research languages not supported by ASCII. Explain how changing sound rate and resolution affects a recording.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Explain the impact of compression on a mobile application. Research lossy vs. lossless compression formats.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Week 3 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 3: ICT (Document Production) & Computer Science (Data Transmission)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week3" data-class="12A" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week3" data-class="12B" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week3" data-class="12C" data-week="3" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Document Production</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Organise page layouts using features like page size, orientation, margins, columns, and breaks. Format text and create different types of lists. Use headers and footers with automated objects. Practice find and replace, and navigation with bookmarks and hyperlinks.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Page Layout, Gutter Margin, Text Formatting, Headers and Footers, Automated Objects, Hyperlink, Bookmark, Find and Replace.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Page Layout:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Setting a page to `A4` size and `Portrait` orientation.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Headers and Footers:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Inserting a page number and the total number of pages (`Page x of y`) into the footer.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Lists:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Creating a bulleted list of ingredients or a numbered list of steps for a procedure.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Page and Text Formatting:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Set page orientation and margins. Apply line spacing and change heading size, bolding, and alignment.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Headers, Footers, and Lists:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a header with specific text and a footer with an automatic page number. Create and convert a list.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Find and Replace and Hyperlinks:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Use find and replace to change a word. Create a hyperlink to a website and an email address.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Formal Letter Design:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a single-page document for a formal letter using margins and alignment.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Booklet Layout:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Design a two-page document with a gutter margin and two columns on the second page.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Data Transmission</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Packet Switching & Data Transmission:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand data packetization and packet switching. Describe and compare serial, parallel, simplex, half-duplex, and full-duplex transmission.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Error Detection and Encryption:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand the need for and methods of error detection (parity check, checksum, echo check, check digit). Describe Automatic Repeat Query (ARQ). Understand encryption (symmetric and asymmetric).
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Packet:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A packet has a header with the destination address, a payload with the data, and a trailer with error-checking information.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Transmission:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A video call is a full-duplex transmission.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Parity Check:</h6>
+                            <p class="text-gray-700 mb-4">
+                                With even parity, the byte `10110010` (3 ones) becomes `101100101` (4 ones).
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">ARQ:</h6>
+                            <p class="text-gray-700 mb-4">
+                                The receiver sends a negative acknowledgment (NACK) if an error is detected. The sender retransmits the data.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Encryption:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Asymmetric encryption uses a public key for encryption and a private key for decryption.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Packet Diagram & Switching:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Draw a diagram of a data packet and label its three main parts. Briefly describe what information is contained in the header. <br>
+                                Describe, in your own words, the step-by-step process of how data is broken down into packets, transmitted across a network, and reassembled at the destination using packet switching. <br>
+                                For each scenario below, identify the most suitable data transmission method (serial, parallel, simplex, half-duplex, or full-duplex) and justify your choice: <br>
+                                a) A smart doorbell sending video feed to your phone in real-time. <br>
+                                b) An old-fashioned, large-format inkjet printer receiving data from a computer to print a poster. <br>
+                                c) A signal from a GPS satellite to a car's navigation system. <br>
+                                d) A group of construction workers communicating on a building site using push-to-talk radios.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Error Detection and Encryption:</h6>
+                            <p class="text-gray-700 mb-4">
+                                List three ways errors can occur during data transmission. <br>
+                                Using  odd parity , determine the parity bit for each of the following 7-bit data bytes: a) 0101010 b) 1100110 c) 0000000 <br>
+                                Explain how a check digit helps detect errors in data entry. Provide an example where a check digit could be useful. <br>
+                                Describe the sequence of events that occurs when a sender transmits data using ARQ, and the receiver detects an error. <br>
+                                Explain the difference between symmetric and asymmetric encryption.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research the benefits of USB.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research digital signatures. Explain why SSL/TLS is crucial for secure communication.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Week 4 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 4: ICT (Website Authoring) & Computer Science (Hardware)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week4" data-class="12A" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week4" data-class="12B" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week4" data-class="12C" data-week="4" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Website Authoring - HTML and CSS</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Understand the three web development layers: content, presentation, and behavior. Create the content layer of a web page using HTML tags. Insert tables and other objects like images, sound clips, and video clips into a web page.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Content Layer (HTML), Presentation Layer (CSS), Behavior Layer (Scripting), Head Section, Body Section, Table Tags, Hyperlink Tag (`<a>`), Stylesheet.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">HTML Structure:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A basic HTML document with a `<head>` and `<body>` section.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Tables:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A table to display a timetable with `<th>` tags for the days and `<td>` for the events.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Hyperlinks:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `<a href="page2.html">Go to Page 2</a>` links to a local page, and `<a href="#top">Back to Top</a>` links to a bookmark on the same page.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">CSS Styling:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A CSS rule like `h1 {color: blue;}` would make all `<h1>` headings blue.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Basic HTML Page:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a new HTML file with the basic structure, a title, a heading, and a paragraph.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Tables and Images:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a table with 3 rows and 2 columns. Insert an image from a local file.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Hyperlinks and Bookmarks:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a hyperlink to an external website and a bookmark on the same page.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">External Stylesheet:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a new `style.css` file and link it to your HTML file to style the content.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Multi-Page Website:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a two-page website (`index.html` and `about.html`) with hyperlinks for navigation between them.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Image Sizing:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research and explain the difference between setting the width of an image in pixels versus a % value.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Computer Architecture - CPU</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Computer Architecture - CPU:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand the role of the CPU and what a microprocessor is. Understand the purpose of CPU components (ALU, CU, registers, buses) in Von Neumann architecture. Describe the Fetch-Decode-Execute (FDE) cycle.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Instruction Sets, Embedded Systems, I/O Devices:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand the purpose of an instruction set. Describe embedded systems and identify their uses. Understand and identify various input and output devices and their requirements.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">CPU:</h6>
+                            <p class="text-gray-700 mb-4">
+                                The "brain" of the computer.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">FDE Cycle:</h6>
+                            <p class="text-gray-700 mb-4">
+                                The CPU fetches an instruction from memory, decodes it, and then executes it.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Embedded System:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A washing machine's computer system is an embedded system because it is dedicated to one function.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: CPU Component & FDE Cycle:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **CPU Component Matching:** Match the following CPU components to their primary function: a) Program Counter b) Arithmetic Logic Unit c) Memory Data Register d) Control Unit e) Address Bus f) Accumulator. <br>
+                                **Fetch-Decode-Execute Cycle Steps:** Describe the three main stages of the Fetch-Decode-Execute cycle. For each stage, briefly explain what happens and mention at least one CPU component involved. <br>
+                                **Performance Comparison:** Compare two CPUs (A: 4 cores, 4MB cache, 3.0 GHz; B: 2 cores, 8MB cache, 3.5 GHz) and explain which would perform better for a single demanding application versus multitasking.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Embedded Systems & I/O Devices:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Embedded System Identification:** For each device below, state whether it is an embedded system or a general-purpose computer and justify your answer: a) A smart thermostat b) A smartphone c) A car's anti-lock braking system (ABS) d) A point-of-sale (POS) terminal in a shop. <br>
+                                **Input/Output Device Selection:** For each scenario, identify the most suitable input device(s) and output device(s) needed and justify your choices: a) A library system where librarians need to quickly scan books in and out. b) A digital photography studio where photographers want to capture high-quality images and then print them in various sizes.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research a historical development in CPU architecture. Explain why the Address Bus is unidirectional.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research the differences between resistive, capacitive, and infra-red touch screens. Explain the purpose of a 3D scanner and a 3D printer.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Week 5 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 5: ICT (Theory Review) & Computer Science (Hardware & Software)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week5" data-class="12A" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week5" data-class="12B" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week5" data-class="12C" data-week="5" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Theory Review - Systems, Devices, and Storage</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Review and understand the different types and components of computer systems, hardware, software, and storage. Review key concepts in networks and security.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Hardware, Software, System Software, Application Software, ROM, RAM, Backing Storage, Input/Output/Storage Devices, Network Types, Router, Anti-malware software.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Hardware:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A CPU, motherboard, or a keyboard.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Software:</h6>
+                            <p class="text-gray-700 mb-4">
+                                An operating system like Windows is system software. A word processor like Microsoft Word is application software.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Storage:</h6>
+                            <p class="text-gray-700 mb-4">
+                                An external hard drive is backing storage. RAM is internal memory.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Input/Output:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A barcode reader is an input device. A 3D printer is an output device.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Networks:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A Wi-Fi network in a house is a LAN. The internet is a WAN.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Hardware vs. Software:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Classify the following as either Hardware or Software: a) A mouse b) A database program c) A scanner d) A device driver.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Storage Comparison:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a table to compare RAM and ROM based on three characteristics.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Device Identification:</h6>
+                            <p class="text-gray-700 mb-4">
+                                For each of the following scenarios, suggest an appropriate input device and output device and briefly explain why it is suitable: a) A supermarket self-checkout machine. b) A system for playing a video game on a computer.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Network Security:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A user receives an email with an attachment from an unknown sender. a) Explain one security threat associated with this scenario. b) Describe one method of protection that could prevent this threat.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Storage Technologies:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Describe one advantage and one disadvantage of magnetic, optical, and solid-state storage.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Computer Types:</h6>
+                            <p class="text-gray-700 mb-4">
+                                List two characteristics of a mobile computer and two characteristics of a desktop computer.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Hardware (continued) & Software</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Sensors & Data Storage:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand primary (RAM, ROM) and secondary storage. Describe the operation and examples of magnetic, optical, and solid-state storage. Understand virtual memory and cloud storage.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Secondary Storage, Virtual Memory, Cloud Storage, and Network Hardware:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Explain the advantages and disadvantages of cloud vs. local storage. Understand Network Interface Cards (NICs), MAC addresses, and IP addresses. Describe the role of a router.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Sensors:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A temperature sensor in a smart thermostat. A light sensor in a smartphone.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">RAM vs. ROM:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Programs load into RAM for the CPU to access. Instructions for booting are stored in ROM.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Virtual Memory:</h6>
+                            <p class="text-gray-700 mb-4">
+                                When RAM is full, the OS moves less frequently used data to a designated area on the hard drive.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">MAC vs. IP:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A MAC address is a physical serial number, while an IP address is a postal address for a device on a network.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Sensor & Primary Storage:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Sensor Identification and Use:** For each scenario, identify the most suitable type of sensor(s) to be used and explain why it is suitable for that context: a) A system for automatically watering plants based on soil conditions. b) A security system that detects if someone is approaching a building at night. c) A smart refrigerator that knows when a bottle of milk is running low. d) A weather station that collects environmental data. <br>
+                                **Primary Storage Comparison:** Complete the following table to compare RAM and ROM: | Feature | RAM | ROM | | :--- | :--- | :--- | | Volatile/Non-volatile | | | | Read/Write Access | | | | Contents | | | | Typical Use | | | <br>
+                                **Storage Hierarchy:** Explain the difference between primary and secondary storage, and why both are necessary in a computer system. Provide one example for each type of storage.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Secondary Storage, Virtual Memory, Cloud Storage, and Network Hardware:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Secondary Storage Comparison:** Compare magnetic, optical, and solid-state storage technologies based on speed, durability, cost per GB, and typical use cases. <br>
+                                **Virtual Memory Explanation:** Explain what virtual memory is and describe how it is created and used by an operating system. Why is virtual memory necessary in modern computing? <br>
+                                **Cloud Storage Decision:** List two advantages and two disadvantages of cloud storage. Based on these points, recommend whether or not a small business should switch to cloud storage. <br>
+                                **Network Address Differentiation:** Explain the difference between a MAC address and an IP address. Describe two key differences between IPv4 and IPv6 addresses. <br>
+                                **Router Functions:** Describe three distinct roles that a router performs in a typical home or office network.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Design a simple automated smart home system. Research BIOS/UEFI.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research how data is stored on an SSD. Explain the difference between dynamic and static IP addresses.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Week 6 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 6: ICT (Spreadsheets) & Computer Science (Software & Internet)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week6" data-class="12A" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week6" data-class="12B" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week6" data-class="12C" data-week="6" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Spreadsheets - Formulas, Functions, and Display</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Create and edit a spreadsheet model, using a variety of formulas and functions. Understand and apply the order of operations in formulas. Use absolute and relative cell referencing. Present data by adjusting display features, formatting, and using conditional formatting. Set up the page layout for printing.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Formula, Function, Order of Operations, Relative/Absolute Cell Reference, Display Features, Conditional Formatting, Page Layout.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Formulas:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `=A1*B1`.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Functions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `=SUM(A1:A5)`.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Absolute Reference:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `=[Price] * $B$12` to calculate tax using a fixed tax rate.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Conditional Formatting:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A rule that turns a cell red if its value is less than a certain number.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Formula and Function Practice:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a new spreadsheet. In cells `A1` to `A5`, enter the numbers 10, 15, 20, 25, and 30. In cell `B1`, write a formula that adds cell `A1` and `A2`. Replicate this formula down to `B4`. In cell `C1`, use the `SUM` function to calculate the total of the numbers in column A. In cell `C2`, use the `AVERAGE` function to calculate the average of the numbers in column A.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Absolute Referencing:</h6>
+                            <p class="text-gray-700 mb-4">
+                                In cell `D1`, enter `10%` as a sales tax. In cell `D2`, write a formula to calculate the tax for the first item in column A (`A1`), using an absolute reference to the tax rate in `D1`. Replicate this formula down to `D5` and observe that the reference to the tax rate remains fixed.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Formatting and Printing:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Format the values in column A to have one decimal place. Apply conditional formatting to column A to change the cell background to `yellow` if the value is greater than 20. Set the page orientation to `landscape` and set the print area to include only columns A, B, and C.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Gradebook Model:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a simple student gradebook using formulas, an `IF` function, and conditional formatting.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Types of Software, Languages & Internet vs. WWW</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Software & Interrupts:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Differentiate between system and application software. Describe the role of an OS and how it interacts with hardware and firmware. Describe the role and operation of interrupts.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Languages, Translators, IDEs & Internet:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Explain high-level and low-level languages, and the role of assemblers. Describe compilers and interpreters and their advantages/disadvantages. Explain the role and functions of an IDE. Differentiate between the Internet and the World Wide Web.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">System vs. Application:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Windows 11 (OS) is system software. Microsoft Word is application software.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Interrupts:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A key press sends a hardware interrupt signal to the CPU.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Languages:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Python is a high-level language. Assembly language is a low-level language.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Translator:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A compiler translates the entire code at once. An interpreter translates and executes line-by-line.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Internet vs. WWW:</h6>
+                            <p class="text-gray-700 mb-4">
+                                The Internet is the infrastructure, and the World Wide Web is the collection of websites on that infrastructure.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Software Classification & OS Role Play:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Software Classification:** For each of the following, classify it as either System Software or Application Software and provide a brief justification: a) A video editing suite b) A firewall c) Linux (an operating system) d) A spreadsheet program e) Disk defragmenter. <br>
+                                **Operating System Role Play:** Describe how you, as the Operating System, would handle the following situations: a) A user clicks on a file icon to open it. b) A user tries to print a document, but the printer is out of paper.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Language Advantages & Translator Operation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Language Advantages/Disadvantages:** For a smart light bulb controller (critical performance) and a new operating system (run on many different computers), would you choose a high-level or a low-level language? Justify your choices. <br>
+                                **Translator Operation:** Describe the main difference in how a compiler translates and executes code compared to an interpreter. Explain how errors are reported by each.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research two types of utility software. Explain how an OS provides the illusion of multitasking.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Justify the choice of a compiler for a commercial security application. Research a simple assembly language instruction.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Week 7 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 7: ICT (Presentations) & Computer Science (Web & Cyber Security)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week7" data-class="12A" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week7" data-class="12B" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week7" data-class="12C" data-week="7" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Theory and Presentations</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Review and understand key theory concepts, including the systems life cycle, security, and audience appreciation. Learn how to use a master slide to ensure a consistent presentation design. Practice inserting and editing various objects on a slide. Apply transitions and animation effects. Create hyperlinks and action buttons for interactive navigation.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Systems Life Cycle, Data Protection, E-safety, Audience Appreciation, Master Slide, Slide Objects, Transitions, Animations, Output, Hyperlink and Action Button.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Audience Appreciation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A presentation for primary school children should use simple language, large fonts, and bright images.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Master Slide:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A company logo placed on the master slide will appear on every slide.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Hyperlink:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A button that says "Go to First Slide" can be set as a hyperlink to the first slide in the presentation.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Systems Life Cycle:</h6>
+                            <p class="text-gray-700 mb-4">
+                                For a business creating a new website, describe one task for the analysis, design, and testing stages.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Master Slide Design:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a master slide and apply a consistent font and color scheme. Add a footer with an automated slide number and your name.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Content and Navigation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Add a new slide with a title, a bulleted list, an image, and a simple bar chart. Create a hyperlink to the first slide.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Transitions and Output:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Apply a transition to all slides. Practice hiding a slide and then running the presentation.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">e-safety rules:</h6>
+                            <p class="text-gray-700 mb-4">
+                                List three important e-safety rules you would include in a presentation about using social media safely.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Presentation Output:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Describe which output method and settings you would use for a continuously running conference presentation.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Web Functionality & Digital Currency / Cyber Security</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Web Functionality & Digital Currency:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand URLs, HTTP/HTTPS, web browsers, and cookies. Describe how web pages are located, retrieved, and displayed. Understand digital currency and blockchain.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Cyber Security Threats & Solutions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Describe various cyber security threats (brute-force, DDoS, malware, phishing). Explain solutions to keep data safe (access levels, anti-malware, firewalls, encryption).
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">URL:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `https://www.cambridgeinternational.org` is a URL.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Web Page Retrieval:</h6>
+                            <p class="text-gray-700 mb-4">
+                                The browser asks a DNS to translate the domain name into an IP address.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Cookie:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A persistent cookie stores your login details for a website.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Blockchain:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A decentralized, immutable digital ledger.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Threats:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A phishing email looks like it's from a trusted entity to steal sensitive information.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Solutions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Two-step verification requires two different methods of verification. A firewall filters network traffic.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: URL Analysis & Web Page Retrieval:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **URL Analysis:** Given the URL: `http://example.com/products/index.html` - a) Identify the protocol. b) Identify the domain name. c) Identify the file name/path. Explain the significance of using `https://` instead of `http://` for sensitive transactions. <br>
+                                **Web Browser Functions:** You are using a web browser to plan a trip. List three distinct functions of the web browser (other than just displaying web pages) that would be helpful in this task and explain how. <br>
+                                **Web Page Retrieval Steps:** Describe the sequence of events from the moment a user types a URL until the page is fully displayed. Include the roles of the web browser, DNS, and web server. <br>
+                                **Cookie Scenario:** Explain the difference between a session cookie and a persistent cookie. Provide a specific example of how each type of cookie might be used by an online retailer.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Threat Identification & Solutions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Threat Identification:** For each situation, identify the specific cyber security threat: a) A user receives a text message claiming to be from a well-known shipping company, asking for their credit card details. b) A hacker repeatedly tries different combinations of letters and numbers to guess a user's password. <br>
+                                **Solution Application:** For each of the threats in the previous exercise, suggest one specific cyber security solution that could help protect against it and explain how it works. <br>
+                                **Authentication Methods:** Compare and contrast username/password authentication with biometric authentication. State one advantage and one disadvantage of each. <br>
+                                **Phishing Prevention:** List three specific things you would check in a suspicious email to determine if it is a phishing attempt.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research how DNS works. Research two common HTTP status codes.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research a well-known ransomware attack. Find a real-world example of a social engineering attack.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Week 8 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 8: ICT (Theory Review) & Computer Science (Automated & Emerging Technologies)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week8" data-class="12A" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week8" data-class="12B" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week8" data-class="12C" data-week="8" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Comprehensive Theory Review</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Consolidate knowledge of all theory topics in the syllabus. Understand the three assessment objectives and their weighting. Review key terminology and concepts from all syllabus topics, such as implementation methods and security threats.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Assessment Objectives (AOs), Systems Life Cycle, Security Threats, Validation vs. Verification.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Implementation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                In a `direct changeover`, the old system is immediately replaced by the new one.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Security:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A `phishing` email attempts to trick a user into revealing personal information.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Validation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A `range check` ensures a number is within a specific range. `Double data entry` is a form of verification.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Syllabus Overview:</h6>
+                            <p class="text-gray-700 mb-4">
+                                a) What is the duration and total mark of Paper 1 (Theory)?. <br>
+                                b) What percentage of the overall qualification grade is given to the practical papers (Paper 2 and Paper 3) combined?. <br>
+                                c) Which assessment objective is entirely assessed in the practical papers?.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Terminology Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Define the following terms in your own words: a) ROM b) Cloud computing c) User documentation.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Comparisons:</h6>
+                            <p class="text-gray-700 mb-4">
+                                a) Explain the difference between magnetic and solid-state storage devices. b) What is the main difference between an intranet and the internet?.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Practical Application of Theory:</h6>
+                            <p class="text-gray-700 mb-4">
+                                a) A new school management system is being implemented. Describe one advantage and one disadvantage of using the `parallel running` method of implementation. b) When entering a new student's date of birth, why is it important to use both validation and verification?.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Full Theory Paper:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Attempt a full IGCSE ICT Paper 1 (Theory) from a past series under timed conditions.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Mind Map:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a mind map for one of the major syllabus sections.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Automated Systems & AI</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Automated Systems & Robotics:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Describe how sensors, microprocessors, and actuators create automated systems. Describe advantages and disadvantages of automated systems and robots.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Artificial Intelligence & Algorithm Design:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand Artificial Intelligence (AI) and its characteristics. Explain AI systems (expert systems, machine learning) and the program development life cycle (PDLC).
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Automated System:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A smart lighting system using a light sensor, microprocessor, and actuator.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Robot:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A robot arm in a car factory is a robot.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Expert System:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A medical diagnosis system with a knowledge base, rule base, and inference engine.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">PDLC:</h6>
+                            <p class="text-gray-700 mb-4">
+                                The stages are Analysis, Design, Coding, and Testing.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Automated System Design & Robot Role Evaluation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Automated System Design:** Design a simple automated system for a chicken coop that opens and closes a chicken door based on daylight. a) Identify the specific sensor(s) needed. b) Describe the role of the microprocessor. c) Identify the specific actuator(s) needed. d) Briefly explain how these three components would work together to achieve the automation. <br>
+                                **Automated System Pros and Cons:** Consider an automated traffic light system at a busy intersection. a) State two advantages of this automated system. b) State two disadvantages of this automated system.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: AI Characteristics & PDLC:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **AI Characteristics:** Identify which characteristics of AI (data collection, rules, reasoning, learning/adapting) are most prominent in the following AI applications. Justify your answer briefly: a) A chess-playing computer program. b) A facial recognition system used to unlock a phone. c) A recommendation system on a streaming service (e.g., Netflix suggesting movies). <br>
+                                **Expert System Components:** Describe the four main components of an expert system and briefly explain the role of each. <br>
+                                **Program Development Life Cycle Stages:** You are asked to develop a program to manage student grades. For each stage of the PDLC (Analysis, Design, Coding, Testing), describe one specific task you would perform for this project.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research a specific example of an automated transport system. What are some ethical considerations related to the use of robots?
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Research supervised vs. unsupervised learning. Identify two applications of AI you use in your daily life.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- Week 9 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 9: ICT (Comprehensive Review) & Computer Science (Algorithms & Programming)</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week9" data-class="12A" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week9" data-class="12B" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week9" data-class="12C" data-week="9" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- ICT Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">ICT Section: Theory Consolidation</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <p class="text-gray-700 mb-4">
+                                Consolidate knowledge of all theory topics in the syllabus. Understand the three assessment objectives and their weighting. Review key terminology and concepts from all syllabus topics, such as implementation methods and security threats.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Assessment Objectives (AOs), Systems Life Cycle, Security Threats, Validation vs. Verification.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Implementation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                In a `direct changeover`, the old system is immediately replaced by the new one.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Security:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A `phishing` email attempts to trick a user into revealing personal information.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Validation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A `range check` ensures a number is within a specific range. `Double data entry` is a form of verification.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Syllabus Overview:</h6>
+                            <p class="text-gray-700 mb-4">
+                                a) What is the duration and total mark of Paper 1 (Theory)?. <br>
+                                b) What percentage of the overall qualification grade is given to the practical papers (Paper 2 and Paper 3) combined?. <br>
+                                c) Which assessment objective is entirely assessed in the practical papers?.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Terminology Definitions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Define the following terms in your own words: a) ROM b) Cloud computing c) User documentation.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Comparisons:</h6>
+                            <p class="text-gray-700 mb-4">
+                                a) Explain the difference between magnetic and solid-state storage devices. b) What is the main difference between an intranet and the internet?.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Practical Application of Theory:</h6>
+                            <p class="text-gray-700 mb-4">
+                                a) A new school management system is being implemented. Describe one advantage and one disadvantage of using the `parallel running` method of implementation. b) When entering a new student's date of birth, why is it important to use both validation and verification?.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Full Theory Paper:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Attempt a full IGCSE ICT Paper 1 (Theory) from a past series under timed conditions.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Mind Map:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Create a mind map for one of the major syllabus sections.
+                            </p>
+                        </div>
+                        <!-- Computer Science Section -->
+                        <div>
+                            <h4 class="font-bold text-xl mb-4 text-indigo-600">Computer Science Section: Algorithms, Programming & Databases, Boolean Logic</h4>
+                            <p class="text-center text-gray-600 mb-4">
+                                <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Algorithms & Programming Concepts:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand standard methods of solution (linear search, bubble sort). Understand validation, verification, and test data. Complete trace tables. Declare and use variables and constants. Understand basic data types, input/output, sequence, selection, and iteration.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Programming Concepts (continued), Arrays, File Handling, Databases & Boolean Logic:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Understand procedures, functions, parameters, local/global variables. Understand maintainable programs. Declare and use 1D and 2D arrays. Understand file handling. Define single-table databases and SQL. Identify and use logic gates and truth tables.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Linear Search:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Checks each item in a list sequentially.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Validation Check:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A range check ensures data falls within a specified range.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Trace Table:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A table to manually step through an algorithm.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Procedures & Functions:</h6>
+                            <p class="text-gray-700 mb-4">
+                                A procedure performs a task, while a function returns a value.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Array:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `DECLARE StudentNames : ARRAY[5] OF STRING`
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">SQL:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `SELECT * FROM Students WHERE FirstName = 'John'`
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Logic Gates:</h6>
+                            <p class="text-gray-700 mb-4">
+                                `NOT`, `AND`, `OR`, `NAND`, `NOR`, `XOR`.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Algorithm Tracing & Test Data:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Algorithm Tracing (Trace Table):** Complete a trace table for the following pseudocode. Assume the input numbers are Num1=10, Num2=4, Num3=7. <br>
+                                ```
+                                DECLARE A, B, C, Max : INTEGER
+                                INPUT A
+                                INPUT B
+                                INPUT C
+                                Max = A
+                                IF B > Max THEN
+                                    Max = B
+                                END IF
+                                IF C > Max THEN
+                                    Max = C
+                                END IF
+                                OUTPUT Max
+                                ```
+                                | Step | A | B | C | Max | B > Max | C > Max | Output |
+                                | :- | :- | :- | :- | :- | :- | :- | :- |
+                                | Start | | | | | | | |
+                                | 1 | 10 | | | | | | |
+                                | 2 | 10 | 4 | | | | | |
+                                | 3 | 10 | 4 | 7 | | | | |
+                                | 4 | 10 | 4 | 7 | 10 | | | |
+                                | 5 | 10 | 4 | 7 | 10 | FALSE | | |
+                                | 6 | 10 | 4 | 7 | 10 | FALSE | TRUE | |
+                                | 7 | 10 | 4 | 7 | 7 | FALSE | TRUE | |
+                                | 8 | 10 | 4 | 7 | 7 | FALSE | TRUE | 7 | <br>
+                                **Test Data Generation:** A program requires the user to input a password which must be between 8 and 12 characters long (inclusive). a) Give two examples of normal test data. b) Give two examples of abnormal test data. c) Give two examples of boundary test data. <br>
+                                **Error Identification:** Identify the error in the following pseudocode segment and suggest a correction: <br>
+                                ```
+                                DECLARE Sum : INTEGER = 0
+                                FOR Count FROM 1 TO 5
+                                    INPUT Number
+                                    Sum = Sum + Number
+                                NEXT Count
+                                Average = Sum / 5
+                                OUTPUT "The average is: " + Sum
+                                ```
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Programming, Databases & Logic:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Procedures and Functions (Pseudocode):** Write a procedure called `DisplayMenu` that outputs a simple menu of options to the user. Write a function called `CalculatePercentage` that takes two integer parameters, `Score` and `Total`, and returns the percentage as a real number. <br>
+                                **Database Design and SQL Query:** You need to create a simple database table for a library to store information about books. a) Suggest three suitable fields for this table and specify an appropriate data type for each. b) Identify a suitable primary key for your `Books` table and explain why it's suitable. c) Write an SQL query to select the `Title` and `Author` of all books where the `PublicationYear` is after 2000, ordered by `Title` in ascending order. <br>
+                                **Boolean Logic:** a) Draw the standard symbols for a NOT gate, an AND gate, and an XOR gate. b) Complete the truth table for the following logic expression: `X = (A OR B) AND (NOT C)`. c) Write the logic expression for a circuit that has two inputs, `P` and `Q`, and an output `R`, where `R` is true if `P` is true AND `Q` is false.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Write pseudocode for an algorithm that continuously asks for positive integers and outputs the sum, count, max, and min. Write pseudocode to convert a name from "LastName, FirstName" to "FirstName LastName."
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Write pseudocode using nested loops to print a 5x5 grid of asterisks. Identify a potential runtime error in pseudocode. Write an SQL query to find products in a specific category with a low stock level. Write a logic expression for a security system.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- Week 10 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 10: Pending</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week10" data-class="12A" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week10" data-class="12B" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week10" data-class="12C" data-week="10" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-400">Content for this week is pending.</p>
+                </div>
+            </details>
+
+            <!-- Week 11 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 11: Pending</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week11" data-class="12A" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week11" data-class="12B" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week11" data-class="12C" data-week="11" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-400">Content for this week is pending.</p>
+                </div>
+            </details>
+
+            <!-- Week 12 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 12: Pending</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week12" data-class="12A" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week12" data-class="12B" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week12" data-class="12C" data-week="12" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-400">Content for this week is pending.</p>
+                </div>
+            </details>
+
+            <!-- Week 13 -->
+            <details class="mb-2 bg-gray-100 rounded-xl shadow-sm">
+                <summary class="collapsible-summary flex justify-between items-center text-lg font-medium">
+                    <span class="font-bold">Week 13: Pending</span>
+                    <div class="flex items-center space-x-4 text-sm font-normal">
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12A-week13" data-class="12A" data-week="13" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12A</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12B-week13" data-class="12B" data-week="13" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12B</label>
+                        <label class="flex items-center gap-1"><input type="checkbox" id="checkbox-12C-week13" data-class="12C" data-week="13" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">12C</label>
+                    </div>
+                </summary>
+                <div class="px-6 py-4 bg-white rounded-b-xl border-t-2 border-gray-200">
+                    <p class="text-center text-gray-400">Content for this week is pending.</p>
+                </div>
+            </details>
+            
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 rounded-t-3xl mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 Andrés Forero. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu and Progress Tracking -->
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Details tag arrow rotation
+        document.querySelectorAll('details').forEach(detail => {
+            detail.addEventListener('toggle', () => {
+                const arrow = detail.querySelector('svg');
+                if (detail.open) {
+                    arrow.classList.remove('-rotate-90');
+                } else {
+                    arrow.classList.add('-rotate-90');
+                }
+            });
+        });
+
+        // Progress Tracking with LocalStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            // Load saved state on page load
+            checkboxes.forEach(checkbox => {
+                const checkboxId = checkbox.id;
+                const isChecked = localStorage.getItem(checkboxId) === 'true';
+                if (isChecked) {
+                    checkbox.checked = true;
+                }
+            });
+
+            // Save state on checkbox change
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    localStorage.setItem(event.target.id, event.target.checked);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
