@@ -40,6 +40,7 @@
                 <a href="grade10.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Grade 10</a>
                 <a href="grade11.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Grade 11</a>
                 <a href="grade12.html" class="text-indigo-600 font-bold border-b-2 border-indigo-600">Grade 12</a>
+                <a href="electronic_3D_design.html" class="text-gray-600 hover:text-indigo-600 transition-colors duration-300">Electronic & 3D Design</a>
             </div>
             <!-- Mobile Menu Button -->
             <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none">
@@ -55,6 +56,7 @@
             <a href="grade10.html" class="block py-2 text-gray-600 hover:text-indigo-600">Grade 10</a>
             <a href="grade11.html" class="block py-2 text-gray-600 hover:text-indigo-600">Grade 11</a>
             <a href="grade12.html" class="block py-2 text-indigo-600 font-bold">Grade 12</a>
+            <a href="electronic_3D_design.html" class="block py-2 text-gray-600 hover:text-indigo-600">Electronic & 3D Design</a>
         </div>
     </header>
 
@@ -145,65 +147,53 @@
                             <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 1: Number Systems:</h6>
                             <p class="text-gray-700 mb-4">
-                                Understand and convert between denary, binary, and hexadecimal number systems. Understand the use of hexadecimal as a beneficial data representation method.
+                                Review the foundational concept of `place value` for denary, binary, and hexadecimal number systems. Explain the role of a single `bit`. Discuss the benefits of using `hexadecimal`.
                             </p>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 2: Binary Arithmetic & Two's Complement:</h6>
                             <p class="text-gray-700 mb-4">
-                                Understand binary addition and overflow. Perform logical binary shifts. Use two's complement for representing positive and negative binary integers.
+                                Provide a detailed explanation of the rules for `binary addition` and define `overflow`. Explain the step-by-step method for representing negative numbers using `two's complement`.
                             </p>
                             <h5 class="font-bold text-lg mb-2">Examples:</h5>
                             <h6 class="font-bold text-base mt-2 mb-1">Denary to Binary:</h6>
                             <p class="text-gray-700 mb-4">
-                                Convert 25 to 8-bit binary: 00011001.
+                                Convert the denary number 197 to its 16-bit binary equivalent, showing the place value calculation.
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Binary Addition (with overflow):</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Binary to Hexadecimal:</h6>
                             <p class="text-gray-700 mb-4">
-                                11110000 (240) + 00010000 (16) = (1)00000000 (256) - The 9th bit is an overflow.
+                                Convert the 8-bit binary number `11010110` to hexadecimal by splitting it into two nibbles.
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Logical Left Shift:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Binary Addition with Overflow:</h6>
                             <p class="text-gray-700 mb-4">
-                                00010100 (Denary 20) shifted left by 1 is 00101000 (Denary 40).
+                                Add the 8-bit binary numbers `10110011` and `01001100`. The sum will result in a 9-bit number, demonstrating an overflow in an 8-bit register.
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Two's Complement:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Two's Complement Conversion:</h6>
                             <p class="text-gray-700 mb-4">
-                                -5 in 8-bit two's complement is 11111011.
+                                Convert the denary number -85 to its 8-bit two's complement representation, showing each step.
                             </p>
                             <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Binary Conversion Practice:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Conversion Drills:</h6>
                             <p class="text-gray-700 mb-4">
-                                Convert the following denary numbers to their 8-bit binary equivalents: <br>
-                                a) 15 <br>
-                                b) 97 <br>
-                                c) 205 <br>
-                                Convert the following 8-bit binary numbers to denary: <br>
-                                a) 00001111 <br>
-                                b) 11000011 <br>
-                                c) 01010101 <br>
-                                Convert the following hexadecimal numbers to denary: <br>
-                                a) 7A <br>
-                                b) F3 <br>
-                                c) 1B
+                                Students will work on a series of conversions:
+                                <ul>
+                                    <li>- Convert Denary numbers 123, 89, and 255 to 8-bit binary.</li>
+                                    <li>- Convert the binary numbers 00111100, 11100011, and 01010101 to hexadecimal.</li>
+                                    <li>- Convert hexadecimal numbers 3A, F0, and 1B to denary.</li>
+                                    <li>- Convert an 8-bit binary number to hexadecimal, then convert the hexadecimal result back to denary to verify the original binary's value.</li>
+                                </ul>
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Binary Arithmetic & Two's Complement Practice:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Addition & Two's Complement Practice:</h6>
                             <p class="text-gray-700 mb-4">
-                                Perform the following 8-bit binary additions. Indicate if an overflow occurs: <br>
-                                a) 01011010 + 00100111 <br>
-                                b) 11001100 + 01010101 <br>
-                                c) 01111111 + 00000010 <br>
-                                Starting with the 8-bit binary number 00110110: <br>
-                                a) Perform a logical left shift by 2 bits. What is the new binary number and its denary value? <br>
-                                b) Starting again with 00110110, perform a logical right shift by 3 bits. What is the new binary number and its denary value? <br>
-                                Convert the denary numbers -56, 105, and -128 to 8-bit two's complement. <br>
-                                Convert the 8-bit two's complement numbers 11110011 and 01101010 back to denary.
+                                **Addition Drills:** Perform the following 8-bit binary additions, identifying if an overflow occurs for each: `01011010 + 00100111`, `11001100 + 01010101`, `01111111 + 00000010`. <br>
+                                **Two's Complement Conversions:** Convert the denary numbers -56, 105, and -128 to 8-bit two's complement. Then, convert the 8-bit two's complement numbers `11110011` and `01101010` back to denary.
                             </p>
                             <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
-                            <h6 class="font-bold text-base mt-2 mb-1">Number Systems:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
                             <p class="text-gray-700 mb-4">
-                                Convert your house number to 16-bit binary and hexadecimal. Research two real-world applications of hexadecimal.
+                                Research and write a short paragraph explaining how hexadecimal is used in a specific computer science context.
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Binary Arithmetic:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
                             <p class="text-gray-700 mb-4">
-                                Explain the concept of overflow in a scenario. Research the difference between signed and unsigned integers.
+                                A computer system uses 8-bit two's complement to represent signed integers. Perform the following calculation: `50 + (-30)`. You must show the conversion, perform the binary addition, and then convert the result back to denary.
                             </p>
                         </div>
                     </div>
@@ -275,52 +265,48 @@
                                 <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
                             </p>
                             <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Text, Sound, and Images:</h6>
-                            <p class="text-gray-700 mb-4">
-                                Understand how computers represent text, sound, and images. Understand the effects of character sets, sample rate/resolution, and image resolution/colour depth.
-                            </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Data Storage and Compression:</h6>
-                            <p class="text-gray-700 mb-4">
-                                Understand how data storage is measured. Calculate file sizes for images and sound. Understand the purpose and need for data compression, including lossy and lossless methods.
-                            </p>
-                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
-                            <h6 class="font-bold text-base mt-2 mb-1">Text:</h6>
-                            <p class="text-gray-700 mb-4">
-                                The letter 'A' in ASCII is `01000001`. Unicode allows for a wider range of characters and symbols.
-                            </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Sound:</h6>
-                            <p class="text-gray-700 mb-4">
-                                A sound recorded at 44.1 kHz has a higher fidelity than one recorded at 8 kHz.
-                            </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Images:</h6>
-                            <p class="text-gray-700 mb-4">
-                                An image with resolution 1920x1080 will have more detail than an image with 640x480 pixels.
-                            </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Compression:</h6>
-                            <p class="text-gray-700 mb-4">
-                                `AAAAABBCDDD` becomes `5A2B1C3D` using Run-Length Encoding (lossless).
-                            </p>
-                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 1: Logical Shifts & Non-Numeric Data:</h6>
                             <p class="text-gray-700 mb-4">
-                                Perform the following logical shifts and state the new binary and denary values (assuming 8-bit registers): <br>
-                                - Logical left shift of `00101010` by 2 bits. <br>
-                                - Logical right shift of `10100000` by 3 bits. <br>
-                                An audio file is recorded with a sample rate of 22 kHz and a sample resolution of 8 bits. Describe what happens to the file size and quality if: a) the sample rate is doubled, and b) the sample resolution is halved.
+                                Explain `logical binary shifts`. Explain how `non-numeric data` is represented: Text (ASCII, Unicode), Images (resolution, color depth), and Sound (sample rate, sample resolution).
                             </p>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 2: File Size, Compression & Data Transmission:</h6>
                             <p class="text-gray-700 mb-4">
-                                A picture has a resolution of 1920 x 1080 pixels with a color depth of 24 bits. Calculate its file size in Gibibytes (GiB) and explain your steps. <br>
-                                You are sending a text document and a family photograph. For each, which type of compression (lossy or lossless) would you use and why?
+                                Review `data storage units` and `file size calculation`. Define `lossy` and `lossless compression`. Introduce `data packets` and the structure of a packet header, payload, and trailer.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">Examples:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Logical Shift:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Demonstrate a logical left shift of the 8-bit binary number `00011000` (Denary 24) by 3 bits. The result is `11000000` (Denary 192).
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Image Representation:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Show how a simple image with a resolution of 2x2 pixels can be represented with a 1-bit color depth (black and white) versus a 4-bit color depth (16 colors). Explain the resulting difference in file size.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Compression:</h6>
+                            <p class="text-gray-700 mb-4">
+                                Apply a simple Run-Length Encoding (RLE) lossless compression to the string `AAAABBBCCDAAA`. The result is `4A3B2C1D3A`.
+                            </p>
+                            <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Shift Drills & File Size Impact:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **Shift Drills:** Perform the following logical shifts and state the new binary and denary values (assuming 8-bit registers): <br>
+                                - Logical left shift of `00101010` by 2 bits. <br>
+                                - Logical right shift of `10100000` by 3 bits. <br>
+                                **File Size Impact:** An audio file is recorded with a sample rate of 22 kHz and a sample resolution of 8 bits. Describe what happens to the file size and quality if: a) the sample rate is doubled, and b) the sample resolution is halved.
+                            </p>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: File Size, Compression & Data Transmission:</h6>
+                            <p class="text-gray-700 mb-4">
+                                **File Size Problem:** A picture has a resolution of 1920 x 1080 pixels with a color depth of 24 bits. Calculate its file size in Gibibytes (GiB) and explain your steps. <br>
+                                **Compression Application:** You are sending a text document and a family photograph. For each, which type of compression (lossy or lossless) would you use and why?
                             </p>
                             <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
                             <p class="text-gray-700 mb-4">
-                                A graphics card uses hexadecimal to represent colors in RGB format. The hex code for a specific shade of blue is `#0000FF`. Research this format and break down the hex code into its red, green, and blue components. Then, convert each component into an 8-bit binary number.
+                                **RGB and Binary:** A graphics card uses hexadecimal to represent colors in RGB format. The hex code for a specific shade of blue is `#0000FF`. Research this format and break down the hex code into its red, green, and blue components. Then, convert each component into an 8-bit binary number.
                             </p>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
                             <p class="text-gray-700 mb-4">
-                                Research one specific lossy compression algorithm (e.g., how JPEG works by averaging colors) and one specific lossless compression algorithm (e.g., Huffman coding). Explain the basic principle of how each reduces file size.
+                                **Compression Research:** Research one specific lossy compression algorithm (e.g., how JPEG works by averaging colors) and one specific lossless compression algorithm (e.g., Huffman coding). Explain the basic principle of how each reduces file size.
                             </p>
                         </div>
                     </div>
@@ -396,62 +382,50 @@
                                 <a href="#" class="text-indigo-600 hover:underline">Link to Class Presentation</a>
                             </p>
                             <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Packet Switching & Data Transmission:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Data Transmission & Hardware:</h6>
                             <p class="text-gray-700 mb-4">
-                                Understand data packetization and packet switching. Describe and compare serial, parallel, simplex, half-duplex, and full-duplex transmission.
+                                Discuss the differences between simplex, half-duplex, and full-duplex data transmission modes, providing a real-world example for each. Explain the need for error detection and describe two methods: parity check (odd and even) and checksum. Introduce the core components of the CPU in a Von Neumann architecture and walk through the Fetch-Decode-Execute (FDE) cycle.
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Error Detection and Encryption:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Hardware & Software:</h6>
                             <p class="text-gray-700 mb-4">
-                                Understand the need for and methods of error detection (parity check, checksum, echo check, check digit). Describe Automatic Repeat Query (ARQ). Understand encryption (symmetric and asymmetric).
+                                Explain how a CPU's performance is affected by its number of cores, the size of its cache, and its clock speed. Define an embedded system and distinguish it from a general-purpose computer. Differentiate between system software and application software. List and describe the basic functions of an operating system (OS).
                             </p>
                             <h5 class="font-bold text-lg mb-2">Examples:</h5>
-                            <h6 class="font-bold text-base mt-2 mb-1">Packet:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Transmission Modes:</h6>
                             <p class="text-gray-700 mb-4">
-                                A packet has a header with the destination address, a payload with the data, and a trailer with error-checking information.
-                            </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Transmission:</h6>
-                            <p class="text-gray-700 mb-4">
-                                A video call is a full-duplex transmission.
+                                A radio broadcast is simplex, a walkie-talkie is half-duplex, and a telephone call is full-duplex.
                             </p>
                             <h6 class="font-bold text-base mt-2 mb-1">Parity Check:</h6>
                             <p class="text-gray-700 mb-4">
-                                With even parity, the byte `10110010` (3 ones) becomes `101100101` (4 ones).
+                                For the 8-bit data `10110010`, explain that with even parity, the parity bit is 1, and with odd parity, it is 0.
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">ARQ:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">CPU Performance:</h6>
                             <p class="text-gray-700 mb-4">
-                                The receiver sends a negative acknowledgment (NACK) if an error is detected. The sender retransmits the data.
+                                A quad-core CPU at 3.0 GHz will generally handle multitasking better than a dual-core CPU at 3.5 GHz. A larger cache reduces the need to access slower main memory (RAM).
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Encryption:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Embedded vs. General-Purpose:</h6>
                             <p class="text-gray-700 mb-4">
-                                Asymmetric encryption uses a public key for encryption and a private key for decryption.
+                                A car's engine management system is an embedded system; a laptop is a general-purpose computer.
                             </p>
                             <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Packet Diagram & Switching:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Data Transmission & FDE Cycle:</h6>
                             <p class="text-gray-700 mb-4">
-                                Draw a diagram of a data packet and label its three main parts. Briefly describe what information is contained in the header. <br>
-                                Describe, in your own words, the step-by-step process of how data is broken down into packets, transmitted across a network, and reassembled at the destination using packet switching. <br>
-                                For each scenario below, identify the most suitable data transmission method (serial, parallel, simplex, half-duplex, or full-duplex) and justify your choice: <br>
-                                a) A smart doorbell sending video feed to your phone in real-time. <br>
-                                b) An old-fashioned, large-format inkjet printer receiving data from a computer to print a poster. <br>
-                                c) A signal from a GPS satellite to a car's navigation system. <br>
-                                d) A group of construction workers communicating on a building site using push-to-talk radios.
+                                **Parity Check:** A block of data is transmitted with an odd parity check for each byte. The received bytes are: `10101011` and `01100100`. Identify which byte contains an error and explain why. <br>
+                                **FDE Cycle:** Describe, in detail, the steps of the Fetch-Decode-Execute cycle for a CPU to carry out a simple instruction. Ensure you mention at least four different registers and their purpose in the process.
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: Error Detection and Encryption:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 2: System Identification & OS Functions:</h6>
                             <p class="text-gray-700 mb-4">
-                                List three ways errors can occur during data transmission. <br>
-                                Using  odd parity , determine the parity bit for each of the following 7-bit data bytes: a) 0101010 b) 1100110 c) 0000000 <br>
-                                Explain how a check digit helps detect errors in data entry. Provide an example where a check digit could be useful. <br>
-                                Describe the sequence of events that occurs when a sender transmits data using ARQ, and the receiver detects an error. <br>
-                                Explain the difference between symmetric and asymmetric encryption.
+                                **System Identification:** Given a device like a digital camera, a washing machine, and a gaming console, determine if each is an embedded system or a general-purpose computer and provide a justification. <br>
+                                **OS Functions:** List and describe three essential functions of an operating system. For each function, provide a specific example of when it would be used.
                             </p>
                             <h5 class="font-bold text-lg mb-2">Possible Homework:</h5>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 1:</h6>
                             <p class="text-gray-700 mb-4">
-                                Research the benefits of USB.
+                                Research the algorithm for a simple check digit, such as the one used in the last digit of an International Standard Book Number (ISBN). Apply the algorithm to a hypothetical 9-digit number and determine the correct check digit.
                             </p>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 2:</h6>
                             <p class="text-gray-700 mb-4">
-                                Research digital signatures. Explain why SSL/TLS is crucial for secure communication.
+                                Research the purpose of a device driver. Explain how it is part of the operating system's role in managing peripherals and why a new device might not work correctly without a driver.
                             </p>
                         </div>
                     </div>
@@ -537,7 +511,7 @@
                             <h5 class="font-bold text-lg mb-2">Theory Concepts:</h5>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 1: Data Transmission & Hardware:</h6>
                             <p class="text-gray-700 mb-4">
-                                Discuss the differences between simplex, half-duplex, and full-duplex data transmission modes. Explain the need for error detection and describe two methods: parity check and checksum. Introduce the core components of the CPU in a Von Neumann architecture and walk through the Fetch-Decode-Execute (FDE) cycle.
+                                Discuss the differences between simplex, half-duplex, and full-duplex data transmission modes, providing a real-world example for each. Explain the need for error detection and describe two methods: parity check (odd and even) and checksum. Introduce the core components of the CPU in a Von Neumann architecture and walk through the Fetch-Decode-Execute (FDE) cycle.
                             </p>
                             <h6 class="font-bold text-base mt-2 mb-1">Class 2: Hardware & Software:</h6>
                             <p class="text-gray-700 mb-4">
@@ -548,9 +522,9 @@
                             <p class="text-gray-700 mb-4">
                                 A radio broadcast is simplex, a walkie-talkie is half-duplex, and a telephone call is full-duplex.
                             </p>
-                            <h6 class="font-bold text-base mt-2 mb-1">FDE Cycle:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Parity Check:</h6>
                             <p class="text-gray-700 mb-4">
-                                Walk through the FDE cycle for a simple `ADD` instruction, noting how the Program Counter (PC) holds the address, the Memory Address Register (MAR) requests the instruction, the Memory Data Register (MDR) receives it, and the Accumulator (ACC) stores the final result.
+                                For the 8-bit data `10110010`, explain that with even parity, the parity bit is 1, and with odd parity, it is 0.
                             </p>
                             <h6 class="font-bold text-base mt-2 mb-1">CPU Performance:</h6>
                             <p class="text-gray-700 mb-4">
@@ -561,7 +535,7 @@
                                 A car's engine management system is an embedded system; a laptop is a general-purpose computer.
                             </p>
                             <h5 class="font-bold text-lg mb-2">In-Class Exercises:</h5>
-                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Parity Check & FDE Cycle:</h6>
+                            <h6 class="font-bold text-base mt-2 mb-1">Class 1: Data Transmission & FDE Cycle:</h6>
                             <p class="text-gray-700 mb-4">
                                 **Parity Check:** A block of data is transmitted with an odd parity check for each byte. The received bytes are: `10101011` and `01100100`. Identify which byte contains an error and explain why. <br>
                                 **FDE Cycle:** Describe, in detail, the steps of the Fetch-Decode-Execute cycle for a CPU to carry out a simple instruction. Ensure you mention at least four different registers and their purpose in the process.

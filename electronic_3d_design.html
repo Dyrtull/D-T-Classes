@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronics & 3D Design and Python Programming</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+
+        .text-neon-blue {
+            color: #4f46e5;
+        }
+
+        .bg-neon-blue {
+            background-color: #4f46e5;
+        }
+
+        .bg-card {
+            background-color: #ffffff;
+        }
+
+        details summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-weight: 600;
+        }
+
+        details summary:hover {
+            background-color: #f9fafb;
+        }
+
+        details[open] summary {
+            background-color: #eef2ff;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details summary:after {
+            content: "+";
+            float: right;
+            font-size: 1.5rem;
+            line-height: 1rem;
+            color: #4f46e5;
+        }
+
+        details[open] summary:after {
+            content: "-";
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Electronics & 3D Design and Python Programming
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600">Welcome to a world of creation and innovation!</p>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="flex justify-center mb-8">
+        <button id="tab-electronics"
+            class="tab-button bg-neon-blue text-white px-6 py-2 rounded-l-full font-semibold transition-all duration-300 hover:bg-indigo-700 focus:outline-none">Electronics
+            & 3D Design</button>
+        <button id="tab-python"
+            class="tab-button bg-gray-300 text-gray-800 px-6 py-2 rounded-r-full font-semibold transition-all duration-300 hover:bg-gray-400 focus:outline-none">Python
+            & Game Development</button>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-7xl mx-auto">
+
+        <!-- Electronics & 3D Design Content -->
+        <div id="content-electronics" class="tab-content">
+
+            <!-- Month 1 -->
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 border-b-2 border-neon-blue pb-2">Month 1: Electronics
+                    Fundamentals & First Steps with ESP32</h2>
+                <div class="space-y-4">
+                    <!-- Week 1 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 1: Introduction to Electronics
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: What is Electronics?</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Introduction</h4>
+                                    <p>Welcome to the course! We'll go over what to expect, and most importantly, how to
+                                        stay safe in the lab. We'll explore what electronics are and look at some cool
+                                        everyday examples.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Basic Concepts</h4>
+                                    <p>We'll learn about three key ideas: <strong>Current</strong>,
+                                        <strong>Voltage</strong>, and <strong>Resistance</strong>. Imagine electricity
+                                        like a river: Voltage is the water pressure, Current is the flow of the water,
+                                        and Resistance is like rocks in the river, slowing the flow down.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Key Components</h4>
+                                    <p>We'll get our hands on some fundamental components like the
+                                        <strong>Protoboard</strong>, <strong>Resistors</strong>, <strong>LEDs</strong>,
+                                        and <strong>Jumper Wires</strong>. We’ll learn what they look like and what
+                                        they’re used for. <a href="#" class="text-neon-blue underline">Datasheet</a>
+                                    </p>
+                                    <div class="grid grid-cols-2 gap-4 mt-2">
+                                        <div class="relative">
+                                            <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=Protoboard"
+                                                alt="Protoboard placeholder" class="w-full rounded-md">
+                                            <p class="text-center mt-1 text-sm text-gray-500">Protoboard</p>
+                                        </div>
+                                        <div class="relative">
+                                            <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=Resistor"
+                                                alt="Resistor placeholder" class="w-full rounded-md">
+                                            <p class="text-center mt-1 text-sm text-gray-500">Resistor</p>
+                                        </div>
+                                        <div class="relative">
+                                            <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=LED"
+                                                alt="LED placeholder" class="w-full rounded-md">
+                                            <p class="text-center mt-1 text-sm text-gray-500">LED</p>
+                                        </div>
+                                        <div class="relative">
+                                            <img src="https://placehold.co/400x200/e0e7ff/4f46e5?text=Jumper+Wires"
+                                                alt="Jumper Wires placeholder" class="w-full rounded-md">
+                                            <p class="text-center mt-1 text-sm text-gray-500">Jumper Wires</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>We'll learn how to identify different components and how to connect a simple
+                                        circuit to light up an LED, using a resistor to protect it from too much
+                                        current.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>9V batteries, battery connectors, resistors (220-330 Ohm), various color LEDs,
+                                        protoboards, jumper wires.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Light Up Your First LED"</strong>: Connect an LED to a battery using a
+                                        resistor on a protoboard. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet, this class is just an introduction!</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Measuring Electricity & the Multimeter</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Review</h4>
+                                    <p>We'll quickly go over the concepts from the last class and answer any questions
+                                        you have.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">The Multimeter</h4>
+                                    <p>We'll learn what a multimeter is and how to use it to measure voltage, current,
+                                        and resistance. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Ohm's Law (Very Basic Intro)</h4>
+                                    <p>We'll get a super simple introduction to Ohm's Law: $V = I \times R$. We'll
+                                        understand the relationship between voltage, current, and resistance without
+                                        doing any complex calculations yet. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practice with the Multimeter</h4>
+                                    <p>We'll practice measuring the voltage of a battery, the resistance of a resistor,
+                                        and checking the continuity of wires.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>We'll build a simple circuit with an LED and a resistor, then use the multimeter
+                                        to measure the voltage at different points and the current flowing through the
+                                        LED.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Multimeters, batteries, resistors, LEDs, protoboards, jumper wires.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Circuit Detective"</strong>: You'll measure values in pre-built circuits
+                                        (some correct, some with errors) to identify what's wrong. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 2 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 2: Microcontrollers & Your First
+                            Program</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Intro to Microcontrollers & the ESP32</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">What is a Microcontroller?</h4>
+                                    <p>We'll use an analogy: a microcontroller is like a "mini-computer" that can
+                                        control physical things. We'll also talk about the difference between a
+                                        microcontroller and a regular computer.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Meet the ESP32</h4>
+                                    <p>We'll get a physical look at the ESP32 board, and identify its main parts like
+                                        the USB port, pins, and reset button. <a href="#"
+                                            class="text-neon-blue underline">Datasheet</a> </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Why the ESP32?</h4>
+                                    <p>We'll talk about why the ESP32 is a great choice for our projects, especially
+                                        because of its built-in Wi-Fi and Bluetooth capabilities.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Installing Drivers & Board in Arduino IDE</h4>
+                                    <p>We'll go through a step-by-step guide on how to install the USB drivers and add
+                                        the ESP32 board to the Arduino IDE's board manager.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32 board (one per student or pair), USB cables, computers with Arduino IDE
+                                        pre-installed.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Connect Your Brain"</strong>: You'll connect the ESP32 to your computer
+                                        and verify that it's recognized by the operating system.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Your First Program: "Hello World!" (Blink)
+                                </h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Introduction to Arduino IDE</h4>
+                                    <p>We'll explore the Arduino IDE interface, the toolbar, and the serial monitor, so
+                                        you can start writing your own code.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Basic Sketch Structure</h4>
+                                    <p>We'll learn about the two main parts of an Arduino sketch: the
+                                        <code>setup()</code> function and the <code>loop()</code> function. We'll
+                                        explain what each one does.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Your First Program: Blink</h4>
+                                    <p>We'll write, compile, and upload the classic "Blink" code to make the built-in
+                                        LED on the ESP32 flash on and off. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Coding Concepts</h4>
+                                    <p>We'll introduce key coding concepts like <code>pinMode()</code>,
+                                        <code>digitalWrite()</code>, and <code>delay()</code>, which are essential for
+                                        controlling electronics.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll modify the code to change how fast the LED blinks.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, USB cables, computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Light Rhythm"</strong>: Change the values in the <code>delay()</code>
+                                        function to create different blinking patterns, like a fast flash or the "SOS"
+                                        signal. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 3 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 3: Controlling Outputs & Digital
+                            Inputs</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Controlling External LEDs with the ESP32
+                                </h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Review</h4>
+                                    <p>We'll review the "Blink" program we wrote for the built-in LED.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Connecting an External LED</h4>
+                                    <p>We'll learn how to connect an external LED to a digital pin on the ESP32 using a
+                                        resistor on the protoboard. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Programming</h4>
+                                    <p>We'll adapt the Blink code to control the external LED instead of the built-in
+                                        one.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Digital Pin Concept</h4>
+                                    <p>We'll learn how the pins on the ESP32 can be configured as an output, which means
+                                        they can send signals to control components like LEDs. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll make an external LED blink.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, protoboards, LEDs, resistors, jumper wires, USB cables, computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Simple Traffic Light"</strong>: Program three LEDs (red, yellow, green)
+                                        to turn on in sequence, just like a basic traffic light. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Simple Night Light" (a future idea, not for this class).</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Digital Inputs: Buttons & Control</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Digital Input Concept</h4>
+                                    <p>We'll learn how to read the state of a button, whether it's pressed or not
+                                        pressed, to give our circuit an input from the physical world.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Connecting a Button</h4>
+                                    <p>We'll learn how to connect a button, using an external pull-down resistor or the
+                                        ESP32's internal pull-up resistor to ensure a stable signal. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Programming</h4>
+                                    <p>We'll use the <code>digitalRead()</code> function to read the state of the
+                                        button. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Application</h4>
+                                    <p>We'll program a circuit where a button can turn an LED on and off.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll build a circuit where pressing a button turns on an LED, and releasing it
+                                        turns it off.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, protoboards, buttons, LEDs, resistors, jumper wires, USB cables,
+                                        computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Smart Switch"</strong>: Program the circuit so that each time you press
+                                        the button, the LED's state changes (from on to off, or off to on). </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Click Counter" that displays the number of clicks on the Serial Monitor.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 4 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 4: Analog Inputs & Sensors</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Analog Inputs: Potentiometers & LDRs</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Analog Input Concept</h4>
+                                    <p>We'll learn how to read variable values (not just ON/OFF) from analog components.
+                                        [Image of analog signal vs digital sign </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Potentiometer</h4>
+                                    <p>We'll learn what a potentiometer is, how it works, and how to connect it to an
+                                        analog pin on the ESP32. <a href="#"
+                                            class="text-neon-blue underline">Datasheet</a>
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Analog Reading</h4>
+                                    <p>We'll use the <code>analogRead()</code> function to read the variable value from
+                                        the potentiometer. We'll also use the Serial Monitor to print the values and
+                                        understand the range (0-4095 for ESP32). </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll read the value of a potentiometer and display it in the Serial Monitor.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, protoboards, potentiometers, jumper wires, USB cables, computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Light Volume"</strong>: Use the potentiometer to control the brightness
+                                        of an LED.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Manual Brightness Control" for a light.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Basic Sensors: LDR (Light Sensor)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">LDR (Light Dependent Resistor)</h4>
+                                    <p>We'll learn what an LDR is and how it works. We'll connect it in a voltage
+                                        divider circuit so the ESP32 can read its value with an analog pin. <a href="#"
+                                            class="text-neon-blue underline">Datasheet</a>
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Application</h4>
+                                    <p>We'll create a "light sensor" that can detect if it's light or dark.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Programming</h4>
+                                    <p>We'll read the LDR's value and use conditional statements (<code>if/else</code>)
+                                        to make decisions, for example, turning on an LED when it gets dark. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll build a circuit with an LDR and an LED that turns the LED on when it gets
+                                        dark.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, protoboards, LDRs, resistors (10k Ohm), LEDs, jumper wires, USB cables,
+                                        computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Automatic Night Light"</strong>: You'll refine the circuit to make a
+                                        more reliable automatic night light. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Light Alarm" that sounds a buzzer if the light changes dramatically.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <!-- Month 2 -->
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 border-b-2 border-neon-blue pb-2">Month 2: Motor
+                    Control & Sensors for the Boat Challenge</h2>
+                <div class="space-y-4">
+                    <!-- Week 5 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 5: PWM & Servomotors</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Brightness Control with PWM (LED)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">PWM (Pulse Width Modulation) Concept</h4>
+                                    <p>We'll learn about PWM, a simple way to simulate a variable voltage by sending
+                                        fast pulses of electricity. Think of it like a faucet that opens and closes very
+                                        quickly. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">PWM Pins on ESP32</h4>
+                                    <p>We'll identify the specific pins on the ESP32 that support PWM. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Programming</h4>
+                                    <p>We'll use the <code>analogWrite()</code> or <code>ledcWrite()</code> functions
+                                        (for ESP32) to control the brightness of an LED using PWM. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll use a potentiometer to control the brightness of an LED with PWM.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, protoboards, LEDs, resistors, potentiometers, jumper wires, USB cables,
+                                        computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Fade In/Fade Out"</strong>: Program an LED to gradually increase and
+                                        decrease in brightness. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>An "Interactive Ambient Lamp".</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Intro to Servomotors</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">What is a Servomotor?</h4>
+                                    <p>Servomotors are special motors that let us control their angular position with
+                                        great precision. <a href="#" class="text-neon-blue underline">Datasheet</a> </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Applications</h4>
+                                    <p>We'll discuss how servomotors are used in robotics and for steering control. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Connecting a Servomotor</h4>
+                                    <p>We'll learn how to connect a servomotor to the ESP32, paying attention to its
+                                        power and signal pins. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Programming</h4>
+                                    <p>We'll use a library like <code>Servo.h</code> (or the ESP32 equivalent) to move a
+                                        servo to specific angles like 0, 90, and 180 degrees. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll program a servomotor to move to 0, 90, and 180 degrees.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, servomotors (e.g., SG90), protoboards, jumper wires, USB cables,
+                                        computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Servo Sweep"</strong>: Make the servo motor move continuously from 0 to
+                                        180 degrees and back again. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Simple Camera Control" that uses a servo to move a sensor or a camera.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 6 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 6: Advanced Motor Control</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Servo Control with a Potentiometer</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Integration</h4>
+                                    <p>We'll combine what we learned about potentiometers and servomotors to control a
+                                        servo's position by turning a knob.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">The <code>map()</code> Function</h4>
+                                    <p>We'll learn how to use the <code>map()</code> function to convert a range of
+                                        values (like the 0-4095 range from the ESP32's ADC) to another range (like the
+                                        0-180 degrees a servo can move).
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll control the position of a servomotor by turning a potentiometer.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, servomotors, potentiometers, protoboards, jumper wires, USB cables,
+                                        computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Basic Robotic Arm"</strong>: Simulate the movement of an arm or a scoop
+                                        with the servo and the potentiometer. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Level Indicator" where the servo points to a level based on an analog value.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: DC Motors & Drivers (L298N)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">What is a DC Motor?</h4>
+                                    <p>DC motors are motors that spin continuously. We'll learn how they work. <a
+                                            href="#" class="text-neon-blue underline">Datasheet</a> </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Why a Motor Driver?</h4>
+                                    <p>We'll explain why the ESP32 can't provide enough current to power a DC motor on
+                                        its own, and why we need a "H-bridge" (a motor driver) to do the heavy lifting.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Meet the L298N (or similar)</h4>
+                                    <p>We'll introduce the L298N motor driver and identify its input and output pins and
+                                        power connections. <a href="#" class="text-neon-blue underline">Datasheet</a>
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Connecting the Components</h4>
+                                    <p>We'll learn how to connect a DC motor to the L298N driver and then connect the
+                                        driver to the ESP32. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Programming</h4>
+                                    <p>We'll program the ESP32 to control the direction and speed (using PWM) of a DC
+                                        motor. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll make a DC motor spin in one direction, then the other, and vary its speed.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, small DC motors, L298N motor drivers (or smaller alternatives),
+                                        protoboards, jumper wires, USB cables, computers, external power supply for the
+                                        driver (e.g., a 9V battery).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Wheel Control"</strong>: Use two buttons to control a DC motor's spin
+                                        (forward/backward). </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Simple Mobile Base" with just one motor.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 7 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 7: Ultrasonic Sensor & Mini-Project
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Ultrasonic Sensor HC-SR04 (Distance)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">How the HC-SR04 Works</h4>
+                                    <p>We'll learn about the principle of sonar: the sensor sends out a sound wave and
+                                        measures how long it takes to bounce back, telling us the distance to an object.
+                                        <a href="#" class="text-neon-blue underline">Datasheet</a>
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Connecting the Sensor</h4>
+                                    <p>We'll connect the sensor's Trigger and Echo pins to the ESP32.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Programming</h4>
+                                    <p>We'll use a library like <code>NewPing</code> or implement the logic manually
+                                        with <code>pulseIn()</code> to measure distances. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Serial Monitor</h4>
+                                    <p>We'll display the measured distance on the Serial Monitor.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll measure the distance to various objects and display it in the Serial
+                                        Monitor.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, HC-SR04 sensor, protoboards, jumper wires, USB cables, computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Distance Meter"</strong>: You'll measure different distances around the
+                                        classroom. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Proximity Alarm" that turns on an LED or buzzer if an object is too close.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Integrating Sensors & Actuators
+                                    (Mini-Project)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Review & Combination</h4>
+                                    <p>We'll combine everything we've learned so far: buttons, LEDs, DC motors, and the
+                                        ultrasonic sensor.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Guided Mini-Project: "Obstacle-Avoiding Car"</h4>
+                                    <p>We'll build a very basic robot car that uses the ultrasonic sensor to stop or
+                                        reverse when it detects an obstacle.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Encouraging Problem Solving</h4>
+                                    <p>You'll be encouraged to find and fix small errors in your wiring and code.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>ESP32, DC motor, L298N driver, HC-SR04 sensor, protoboards, jumper wires, USB
+                                        cables, computers, small wheels (optional).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Movement Logic"</strong>: Program the car to move forward and stop if it
+                                        detects something less than X cm away. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Line-Following Robot" (if we introduce the infrared sensor later).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 8 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 8: 3D Design & 3D Printing</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Introduction to 3D Design (Tinkercad)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">What is 3D Design?</h4>
+                                    <p>We'll look at examples of objects created with 3D design and 3D printing. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Tinkercad</h4>
+                                    <p>We'll introduce the Tinkercad interface, which is online and very user-friendly.
+                                        We'll create our accounts and get started.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Basic Tools</h4>
+                                    <p>We'll learn how to use basic shapes (cube, cylinder, sphere), and how to move,
+                                        rotate, and scale them. We'll also learn how to group shapes and create holes.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll design a simple keychain with your initials or a basic shape.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers with internet access, projectors.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Build Your Name"</strong>: Design the initials of your name in 3D. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Simple Phone Stand" (just a base).</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Preparing for 3D Printing & First Parts</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">3D Printing Concepts</h4>
+                                    <p>We'll learn how a 3D printer works, talking about the filament, extruder, and
+                                        heated bed. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Slicing</h4>
+                                    <p>We'll learn what a "slicer" program (like Cura) is. We'll cover basic concepts
+                                        like infill, supports, and layer height. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Exporting from Tinkercad</h4>
+                                    <p>You'll learn how to export your design as an .STL file.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Loading into Slicer & Preparing</h4>
+                                    <p>We'll open the .STL file in the slicer, set up some basic parameters, and
+                                        generate the .GCODE file that the printer understands.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">First Print (Demonstration)</h4>
+                                    <p>We'll print the keychains or a simple piece you designed.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>Each student or group will prepare their own .STL and .GCODE files for a simple
+                                        piece.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers with Tinkercad and slicer software (Cura), a 3D printer (if available),
+                                        filament.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Mini-Box for a Component"</strong>: Design a small box for an LED or a
+                                        resistor. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Simple ESP32 Case" (a future idea).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Month 3 -->
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 border-b-2 border-neon-blue pb-2">Month 3: The Da Vinci
+                    Boat Challenge - Intensive Design & Prototyping</h2>
+                <div class="space-y-4">
+                    <!-- Week 9 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 9: Analysis of the Challenge &
+                            Conceptual Design</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Analysis of the Challenge and Conceptual
+                                    Design of the Boat</h3>
+                                <p>We'll discuss the requirements and limitations of the Da Vinci boat challenge. In
+                                    groups, we'll brainstorm and sketch ideas for the hull, the paddle system, and where
+                                    the electronics will go. We'll also divide tasks within each group (e.g., 3D
+                                    designer, programmer, assembler).</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                    <img src="https://placehold.co/600x300/e0e7ff/4f46e5?text=Da+Vinci+Boat+Challenge"
+                                        alt="Da Vinci Boat Challenge placeholder" class="w-full rounded-md">
+                                    <img src="https://placehold.co/600x300/e0e7ff/4f46e5?text=Boat+Sketch"
+                                        alt="Boat Sketch placeholder" class="w-full rounded-md">
+                                </div>
+                                <h4 class="font-bold text-lg mt-4 mb-1">Materials</h4>
+                                <p>Whiteboard, markers, paper, pencils.</p>
+                                <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                <p><strong>"Boat Schematic"</strong>: Each group must present a detailed sketch of their
+                                    design. </p>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: 3D Design of the Hull & Structural
+                                    Components</h3>
+                                <p>We'll begin designing the boat's hull in Tinkercad. We'll also design the supports
+                                    for the motors, ESP32, battery, and other electronic components. We'll briefly
+                                    discuss the importance of hull shape and weight distribution for buoyancy. </p>
+                                <h4 class="font-bold text-lg mt-4 mb-1">Materials</h4>
+                                <p>Computers with 3D design software, rules, calipers (if available).</p>
+                                <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                <p><strong>"Design the Keel"</strong>: Design a keel or stabilizer for the boat.</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 10 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 10: Propulsion System Design &
+                            Electronics Integration</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Design of the Propulsion System (Paddles) &
+                                    Transmisión</h3>
+                                <p>We'll design the paddles and the mechanism to connect them to the motor. We'll also
+                                    think about how to 3D print the parts and if they'll need supports. </p>
+                                <h4 class="font-bold text-lg mt-4 mb-1">Materials</h4>
+                                <p>Computers with 3D design software.</p>
+                                <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                <p><strong>"Gear Design"</strong>: Design a pair of simple gears (if the mechanism
+                                    requires it). </p>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Electronic Integration & Wiring of the Boat
+                                </h3>
+                                <p>We'll draw the electrical schematic and wire the ESP32, motor driver, DC motors, and
+                                    battery. We'll introduce the concept of remote control using the ESP32's Wi-Fi or
+                                    Bluetooth. You'll program the ESP32 to interpret commands and control the boat's
+                                    motors. </p>
+                                <h4 class="font-bold text-lg mt-4 mb-1">Materials</h4>
+                                <p>Computers with 3D design software, ESP32, motor drivers, DC motors, batteries,
+                                    protoboards, jumper wires, USB cables, cell phones/tablets for control testing.</p>
+                                <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                <p><strong>"Basic Movement Control"</strong>: Program the boat to move forward when it
+                                    receives a "forward" command and backward when it receives a "backward" command.</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 11 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 11: Printing Prototypes & Water
+                            Testing</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Printing Prototypes & Initial Assembly</h3>
+                                <p>We'll generate the .GCODE for our designed parts and start printing the most critical
+                                    ones. We'll then assemble the first printed parts and electronic components to check
+                                    for fit and functionality. </p>
+                                <h4 class="font-bold text-lg mt-4 mb-1">Materials</h4>
+                                <p>3D printers, filament, computers, printed parts, electronic components, assembly
+                                    tools, a container of water.</p>
+                                <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                <p><strong>"First Assembly"</strong>: Mount the motor and paddles on the printed hull.
+                                </p>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Water Testing & Design Adjustments</h3>
+                                <p>We'll test the boat's buoyancy and propulsion in a container with water. Based on the
+                                    results, we'll modify the 3D design and/or the programming for better performance.
+                                </p>
+                                <h4 class="font-bold text-lg mt-4 mb-1">Materials</h4>
+                                <p>Boat prototypes, container with water, computers, tools.</p>
+                                <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                <p><strong>"Paddle Optimization"</strong>: Test different paddle designs to see which
+                                    one offers better propulsion.</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 12 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 12: Final Refinement & Presentation
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Final Refinement & Preparation for the
+                                    Challenge</h3>
+                                <p>We'll make our final modifications to the design and code, and focus on aesthetics
+                                    and finishing touches. We'll also do a final safety check and complete a full test
+                                    of the boat.</p>
+                                <h4 class="font-bold text-lg mt-4 mb-1">Materials</h4>
+                                <p>Finished boats, finishing materials, tools.</p>
+                                <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                <p><strong>"Final Checklist"</strong>: Each group will go through a checklist before the
+                                    challenge begins.</p>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Challenge Strategy & Final Boat Presentation
+                                </h3>
+                                <p>We'll review the rules and criteria for the challenge and discuss our strategies.
+                                    Each group will present their final boat, explaining their design choices and the
+                                    challenges they overcame. </p>
+                                <h4 class="font-bold text-lg mt-4 mb-1">Materials</h4>
+                                <p>Finished boats.</p>
+                                <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                <p><strong>"Challenge Simulation"</strong>: Perform a small simulation of the challenge
+                                    in the classroom.</p>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </div>
+
+        <!-- Python & Game Development Content -->
+        <div id="content-python" class="tab-content hidden">
+            <!-- Month 1 -->
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 border-b-2 border-neon-blue pb-2">Month 1: Programming
+                    Fundamentals & Basic Python</h2>
+                <div class="space-y-4">
+                    <!-- Week 1 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 1: Intro to Programming & Variables
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: What is Programming? Computational Thinking
+                                </h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Introduction</h4>
+                                    <p>Welcome to the Python programming class! We'll talk about what programming is,
+                                        why it's useful, and look at examples of programs and video games.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Computational Thinking</h4>
+                                    <p>We'll learn about algorithms (like a recipe), sequences, and instructions. These
+                                        are the building blocks of how we "think like a computer." </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Intro to Python</h4>
+                                    <p>We'll discover why Python is such a great language for beginners—it's simple and
+                                        super versatile. Our first contact with code will be writing
+                                        <code>print("Hello World")</code> in a development environment.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers with Python and an IDE (like Thonny or VS Code) installed, projectors.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Instructions for a Robot"</strong>: We'll give step-by-step instructions
+                                        for a simple task, like making a sandwich. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Variables and Data Types</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Variables</h4>
+                                    <p>We'll learn that variables are like boxes for storing information. We'll also
+                                        learn the rules for naming them. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Data Types</h4>
+                                    <p>We'll learn about different types of data: <strong>integers</strong> (whole
+                                        numbers), <strong>floats</strong> (decimal numbers), <strong>strings</strong>
+                                        (text), and <strong>booleans</strong> (true/false). </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Arithmetic Operators</h4>
+                                    <p>We'll cover basic math operations: addition, subtraction, multiplication, and
+                                        division. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Input & Output</h4>
+                                    <p>We'll use <code>input()</code> to get information from a user and
+                                        <code>print()</code> to show them the result.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll create a program that asks for your name and age, then displays them back
+                                        to you.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Basic Calculator"</strong>: Create a program that adds two numbers
+                                        entered by the user. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Simple Story Generator" that asks for names and adjectives and inserts them
+                                        into a story.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 2 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 2: Conditionals & Loops</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Conditionals: if, else, elif</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Decision Logic</h4>
+                                    <p>We'll explore how a program can make decisions based on certain conditions. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Comparison Operators</h4>
+                                    <p>We'll learn how to compare values using operators like `==`, `!=`, `<`, `>`, `
+                                            <=`, and `>=`.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">if/else Structure</h4>
+                                    <p>We'll use the `if/else` structure to run a block of code if a condition is true,
+                                        and a different block if it's false. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll write a program that determines if a number is even or odd.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Age Classifier"</strong>: Write a program that tells you if a person is
+                                        a "child," "teenager," or "adult" based on their age. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Guess the Number" game where the computer thinks of a number and you guess,
+                                        with "higher" or "lower" hints.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Loops: while and for</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Repeating Code</h4>
+                                    <p>We'll learn how to make a program repeat an action, which is super useful for
+                                        games and other applications. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">while Loop</h4>
+                                    <p>We'll use the `while` loop to repeat code as long as a condition is true. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">for Loop</h4>
+                                    <p>We'll use the `for` loop to repeat code a specific number of times, or to go
+                                        through a list of items. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll create a program that prints the numbers from 1 to 10 using both a `while`
+                                        loop and a `for` loop.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Multiplication Table"</strong>: Write a program that prints the
+                                        multiplication table for a number entered by the user. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Countdown" for a rocket launch.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 3 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 3: Data Structures & Functions
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Lists & Tuples</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Data Collections</h4>
+                                    <p>We'll learn how to store multiple related pieces of data together in a
+                                        collection. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Lists</h4>
+                                    <p>We'll define what a list is, how to access elements by their index, and how to
+                                        add, remove, and modify items. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Tuples</h4>
+                                    <p>We'll learn about tuples and the main difference between them and lists: tuples
+                                        are "immutable," meaning you can't change them after they're created. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Looping Through Lists</h4>
+                                    <p>We'll use `for` loops to go through every item in a list.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll create a shopping list and add or remove items from it.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"My Wish List"</strong>: Create a program that lets the user add and view
+                                        items on a wish list. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Random Selector" that chooses a random item from a list (e.g., a movie, a
+                                        game).</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Functions: Organizing Your Code</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Modularity</h4>
+                                    <p>We'll learn why we use functions—they help us organize our code and reuse it
+                                        easily. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Defining Functions</h4>
+                                    <p>We'll use the `def` keyword to define functions, and learn about `parameters` and
+                                        `return` values. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Calling Functions</h4>
+                                    <p>We'll learn how to run the code inside a function.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll turn parts of your previous programs (like the calculator or age
+                                        classifier) into functions.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Interactive Menu"</strong>: Create a program with a menu of options
+                                        (e.g., "add," "subtract") where each option calls a different function. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Rock, Paper, Scissors" game where each play can be a function.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 4 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 4: Modules & Mini-Project</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Modules & Libraries (Introduction)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">What are Modules?</h4>
+                                    <p>We'll learn that modules are pre-written code that we can import and use in our
+                                        own programs to add new functionalities. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Importing Modules</h4>
+                                    <p>We'll learn how to use the `import` statement to bring modules into our code.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">The <code>random</code> Module</h4>
+                                    <p>We'll learn how to use the `random` module to generate random numbers, which is
+                                        perfect for games.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">The <code>math</code> Module</h4>
+                                    <p>We'll get a quick look at the `math` module for more advanced math operations.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll improve the "Guess the Number" game so the computer generates a random
+                                        number for you to guess.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Dice Roller"</strong>: Simulate rolling one or two dice. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Random Name Generator" that combines lists and the `random` module.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Mini-Project: Word Guessing Game</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Concept Integration</h4>
+                                    <p>We'll bring together everything we've learned this month: lists, loops,
+                                        conditionals, functions, and the `random` module.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Simplified Hangman</h4>
+                                    <p>You'll create a simplified version of the game Hangman, where the computer picks
+                                        a word from a list and you guess the letters. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Game Design</h4>
+                                    <p>We'll talk about the steps needed to design and build the game.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll develop the Hangman game in pairs or small groups.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Debugging"</strong>: Help each other find and fix errors in your code.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>This is the main project for the week.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Month 2 -->
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 border-b-2 border-neon-blue pb-2">Month 2: First Steps
+                    with Pygame</h2>
+                <div class="space-y-4">
+                    <!-- Week 5 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 5: Intro to Pygame & Drawing
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Intro to Pygame & Game Window</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">What is Pygame?</h4>
+                                    <p>Pygame is a powerful library for creating video games in Python.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Installation</h4>
+                                    <p>We'll learn how to install Pygame with the command `pip install pygame`.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Basic Game Structure</h4>
+                                    <p>We'll cover the essential parts of a Pygame program: initialization, creating a
+                                        window, the main game loop, updating the screen, and quitting the program. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">RGB Colors</h4>
+                                    <p>We'll learn about the RGB color system, which uses a combination of red, green,
+                                        and blue values to create any color. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll create your first Pygame window with a background color.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers with Python and Pygame installed.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Color Window"</strong>: Change the background color of your window to
+                                        your favorite color.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Drawing Simple Shapes & Objects</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Coordinates in Pygame</h4>
+                                    <p>We'll learn about the coordinate system in Pygame, where the origin (0,0) is at
+                                        the top-left corner of the window. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Drawing Functions</h4>
+                                    <p>We'll use functions like <code>pygame.draw.rect()</code>,
+                                        <code>pygame.draw.circle()</code>, and <code>pygame.draw.line()</code> to create
+                                        shapes.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Shape Properties</h4>
+                                    <p>We'll learn how to control the position, size, color, and thickness of our
+                                        shapes.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll draw several geometric shapes in your Pygame window.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Shape Landscape"</strong>: Draw a house, a tree, or a sun using only
+                                        basic shapes. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Happy Face" by drawing circles and lines.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 6 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 6: Events & Basic Movement</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Event Handling: Closing the Window</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Event Concept</h4>
+                                    <p>We'll learn that events are user actions, like mouse clicks, key presses, or
+                                        closing the window. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">The Event Loop</h4>
+                                    <p>We'll learn about the `pygame.event.get()` loop, which constantly checks for
+                                        these events. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">The QUIT Event</h4>
+                                    <p>We'll learn how to detect and handle the event of the user trying to close the
+                                        window.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll make sure your game closes correctly when you click the "X" button.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Interactive Window"</strong>: Program a message to appear in the console
+                                        when you try to close the window.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Basic Object Movement (Keyboard)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Speed Concept</h4>
+                                    <p>We'll learn how to make an object move by changing its position in every frame of
+                                        the game. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Keyboard Event Handling</h4>
+                                    <p>We'll use `pygame.key.get_pressed()` to detect which keys are being held down on
+                                        the keyboard. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Controlling an Object</h4>
+                                    <p>You'll use the arrow keys to move a rectangle or a circle around the screen.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll create a "player" (a rectangle) that moves around the screen with the
+                                        arrow keys.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Avoid the Edges"</strong>: Make sure your player can't move off the
+                                        screen. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A very simplified "Snake" game, just focusing on the movement of the head.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 7 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 7: Collisions & Sprites</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Basic Collisions</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Collision Concept</h4>
+                                    <p>We'll learn what a collision is in a game—when two objects touch each other. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Collision Detection</h4>
+                                    <p>We'll use functions like <code>rect.colliderect()</code> or compare coordinates
+                                        to detect collisions. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Actions on Collision</h4>
+                                    <p>We'll program what happens when a collision occurs, like changing a color, making
+                                        an object disappear, or showing a message.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll create two rectangles, one that moves and one that is still. When they
+                                        collide, the static one will change color.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Catch the Square"</strong>: A square moves, and when it touches another
+                                        square, that one disappears and reappears somewhere else. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Coin Collector" game where coins disappear when you touch them.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Loading Images (Sprites)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">What is a Sprite?</h4>
+                                    <p>A sprite is an image that represents a character or object in a game. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Loading Images</h4>
+                                    <p>We'll use `pygame.image.load()` to load an image file into our game. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Drawing Images</h4>
+                                    <p>We'll use the `screen.blit()` function to draw our image on the screen. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Moving Sprites</h4>
+                                    <p>You'll apply the same movement concept you learned for rectangles to your new
+                                        images.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll replace the rectangle "player" with an actual image.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers, simple image files (e.g., a pixelated character, a spaceship).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Basic Animation"</strong>: Change the image of the sprite at a certain
+                                        interval to simulate movement, like walking. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Spaceship Game" where the ship moves and shoots (without enemies yet).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 8 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 8: Text & Pong Mini-Project
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Text & Score</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Displaying Text</h4>
+                                    <p>We'll learn how to display text on the screen using `pygame.font.Font()`,
+                                        `render()`, and `blit()`. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Score Counter</h4>
+                                    <p>We'll create a counter to keep track of the score and update it on the screen.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll add a score counter to one of your existing collision games (e.g., in the
+                                        "Catch the Square" game, each time you catch a square, your score goes up).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Game Scoreboard"</strong>: Create a scoreboard that updates in
+                                        real-time. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Question and Answer Game" that displays questions and text options.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Mini-Project: Simplified Pong</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Full Integration</h4>
+                                    <p>We'll combine all the concepts we've learned so far: a window, shapes, movement,
+                                        collisions, and scoring.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Game Design</h4>
+                                    <p>We'll design a game with a paddle that you control, and a ball that bounces off
+                                        the walls and the paddle. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Bounce Logic</h4>
+                                    <p>We'll program the logic for the ball to reverse its direction when it collides
+                                        with a wall or the paddle. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll work in groups to develop a basic Pong game.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Movement Debugging"</strong>: Make sure the ball bounces off all the
+                                        edges correctly.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>This is the main project for the week.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Month 3 -->
+            <section class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 border-b-2 border-neon-blue pb-2">Month 3: Advanced
+                    Game Development & Final Projects</h2>
+                <div class="space-y-4">
+                    <!-- Week 9 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 9: Sound & Multi-Object Management
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Sound & Music in Pygame</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Loading & Playing Sounds</h4>
+                                    <p>We'll use `pygame.mixer.Sound()` and `play()` to load and play short sound
+                                        effects.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Background Music</h4>
+                                    <p>We'll learn how to load and play background music using
+                                        `pygame.mixer.music.load()` and `play()`, and how to control the volume. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Sound Events</h4>
+                                    <p>We'll program sounds to play when a collision happens or a button is pressed.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll add sounds to an existing game (e.g., a bounce sound in Pong, a coin sound
+                                        in a collector game).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers, .wav or .ogg sound files.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Simple Jukebox"</strong>: A program that plays different sounds when you
+                                        press different keys. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Managing Multiple Objects (Sprite Lists)
+                                </h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Creating Multiple Enemies/Objects</h4>
+                                    <p>We'll use lists to store and manage many objects of the same type, like a bunch
+                                        of enemies. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Looping Through Lists</h4>
+                                    <p>We'll learn how to use a `for` loop to move and draw all the objects in our list.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Multiple Collisions</h4>
+                                    <p>We'll learn how to detect collisions between the player and all the objects in a
+                                        list. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll create a game where the player has to dodge multiple "enemies" falling
+                                        from the top of the screen.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Object Rain"</strong>: Make several objects fall from the top of the
+                                        screen that the player must avoid. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>A "Shooting Game" where the player shoots at multiple moving enemies.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 10 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 10: Game States & "Space Invaders"
+                            Mini-Project</summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Game States (Start, Game, End)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Game Organization</h4>
+                                    <p>We'll learn how to manage different screens or phases of a game, like a start
+                                        menu or a "Game Over" screen. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">State Variables</h4>
+                                    <p>We'll use a variable to keep track of the game's current state. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Transition Logic</h4>
+                                    <p>We'll program how to change from one state to another, for example, pressing
+                                        "Enter" to start the game or losing to go to the "Game Over" screen. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll add a start screen and a "Game Over" screen to an existing game.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Start Menu"</strong>: Design a start screen with a "Play" button.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Mini-Project: Simplified "Space Invaders"
+                                </h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Full Integration</h4>
+                                    <p>We'll combine all the concepts we've learned: a player, multiple enemies,
+                                        shooting, collisions, scoring, sounds, and game states.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Game Design</h4>
+                                    <p>We'll design a game where a spaceship moves horizontally and shoots at a group of
+                                        moving enemies.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll develop a simplified version of Space Invaders.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers, sprites for ships and enemies, sound effects for shooting and
+                                        explosions.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Bullet Management"</strong>: Program the bullets shot by the player and
+                                        their collisions with enemies.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>This is the main project for the week.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 11 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 11: Classes & Final Project Planning
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Intro to Classes & Objects (OOP)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Why OOP?</h4>
+                                    <p>We'll learn why Object-Oriented Programming (OOP) is crucial for organizing
+                                        complex game code. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Class Concept</h4>
+                                    <p>A class is like a blueprint for creating objects (e.g., a `Player` class or an
+                                        `Enemy` class).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Object Concept</h4>
+                                    <p>An object is an instance of a class.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Methods & Attributes</h4>
+                                    <p>We'll learn about functions (`methods`) and variables (`attributes`) inside a
+                                        class. </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>You'll convert the code for the player and enemies in your Space Invaders game
+                                        into classes.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Rectangle Class"</strong>: Create a `Rectangle` class with attributes
+                                        for position and size, and a method to draw itself.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>No project yet.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Final Projects - Brainstorming & Planning
+                                </h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Project Ideas</h4>
+                                    <p>You'll come up with your own ideas for video games or other projects.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Final Project Requirements</h4>
+                                    <p>Your final project must integrate at least a certain number of the concepts
+                                        you've learned.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Planning</h4>
+                                    <p>We'll plan how to tackle the project: designing, listing features, and dividing
+                                        tasks if you're working in a group.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Resources</h4>
+                                    <p>We'll discuss where to find sprites, sounds, and helpful tutorials.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Practical Activity</h4>
+                                    <p>Each student or group will present their final project idea and an initial plan.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>This is the start of your final project!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Week 12 -->
+                    <details class="bg-card rounded-xl shadow-lg">
+                        <summary class="text-2xl font-semibold text-neon-blue">Week 12: Final Project Development
+                        </summary>
+                        <div class="p-6 space-y-4 text-gray-700">
+                            <!-- Class 1 -->
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 1: Final Project Development (Phase 1)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Initial Implementation</h4>
+                                    <p>You'll start coding your final projects.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Support & Guidance</h4>
+                                    <p>I'll be here to help you with any questions and to assist with debugging your
+                                        code.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Structure Focus</h4>
+                                    <p>We'll make sure your code is well-organized (functions, classes).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"First Prototype"</strong>: Implement the main game mechanics (player
+                                        movement, object generation).</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>Continuation of your final project.</p>
+                                </div>
+                            </div>
+                            <!-- Class 2 -->
+                            <hr class="my-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Class 2: Final Project Development (Phase 2)</h3>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Continuation</h4>
+                                    <p>You'll continue working on your projects.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Adding Features</h4>
+                                    <p>We'll integrate more elements like sounds, scoring, and game states.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Testing</h4>
+                                    <p>You'll test your game and fix any bugs you find.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Materials</h4>
+                                    <p>Computers.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Example/Exercise</h4>
+                                    <p><strong>"Design Iteration"</strong>: Add a new feature and test it out.</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">Suggested Project</h4>
+                                    <p>Continuation of your final project.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <!-- General Considerations Section -->
+    <div class="max-w-7xl mx-auto mt-12 bg-card p-6 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4 border-b-2 border-neon-blue pb-2">General Class Notes</h2>
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+            <li><strong>Flexible Pace:</strong> This is a guide. We'll adjust the pace of the class to make sure
+                everyone is learning and having fun.</li>
+            <li><strong>Visual Resources:</strong> We'll use diagrams, short videos, and live demonstrations to help you
+                understand the concepts.</li>
+            <li><strong>Errors are Opportunities:</strong> Don't be afraid to make mistakes! They are part of the
+                learning process. We'll work together to debug code and wiring.</li>
+            <li><strong>Celebrate the Achievements:</strong> Every small success is a huge win! Whether it's a blinking
+                LED or a moving square on the screen, we'll celebrate it.</li>
+            <li><strong>Connect to Real Life:</strong> We'll always try to relate the concepts we learn to real-world
+                applications.</li>
+            <li><strong>Documentation:</strong> We'll get into the good habit of commenting our code and documenting our
+                3D designs.</li>
+        </ul>
+    </div>
+
+    <script>
+        const electronicsTab = document.getElementById('tab-electronics');
+        const pythonTab = document.getElementById('tab-python');
+        const electronicsContent = document.getElementById('content-electronics');
+        const pythonContent = document.getElementById('content-python');
+        const summaryElements = document.querySelectorAll('details summary');
+
+        function showTab(tabToShow) {
+            if (tabToShow === 'electronics') {
+                electronicsTab.classList.add('bg-neon-blue', 'text-white');
+                electronicsTab.classList.remove('bg-gray-300', 'text-gray-800');
+                pythonTab.classList.add('bg-gray-300', 'text-gray-800');
+                pythonTab.classList.remove('bg-neon-blue', 'text-white');
+                electronicsContent.classList.remove('hidden');
+                pythonContent.classList.add('hidden');
+            } else if (tabToShow === 'python') {
+                pythonTab.classList.add('bg-neon-blue', 'text-white');
+                pythonTab.classList.remove('bg-gray-300', 'text-gray-800');
+                electronicsTab.classList.add('bg-gray-300', 'text-gray-800');
+                electronicsTab.classList.remove('bg-neon-blue', 'text-white');
+                pythonContent.classList.remove('hidden');
+                electronicsContent.classList.add('hidden');
+            }
+        }
+
+        electronicsTab.addEventListener('click', () => showTab('electronics'));
+        pythonTab.addEventListener('click', () => showTab('python'));
+
+        // Initially show the electronics tab
+        document.addEventListener('DOMContentLoaded', () => {
+            showTab('electronics');
+        });
+    </script>

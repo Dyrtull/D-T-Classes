@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spaghetti Bridge Project: Rubric Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .material-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .flowchart-step {
+            border: 2px solid #7a5195;
+            background-color: #f3e8f7;
+            color: #582c6d;
+        }
+        .flowchart-arrow {
+            color: #7a5195;
+            font-size: 2rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#003f5c] mb-2">Spaghetti Bridge Project</h1>
+            <p class="text-xl text-[#374c80]">Your Visual Guide to the Grading Rubric</p>
+        </header>
+
+        <main>
+            <section id="criteria" class="mb-16">
+                <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-8">Breaking Down Each Level</h2>
+                <div class="flex justify-center mb-12">
+                    <img src="https://placehold.co/800x400/98c5e9/ffffff?text=Example+of+a+Final+Spaghetti+Bridge+Project" alt="A placeholder image of a finished spaghetti bridge project" class="w-full max-w-xl md:max-w-3xl rounded-lg shadow-xl">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <div class="material-card border-t-4 border-[#ffa600]">
+                        <h3 class="text-2xl font-bold text-[#ffa600] mb-4">4. Excelling</h3>
+                        <p class="text-sm text-gray-500 mb-4">(Grades: 4.0, 3.7, 3.3)</p>
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start"><span class="mr-3 text-xl">📝</span><div><strong class="block">Design & Research:</strong> Thoroughly interprets the project challenge. Gathers in-depth data from multiple credible sources on truss bridge design, material properties, and force distribution. The design brief is comprehensive and includes detailed, annotated force diagrams and blueprint sketches.</div></li>
+                            <li class="flex items-start"><span class="mr-3 text-xl">💡</span><div><strong class="block">Prototype & Innovation:</strong> Generates a wide variety of creative ideas and uses clear, logical reasoning to select the best one. The final prototype is a meticulously crafted model that extensively meets all design requirements and demonstrates superior structural integrity and craftsmanship.</div></li>
+                            <li class="flex items-start"><span class="mr-3 text-xl">🔬</span><div><strong class="block">Evaluation & Reflection:</strong> Conducts a thorough evaluation, providing a detailed analysis of the **Newton force resistance**. Accurately identifies where and why the bridge failed and proposes comprehensive, well-reasoned improvements based on the observed data.</div></li>
+                        </ul>
+                    </div>
+
+                    <div class="material-card border-t-4 border-[#ef5675]">
+                        <h3 class="text-2xl font-bold text-[#ef5675] mb-4">3. Exceeding</h3>
+                        <p class="text-sm text-gray-500 mb-4">(Grades: 3.0, 2.7, 2.3)</p>
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start"><span class="mr-3 text-xl">📝</span><div><strong class="block">Design & Research:</strong> Clearly interprets the project challenge. Conducts thorough research using several sources on truss bridge design and materials. The design brief is well-structured and includes a basic force diagram and a clear blueprint sketch.</div></li>
+                            <li class="flex items-start"><span class="mr-3 text-xl">💡</span><div><strong class="block">Prototype & Innovation:</strong> Generates multiple distinct ideas and provides a solid rationale for narrowing down to the final solution. The prototype is a functional and well-built model that successfully meets the design requirements.</div></li>
+                            <li class="flex items-start"><span class="mr-3 text-xl">🔬</span><div><strong class="block">Evaluation & Reflection:</strong> Evaluates the prototype's performance, accurately reporting the **Newton force resistance**. Identifies successes and failures and offers a clear plan for improvements.</div></li>
+                        </ul>
+                    </div>
+
+                    <div class="material-card border-t-4 border-[#7a5195]">
+                        <h3 class="text-2xl font-bold text-[#7a5195] mb-4">2. Meeting</h3>
+                        <p class="text-sm text-gray-500 mb-4">(Grades: 2.0, 1.7, 1.3)</p>
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start"><span class="mr-3 text-xl">📝</span><div><strong class="block">Design & Research:</strong> Interprets the project challenge in a basic way. Gathers relevant data from a few sources. The design brief is simple but contains the necessary core information.</div></li>
+                            <li class="flex items-start"><span class="mr-3 text-xl">💡</span><div><strong class="block">Prototype & Innovation:</strong> Generates at least one core idea and produces a simple, straightforward prototype. The model is built correctly but may lack refinement.</div></li>
+                            <li class="flex items-start"><span class="mr-3 text-xl">🔬</span><div><strong class="block">Evaluation & Reflection:</strong> Explains the basic functionality of the prototype. Provides a minimal evaluation, addressing only the most obvious successes or failures.</div></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="material-card border-t-4 border-[#003f5c]">
+                        <h3 class="text-2xl font-bold text-[#003f5c] mb-4">1. Approaching</h3>
+                         <p class="text-sm text-gray-500 mb-4">(Grade: 1.0)</p>
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start"><span class="mr-3 text-xl">📝</span><div><strong class="block">Design & Research:</strong> Requires significant help to interpret the project challenge and gather data. The design brief is incomplete or lacks clear direction.</div></li>
+                            <li class="flex items-start"><span class="mr-3 text-xl">💡</span><div><strong class="block">Prototype & Innovation:</strong> Struggles to create a functional prototype. The model may be poorly constructed, and the build quality may not allow for a proper test.</div></li>
+                            <li class="flex items-start"><span class="mr-3 text-xl">🔬</span><div><strong class="block">Evaluation & Reflection:</strong> Is unable to evaluate the performance of the prototype or to articulate what worked and what failed.</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="flow" class="mb-16">
+                 <div class="material-card">
+                    <h2 class="text-2xl font-bold text-center text-[#003f5c] mb-4">Path to an "Excelling" Grade</h2>
+                    <p class="text-center text-gray-600 mb-8">Follow these steps in the design process to aim for the highest level of achievement. Each stage builds upon the last, leading to a comprehensive and well-executed project.</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="flowchart-step p-4 rounded-lg text-center w-full md:w-1/4">
+                            <strong class="block text-lg">1. In-Depth Research</strong>
+                            <p class="text-sm">Go beyond the basics. Find academic sources, case studies, and diverse examples.</p>
+                        </div>
+                        <div class="flowchart-arrow transform md:-rotate-90">↓</div>
+                        <div class="flowchart-step p-4 rounded-lg text-center w-full md:w-1/4">
+                            <strong class="block text-lg">2. Creative Ideation</strong>
+                            <p class="text-sm">Sketch many different solutions. Don't settle for your first idea. Compare and contrast.</p>
+                        </div>
+                        <div class="flowchart-arrow transform md:-rotate-90">↓</div>
+                        <div class="flowchart-step p-4 rounded-lg text-center w-full md:w-1/4">
+                             <strong class="block text-lg">3. Meticulous Build</strong>
+                            <p class="text-sm">Pay attention to craftsmanship. Ensure joints are clean and measurements are precise.</p>
+                        </div>
+                         <div class="flowchart-arrow transform md:-rotate-90">↓</div>
+                        <div class="flowchart-step p-4 rounded-lg text-center w-full md:w-1/4">
+                             <strong class="block text-lg">4. Thorough Evaluation</strong>
+                            <p class="text-sm">Analyze test results deeply. Explain *why* it failed and propose specific, actionable improvements.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 text-gray-500 text-sm">
+            <p>Infographic created to visualize the Design & Technology project rubric. Good luck!</p>
+        </footer>
+    </div>
+
+</body>
+</html>

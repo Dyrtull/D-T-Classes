@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICT Fundamentals</title>
+  <!-- Load Tailwind CSS from CDN for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Use Inter font from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-100 text-gray-900 antialiased p-4 sm:p-8">
+
+  <div class="max-w-4xl mx-auto">
+    <header class="text-center mb-12">
+      <h1 class="text-5xl font-extrabold text-blue-600 mb-2">ICT Fundamentals</h1>
+      <p class="text-xl text-gray-600">Operating Systems & Computer Types</p>
+    </header>
+
+    <!-- Navigation Buttons -->
+    <nav class="flex justify-center space-x-2 md:space-x-4 mb-8">
+      <button id="btn-theory" class="flex items-center px-4 py-2 rounded-full transition-all duration-300 bg-blue-600 text-white shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2">
+            <path d="M14.5 10H20a2 2 0 0 1 2 2v.5a2 2 0 0 1-2 2h-5.5"></path>
+            <path d="M3 14.5a2 2 0 0 1 2-2h5.5c.34 0 .68.04 1 .1A7.5 7.5 0 0 0 3 14.5v0z"></path>
+            <path d="M8.5 20H4a2 2 0 0 1-2-2v-5.5a2 2 0 0 1 2-2h2.5"></path>
+            <path d="M12.5 3c-.34 0-.68.04-1 .1A7.5 7.5 0 0 0 19 3c.34 0 .68.04 1 .1A2.5 2.5 0 0 0 19 3H14.5a2 2 0 0 0-2-2v2.5a2 2 0 0 0-2-2"></path>
+            <path d="M14.5 10c0-1.63 1.1-3.1 2.5-4s2.5-2.37 2.5-4a2 2 0 0 0-2-2H14.5"></path>
+            <path d="M8.5 20c0 1.63-1.1 3.1-2.5 4s-2.5 2.37-2.5 4a2 2 0 0 0 2 2H8.5"></path>
+            <path d="M19 12.5a7.5 7.5 0 0 0-7.5-7.5H12.5"></path>
+            <path d="M12.5 14.5a7.5 7.5 0 0 0 7.5 7.5V14.5z"></path>
+        </svg>
+        <span class="font-semibold text-sm md:text-base">Theory Concepts</span>
+      </button>
+      <button id="btn-exercises" class="flex items-center px-4 py-2 rounded-full transition-all duration-300 bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-600">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <span class="font-semibold text-sm md:text-base">In-Class Exercises</span>
+      </button>
+      <button id="btn-homework" class="flex items-center px-4 py-2 rounded-full transition-all duration-300 bg-white text-gray-700 hover:bg-blue-100 hover:text-blue-600">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+        </svg>
+        <span class="font-semibold text-sm md:text-base">Homework</span>
+      </button>
+    </nav>
+
+    <!-- Dynamic Content Area -->
+    <main id="content-container" class="transition-all duration-500 ease-in-out">
+      <!-- Content will be injected here by JavaScript -->
+    </main>
+
+  </div>
+
+  <script>
+    // Define the content for each section as HTML strings
+    const content = {
+      theory: `
+        <div class="space-y-8">
+          <h2 class="text-3xl font-bold text-gray-800">Theory Concepts & Definitions</h2>
+          
+          <div class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500 w-10 h-10 mr-4">
+                  <path d="M14.5 10H20a2 2 0 0 1 2 2v.5a2 2 0 0 1-2 2h-5.5"></path>
+                  <path d="M3 14.5a2 2 0 0 1 2-2h5.5c.34 0 .68.04 1 .1A7.5 7.5 0 0 0 3 14.5v0z"></path>
+                  <path d="M8.5 20H4a2 2 0 0 1-2-2v-5.5a2 2 0 0 1 2-2h2.5"></path>
+                  <path d="M12.5 3c-.34 0-.68.04-1 .1A7.5 7.5 0 0 0 19 3c.34 0 .68.04 1 .1A2.5 2.5 0 0 0 19 3H14.5a2 2 0 0 0-2-2v2.5a2 2 0 0 0-2-2"></path>
+                  <path d="M14.5 10c0-1.63 1.1-3.1 2.5-4s2.5-2.37 2.5-4a2 2 0 0 0-2-2H14.5"></path>
+                  <path d="M8.5 20c0 1.63-1.1 3.1-2.5 4s-2.5 2.37-2.5 4a2 2 0 0 0 2 2H8.5"></path>
+                  <path d="M19 12.5a7.5 7.5 0 0 0-7.5-7.5H12.5"></path>
+                  <path d="M12.5 14.5a7.5 7.5 0 0 0 7.5 7.5V14.5z"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-gray-700">Operating Systems</h3>
+            </div>
+            <p class="text-gray-600">
+              The operating system (OS) is the foundational software that manages all the hardware and software resources of a computer. It acts as an intermediary between the user and the computer's hardware, performing essential tasks like managing memory and processes, handling input/output operations, and controlling peripherals. Without an OS, the hardware would be unable to communicate with the user or run any applications.
+            </p>
+            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
+              <li><strong class="text-gray-800">Process Management:</strong> It allocates resources to processes, schedules them, and ensures they run without interfering with each other.</li>
+              <li><strong class="text-gray-800">Memory Management:</strong> The OS manages the computer's memory, assigning memory blocks to programs and ensuring they don't access each other's memory space.</li>
+              <li><strong class="text-gray-800">File System Management:</strong> It organizes and manages files and directories on storage devices, allowing users to create, read, and delete files.</li>
+            </ul>
+          </div>
+          
+          <div class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center mb-4">
+              <div class="flex space-x-2 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500 w-10 h-10">
+                    <path d="M4 17l1-5 1-5"></path>
+                    <path d="M16 11l-1-5-1-5"></path>
+                    <path d="M8 17h8"></path>
+                    <path d="M8 11h8"></path>
+                    <path d="M12 17V3"></path>
+                    <path d="M12 21h0.01"></path>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 w-10 h-10">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-700">CLI vs. GUI</h3>
+            </div>
+            <p class="text-gray-600 mb-4">
+              A key distinction in computing is how users interact with the system.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8">
+              <div>
+                <h4 class="font-bold text-gray-800 mb-2">Command-Line Interface (CLI)</h4>
+                <p class="text-gray-600">A text-based interface where users type commands to perform tasks. It offers direct and powerful control over the system, often preferred by system administrators and developers for its efficiency and scripting capabilities.</p>
+                <img src="https://media.fs.com/images/community/erp/pTns8_NbDEYCX2ER43HDnZsSac.jpg" alt="Command Line Interface" class="mt-4 rounded-xl shadow-md w-full h-auto object-cover" />
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 mb-2">Graphical User Interface (GUI)</h4>
+                <p class="text-gray-600">A visual-based interface that uses icons, windows, menus, and pointers for interaction. It is highly intuitive and user-friendly, making it the standard for most personal computers today.</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Example_of_a_GUI.png" alt="Graphical User Interface" class="mt-4 rounded-xl shadow-md w-full h-auto object-cover" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center mb-4">
+              <div class="flex space-x-2 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500 w-10 h-10">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-500 w-10 h-10">
+                    <path d="M12 20.5v-13h-3.5a4.5 4.5 0 1 1 0-9H15a4.5 4.5 0 1 1 0 9"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-700">Types of Computers</h3>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+              <div>
+                <h4 class="font-bold text-gray-800 mb-2">Desktop Computers</h4>
+                <p class="text-gray-600">Traditional computers designed for a fixed location. Known for their power, upgradability, and large screens.</p>
+                <img src="https://informationq.com/wp-content/uploads/2015/06/Types-of-Computer-1024x711.jpg" alt="Desktop Computer" class="mt-4 rounded-xl shadow-md w-full h-auto object-cover" />
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 mb-2">Mobile Computers</h4>
+                <p class="text-gray-600">Devices like laptops, tablets, and smartphones. Characterized by portability and integrated components for on-the-go use.</p>
+                <img src="https://cdn11.bigcommerce.com/s-ka7ofex/product_images/uploaded_images/headermobilecomputers2.jpg" alt="Mobile Computers" class="mt-4 rounded-xl shadow-md w-full h-auto object-cover" />
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-800 mb-2">Emerging Computers</h4>
+                <p class="text-gray-600">New and innovative devices like smartwatches and IoT devices. They are changing how we interact with technology.</p>
+                <img src="https://www.mdpi.com/sensors/sensors-23-04200/article_deploy/html/images/sensors-23-04200-g001-550.jpg" alt="Emerging Computers" class="mt-4 rounded-xl shadow-md w-full h-auto object-cover" />
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      exercises: `
+        <div class="space-y-8">
+          <h2 class="text-3xl font-bold text-gray-800">In-Class Exercises</h2>
+          
+          <div class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500 w-10 h-10 mr-4">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-gray-700">"OS Function Brainstorm" (Pair Work)</h3>
+            </div>
+            <p class="text-gray-600">
+              In pairs, brainstorm and list as many functions of an operating system as you can think of. Think about everything from when you turn on the computer to when you save a file or print a document.
+            </p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-teal-500 w-10 h-10 mr-4">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-gray-700">"Device Dilemma" (Group Scenario)</h3>
+            </div>
+            <p class="text-gray-600">
+              Provide each group with a scenario and have them recommend the most suitable computer type and justify their choice. Here are 10 possible scenarios:
+            </p>
+            <ol class="list-decimal list-inside mt-4 text-gray-600 space-y-2">
+              <li>A graphic designer who needs a powerful computer for rendering and complex software.</li>
+              <li>A student who needs a lightweight device for taking notes and writing essays in class.</li>
+              <li>A professional who travels frequently and needs to give presentations and access files on the go.</li>
+              <li>A family that needs a shared computer for web browsing, streaming, and homework.</li>
+              <li>A video editor who requires a high-performance machine with a large screen and ample storage.</li>
+              <li>A senior citizen who needs a simple and intuitive device for video calls and checking email.</li>
+              <li>A software developer who needs to run multiple virtual machines and compile large codebases.</li>
+              <li>A retail store manager who needs a mobile device for inventory management and checking sales reports.</li>
+              <li>A gamer who wants the best performance for the latest high-end games.</li>
+              <li>A photographer who needs a device with a high-resolution display and a fast processor for photo editing.</li>
+            </ol>
+          </div>
+          
+          <div class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500 w-10 h-10 mr-4">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+              <h3 class="text-xl font-semibold text-gray-700">GUI Navigation Practice (Practical)</h3>
+            </div>
+            <p class="text-gray-600">
+              Using a computer with a GUI, guide students through basic file management tasks.
+            </p>
+            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
+              <li>Open and close applications.</li>
+              <li>Create and rename a folder.</li>
+              <li>Move, copy, and delete files.</li>
+            </ul>
+          </div>
+        </div>
+      `,
+      homework: `
+        <div class="space-y-8">
+          <h2 class="text-3xl font-bold text-gray-800">Possible Homework</h2>
+          
+          <div class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 w-10 h-10 mr-4">
+                  <path d="M12 18H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7z"></path>
+                  <path d="M12 4v14"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-gray-700">Comparison Table</h3>
+            </div>
+            <p class="text-gray-600">
+              Create a table comparing GUI and CLI. The table should include at least three advantages and three disadvantages for each interface.
+            </p>
+            <div class="mt-4 overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Advantages</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disadvantages</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">GUI</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
+                  </tr>
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CLI</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="bg-white p-6 rounded-2xl shadow-lg transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500 w-10 h-10 mr-4">
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+              </svg>
+              <h3 class="text-xl font-semibold text-gray-700">Scenario Response</h3>
+            </div>
+            <p class="text-gray-600 mb-4">
+              Write a response advising a school on purchasing new devices for students with different needs. The school needs to provide devices for three groups of students with a limited budget. Your response should:
+            </p>
+            <ul class="list-disc list-inside mt-4 text-gray-600 space-y-2">
+              <li>Recommend a specific type of computer (e.g., tablet, laptop, desktop) for each student group.</li>
+              <li>Justify your choices by explaining how the recommended device's characteristics (portability, processing power, screen size, cost, etc.) meet the specific needs of that student group.</li>
+              <li>Consider the budget constraint for the school's purchase.</li>
+            </ul>
+
+            <h4 class="font-bold text-gray-800 mt-6 mb-2">Student Groups:</h4>
+            <ol class="list-decimal list-inside text-gray-600 space-y-2">
+              <li>
+                **Elementary School Students (Grades K-5):** The school wants to introduce basic technology for interactive learning games and simple assignments. Durability and ease of use are top priorities, and the budget for these devices is the lowest.
+              </li>
+              <li>
+                **High School Students (Grades 9-12):** These students need devices for research, writing essays, creating presentations, and light programming. Portability is important as they will be moving between classrooms, and the devices must have a physical keyboard.
+              </li>
+              <li>
+                **Art and Media Students (Grades 10-12):** This is a specialized group that requires devices for graphic design, video editing, and digital art. They need powerful processors, a large screen, and ample storage, and the school has allocated the highest budget for these specific devices.
+              </li>
+            </ol>
+          </div>
+        </div>
+      `,
+    };
+
+    const contentContainer = document.getElementById('content-container');
+    const navButtons = document.querySelectorAll('nav button');
+
+    function updateContent(page) {
+      // Update the main content area
+      contentContainer.innerHTML = content[page];
+
+      // Update active button styles
+      navButtons.forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white', 'shadow-lg');
+        btn.classList.add('bg-white', 'text-gray-700', 'hover:bg-blue-100', 'hover:text-blue-600');
+      });
+
+      const activeButton = document.getElementById(`btn-${page}`);
+      activeButton.classList.remove('bg-white', 'text-gray-700', 'hover:bg-blue-100', 'hover:text-blue-600');
+      activeButton.classList.add('bg-blue-600', 'text-white', 'shadow-lg');
+    }
+
+    // Add event listeners to navigation buttons
+    document.getElementById('btn-theory').addEventListener('click', () => updateContent('theory'));
+    document.getElementById('btn-exercises').addEventListener('click', () => updateContent('exercises'));
+    document.getElementById('btn-homework').addEventListener('click', () => updateContent('homework'));
+
+    // Set initial content on page load
+    window.onload = () => {
+      updateContent('theory');
+    };
+  </script>
+</body>
+</html>

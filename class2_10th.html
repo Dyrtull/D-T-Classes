@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Lesson: From Need to Design Brief</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: The application is structured as a single-page, vertical narrative that guides the user from foundational theory to practical application. It starts with an introduction (The Goal), moves to core concepts (Observation, Needs vs. Wants), introduces the main tool (The Design Brief and its Anatomy), clarifies its precision (Specifications), allows for hands-on practice (Interactive Chair Brief Activity), and concludes with a forward-looking task (Homework). This thematic, scrolling structure was chosen over a slide-based format to create a more fluid and engaging learning journey, allowing users to see the direct connection between concepts and their application in a continuous flow. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Needs vs. Wants. Goal: Compare/Organize. Method: Interactive card toggles. Interaction: User clicks to classify examples. Justification: Active participation reinforces learning better than a static image. Library: Vanilla JS.
+        - Report Info: Anatomy of a Design Brief. Goal: Organize/Inform. Method: 2x2 grid with hover effects. Interaction: Hovering reveals details for each component. Justification: Breaks down the concept into digestible, explorable chunks. Library: CSS/Tailwind.
+        - Report Info: Specification. Goal: Define & Practice. Method: Interactive card grid to define concepts and a hands-on form for practice. Interaction: Hover to reveal details; user inputs text to see a generated example. Justification: This new, detailed section provides an in-depth understanding of how to transition from broad brief requirements to precise, technical specifications. Library: Vanilla JS.
+        - Report Info: Better Classroom Chair Activity. Goal: Apply knowledge. Method: Interactive form. Interaction: User inputs text and clicks a button to see their generated brief. Justification: Provides immediate, hands-on practice of the lesson's main skill. Library: Vanilla JS.
+        - Report Info: Bridge Impact Homework. Goal: Inform. Method: Styled content cards. Interaction: Static display. Justification: Presents the assignment in a clean, visually organized manner. Library: N/A.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .section-card {
+            background-color: #FFFFFF;
+            border: 1px solid #EAEAEA;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: all 0.3s ease-in-out;
+        }
+        .section-card-interactive {
+            cursor: pointer;
+        }
+        .section-card-interactive:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        .btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .anatomy-item .details {
+            display: none;
+        }
+        .anatomy-item:hover .details {
+            display: block;
+        }
+        .spec-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .spec-card.is-flipped .spec-card-inner {
+            transform: rotateY(180deg);
+        }
+        .spec-card-front, .spec-card-back {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+        .spec-card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 py-8 md:py-16 max-w-5xl space-y-16 md:space-y-24">
+
+        <!-- Section 1: Introduction -->
+        <header class="text-center space-y-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Design Thinking: From Need to Brief</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">This week's goal is to master the art of writing a clear and precise <b>design brief</b> for a real-life need.</p>
+        </header>
+
+        <!-- Section 2: The Core Idea - Observation -->
+        <section id="observation" class="space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">1. Start with Observation</h2>
+                <p class="mt-2 text-lg text-gray-600">Effective design isn't about guessing; it's about understanding. This section explores how to identify real user needs, which are the foundation of any great project. We'll learn to distinguish between what's essential (a need) and what's just a nice-to-have (a want).</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="section-card p-6 md:p-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Observe & Communicate Needs</h3>
+                    <p class="text-gray-700 leading-relaxed">To create solutions that truly work, designers must first become expert observers. This means putting yourself in the user's shoes, documenting their challenges, and communicating their needs clearly. It's about deeply understanding the problem before you even think about a solution.</p>
+                </div>
+                <div class="section-card p-6 md:p-8">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Interactive: Needs vs. Wants</h3>
+                    <p class="text-gray-700 mb-6">Click on the cards below to classify them. Is it a fundamental requirement (a need) or a desirable feature (a want)?</p>
+                    <div id="needsWantsContainer" class="space-y-3">
+                        <!-- Interactive cards will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Tool - The Design Brief -->
+        <section id="design-brief" class="space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">2. The Tool: The Design Brief</h2>
+                <p class="mt-2 text-lg text-gray-600">Once you've identified a need, you need a plan. The design brief is that plan. In this section, we'll break down what a design brief is and explore its essential components, which act as the guiding stars for your entire project.</p>
+            </div>
+            <div class="section-card p-6 md:p-8">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-2 text-center">Anatomy of a Design Brief</h3>
+                <p class="text-center text-gray-600 mb-8">A good brief is your project's blueprint. Hover over each component to learn more.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="anatomy-item p-6 bg-orange-50 rounded-lg border border-orange-200">
+                        <h4 class="text-xl font-semibold text-orange-800">🎯 Overall Goal</h4>
+                        <p class="details mt-2 text-orange-700">The main objective of the project. What are you trying to achieve?</p>
+                    </div>
+                    <div class="anatomy-item p-6 bg-blue-50 rounded-lg border border-blue-200">
+                        <h4 class="text-xl font-semibold text-blue-800">👤 Intended User</h4>
+                        <p class="details mt-2 text-blue-700">Who are you designing for? Be as specific as possible.</p>
+                    </div>
+                    <div class="anatomy-item p-6 bg-green-50 rounded-lg border border-green-200">
+                        <h4 class="text-xl font-semibold text-green-800">✅ Requirements</h4>
+                        <p class="details mt-2 text-green-700">The key functions or features the solution must have to be successful.</p>
+                    </div>
+                    <div class="anatomy-item p-6 bg-red-50 rounded-lg border border-red-200">
+                        <h4 class="text-xl font-semibold text-red-800">⛓️ Constraints</h4>
+                        <p class="details mt-2 text-red-700">The limitations you must work within, like budget, materials, or time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 4: From Brief to Spec (Detailed) -->
+        <section id="specification" class="space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">3. From Brief to Specification</h2>
+                 <p class="mt-2 text-lg text-gray-600">A design brief gives you direction, but specifications provide the details. This section shows how to translate a general requirement from your brief into a concrete, measurable target that your design must hit.</p>
+            </div>
+            
+            <div class="section-card p-6 md:p-8">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Defining a Good Specification</h3>
+                <p class="text-center text-gray-600 mb-8">A useful specification is more than just a list—it's a measurable checklist. Here are its key traits.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-6 bg-purple-50 rounded-lg border border-purple-200 flex flex-col justify-center items-center text-center">
+                        <h4 class="text-xl font-semibold text-purple-800 mb-2">Specific</h4>
+                        <p class="text-purple-700">It clearly defines the "what" and "how" without ambiguity. No vague terms like "fast" or "easy to use."</p>
+                    </div>
+                    <div class="p-6 bg-teal-50 rounded-lg border border-teal-200 flex flex-col justify-center items-center text-center">
+                        <h4 class="text-xl font-semibold text-teal-800 mb-2">Measurable</h4>
+                        <p class="text-teal-700">It includes quantifiable data. You should be able to test it with a number. (e.g., "5 seconds" or "250 lbs").</p>
+                    </div>
+                    <div class="p-6 bg-lime-50 rounded-lg border border-lime-200 flex flex-col justify-center items-center text-center">
+                        <h4 class="text-xl font-semibold text-lime-800 mb-2">Actionable</h4>
+                        <p class="text-lime-700">It's a requirement that can actually be built and achieved within project constraints. It's a task, not just a goal.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card p-6 md:p-8">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Example: From Brief to Spec</h3>
+                <p class="text-center text-gray-600 mb-8">See how a general requirement turns into a precise, measurable specification.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 space-y-4">
+                        <h4 class="text-xl font-semibold text-gray-800">Design Brief Requirement</h4>
+                        <p class="text-gray-700">"The chair must be easy for students to move and store."</p>
+                    </div>
+                    <div class="bg-gray-800 text-white p-6 rounded-lg space-y-4">
+                        <h4 class="text-xl font-semibold">Specification</h4>
+                        <p class="text-gray-300">"The chair must weigh no more than <b>8 lbs (3.6 kg)</b> to be easily lifted and moved by a 6-year-old student."</p>
+                        <p class="text-gray-300">"The chair must be able to be stacked with at least <b>10 other chairs</b> within a storage space of <b>4 ft x 4 ft (1.2m x 1.2m)</b>."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card p-6 md:p-8">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Exercise: Write Your Own Specification</h3>
+                <p class="text-center text-gray-600 mb-8">Take a brief requirement and turn it into a specific, measurable specification.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="brief-req-input" class="block text-sm font-medium text-gray-700">Design Brief Requirement (e.g., "The chair must be comfortable")</label>
+                                <textarea id="brief-req-input" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"></textarea>
+                            </div>
+                            <div>
+                                <label for="spec-output-input" class="block text-sm font-medium text-gray-700">Write your Specification below:</label>
+                                <textarea id="spec-output-input" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"></textarea>
+                            </div>
+                        </div>
+                        <button id="checkSpecBtn" class="btn mt-6 w-full bg-orange-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-orange-700">Check Specification</button>
+                    </div>
+                    <div id="spec-result-container" class="bg-gray-50 p-6 rounded-lg border border-dashed border-gray-300 flex items-center justify-center">
+                         <p class="text-gray-500 text-center">Your specification will appear here after you click the button.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Activity -->
+        <section id="activity" class="space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">4. Put it into Practice</h2>
+                <p class="mt-2 text-lg text-gray-600">Now it's your turn! Use the tool below to apply what you've learned. Follow the instructions to write your own three-sentence design brief for a "better classroom chair." This is your chance to turn theory into a tangible design plan.</p>
+            </div>
+            <div class="section-card p-6 md:p-8">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4">Activity: "Better Classroom Chair" Brief</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="goal" class="block text-sm font-medium text-gray-700">Sentence 1: State the overall goal.</label>
+                                <textarea id="goal" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="e.g., To design a chair that improves student posture..."></textarea>
+                            </div>
+                            <div>
+                                <label for="user" class="block text-sm font-medium text-gray-700">Sentence 2: Identify the intended user.</label>
+                                <textarea id="user" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="e.g., The primary users are elementary school children..."></textarea>
+                            </div>
+                            <div>
+                                <label for="reqs" class="block text-sm font-medium text-gray-700">Sentence 3: List at least two requirements/constraints.</label>
+                                <textarea id="reqs" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="e.g., The design must be stackable and made from eco-friendly material..."></textarea>
+                            </div>
+                        </div>
+                        <button id="generateBrief" class="btn mt-6 w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700">Generate My Brief</button>
+                    </div>
+                    <div id="brief-output-container" class="bg-gray-50 p-6 rounded-lg border border-dashed border-gray-300 flex items-center justify-center">
+                        <p class="text-gray-500 text-center">Your generated design brief will appear here.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Homework -->
+        <section id="homework" class="space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">5. Thinking Ahead: Homework</h2>
+                 <p class="mt-2 text-lg text-gray-600">The final step is to look at existing designs and analyze their impact. This homework assignment asks you to research two famous bridges, thinking about how their features created positive change for their communities—a key skill for any designer.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="section-card p-6">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Bridge Impact Research 🌉</h3>
+                    <p class="text-gray-700 mb-4">Research two different bridges. For each, list two distinct ways it has positively impacted its community.</p>
+                    <div class="mt-4 p-4 bg-gray-50 rounded-lg border">
+                        <h4 class="font-semibold text-gray-800">Example: Golden Gate Bridge</h4>
+                        <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1">
+                            <li>Vital transportation link, reducing commute times and boosting commerce.</li>
+                            <li>Iconic landmark, driving tourism and symbolizing American innovation.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="section-card p-6">
+                     <h3 class="text-2xl font-semibold text-gray-800 mb-4">Puente de Boyacá</h3>
+                    <p class="text-gray-700 mb-4">This historic bridge in Colombia is more than just a crossing; it's a national monument.</p>
+                     <div class="mt-4 p-4 bg-gray-50 rounded-lg border">
+                        <h4 class="font-semibold text-gray-800">Potential Impacts:</h4>
+                        <ul class="list-disc list-inside text-gray-600 mt-2 space-y-1">
+                            <li>Symbol of independence, fostering national pride and identity.</li>
+                            <li>Major historical and tourist site, educating visitors and supporting the local economy.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center py-8 border-t border-gray-200">
+        <p class="text-gray-500">Interactive Lesson created from Week 2 Design Brief materials.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Interactive Needs vs. Wants
+            const needsWantsContainer = document.getElementById('needsWantsContainer');
+            const items = [
+                { text: 'Chair must support 250 lbs', type: 'Need' },
+                { text: 'Chair should have a cup holder', type: 'Want' },
+                { text: 'Chair must be stackable for storage', type: 'Need' },
+                { text: 'Chair should come in 5 colors', type: 'Want' }
+            ];
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'section-card-interactive p-4 rounded-lg border-2 border-gray-200 flex justify-between items-center';
+                card.innerHTML = `<span class="font-medium">${item.text}</span><span class="text-sm font-bold text-gray-400">Click to Classify</span>`;
+                card.addEventListener('click', () => {
+                    if (item.type === 'Need') {
+                        card.style.borderColor = '#22c55e'; // green-500
+                        card.querySelector('span:last-child').textContent = '✅ Need';
+                        card.querySelector('span:last-child').style.color = '#22c55e';
+                    } else {
+                        card.style.borderColor = '#3b82f6'; // blue-500
+                        card.querySelector('span:last-child').textContent = '✨ Want';
+                        card.querySelector('span:last-child').style.color = '#3b82f6';
+                    }
+                });
+                needsWantsContainer.appendChild(card);
+            });
+
+            // Interactive Specification Check
+            const briefReqInput = document.getElementById('brief-req-input');
+            const specOutputInput = document.getElementById('spec-output-input');
+            const specResultContainer = document.getElementById('spec-result-container');
+            const checkSpecBtn = document.getElementById('checkSpecBtn');
+            checkSpecBtn.addEventListener('click', () => {
+                const brief = briefReqInput.value.trim();
+                const spec = specOutputInput.value.trim();
+                if (!brief || !spec) {
+                    specResultContainer.innerHTML = '<p class="text-red-500 text-center">Please fill out both fields to check your specification.</p>';
+                    return;
+                }
+
+                specResultContainer.innerHTML = `
+                    <div class="text-left w-full space-y-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Your Brief Requirement:</h4>
+                            <p class="text-gray-700">${brief}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Your Specification:</h4>
+                            <p class="text-gray-700">${spec}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+
+            // Generate Brief Activity
+            const generateBtn = document.getElementById('generateBrief');
+            const outputContainer = document.getElementById('brief-output-container');
+            generateBtn.addEventListener('click', () => {
+                const goal = document.getElementById('goal').value.trim();
+                const user = document.getElementById('user').value.trim();
+                const reqs = document.getElementById('reqs').value.trim();
+
+                if (!goal || !user || !reqs) {
+                    outputContainer.innerHTML = '<p class="text-red-500 text-center">Please fill out all three fields to generate your brief.</p>';
+                    return;
+                }
+
+                outputContainer.innerHTML = `
+                    <div class="text-left w-full">
+                        <h4 class="font-bold text-lg mb-4 text-gray-800">Your Design Brief:</h4>
+                        <p class="mb-2 text-gray-700">${goal}</p>
+                        <p class="mb-2 text-gray-700">${user}</p>
+                        <p class="text-gray-700">${reqs}</p>
+                    </div>
+                `;
+            });
+        });
+    </script>
+
+</body>
+</html>
