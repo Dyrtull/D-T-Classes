@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE Computer Science Learning Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 1000px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">IGCSE Computer Science Learning Hub</h1>
+            <p class="text-xl text-gray-600">A guide to core theory, concepts, and practice for the 0478 syllabus.</p>
+        </header>
+
+        <!-- Class 1: Logical Shifts & Non-Numeric Data -->
+        <section class="mb-12 bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-200">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Class 1: Logical Shifts & Non-Numeric Data</h2>
+            
+            <!-- Theory Concepts -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">Theory Concepts</h3>
+                
+                <h4 class="text-xl font-semibold mb-2">Logical Binary Shifts</h4>
+                <p class="mb-4">
+                    A <strong>logical binary shift</strong> is an operation that moves the bits of a binary number to the left or right. When a bit is shifted out of the register, it is lost. When a new space is created at the end, it is filled with a `0`. This is different from an arithmetic shift, which preserves the sign bit. Logical shifts are used in computer systems for multiplication and division. A left shift of $n$ bits is equivalent to multiplying the number by $2^n$, while a right shift of $n$ bits is equivalent to dividing the number by $2^n$.
+                </p>
+                
+                <h4 class="text-xl font-semibold mb-2">Non-Numeric Data Representation</h4>
+                <p class="mb-2">
+                    Non-numeric data like text, images, and sound must also be represented in binary for a computer to process it.
+                </p>
+                <ul class="list-disc list-inside space-y-2 mb-4 pl-4">
+                    <li>
+                        <strong>Text (ASCII, Unicode):</strong> Each character is assigned a unique binary code. <strong>ASCII</strong> (American Standard Code for Information Interchange) uses 7 bits to represent 128 characters, which is enough for the English alphabet and common symbols. <strong>Unicode</strong> is a more modern standard that uses more bits, allowing it to represent a much wider range of characters and languages from around the world.
+                    </li>
+                    <li>
+                        <strong>Images (Resolution, Color Depth):</strong> An image is made up of a grid of tiny squares called <strong>pixels</strong>.
+                        <ul class="list-disc list-inside space-y-1 mt-1 pl-4">
+                            <li><strong>Resolution:</strong> This is the number of pixels in an image, typically measured as width x height (e.g., $1920 \times 1080$). A higher resolution means more pixels, which results in a sharper image but a larger file size.</li>
+                            <li><strong>Color Depth (Bit Depth):</strong> This is the number of bits used to represent the color of a single pixel. A color depth of 1 bit allows for 2 colors ($2^1$), 4 bits allows for 16 colors ($2^4$), and 24 bits allows for over 16 million colors ($2^{24}$). A higher color depth gives more vibrant colors but increases the file size.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Sound (Sample Rate, Sample Resolution):</strong> Sound is an analogue wave, so it must be converted into a digital format.
+                        <ul class="list-disc list-inside space-y-1 mt-1 pl-4">
+                            <li><strong>Sample Rate:</strong> This is the number of times per second the amplitude of the sound wave is measured. It's measured in Hertz (Hz). A higher sample rate captures more detail of the sound wave, leading to higher quality but a larger file size. For example, $22$ kHz means $22,000$ samples are taken per second.</li>
+                            <li><strong>Sample Resolution (Bit Depth):</strong> This is the number of bits used to store the amplitude of each sample. A higher sample resolution provides a more accurate representation of the sound wave, improving quality but increasing file size.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Interactive Logical Shift Example -->
+            <div class="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">Examples & Interactive Tool: Logical Shift</h3>
+                <p class="mb-4">
+                    <strong>Example:</strong> A logical left shift of the 8-bit binary number `00011000` (Denary 24) by 3 bits.
+                    The original bits are shifted 3 places to the left. The 3 bits at the start are lost, and 3 zeros are added to the end.
+                    <br>
+                    `00011000` $\rightarrow$ `00110000` $\rightarrow$ `01100000` $\rightarrow$ `11000000`
+                    <br>
+                    The result is `11000000`, which is Denary 192.
+                </p>
+                
+                <hr class="my-6">
+                
+                <h4 class="text-xl font-semibold mb-2">Try it yourself!</h4>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <div class="flex flex-col">
+                        <label for="binaryInput" class="mb-1 text-sm font-medium">8-bit Binary Number:</label>
+                        <input type="text" id="binaryInput" class="p-2 border rounded-md w-full sm:w-48 text-center" value="00011000" maxlength="8">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="shiftAmount" class="mb-1 text-sm font-medium">Shift by (bits):</label>
+                        <input type="number" id="shiftAmount" class="p-2 border rounded-md w-full sm:w-24 text-center" value="3" min="1" max="7">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="shiftDirection" class="mb-1 text-sm font-medium">Direction:</label>
+                        <select id="shiftDirection" class="p-2 border rounded-md w-full sm:w-28">
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </div>
+                    <button onclick="performShift()" class="mt-auto px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200">
+                        Shift
+                    </button>
+                </div>
+                <div id="shiftResult" class="mt-6 p-4 bg-gray-200 rounded-md">
+                    <p class="text-lg font-mono">Result: <span id="resultBinary"></span></p>
+                    <p class="text-lg font-mono">Denary Value: <span id="resultDenary"></span></p>
+                </div>
+            </div>
+
+            <!-- In-Class Exercises -->
+            <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">In-Class Exercises</h3>
+                <h4 class="text-xl font-semibold mb-2">Shift Drills:</h4>
+                <ul class="list-disc list-inside space-y-2 pl-4 mb-4">
+                    <li>Logical left shift of `00101010` by 2 bits.</li>
+                    <li>Logical right shift of `10100000` by 3 bits.</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">File Size Impact:</h4>
+                <p class="mb-4">
+                    An audio file is recorded with a sample rate of $22$ kHz and a sample resolution of 8 bits. Describe what happens to the file size and quality if:
+                    <ul class="list-disc list-inside space-y-1 pl-4">
+                        <li>a) the sample rate is doubled, and</li>
+                        <li>b) the sample resolution is halved.</li>
+                    </ul>
+                </p>
+            </div>
+        </section>
+
+        <!-- Class 2: File Size, Compression & Data Transmission -->
+        <section class="mb-12 bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-200">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Class 2: File Size, Compression & Data Transmission</h2>
+            
+            <!-- Theory Concepts -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">Theory Concepts</h3>
+                
+                <h4 class="text-xl font-semibold mb-2">Data Storage Units & File Size Calculation</h4>
+                <p class="mb-4">
+                    Data storage units are based on powers of 2.
+                    <ul class="list-disc list-inside space-y-1 mt-2 pl-4">
+                        <li>1 byte = 8 bits</li>
+                        <li>1 KiB (Kibibyte) = $2^{10}$ bytes = 1,024 bytes</li>
+                        <li>1 MiB (Mebibyte) = $2^{10}$ KiB = 1,024 KiB</li>
+                        <li>1 GiB (Gibibyte) = $2^{10}$ MiB = 1,024 MiB</li>
+                    </ul>
+                    To calculate the file size of an uncompressed image: <br>
+                    File Size (bits) = (Resolution Width $\times$ Resolution Height) $\times$ Color Depth (bits)
+                </p>
+                
+                <h4 class="text-xl font-semibold mb-2">Compression: Lossy vs. Lossless</h4>
+                <ul class="list-disc list-inside space-y-2 mb-4 pl-4">
+                    <li>
+                        <strong>Lossless Compression:</strong> This method reduces file size without losing any data. The original data can be perfectly reconstructed from the compressed data. It's used for files where data integrity is critical, such as text documents or code. A common technique is <strong>Run-Length Encoding (RLE)</strong>, which replaces sequences of identical data with a count and the data itself (e.g., `AAAA` becomes `4A`).
+                    </li>
+                    <li>
+                        <strong>Lossy Compression:</strong> This method reduces file size by permanently removing some data that is considered less important to the human eye or ear. The original file cannot be restored exactly. It's used for media files like images (JPEG) and sound (MP3) where a small loss in quality is acceptable for a significant reduction in file size.
+                    </li>
+                </ul>
+                
+                <h4 class="text-xl font-semibold mb-2">Data Transmission: Packets</h4>
+                <p class="mb-4">
+                    When data is sent over a network, it is broken down into small units called <strong>packets</strong>. Each packet travels independently to the destination, where they are reassembled in the correct order. Each packet has a specific structure: 
+                </p>
+                <ul class="list-disc list-inside space-y-2 pl-4">
+                    <li><strong>Header:</strong> Contains control information such as the source and destination IP addresses, packet sequence number, and protocol information.</li>
+                    <li><strong>Payload:</strong> This is the actual data being sent.</li>
+                    <li><strong>Trailer:</strong> Contains information to check for errors in transmission, such as a checksum.</li>
+                </ul>
+            </div>
+            
+            <!-- Interactive Compression & File Size Example -->
+            <div class="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">Examples & Interactive Tools</h3>
+                
+                <h4 class="text-xl font-semibold mb-2">Run-Length Encoding (RLE)</h4>
+                <p class="mb-4">
+                    <strong>Example:</strong> Apply RLE to `AAAABBBCCDAAA`. The result is `4A3B2C1D3A`.
+                </p>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
+                    <div class="flex flex-col">
+                        <label for="rleInput" class="mb-1 text-sm font-medium">String to Compress:</label>
+                        <input type="text" id="rleInput" class="p-2 border rounded-md w-full sm:w-64" value="AAAABBBCCDAAA">
+                    </div>
+                    <button onclick="performRLE()" class="mt-auto px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200">
+                        Compress (RLE)
+                    </button>
+                </div>
+                <div id="rleResult" class="p-4 bg-gray-200 rounded-md">
+                    <p class="text-lg font-mono">Result: <span id="rleOutput"></span></p>
+                </div>
+
+                <hr class="my-6">
+                
+                <h4 class="text-xl font-semibold mb-2">File Size Calculator</h4>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
+                    <div class="flex flex-col">
+                        <label for="imageWidth" class="mb-1 text-sm font-medium">Width (pixels):</label>
+                        <input type="number" id="imageWidth" class="p-2 border rounded-md w-full sm:w-32 text-center" value="1920">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="imageHeight" class="mb-1 text-sm font-medium">Height (pixels):</label>
+                        <input type="number" id="imageHeight" class="p-2 border rounded-md w-full sm:w-32 text-center" value="1080">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="colorDepth" class="mb-1 text-sm font-medium">Color Depth (bits):</label>
+                        <input type="number" id="colorDepth" class="p-2 border rounded-md w-full sm:w-32 text-center" value="24" min="1">
+                    </div>
+                    <button onclick="calculateFileSize()" class="mt-auto px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200">
+                        Calculate GiB
+                    </button>
+                </div>
+                <div id="fileSizeResult" class="p-4 bg-gray-200 rounded-md">
+                    <p class="text-lg font-mono">File Size: <span id="fileSizeOutput"></span> GiB</p>
+                </div>
+            </div>
+            
+            <!-- In-Class Exercises -->
+            <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">In-Class Exercises</h3>
+                <h4 class="text-xl font-semibold mb-2">File Size Problem:</h4>
+                <p class="mb-4">
+                    A picture has a resolution of $1920 \times 1080$ pixels with a color depth of 24 bits. Calculate its file size in Gibibytes (GiB) and explain your steps.
+                </p>
+                <h4 class="text-xl font-semibold mb-2">Compression Application:</h4>
+                <p class="mb-4">
+                    You are sending a text document and a family photograph. For each, which type of compression (lossy or lossless) would you use and why?
+                </p>
+            </div>
+        </section>
+
+        <!-- Possible Homework -->
+        <section class="bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-200">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Possible Homework</h2>
+            <div class="mb-6">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">Class 1: RGB and Binary</h3>
+                <p>
+                    A graphics card uses hexadecimal to represent colors in RGB format. The hex code for a specific shade of blue is `#0000FF`. Research this format and break down the hex code into its red, green, and blue components. Then, convert each component into an 8-bit binary number.
+                </p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">Class 2: Compression Research</h3>
+                <p>
+                    Research one specific lossy compression algorithm (e.g., how JPEG works by averaging colors) and one specific lossless compression algorithm (e.g., Huffman coding). Explain the basic principle of how each reduces file size.
+                </p>
+            </div>
+        </section>
+        
+    </div>
+
+    <script>
+        // --- Class 1: Logical Shift Functionality ---
+        function performShift() {
+            const binaryInput = document.getElementById('binaryInput').value.trim();
+            const shiftAmount = parseInt(document.getElementById('shiftAmount').value);
+            const shiftDirection = document.getElementById('shiftDirection').value;
+
+            // Basic validation
+            if (!binaryInput || binaryInput.length !== 8 || !/^[01]+$/.test(binaryInput)) {
+                alert("Please enter a valid 8-bit binary number.");
+                return;
+            }
+            if (isNaN(shiftAmount) || shiftAmount < 1 || shiftAmount > 7) {
+                alert("Please enter a valid shift amount between 1 and 7.");
+                return;
+            }
+
+            let newBinary = '';
+            if (shiftDirection === 'left') {
+                newBinary = binaryInput.substring(shiftAmount) + '0'.repeat(shiftAmount);
+            } else { // right shift
+                newBinary = '0'.repeat(shiftAmount) + binaryInput.substring(0, 8 - shiftAmount);
+            }
+
+            const denaryValue = parseInt(newBinary, 2);
+
+            document.getElementById('resultBinary').textContent = newBinary;
+            document.getElementById('resultDenary').textContent = denaryValue;
+        }
+
+        // --- Class 2: RLE and File Size Functionality ---
+        function performRLE() {
+            const inputString = document.getElementById('rleInput').value;
+            if (!inputString) {
+                document.getElementById('rleOutput').textContent = "Input a string to compress.";
+                return;
+            }
+
+            let compressed = '';
+            let count = 1;
+            for (let i = 0; i < inputString.length; i++) {
+                if (inputString[i] === inputString[i + 1]) {
+                    count++;
+                } else {
+                    compressed += count + inputString[i];
+                    count = 1;
+                }
+            }
+            document.getElementById('rleOutput').textContent = compressed;
+        }
+
+        function calculateFileSize() {
+            const width = parseInt(document.getElementById('imageWidth').value);
+            const height = parseInt(document.getElementById('imageHeight').value);
+            const colorDepth = parseInt(document.getElementById('colorDepth').value);
+
+            // Basic validation
+            if (isNaN(width) || isNaN(height) || isNaN(colorDepth) || width <= 0 || height <= 0 || colorDepth <= 0) {
+                alert("Please enter valid positive numbers for all fields.");
+                return;
+            }
+
+            // File size in bits
+            const totalBits = width * height * colorDepth;
+            // Convert to bytes, then GiB
+            const totalBytes = totalBits / 8;
+            const gibibytes = totalBytes / (1024 * 1024 * 1024);
+
+            document.getElementById('fileSizeOutput').textContent = gibibytes.toFixed(4);
+        }
+
+        // Run the functions on page load to display initial examples
+        window.onload = function() {
+            performShift();
+            performRLE();
+            calculateFileSize();
+        };
+    </script>
+</body>
+</html>
