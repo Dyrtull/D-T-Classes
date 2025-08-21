@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Transmission: Types, Methods & Errors</title>
+    <!-- Use Inter font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            padding-bottom: 0;
+        }
+        .collapsible-content.expanded {
+            max-height: 500px; /* A large enough value to accommodate content */
+            padding-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-8">
+
+    <div class="container mx-auto bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+
+        <header class="text-center mb-10">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-800">Understanding Data Transmission</h1>
+            <p class="text-lg text-gray-600 mt-2">A guide to how information moves across networks.</p>
+        </header>
+
+        <!-- Section: Data Transmission & Packets -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Data Transmission & Packets</h2>
+            <div class="bg-blue-50 p-6 rounded-lg mb-6">
+                <p class="text-gray-700 leading-relaxed">
+                    Data transmission is the process of moving data from one point to another. To do this efficiently and reliably, data is often broken down into smaller units called <strong>data packets</strong>.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-around my-6 space-y-4 sm:space-y-0">
+                    <!-- Image placeholder for data packet -->
+                    <img src="https://lh5.googleusercontent.com/vi3V0geTnBGxDQ89T343aEFds-yTKRZ0T1PjWQdxgKc5czSaCS3s9huvkGt2q757XDlIAF9x04ab107Ej8KoUaXdt-m5BCwEzrrkEtH0Iq8HBaHtyf6WJB8k2emZXAxKHiMGJyrcIU7iTl2QHQ" alt="Diagram of a data packet" class="rounded-md shadow-md" style="width: 180px; height: 100px;">
+                    <div class="space-y-2 text-sm sm:text-base">
+                        <div class="p-2 bg-blue-200 rounded-lg text-gray-800 font-semibold">Header</div>
+                        <div class="p-2 bg-gray-200 rounded-lg text-gray-800 font-semibold">Payload</div>
+                        <div class="p-2 bg-blue-200 rounded-lg text-gray-800 font-semibold">Trailer</div>
+                    </div>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-2">Packet Structure</h3>
+                <ul class="list-disc list-inside text-gray-600">
+                    <li><strong>Header:</strong> Contains the IP address of the sender and the receiver, the sequence number, and the size of the packet.</li>
+                    <li><strong>Payload:</strong> Contains the actual data being transmitted.</li>
+                    <li><strong>Trailer:</strong> Includes a method of identifying the end of the packet and error-checking information.</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Section: Packet Switching -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Packet Switching</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                Packet switching is a method where data is broken into multiple packets. These packets are sent independently from start to end and reassembled at the receiver’s computer.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="bg-green-100 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-green-700 mb-2">Advantages</h3>
+                    <ul class="list-disc list-inside text-gray-600">
+                        <li>No need to create a single line of communication.</li>
+                        <li>Possible to overcome failed or busy nodes.</li>
+                        <li>High data transmission speed.</li>
+                        <li>Easy to expand package usage.</li>
+                    </ul>
+                </div>
+                <div class="bg-red-100 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-red-700 mb-2">Disadvantages</h3>
+                    <ul class="list-disc list-inside text-gray-600">
+                        <li>Packets may be lost.</li>
+                        <li>More prone to errors in real-time streaming.</li>
+                        <li>Delay at the receiver while packets are being re-ordered.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Data Transmission Types -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Types of Data Transmission</h2>
+            <div class="space-y-4">
+                <p class="text-gray-700"><strong>Simplex:</strong> Data transmission is in one direction only (e.g. computer to printer).</p>
+                <p class="text-gray-700"><strong>Half-duplex:</strong> Data transmission is in both directions but not at the same time (e.g., walkie-talkie).</p>
+                <p class="text-gray-700"><strong>Full-duplex:</strong> Data transmission is in both directions simultaneously (e.g. broadband connection on a phone line).</p>
+                <div class="flex justify-center my-6">
+                    <!-- Image placeholder for transmission types -->
+                    <img src="https://www.totalphase.com/media/blog/2022/10/Half-Duplex-Full-Duplex.png" alt="Diagram of simplex, half-duplex, and full-duplex transmission" class="rounded-md shadow-md" style="width: 300px; height: 120px;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Serial vs Parallel -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Serial vs. Parallel Transmission</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="p-3 border">Feature</th>
+                            <th class="p-3 border">Serial</th>
+                            <th class="p-3 border">Parallel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white">
+                            <td class="p-3 border">Distance</td>
+                            <td class="p-3 border">Better for longer distances</td>
+                            <td class="p-3 border">Better for short distances</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border">Cost</td>
+                            <td class="p-3 border">Cheaper option</td>
+                            <td class="p-3 border">Expensive (more hardware)</td>
+                        </tr>
+                        <tr class="bg-white">
+                            <td class="p-3 border">Speed</td>
+                            <td class="p-3 border">Slower option</td>
+                            <td class="p-3 border">Faster than serial</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border">Synchronization</td>
+                            <td class="p-3 border">Easier to synchronize</td>
+                            <td class="p-3 border">Difficult to synchronize (skew)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex justify-center my-6">
+                 <!-- Image placeholder for serial vs parallel transmission -->
+                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW-1z15Eck6PCSw0ZO_OZqD2MuVcY7TpKPGA&s" alt="Diagram of serial and parallel transmission" class="rounded-md shadow-md" style="width: 350px; height: 120px;">
+            </div>
+        </section>
+
+        <!-- Section: USB -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Universal Serial Bus (USB)</h2>
+            <p class="text-gray-700 mb-4">
+                USB is an asynchronous serial data transmission method using a four-wire shielded cable (two for power/earth, two for data).
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="bg-green-100 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-green-700 mb-2">Advantages</h3>
+                    <ul class="list-disc list-inside text-gray-600">
+                        <li>Automatically detected.</li>
+                        <li>Only fits one way, preventing incorrect connections.</li>
+                        <li>Backwards compatible.</li>
+                        <li>Industry-standard.</li>
+                    </ul>
+                </div>
+                <div class="bg-red-100 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-red-700 mb-2">Disadvantages</h3>
+                    <ul class="list-disc list-inside text-gray-600">
+                        <li>Transmission rate is less than 120 MB/sec.</li>
+                        <li>Maximum cable length is about 5 metres.</li>
+                        <li>Different data transmission rates.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Error Detection -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Methods of Error Detection</h2>
+            <div class="space-y-6">
+                <!-- Parity Checks -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">1. Parity Checks</h3>
+                    <p class="text-gray-600 mb-4">Uses the number of 1-bits in a byte to check for errors. The <strong>LMB (Left-Most Bit)</strong> is the parity bit.</p>
+                    <div class="bg-white p-4 rounded-md shadow-inner">
+                        <label for="parityInput" class="block text-gray-700 font-semibold mb-2">Enter a 7-bit binary value:</label>
+                        <input type="text" id="parityInput" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., 1011010">
+                        <div class="flex space-x-4 mt-4">
+                            <button id="evenParityBtn" class="flex-1 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors">Calculate Even Parity</button>
+                            <button id="oddParityBtn" class="flex-1 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-colors">Calculate Odd Parity</button>
+                        </div>
+                        <div id="parityResult" class="mt-4 text-center font-bold text-gray-800"></div>
+                    </div>
+                </div>
+
+                <!-- Checksum -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">2. Checksum</h3>
+                    <p class="text-gray-600">The sender calculates a checksum value from a block of data. The receiver performs the same calculation and compares the result. If they don't match, the data is re-sent.</p>
+                    <div class="flex justify-center my-6">
+                        <!-- Image placeholder for checksum -->
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20200909115220/Checksum.png" alt="Diagram showing the checksum process" class="rounded-md shadow-md" style="width: 250px; height: 120px;">
+                    </div>
+                </div>
+
+                <!-- Echo Check -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">3. Echo Check</h3>
+                    <p class="text-gray-600">The receiver sends the data back to the sender for verification. The sender compares the received data with the original to check for errors.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Other Methods -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Other Important Methods</h2>
+            <div class="space-y-6">
+                <!-- Check Digits -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Check Digits</h3>
+                    <p class="text-gray-600">Calculated from all other digits in a code (e.g., product barcodes) to detect mistyping errors.</p>
+                    <p class="text-gray-600 mt-2"><strong>Example:</strong> A common ISBN check digit system can detect if "6372" was typed incorrectly as "6379".</p>
+                </div>
+
+                <!-- Automatic Repeat Requests (ARQs) -->
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Automatic Repeat Requests (ARQs)</h3>
+                    <p class="text-gray-600">Uses <strong>acknowledgements</strong> (ACK) and <strong>timeouts</strong> to ensure data is received correctly. If a negative acknowledgement (NACK) or no response is received, the data is re-sent.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Encryption -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Encryption</h2>
+            <p class="text-gray-700 mb-4">
+                The process of turning data into an unreadable <strong>ciphertext</strong> from its original <strong>plaintext</strong> form to prevent unauthorized access.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Symmetric Encryption -->
+                <div class="bg-purple-100 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-purple-700 mb-2">Symmetric Encryption</h3>
+                    <p class="text-gray-600 mb-4">Uses the <strong>same key</strong> for both encryption and decryption.</p>
+                    <div class="flex justify-center my-4">
+                        <!-- Image placeholder for symmetric encryption -->
+                        <img src="https://www.clickssl.net/wp-content/uploads/2019/12/symmetric-encryption.jpg" alt="Diagram showing symmetric encryption" class="rounded-md shadow-md" style="width: 180px; height: 120px;">
+                    </div>
+                </div>
+
+                <!-- Asymmetric Encryption -->
+                <div class="bg-yellow-100 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-yellow-700 mb-2">Asymmetric Encryption</h3>
+                    <p class="text-gray-600 mb-4">Uses a <strong>public key</strong> for encryption and a separate <strong>private key</strong> for decryption.</p>
+                    <div class="flex justify-center my-4">
+                        <!-- Image placeholder for asymmetric encryption -->
+                        <img src="https://www.sectigo.com/uploads/images/Sectigo-Quantum-Lab-Diagram.png" alt="Diagram showing asymmetric encryption" class="rounded-md shadow-md" style="width: 180px; height: 120px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-500 text-sm mt-10">
+            <p>&copy; 2024 Data Transmission Guide. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Parity Check logic
+        const parityInput = document.getElementById('parityInput');
+        const evenParityBtn = document.getElementById('evenParityBtn');
+        const oddParityBtn = document.getElementById('oddParityBtn');
+        const parityResult = document.getElementById('parityResult');
+
+        function calculateParity(parityType) {
+            const input = parityInput.value.trim();
+            if (!/^[01]{7}$/.test(input)) {
+                parityResult.textContent = 'Please enter a valid 7-bit binary string (e.g., 1011010).';
+                parityResult.classList.add('text-red-500');
+                return;
+            }
+            parityResult.classList.remove('text-red-500');
+
+            let oneCount = 0;
+            for (let i = 0; i < input.length; i++) {
+                if (input[i] === '1') {
+                    oneCount++;
+                }
+            }
+
+            let parityBit = 0;
+            if (parityType === 'even') {
+                parityBit = (oneCount % 2 === 0) ? 0 : 1;
+                parityResult.textContent = `Even Parity: ${parityBit}${input}. (Number of 1s: ${oneCount + parityBit})`;
+            } else if (parityType === 'odd') {
+                parityBit = (oneCount % 2 === 0) ? 1 : 0;
+                parityResult.textContent = `Odd Parity: ${parityBit}${input}. (Number of 1s: ${oneCount + parityBit})`;
+            }
+        }
+
+        evenParityBtn.addEventListener('click', () => calculateParity('even'));
+        oddParityBtn.addEventListener('click', () => calculateParity('odd'));
+
+        // Basic form validation for the input field to prevent non-binary characters
+        parityInput.addEventListener('input', (event) => {
+            event.target.value = event.target.value.replace(/[^01]/g, '').substring(0, 7);
+        });
+    </script>
+
+</body>
+</html>
