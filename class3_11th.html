@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Hardware: A Student Guide</title>
+    <!-- Use Tailwind CSS for a clean, modern, and responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .section-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        .btn-check {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: background-color 0.3s;
+        }
+        .btn-check:hover {
+            background-color: #1e40af;
+        }
+        .correct-text {
+            color: #10b981;
+            font-weight: 600;
+        }
+        .incorrect-text {
+            color: #ef4444;
+            font-weight: 600;
+        }
+        /* Style for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        tr:nth-child(even) {
+            background-color: #f3f4f6;
+        }
+        /* Tab styling */
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem 0.75rem 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6b7280;
+            background-color: #e5e7eb;
+            transition: background-color 0.3s;
+        }
+        .tab-button.active {
+            background-color: white;
+            color: #4f46e5;
+            border-bottom: 2px solid #4f46e5;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Image styling */
+        .w-32 {
+            width: 8rem;
+        }
+        .h-32 {
+            height: 8rem;
+        }
+        .w-20 {
+            width: 5rem;
+        }
+        .h-20 {
+            height: 5rem;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10">
+
+    <div class="container mx-auto">
+        <!-- Header Section -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-2">Computer Hardware: A Student Guide</h1>
+            <p class="text-lg text-gray-600">Explore the essential components that make a computer work.</p>
+        </header>
+
+        <!-- Tab Controls -->
+        <div class="flex space-x-2 mb-6 -mx-2 md:mx-0">
+            <button class="tab-button active" onclick="openTab('core-concepts')">Core Concepts</button>
+            <button class="tab-button" onclick="openTab('exercises')">Exercises</button>
+            <button class="tab-button" onclick="openTab('homework')">Homework</button>
+        </div>
+        
+        <!-- Tab Content -->
+        <main class="space-y-8">
+            <!-- Core Concepts Section -->
+            <section id="core-concepts" class="section-card tab-content active">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Core Concepts & Definitions</h2>
+                
+                <!-- Input, Output, and Direct Data Entry -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Input, Output, and Direct Data Entry</h3>
+                    <div class="flex flex-col md:flex-row items-start md:items-center space-x-4 mb-4">
+                        <img src="https://img-1.kwcdn.com/product/fancy/7605153f-4325-4adc-9b3f-9fc1510e274b.jpg?imageView2/2/w/800/q/70/format/webp" alt="Image of a keyboard and mouse" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                        <p class="text-gray-600">
+                            <strong>Input Devices</strong> are hardware components used to send data to a computer. Think of them as the "eyes and ears" of the computer. Examples include a <strong>keyboard</strong>, a <strong>mouse</strong>, a <strong>microphone</strong>, and a <strong>webcam</strong>.
+                        </p>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-start md:items-center space-x-4 mb-4">
+                        <img src="https://vivo-us.com/cdn/shop/products/MOUNT-SP01CB_02.jpg?v=1667420852&width=800" alt="Image of a monitor and speakers" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                        <p class="text-gray-600">
+                            <strong>Output Devices</strong> receive data from a computer and display or present it to the user. They are the computer's "mouth." Examples are a <strong>monitor</strong> (visual output), <strong>speakers</strong> (audio output), and a <strong>printer</strong> (physical output).
+                        </p>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-start md:items-center space-x-4">
+                        <img src="https://5.imimg.com/data5/SELLER/Default/2021/2/KR/AJ/IB/77541424/barcode-scanner-1000x1000.jpg" alt="Image of a barcode scanner" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                        <p class="text-gray-600">
+                            <strong>Direct Data Entry Devices</strong> are a specialized type of input device that captures data without the need for human-transcription. They are often used to increase speed and accuracy. Examples include a <strong>magnetic stripe reader</strong> (used for credit cards), a <strong>barcode scanner</strong> (used at a grocery store checkout), and an <strong>optical mark recognition (OMR) scanner</strong> (used for multiple-choice tests).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Storage Media -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Storage Media</h3>
+                    <p class="text-gray-600 mb-4">
+                        Storage devices are used to save data for later use. We'll differentiate between three primary types based on their technology.
+                    </p>
+                    <div class="overflow-x-auto rounded-lg shadow-sm">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Image</th>
+                                    <th>How It Works</th>
+                                    <th>Pros</th>
+                                    <th>Cons</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-semibold">Magnetic (HDD)</td>
+                                    <td><img src="https://www.gcsecs.com/uploads/2/6/5/0/26505918/published/m1.jpg?1572283633" alt="Hard disk drive" class="rounded-lg shadow-md w-20 h-20"></td>
+                                    <td>Uses a spinning platter with a magnetic head to read/write data.</td>
+                                    <td>High capacity, low cost per gigabyte, durable for long-term archiving.</td>
+                                    <td>Slower access speeds, mechanical parts can fail, sensitive to physical shock.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Optical (CD/DVD)</td>
+                                    <td><img src="https://m.media-amazon.com/images/I/71sbzIh4NfL._AC_SL1500_.jpg" alt="Optical CD or DVD" class="rounded-lg shadow-md w-20 h-20"></td>
+                                    <td>Uses a laser to read or write data onto a reflective disc.</td>
+                                    <td>Very cheap, great for distributing software or music, resistant to magnetic fields.</td>
+                                    <td>Low capacity, slow read/write speeds, susceptible to scratches and heat.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Solid-State (SSD)</td>
+                                    <td><img src="https://cdn.shopify.com/s/files/1/1986/9305/files/1663155864-hard-disk-drive-hdd-solid-state-drive-ssd-and-ssd-2021-08-29-21-04-56-utc-1.jpg?v=1743097636" alt="Solid state drive" class="rounded-lg shadow-md w-20 h-20"></td>
+                                    <td>Uses flash memory (similar to a USB drive) to store data electronically.</td>
+                                    <td>Extremely fast read/write speeds, no moving parts, very durable.</td>
+                                    <td>Higher cost per gigabyte, limited number of write cycles, can lose data without power over long periods.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Exercises Section -->
+            <section id="exercises" class="section-card tab-content">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">In-Class Exercises</h2>
+
+                <!-- Device Function & Flow -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Device Function & Flow (10 questions)</h3>
+                    <p class="text-gray-600 mb-6">For the scenarios below, identify the correct device types involved. Choose from: <strong>Input</strong>, <strong>Processing</strong>, and <strong>Output</strong>.</p>
+                    
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://m.media-amazon.com/images/I/51BMV3+snML._AC_SL1000_.jpg" alt="ATM Machine" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">1. Withdrawing money from an ATM.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Card Reader:</span>
+                                <select id="q1-reader" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Screen:</span>
+                                <select id="q1-screen" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Cash Dispenser:</span>
+                                <select id="q1-dispenser" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q1-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://lagunabeachuc.com/wp-content/uploads/2024/06/doctor-using-chest-x-ray-machine.jpg" alt="X-Ray image" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">2. A doctor examining an X-ray image on their computer.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">X-ray Scanner:</span>
+                                <select id="q2-scanner" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Computer:</span>
+                                <select id="q2-computer" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Monitor:</span>
+                                <select id="q2-monitor" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q2-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F6652d25b-45ea-461d-8808-011e8e69b022.jpg?source=next-article&fit=scale-down&quality=highest&width=700&dpr=1" alt="Gaming console" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">3. Playing a video game on a console.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Game Controller:</span>
+                                <select id="q3-controller" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Console:</span>
+                                <select id="q3-console" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Television:</span>
+                                <select id="q3-tv" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q3-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://images.ctfassets.net/16nm6vz43ids/2IW5adbIEmeJdPChUOFnx8/0db7cdf75475a92d2f2dad05d0eb1357/Facetime_on_android.jpg?fm=webp&q=65" alt="Person on a phone call" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">4. Making a video call on a smartphone.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Microphone:</span>
+                                <select id="q4-mic" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Camera:</span>
+                                <select id="q4-camera" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Screen:</span>
+                                <select id="q4-screen" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q4-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyOSb95pfuES-TMqEKZSP-tUFwVKMtwwdgdg&s" alt="Smart thermostat" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">5. A smart thermostat adjusting the temperature in a room.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Temperature Sensor:</span>
+                                <select id="q5-sensor" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Thermostat:</span>
+                                <select id="q5-thermostat" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">AC Unit:</span>
+                                <select id="q5-ac" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q5-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://assets.entrepreneur.com/content/3x2/2000/1594930973-GettyImages-1213470229.jpg" alt="A laptop with a webcam" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">6. Attending an online meeting with a laptop.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Webcam:</span>
+                                <select id="q6-webcam" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Laptop:</span>
+                                <select id="q6-laptop" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Speakers:</span>
+                                <select id="q6-speakers" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q6-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9v3hYUaGN65142m8uo0zixZqtruDPoTRY9w&s" alt="Printer machine" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">7. Printing a document from your computer.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Keyboard/Mouse:</span>
+                                <select id="q7-input" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Computer:</span>
+                                <select id="q7-processing" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Printer:</span>
+                                <select id="q7-printer" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q7-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+                    
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://cdn.prod.website-files.com/62045da4270c887c4de9c45f/6207dcca527ccdbae1791d2_imaging.jpeg" alt="Document scanner" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">8. Scanning a photo to a digital file.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Scanner:</span>
+                                <select id="q8-scanner" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Computer:</span>
+                                <select id="q8-computer" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Monitor:</span>
+                                <select id="q8-monitor" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q8-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi69V854N4i2bp64gYsk8QFZrvnCTcHoGgUQ&s" alt="Point of sale terminal" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">9. Checking out at a grocery store.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Barcode Scanner:</span>
+                                <select id="q9-scanner" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Cash Register:</span>
+                                <select id="q9-register" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Receipt Printer:</span>
+                                <select id="q9-printer" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q9-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://images.ctfassets.net/16nm6vz43ids/6akCzQc0YcVqtuboG7UFL/d6458b91333f4e8f56d0f4c18af5f054/Play_music_on_all_Alexa_devices.jpg?fm=webp&q=65" alt="Smart speaker" class="rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0">
+                            <p class="text-gray-700 font-medium">10. Using a smart speaker to play music.</p>
+                        </div>
+                        <div class="flex items-center space-x-4 flex-wrap mt-2">
+                            <label class="flex items-center">
+                                <span class="mr-2">Microphone:</span>
+                                <select id="q10-mic" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Smart Speaker:</span>
+                                <select id="q10-speaker" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                            <label class="flex items-center">
+                                <span class="mr-2">Speaker:</span>
+                                <select id="q10-audio" class="rounded-md border border-gray-300 p-1">
+                                    <option value="">Select...</option>
+                                    <option value="input">Input</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="output">Output</option>
+                                </select>
+                            </label>
+                        </div>
+                        <p id="q10-feedback" class="mt-2 text-sm italic"></p>
+                    </div>
+                    
+                    <!-- Single Check button for Device Function & Flow section -->
+                    <button onclick="checkAllDeviceFlowAnswers()" class="btn-check mt-4">Check All Answers</button>
+                    <p id="device-flow-feedback" class="mt-4 text-sm italic"></p>
+                </div>
+
+                <!-- Storage Solution Challenge -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Storage Solution Challenge (10 questions)</h3>
+                    <p class="text-gray-600 mb-6">Which storage type (HDD, SSD, or Optical) would you recommend for each scenario? Use the acronyms in your answer. Explanations will be shown after checking.</p>
+                    
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://www.gcsecs.com/uploads/2/6/5/0/26505918/published/m1.jpg?1572283633" alt="Hard disk drive" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">1. Storing a personal video library of over 5 terabytes.</p>
+                        </div>
+                        <input type="text" id="sol-q1" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q1-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+                    
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://cdn.shopify.com/s/files/1/1986/9305/files/1663155864-hard-disk-drive-hdd-solid-state-drive-ssd-and-ssd-2021-08-29-21-04-56-utc-1.jpg?v=1743097636" alt="Solid state drive" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">2. The primary drive for a high-performance gaming PC.</p>
+                        </div>
+                        <input type="text" id="sol-q2" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q2-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://images.ctfassets.net/16nm6vz43ids/3bX5F3r29fT2qK979OQeFp/23b3a6a1a7c36a29e2c608a0d4b967d3/USB-C_hero_750x750.jpg?fm=webp&q=65" alt="USB flash drive" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">3. Storing and transferring a few documents for a class presentation.</p>
+                        </div>
+                        <input type="text" id="sol-q3" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q3-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+                    
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://m.media-amazon.com/images/I/71sbzIh4NfL._AC_SL1500_.jpg" alt="Optical CD disk" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">4. Distributing a small software application to a large number of people.</p>
+                        </div>
+                        <input type="text" id="sol-q4" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q4-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://i.guim.co.uk/img/media/e482701f68740c0f994770ceb2531a78c187425f/0_512_6911_4148/master/6911.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=554f738f7311746c039750d96d2b6389" alt="Server rack" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">5. A data center storing millions of user photos for a social media app.</p>
+                        </div>
+                        <input type="text" id="sol-q5" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q5-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://m.media-amazon.com/images/I/71X8X-L95zL._AC_SL1500_.jpg" alt="Rugged external drive" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">6. A photographer's external backup drive that they carry on location shoots.</p>
+                        </div>
+                        <input type="text" id="sol-q6" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q6-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+                    
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://media.ldlc.com/r1600/ld/products/00/05/98/95/LD0005989531_2.jpg" alt="Computer tower with a disk bay" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">7. The primary storage for a school's computer lab workstations.</p>
+                        </div>
+                        <input type="text" id="sol-q7" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q7-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://i.kinja-img.com/gawker-media/image/upload/c_fit,f_auto,g_center,pg_1,q_60,w_1315/f228d447f52479f6e626d7730e663a8a.jpg" alt="Portable game console" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">8. Internal storage for a portable handheld gaming device.</p>
+                        </div>
+                        <input type="text" id="sol-q8" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q8-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+                    
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://cdn11.bigcommerce.com/s-j3m041/images/stencil/1280x1280/products/5688/14878/SanDisk_Extreme_PRO_32GB_SDHC_Card__16093.1557870129.jpg?c=2" alt="Digital video camera" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">9. A tiny memory card for a 4K digital video camera.</p>
+                        </div>
+                        <input type="text" id="sol-q9" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q9-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+
+                    <div class="mb-6 p-4 border border-gray-200 rounded-lg">
+                        <div class="flex flex-col md:flex-row items-center space-x-4 mb-2">
+                            <img src="https://media.pitchfork.com/photos/5929b9e613d10a26d17b5cc9/1:1/w_600/28f73138.jpg" alt="Music CD" class="storage-image rounded-lg shadow-md w-32 h-32 mb-2 md:mb-0 hidden">
+                            <p class="text-gray-700 font-medium">10. Storing a music album to be sold in stores.</p>
+                        </div>
+                        <input type="text" id="sol-q10" class="w-full rounded-md border border-gray-300 p-2 mt-2" placeholder="Your recommendation...">
+                        <p id="sol-q10-feedback" class="mt-2 text-sm italic hidden"></p>
+                    </div>
+
+                    <!-- Single Check button for Storage Solution Challenge section -->
+                    <button onclick="checkAllStorageSolutions()" class="btn-primary">Check All Answers</button>
+                    <p id="sol-feedback" class="mt-4 text-sm italic"></p>
+                </div>
+            </section>
+
+            <!-- Homework Section -->
+            <section id="homework" class="section-card tab-content">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Possible Homework</h2>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Table Creation</h3>
+                    <p class="text-gray-600">
+                        Create a table of 3 direct data entry and 3 output devices with their uses, advantages, and disadvantages.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Short Essay</h3>
+                    <p class="text-gray-600">
+                        Explain why an SSD is preferred over an HDD for a laptop's primary storage (approximately 250 words).
+                    </p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- JavaScript for interactive exercises and tabs -->
+    <script>
+        // Function to handle tab switching
+        function openTab(tabId) {
+            // Hide all tab content sections
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Deactivate all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab content and activate its button
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`[onclick="openTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // Function to check all answers for the Device Function & Flow section
+        function checkAllDeviceFlowAnswers() {
+            let allCorrect = true;
+            
+            const answers = {
+                1: {
+                    'q1-reader': 'input',
+                    'q1-screen': ['input', 'output'], // Screen can be both input (touch) and output
+                    'q1-dispenser': 'output'
+                },
+                2: {
+                    'q2-scanner': 'input',
+                    'q2-computer': 'processing',
+                    'q2-monitor': 'output'
+                },
+                3: {
+                    'q3-controller': 'input',
+                    'q3-console': 'processing',
+                    'q3-tv': 'output'
+                },
+                4: {
+                    'q4-mic': 'input',
+                    'q4-camera': 'input',
+                    'q4-screen': 'output'
+                },
+                5: {
+                    'q5-sensor': 'input',
+                    'q5-thermostat': 'processing',
+                    'q5-ac': 'output'
+                },
+                6: {
+                    'q6-webcam': 'input',
+                    'q6-laptop': 'processing',
+                    'q6-speakers': 'output'
+                },
+                7: {
+                    'q7-input': 'input',
+                    'q7-processing': 'processing',
+                    'q7-printer': 'output'
+                },
+                8: {
+                    'q8-scanner': 'input',
+                    'q8-computer': 'processing',
+                    'q8-monitor': 'output'
+                },
+                9: {
+                    'q9-scanner': 'input',
+                    'q9-register': 'processing',
+                    'q9-printer': 'output'
+                },
+                10: {
+                    'q10-mic': 'input',
+                    'q10-speaker': 'processing',
+                    'q10-audio': 'output'
+                }
+            };
+            
+            for (let i = 1; i <= 10; i++) {
+                const qAnswers = answers[i];
+                let questionCorrect = true;
+                let feedbackText = '';
+                
+                for (const id in qAnswers) {
+                    const selectElement = document.getElementById(id);
+                    const selectedValue = selectElement.value;
+                    const correctAnswer = qAnswers[id];
+                    
+                    // **FIXED LINE**: This is the more reliable way to get the label text.
+                    const label = selectElement.previousElementSibling.textContent.trim();
+
+                    const isCorrect = Array.isArray(correctAnswer) ? correctAnswer.includes(selectedValue) : selectedValue === correctAnswer;
+
+                    if (!selectedValue) { // Check if an answer was selected
+                         feedbackText += `<span class="incorrect-text">${label} Please select an answer.</span> `;
+                         questionCorrect = false;
+                    } else if (isCorrect) {
+                        feedbackText += `<span class="correct-text">${label} Correct!</span> `;
+                    } else {
+                        feedbackText += `<span class="incorrect-text">${label} Incorrect.</span> `;
+                        questionCorrect = false;
+                    }
+                }
+                
+                const feedbackEl = document.getElementById(`q${i}-feedback`);
+                feedbackEl.innerHTML = feedbackText;
+
+                if (!questionCorrect) {
+                    allCorrect = false;
+                }
+            }
+
+            const overallFeedbackEl = document.getElementById('device-flow-feedback');
+            if (allCorrect) {
+                overallFeedbackEl.innerHTML = `<span class="correct-text">🎉 Great job! You got all the answers correct.</span>`;
+            } else {
+                overallFeedbackEl.innerHTML = `<span class="incorrect-text">Some answers are incorrect. Please review the feedback above.</span>`;
+            }
+        }
+
+        // Function to check all answers for the Storage Solution Challenge section
+        function checkAllStorageSolutions() {
+            const answers = {
+                1: { acronym: 'HDD', explanation: "For the video library, an HDD is a great choice because of its high capacity and low cost." },
+                2: { acronym: 'SSD', explanation: "For the gaming PC, an SSD is the top choice for its incredible speed and durability." },
+                3: { acronym: 'SSD', explanation: "For a few documents, a small SSD (USB flash drive) is fast and portable." },
+                4: { acronym: 'Optical', explanation: "For distributing software, optical discs are cheap and widely compatible." },
+                5: { acronym: 'HDD', explanation: "For a data center, HDDs offer the best balance of cost and high capacity." },
+                6: { acronym: 'SSD', explanation: "For a photographer's portable drive, an SSD's durability is key." },
+                7: { acronym: 'HDD', explanation: "For a computer lab, HDDs provide cheap, high-capacity storage for many users." },
+                8: { acronym: 'SSD', explanation: "For a portable gaming device, a small SSD is fast and has no moving parts." },
+                9: { acronym: 'SSD', explanation: "For a 4K video camera, a fast SSD card is necessary for high-speed writes." },
+                10: { acronym: 'Optical', explanation: "For music distribution, optical discs are a low-cost, durable solution." }
+            };
+
+            let allCorrect = true;
+            for (let i = 1; i <= 10; i++) {
+                const inputId = `sol-q${i}`;
+                const feedbackId = `sol-q${i}-feedback`;
+                const userInput = document.getElementById(inputId).value.trim().toUpperCase();
+                const feedbackEl = document.getElementById(feedbackId);
+                const correctAnswer = answers[i].acronym.toUpperCase();
+                
+                feedbackEl.classList.remove('hidden');
+
+                if (userInput === correctAnswer) {
+                    feedbackEl.innerHTML = `<span class="correct-text">Correct!</span> ${answers[i].explanation}`;
+                } else {
+                    feedbackEl.innerHTML = `<span class="incorrect-text">Incorrect.</span> The correct answer is: <strong>${answers[i].acronym}</strong>. ${answers[i].explanation}`;
+                    allCorrect = false;
+                }
+            }
+
+            const storageImages = document.querySelectorAll('.storage-image');
+            storageImages.forEach(img => img.classList.remove('hidden'));
+            
+            const overallFeedbackEl = document.getElementById('sol-feedback');
+            if (allCorrect) {
+                overallFeedbackEl.innerHTML = `<span class="correct-text">🎉 All of your answers are correct! Great job!</span>`;
+            } else {
+                overallFeedbackEl.innerHTML = `<span class="incorrect-text">Keep trying! Check the feedback for each question above.</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

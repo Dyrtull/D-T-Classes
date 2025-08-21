@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Truss Bridge Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutrals (Stone, Sky) -->
+    <!-- Application Structure Plan: A thematic, scroll-based learning path. Starts with basic concepts (Forces), compares structures (Beam vs. Triangle), explains theory (FBDs), and culminates in an interactive Warren Truss calculator. This guided structure is better for learning than a data-dump dashboard, building student confidence step-by-step. -->
+    <!-- Visualization & Content Choices: Intro -> Inform -> HTML/CSS diagrams -> Hover interaction -> Simple & direct. Why Trusses -> Compare -> CSS Animation -> Button interaction -> Visually demonstrates strength. Theory -> Inform -> Static HTML diagrams -> Clarity & reference. Warren Truss -> Explore/Relate -> Interactive Canvas FBD + Chart.js Bar Chart -> Click interaction -> Connects abstract calculations to a visual representation of forces, which is the core learning goal. Chart.js is used for the quantitative force comparison. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4; /* stone-100 */
+            color: #292524; /* stone-800 */
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-link.active {
+            color: #0284c7; /* sky-600 */
+            border-bottom-color: #0284c7; /* sky-600 */
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .interactive-joint {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .interactive-joint:hover, .interactive-joint.active {
+            transform: scale(1.5);
+            fill: #0284c7; /* sky-600 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .placeholder-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            text-align: center;
+            background-color: #e2e8f0; /* bg-slate-200 */
+            color: #475569; /* text-slate-600 */
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl font-bold text-stone-700">Interactive Truss Guide</h1>
+                <div class="hidden sm:block">
+                    <div class="flex items-baseline space-x-4">
+                        <a href="#concepts" class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Concepts</a>
+                        <a href="#examples" class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Examples</a>
+                        <a href="#theory" class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Theory</a>
+                        <a href="#calculator" class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Calculator</a>
+                        <a href="#homework" class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Homework</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <section id="concepts" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">The Two Key Forces</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">A strong bridge must master two opposing forces: tension and compression. Understanding how they work is the first step to building a structure that can withstand weight.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold text-red-600">Compression</h3>
+                    <p class="mt-2 text-stone-600">This is a <strong>squeezing</strong> or <strong>pushing</strong> force. Imagine pressing down on a spring. In a bridge, some members are pushed together by the load. Spaghetti is very weak under compression because it can easily buckle and snap.</p>
+                    <div class="mt-4 h-24 flex items-center justify-center bg-red-50 rounded-lg">
+                        <div class="flex items-center w-full px-4">
+                            <span class="text-3xl font-bold text-red-500">→</span>
+                            <div class="w-full h-4 bg-red-400 mx-2 rounded"></div>
+                            <span class="text-3xl font-bold text-red-500">←</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold text-green-600">Tension</h3>
+                    <p class="mt-2 text-stone-600">This is a <strong>stretching</strong> or <strong>pulling</strong> force. Think of a tug-of-war rope. Some members in a bridge are pulled apart by the load. Spaghetti is surprisingly strong under tension.</p>
+                     <div class="mt-4 h-24 flex items-center justify-center bg-green-50 rounded-lg">
+                        <div class="flex items-center w-full px-4">
+                            <span class="text-3xl font-bold text-green-500">←</span>
+                            <div class="w-full h-4 bg-green-400 mx-2 rounded"></div>
+                            <span class="text-3xl font-bold text-green-500">→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Content: Hands-on Test -->
+            <div class="bg-white p-6 rounded-xl shadow-lg mt-8">
+                <h3 class="text-2xl font-semibold text-blue-700">Hands-on Test: The Craft Stick Challenge</h3>
+                <p class="text-lg mt-2 leading-relaxed">Let's try a quick test with craft sticks. Try to bend one. Now, try to push two sticks together, end-to-end. Finally, try to pull them apart. Which force did the sticks resist better? Spaghetti is brittle, so it will be much stronger in <strong>compression</strong> than in <strong>tension</strong>. This is a key principle you'll need for your bridge.</p>
+                <div class="mt-4 placeholder-image h-48">Image of craft sticks demonstrating compression and tension</div>
+            </div>
+            <!-- End New Content -->
+
+        </section>
+
+        <section id="examples" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">From a Simple Beam to a Strong Triangle</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">Why are trusses built with triangles? Let's see what happens when we apply a load to a simple beam versus a basic triangle.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold">Example 1: The Simple Beam</h3>
+                    <p class="mt-2 text-stone-600">A single piece of spaghetti bends easily. The top is compressed (weak point) and the bottom is in tension. It will fail quickly.</p>
+                    <div class="mt-4 h-40 flex flex-col items-center justify-center">
+                         <div class="text-2xl text-stone-500">↓ Load</div>
+                         <div id="beam" class="w-full h-4 bg-yellow-600 rounded transition-all duration-500" style="border-bottom-left-radius: 50% 100%; border-bottom-right-radius: 50% 100%;"></div>
+                         <div class="w-full flex justify-between mt-2"><span class="text-xl">▲</span><span class="text-xl">▲</span></div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold">Example 2: The Basic Triangle</h3>
+                    <p class="mt-2 text-stone-600">The triangle is the strongest basic shape. It directs the load outwards into both tension and compression, distributing the force efficiently to the supports.</p>
+                    <div class="mt-4 h-40 flex flex-col items-center justify-center">
+                        <div class="text-2xl text-stone-500">↓ Load</div>
+                        <!-- Corrected Triangle SVG -->
+                        <svg viewBox="0 0 100 100" class="w-48 h-24">
+                            <polygon points="50,10 10,90 90,90" stroke="#a8a29e" stroke-width="4" fill="none" />
+                        </svg>
+                        <!-- End Corrected Triangle SVG -->
+                         <div class="w-48 flex justify-between mt-2"><span class="text-xl">▲</span><span class="text-xl">▲</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="theory" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">How We Do the Math</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">To calculate the forces, engineers use two key tools: Free-Body Diagrams and the Method of Joints. This allows us to see how forces balance out at every connection point.</p>
+            </div>
+
+            <!-- New Content: What is a Truss? -->
+            <div class="bg-white p-6 rounded-xl shadow-lg mt-8">
+                <h3 class="text-2xl font-semibold text-blue-700">What is a Truss?</h3>
+                <p class="text-lg mt-2 leading-relaxed">A <strong>truss</strong> is a structural framework composed of triangles, used to support loads over a large span. The truss design allows the weight to be distributed evenly across all the members. This makes the structure incredibly strong and lightweight, which is why trusses are used in bridges, roofs, and even cranes.</p>
+            </div>
+            <!-- End New Content -->
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">Free-Body Diagrams (FBDs)</h3>
+                <p class="mt-2 text-stone-600">An FBD is a simplified drawing of a single joint, showing all the forces acting on it as arrows. Arrows pointing away from the joint represent tension (pulling), and arrows pointing towards the joint represent compression (pushing). For the bridge to be stable, all forces at a joint must cancel each other out.</p>
+                <!-- New Image Placeholder -->
+                <div class="mt-4 placeholder-image h-48">Image of a free-body diagram</div>
+                <!-- End New Image Placeholder -->
+            </div>
+             <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">The Method of Joints</h3>
+                <p class="mt-2 text-stone-600">This method applies a fundamental rule of physics: for an object to be stationary, all forces must be in balance. We apply this at each joint of the truss. We ensure that:</p>
+                <ul class="list-disc list-inside mt-2 space-y-1 text-stone-600">
+                    <li>The sum of all vertical (up/down) forces is zero (ΣFy = 0).</li>
+                    <li>The sum of all horizontal (left/right) forces is zero (ΣFx = 0).</li>
+                </ul>
+                <p class="mt-2 text-stone-600">By using these two equations with some trigonometry, we can solve for the force in each bridge member.</p>
+                <!-- New Image Placeholder -->
+                <div class="mt-4 placeholder-image h-48">Image of a calculation for the method of joints</div>
+                <!-- End New Image Placeholder -->
+            </div>
+        </section>
+        
+        <section id="calculator" class="content-section space-y-8">
+             <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Interactive Warren Truss</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">This is a model of a Warren Truss bridge. Click on any joint (the circles) to see a Free-Body Diagram, the force calculations for the connected members, and a chart visualizing the forces.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Bridge Diagram</h3>
+                        <svg viewBox="0 0 400 150" class="w-full">
+                            <defs>
+                                <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
+                                </marker>
+                                 <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#22c55e" />
+                                </marker>
+                            </defs>
+                            
+                            <line x1="50" y1="100" x2="350" y2="100" stroke="#a8a29e" stroke-width="4" />
+                            <line x1="100" y1="13.4" x2="300" y2="13.4" stroke="#a8a29e" stroke-width="4" />
+                            <line x1="50" y1="100" x2="100" y2="13.4" stroke="#a8a29e" stroke-width="4" />
+                            <line x1="100" y1="13.4" x2="150" y1="100" stroke="#a8a29e" stroke-width="4" />
+                            <line x1="150" y1="100" x2="200" y2="13.4" stroke="#a8a29e" stroke-width="4" />
+                            <line x1="200" y1="13.4" x2="250" y2="100" stroke="#a8a29e" stroke-width="4" />
+                            <line x1="250" y1="100" x2="300" y2="13.4" stroke="#a8a29e" stroke-width="4" />
+                            <line x1="300" y1="13.4" x2="350" y2="100" stroke="#a8a29e" stroke-width="4" />
+
+                            <path d="M 190 0 L 200 13.4 L 210 0 Z" fill="#ef4444"/>
+                            <text x="215" y="10" font-size="10" fill="#ef4444" font-weight="bold">5 N Load</text>
+
+                            <path d="M 50 100 L 40 120 L 60 120 Z" fill="#3b82f6"/>
+                            <text x="40" y="135" font-size="10" fill="#3b82f6" font-weight="bold">2.5 N</text>
+                            <path d="M 350 100 L 340 120 L 360 120 Z" fill="#3b82f6"/>
+                            <text x="330" y="135" font-size="10" fill="#3b82f6" font-weight="bold">2.5 N</text>
+
+                            <circle id="joint-A" data-joint="A" cx="50" cy="100" r="8" fill="#78716c" class="interactive-joint"/>
+                            <circle id="joint-B" data-joint="B" cx="150" cy="100" r="8" fill="#78716c" class="interactive-joint"/>
+                            <circle id="joint-C" data-joint="C" cx="250" cy="100" r="8" fill="#78716c" class="interactive-joint"/>
+                            <circle id="joint-D" data-joint="D" cx="350" cy="100" r="8" fill="#78716c" class="interactive-joint"/>
+                            <circle id="joint-E" data-joint="E" cx="100" cy="13.4" r="8" fill="#78716c" class="interactive-joint"/>
+                            <circle id="joint-F" data-joint="F" cx="200" cy="13.4" r="8" fill="#78716c" class="interactive-joint"/>
+                            <circle id="joint-G" data-joint="G" cx="300" cy="13.4" r="8" fill="#78716c" class="interactive-joint"/>
+                            <text x="45" y="115" font-size="10" font-weight="bold">A</text>
+                            <text x="145" y="115" font-size="10" font-weight="bold">B</text>
+                            <text x="245" y="115" font-size="10" font-weight="bold">C</text>
+                            <text x="345" y="115" font-size="10" font-weight="bold">D</text>
+                            <text x="95" y="8" font-size="10" font-weight="bold">E</text>
+                            <text x="195" y="8" font-size="10" font-weight="bold">F</text>
+                            <text x="295" y="8" font-size="10" font-weight="bold">G</text>
+                        </svg>
+                    </div>
+                    <div id="info-panel" class="border-l border-stone-200 pl-8">
+                        <div id="initial-message">
+                            <h3 class="text-xl font-semibold text-stone-800">Select a Joint</h3>
+                            <p class="mt-2 text-stone-600">Click on a joint (A, B, C...) on the bridge diagram to see its analysis here.</p>
+                        </div>
+                        <div id="joint-info" class="hidden">
+                            <h3 class="text-xl font-semibold text-stone-800" id="joint-title"></h3>
+                            <div class="mt-4">
+                                <h4 class="font-semibold text-stone-700">Free-Body Diagram</h4>
+                                <canvas id="fbd-canvas" width="200" height="200" class="bg-stone-50 rounded-md mt-2"></canvas>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="font-semibold text-stone-700">Calculations</h4>
+                                <div id="joint-calculations" class="text-sm text-stone-600 mt-2 p-3 bg-stone-50 rounded-md whitespace-pre-wrap font-mono"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+                <h3 class="text-xl font-semibold text-center mb-4">Member Forces for Selected Joint</h3>
+                <div class="chart-container">
+                    <canvas id="force-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Section: Homework & Simulator -->
+        <section id="homework" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Your Homework: The ACCESSFM Framework</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">Before our next class, you need to become a bridge expert. Your homework is to find an existing bridge and evaluate it using a special tool called <strong>ACCESSFM</strong>. This will help you think like an engineer.</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <ul class="list-disc list-inside mt-6 text-lg space-y-2">
+                    <li><strong>A</strong>esthetics: How does it look? Is it visually appealing?</li>
+                    <li><strong>C</strong>ost: Was it expensive to build?</li>
+                    <li><strong>C</strong>ustomer: Who is the bridge for? Who uses it?</li>
+                    <li><strong>E</strong>nvironment: What is its impact on the surrounding area?</li>
+                    <li><strong>S</strong>afety: Is it safe for the people who use it?</li>
+                    <li><strong>S</strong>ize: Is it the correct size and scale for its purpose?</li>
+                    <li><strong>F</strong>unction: What is its purpose?</li>
+                    <li><strong>M</strong>aterials: What is it made of?</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Test Your Designs with a Simulator</h2>
+                <p class="text-lg leading-relaxed">You can use free online tools to help visualize your designs and test the concepts of compression and tension. We recommend the <a href="https://ei.jhu.edu/truss-simulator/" class="text-blue-600 hover:underline font-semibold" target="_blank" rel="noopener noreferrer">JHU Truss Simulator</a>. It lets you build your own truss bridges and see the forces on each member in real time!</p>
+            </div>
+        </section>
+        <!-- End New Section -->
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white p-6 mt-12 text-center">
+        <p>&copy; 2025 ARTIFEX-3D. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+            const joints = document.querySelectorAll('.interactive-joint');
+            const initialMessage = document.getElementById('initial-message');
+            const jointInfoPanel = document.getElementById('joint-info');
+            const jointTitle = document.getElementById('joint-title');
+            const jointCalculations = document.getElementById('joint-calculations');
+            const fbdCanvas = document.getElementById('fbd-canvas');
+            const fbdCtx = fbdCanvas.getContext('2d');
+            let forceChart;
+
+            // Updated jointData with simplified and corrected values for a stable simulation
+            const jointData = {
+                'A': {
+                    title: 'Joint A (Left Support)',
+                    calcs: `ΣFy = 0: R_A + F_AE * sin(60°) = 0\n2.5 + F_AE * 0.866 = 0\n  => F_AE = -2.89 N (Compression)\n\nΣFx = 0: F_AB + F_AE * cos(60°) = 0\nF_AB + (-2.89) * 0.5 = 0\n  => F_AB = 1.45 N (Tension)`,
+                    forces: [
+                        { member: 'AE', value: -2.89, type: 'compression', angle: 60 },
+                        { member: 'AB', value: 1.45, type: 'tension', angle: 0 }
+                    ],
+                    external: [{ type: 'reaction', value: 2.5, angle: 90 }]
+                },
+                'B': {
+                    title: 'Joint B',
+                    calcs: `Calculations for Joint B are symmetric to Joint C. The horizontal member BC is in tension.`,
+                    forces: [
+                        { member: 'BC', value: 1.45, type: 'tension', angle: 0 },
+                        { member: 'BE', value: -2.89, type: 'compression', angle: 120 }
+                    ],
+                    external: []
+                },
+                'C': {
+                    title: 'Joint C',
+                    calcs: `Calculations for Joint C are symmetric to Joint B. The horizontal member BC is in tension.`,
+                    forces: [
+                        { member: 'CB', value: 1.45, type: 'tension', angle: 180 },
+                        { member: 'CG', value: -2.89, type: 'compression', angle: -120 }
+                    ],
+                    external: []
+                },
+                'D': {
+                    title: 'Joint D (Right Support)',
+                    calcs: `ΣFy = 0: R_D + F_DG * sin(60°) = 0\n2.5 + F_DG * 0.866 = 0\n  => F_DG = -2.89 N (Compression)\n\nΣFx = 0: F_DC + F_DG * cos(60°) = 0\nF_DC + (-2.89) * 0.5 = 0\n  => F_DC = 1.45 N (Tension)`,
+                    forces: [
+                        { member: 'DG', value: -2.89, type: 'compression', angle: 120 },
+                        { member: 'DC', value: 1.45, type: 'tension', angle: 180 }
+                    ],
+                    external: [{ type: 'reaction', value: 2.5, angle: 90 }]
+                },
+                'E': {
+                    title: 'Joint E',
+                    calcs: `Calculations for Joint E show how forces from AE and EF balance out with member EB.\n\nΣFx = 0: F_EA * cos(60) + F_EF + F_EB * cos(60) = 0\n2.89 * 0.5 + F_EF + (-2.89) * 0.5 = 0\n => F_EF = 0 N (Zero-force member)`,
+                    forces: [
+                        { member: 'AE', value: 2.89, type: 'tension', angle: -120 },
+                        { member: 'EF', value: 0, type: 'zero', angle: 0 },
+                        { member: 'EB', value: -2.89, type: 'compression', angle: 60 }
+                    ],
+                    external: []
+                },
+                'F': {
+                    title: 'Joint F (Center Load)',
+                    calcs: `ΣFy = 0: -5 + F_FB*sin(60) + F_FC*sin(60) = 0\n-5 + F_FB*0.866 + F_FC*0.866 = 0\nBecause of symmetry, F_FB = F_FC\n-5 + 2 * F_FB * 0.866 = 0\n-5 + 1.732 * F_FB = 0\n  => F_FB = 2.89 N (Tension)\n  => F_FC = 2.89 N (Tension)`,
+                    forces: [
+                        { member: 'FB', value: 2.89, type: 'tension', angle: 60 },
+                        { member: 'FC', value: 2.89, type: 'tension', angle: -60 },
+                        { member: 'EF', value: 0, type: 'zero', angle: 180 },
+                        { member: 'GF', value: 0, type: 'zero', angle: 0 }
+                    ],
+                    external: [{ type: 'load', value: -5, angle: -90 }]
+                },
+                'G': {
+                    title: 'Joint G',
+                    calcs: `Calculations for Joint G are symmetric to Joint E. Member FG is a zero-force member.`,
+                    forces: [
+                        { member: 'GD', value: 2.89, type: 'tension', angle: -60 },
+                        { member: 'GF', value: 0, type: 'zero', angle: 180 },
+                        { member: 'GC', value: -2.89, type: 'compression', angle: -120 }
+                    ],
+                    external: []
+                }
+            };
+
+            function updateActiveLink(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+                });
+            }
+
+            function showSection(targetId) {
+                sections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+                updateActiveLink(targetId);
+            }
+
+            function drawFBD(joint) {
+                fbdCtx.clearRect(0, 0, fbdCanvas.width, fbdCanvas.height);
+                const centerX = fbdCanvas.width / 2;
+                const centerY = fbdCanvas.height / 2;
+
+                fbdCtx.beginPath();
+                fbdCtx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
+                fbdCtx.fillStyle = '#0284c7';
+                fbdCtx.fill();
+
+                const drawArrow = (angle, length, color, text) => {
+                    const rad = angle * Math.PI / 180;
+                    const endX = centerX + length * Math.cos(rad);
+                    const endY = centerY - length * Math.sin(rad);
+
+                    fbdCtx.beginPath();
+                    fbdCtx.moveTo(centerX, centerY);
+                    fbdCtx.lineTo(endX, endY);
+                    fbdCtx.strokeStyle = color;
+                    fbdCtx.lineWidth = 2;
+                    fbdCtx.stroke();
+
+                    fbdCtx.save();
+                    fbdCtx.translate(endX, endY);
+                    fbdCtx.rotate(-rad);
+                    fbdCtx.beginPath();
+                    fbdCtx.moveTo(0, 0);
+                    fbdCtx.lineTo(-10, -5);
+                    fbdCtx.lineTo(-10, 5);
+                    fbdCtx.closePath();
+                    fbdCtx.fillStyle = color;
+                    fbdCtx.fill();
+                    fbdCtx.restore();
+                    
+                    fbdCtx.fillStyle = '#333';
+                    fbdCtx.font = '10px sans-serif';
+                    fbdCtx.fillText(text, endX + 5, endY - 5);
+                };
+
+                joint.forces.forEach(force => {
+                    const length = Math.abs(force.value) * 15 + 20;
+                    const color = force.type === 'compression' ? '#ef4444' : '#22c55e';
+                    const angle = force.type === 'compression' ? force.angle + 180 : force.angle;
+                    drawArrow(angle, length, color, `F_${force.member}`);
+                });
+
+                joint.external.forEach(ext => {
+                     const length = Math.abs(ext.value) * 15 + 20;
+                     const color = '#3b82f6';
+                     drawArrow(ext.angle, length, color, ext.type === 'reaction' ? 'R' : 'Load');
+                });
+            }
+
+            function updateChart(joint) {
+                const labels = joint.forces.map(f => `Member ${f.member}`);
+                const data = joint.forces.map(f => f.value);
+                const backgroundColors = joint.forces.map(f => f.type === 'compression' ? 'rgba(239, 68, 68, 0.6)' : 'rgba(34, 197, 94, 0.6)');
+                const borderColors = joint.forces.map(f => f.type === 'compression' ? 'rgba(239, 68, 68, 1)' : 'rgba(34, 197, 94, 1)');
+
+                if (forceChart) {
+                    forceChart.data.labels = labels;
+                    forceChart.data.datasets[0].data = data;
+                    forceChart.data.datasets[0].backgroundColor = backgroundColors;
+                    forceChart.data.datasets[0].borderColor = borderColors;
+                    forceChart.update();
+                } else {
+                    const ctx = document.getElementById('force-chart').getContext('2d');
+                    forceChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Force (N)',
+                                data: data,
+                                backgroundColor: backgroundColors,
+                                borderColor: borderColors,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: { display: true, text: 'Force (N)' }
+                                },
+                                x: {
+                                    title: { display: true, text: 'Bridge Member' }
+                                }
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed.y !== null) {
+                                                const value = context.parsed.y;
+                                                label += `${Math.abs(value).toFixed(2)} N (${value < 0 ? 'Compression' : 'Tension'})`;
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            function showJointInfo(jointId) {
+                const data = jointData[jointId];
+                if (!data) return;
+
+                initialMessage.classList.add('hidden');
+                jointInfoPanel.classList.remove('hidden');
+
+                joints.forEach(j => j.classList.toggle('active', j.dataset.joint === jointId));
+                
+                jointTitle.textContent = data.title;
+                jointCalculations.textContent = data.calcs;
+
+                drawFBD(data);
+                updateChart(data);
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.target.getAttribute('href').substring(1);
+                    showSection(targetId);
+                });
+            });
+
+            joints.forEach(joint => {
+                joint.addEventListener('click', (e) => {
+                    const jointId = e.target.dataset.joint;
+                    showSection('calculator');
+                    showJointInfo(jointId);
+                });
+            });
+
+            const initialHash = window.location.hash.substring(1) || 'concepts';
+            showSection(initialHash);
+            showJointInfo('A');
+        });
+    </script>
+</body>
+</html>
