@@ -28,6 +28,14 @@
             max-height: 500px; /* A large enough value to accommodate content */
             padding-bottom: 1rem;
         }
+        /* Custom CSS for image hover effect */
+        .hover-zoom {
+            transition: transform 0.3s ease-in-out, z-index 0s ease-in-out 0.3s;
+        }
+        .hover-zoom:hover {
+            transform: scale(3.0); /* Adjust the scale as needed */
+            z-index: 50;
+        }
     </style>
 </head>
 <body class="bg-gray-100 p-4 sm:p-8">
@@ -48,7 +56,7 @@
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-around my-6 space-y-4 sm:space-y-0">
                     <!-- Image placeholder for data packet -->
-                    <img src="https://lh5.googleusercontent.com/vi3V0geTnBGxDQ89T343aEFds-yTKRZ0T1PjWQdxgKc5czSaCS3s9huvkGt2q757XDlIAF9x04ab107Ej8KoUaXdt-m5BCwEzrrkEtH0Iq8HBaHtyf6WJB8k2emZXAxKHiMGJyrcIU7iTl2QHQ" alt="Diagram of a data packet" class="rounded-md shadow-md" style="width: 180px; height: 100px;">
+                    <img src="https://lh5.googleusercontent.com/vi3V0geTnBGxDQ89T343aEFds-yTKRZ0T1PjWQdxgKc5czSaCS3s9huvkGt2q757XDlIAF9x04ab107Ej8KoUaXdt-m5BCwEzrrkEtH0Iq8HBaHtyf6WJB8k2emZXAxKHiMGJyrcIU7iTl2QHQ" alt="Diagram of a data packet" class="rounded-md shadow-md hover-zoom" style="width: 180px; height: 100px;">
                     <div class="space-y-2 text-sm sm:text-base">
                         <div class="p-2 bg-blue-200 rounded-lg text-gray-800 font-semibold">Header</div>
                         <div class="p-2 bg-gray-200 rounded-lg text-gray-800 font-semibold">Payload</div>
@@ -89,6 +97,10 @@
                     </ul>
                 </div>
             </div>
+            <div class="flex justify-center my-6">
+                <!-- Image placeholder for packet switching -->
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20241029165933712408/Packet-Switching.png" alt="Diagram of packet switching" class="rounded-md shadow-md hover-zoom" style="width: 300px; height: 120px;">
+            </div>
         </section>
 
         <!-- Section: Data Transmission Types -->
@@ -100,7 +112,7 @@
                 <p class="text-gray-700"><strong>Full-duplex:</strong> Data transmission is in both directions simultaneously (e.g. broadband connection on a phone line).</p>
                 <div class="flex justify-center my-6">
                     <!-- Image placeholder for transmission types -->
-                    <img src="https://www.totalphase.com/media/blog/2022/10/Half-Duplex-Full-Duplex.png" alt="Diagram of simplex, half-duplex, and full-duplex transmission" class="rounded-md shadow-md" style="width: 300px; height: 120px;">
+                    <img src="https://www.totalphase.com/media/blog/2022/10/Half-Duplex-Full-Duplex.png" alt="Diagram of simplex, half-duplex, and full-duplex transmission" class="rounded-md shadow-md hover-zoom" style="width: 300px; height: 120px;">
                 </div>
             </div>
         </section>
@@ -143,7 +155,7 @@
             </div>
             <div class="flex justify-center my-6">
                  <!-- Image placeholder for serial vs parallel transmission -->
-                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW-1z15Eck6PCSw0ZO_OZqD2MuVcY7TpKPGA&s" alt="Diagram of serial and parallel transmission" class="rounded-md shadow-md" style="width: 350px; height: 120px;">
+                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW-1z15Eck6PCSw0ZO_OZqD2MuVcY7TpKPGA&s" alt="Diagram of serial and parallel transmission" class="rounded-md shadow-md hover-zoom" style="width: 350px; height: 120px;">
             </div>
         </section>
 
@@ -199,7 +211,7 @@
                     <p class="text-gray-600">The sender calculates a checksum value from a block of data. The receiver performs the same calculation and compares the result. If they don't match, the data is re-sent.</p>
                     <div class="flex justify-center my-6">
                         <!-- Image placeholder for checksum -->
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20200909115220/Checksum.png" alt="Diagram showing the checksum process" class="rounded-md shadow-md" style="width: 250px; height: 120px;">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20200909115220/Checksum.png" alt="Diagram showing the checksum process" class="rounded-md shadow-md hover-zoom" style="width: 250px; height: 120px;">
                     </div>
                 </div>
 
@@ -243,7 +255,7 @@
                     <p class="text-gray-600 mb-4">Uses the <strong>same key</strong> for both encryption and decryption.</p>
                     <div class="flex justify-center my-4">
                         <!-- Image placeholder for symmetric encryption -->
-                        <img src="https://www.clickssl.net/wp-content/uploads/2019/12/symmetric-encryption.jpg" alt="Diagram showing symmetric encryption" class="rounded-md shadow-md" style="width: 180px; height: 120px;">
+                        <img src="https://www.clickssl.net/wp-content/uploads/2019/12/symmetric-encryption.jpg" alt="Diagram showing symmetric encryption" class="rounded-md shadow-md hover-zoom" style="width: 180px; height: 120px;">
                     </div>
                 </div>
 
@@ -253,14 +265,14 @@
                     <p class="text-gray-600 mb-4">Uses a <strong>public key</strong> for encryption and a separate <strong>private key</strong> for decryption.</p>
                     <div class="flex justify-center my-4">
                         <!-- Image placeholder for asymmetric encryption -->
-                        <img src="https://www.sectigo.com/uploads/images/Sectigo-Quantum-Lab-Diagram.png" alt="Diagram showing asymmetric encryption" class="rounded-md shadow-md" style="width: 180px; height: 120px;">
+                        <img src="https://www.sectigo.com/uploads/images/Sectigo-Quantum-Lab-Diagram.png" alt="Diagram showing asymmetric encryption" class="rounded-md shadow-md hover-zoom" style="width: 180px; height: 120px;">
                     </div>
                 </div>
             </div>
         </section>
 
         <footer class="text-center text-gray-500 text-sm mt-10">
-            <p>&copy; 2024 Data Transmission Guide. All rights reserved.</p>
+            <p>&copy; 2025 ARTIFEX-3D. All rights reserved.</p>
         </footer>
 
     </div>
