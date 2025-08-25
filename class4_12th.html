@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Hardware & Networking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .content-box {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .image-container {
+            transition: transform 0.3s ease-in-out;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: block;
+            margin: 1.5rem auto;
+            max-width: 100%;
+        }
+        .image-container:hover {
+            transform: scale(1.05);
+        }
+        .grid-container {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (min-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: #f9fafb;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background-color: #e5e7eb;
+            font-weight: 700;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        li {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        ul, ol {
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="p-8">
+
+    <div class="container mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Computer Hardware & Networking</h1>
+            <p class="text-lg text-gray-600">A comprehensive guide to the inner workings of modern computer systems.</p>
+        </header>
+
+        <div class="content-box">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Computer Architecture & Von Neumann Architecture</h2>
+            <p class="text-gray-700 mb-4">The <strong>central processing unit (CPU)</strong> (also known as a microprocessor or processor) is central to all modern computer systems. The CPU consists of the following architecture:</p>
+            <ul>
+                <li><strong>Processor:</strong> The processor contains the <strong>Arithmetic and Logic Unit (ALU)</strong>.</li>
+                <li><strong>Control Unit:</strong> The control unit controls the operation of the memory, processor and input/output devices.</li>
+                <li><strong>Arithmetic Logic Unit:</strong> Carries out the logic system like calculations.</li>
+                <li><strong>System Clock:</strong> The system clock is used to produce timing signals on the control bus.</li>
+                <li><strong>Buses:</strong> Carry data through components. The following are its types.
+                    <ul>
+                        <li><strong>Address bus</strong> – unidirectional</li>
+                        <li><strong>Data Bus</strong> – bi-directional</li>
+                        <li><strong>Control Bus</strong> – bi-directional</li>
+                    </ul>
+                </li>
+                <li><strong>Immediate Access Store:</strong> Stores the instructions that are to be processed, which are fetched by the CPU.</li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Registers</h3>
+            <p>The following registers also exist in the architecture:</p>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>REGISTER</th>
+                            <th>ABBREVIATION</th>
+                            <th>FUNCTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Current instruction register</td>
+                            <td>CIR</td>
+                            <td>Stores the instruction the CPU is currently decoding or executing</td>
+                        </tr>
+                        <tr>
+                            <td>Memory address register</td>
+                            <td>MAR</td>
+                            <td>Stores the Address of the instruction, copy it, and sends it to MDR</td>
+                        </tr>
+                        <tr>
+                            <td>Memory data register</td>
+                            <td>MDR</td>
+                            <td>Stores the Data from the address received from the MAR and sends data to CIR</td>
+                        </tr>
+                        <tr>
+                            <td>Program counter</td>
+                            <td>PC</td>
+                            <td>Stores the address of the next instruction to be fetched from memory</td>
+                        </tr>
+                        <tr>
+                            <td>Accumulator</td>
+                            <td>ACC</td>
+                            <td>During calculations, data is temporarily held in it</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+2
+            <h3 class="text-xl font-bold text-gray-800 my-4">The Fetch-Execute Cycle</h3>
+            <img src="https://learnlearn.uk/gcsecs/wp-content/uploads/sites/8/2018/01/fetch-decode-execute-oct-gcse.png" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of the Fetch-Execute Cycle">
+            <ol>
+                <li><strong>PC</strong> contains the address of the next instruction to be fetched.</li>
+                <li>This address is copied to the <strong>MAR</strong> via the address bus.</li>
+                <li>The instruction is fetched from the main memory (<strong>RAM</strong>) via the data bus.</li>
+                <li>The instruction of the address is copied into the <strong>MDR</strong> temporarily.</li>
+                <li>The instruction in the <strong>MDR</strong> is then placed in the <strong>CIR</strong>.</li>
+                <li>The value in the <strong>PC</strong> is incremented by 1, pointing to the next instruction to be fetched.</li>
+                <li>The instruction is finally decoded and then executed.</li>
+            </ol>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Stored Program Concept</h3>
+            <ul>
+                <li>Instructions are stored in the main memory.</li>
+                <li>Instructions are fetched, decoded, and executed by the processor.</li>
+                <li>Programs can be moved to and from the main memory.</li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Memory Concept</h3>
+            <p>A computer’s memory is divided into partitions: Each partition consists of an address and its contents, e.g.</p>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>MEMORY LOCATION</th>
+                            <th>CONTENT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1010</td>
+                            <td>101001010110</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Instruction Set</h3>
+            <p>An instruction set is a list of all the commands that a CPU can process, and the commands are machine code.</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Cores, Cache and Internal Clock</h3>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">System’s Clock</h4>
+            <p>The clock defines the clock cycle that synchronises all computer operations. By increasing the clock speed, the computer's processing speed also increases. This doesn’t mean that the computer's performance is increased, however.</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Overclocking</h4>
+            <p>Using a clock speed higher than the computer was designed for. It leads to multiple issues.</p>
+            <ul>
+                <li>Operations become unsynchronised - (the computer would frequently crash and become unstable).</li>
+                <li>can lead to serious overheating of the CPU.</li>
+            </ul>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Length of Data Buses</h4>
+            <p>The wider the data buses, the better the performance of the computer.</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Cache</h4>
+            <p>Cache memory is located within the CPU itself.</p>
+            <ul>
+                <li>-- allows faster access to the CPU</li>
+                <li>-- stores frequently used instructions and data that need to be accessed faster, which improves CPU performance</li>
+            </ul>
+            <p>The larger the cache memory size, the better the CPU performance.</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Cores</h4>
+            <p>The more cores in the CPU, the better and faster the performance. But if any number of cores are used, it could slow down the system performance as the communication between each core increases, and so do the data cables between each. Which in turn reduces the potential system performance. You might have heard about quad and dual cores as well as septa and octa cores as they are becoming increasingly common.</p>
+        </div>
+
+        <div class="content-box">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Input Devices</h2>
+            <h3 class="text-xl font-bold text-gray-800 my-4">Two-dimensional Scanners</h3>
+            <img src="https://image4.slideserve.com/8714718/how-a-ccd-works-charge-coupled-device-l.jpg" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a 2D scanner">
+            <p>Used to input hard-copy documents. The image is converted into an electronic form, which can be stored in the computer. The document is placed on a glass panel.</p>
+            <ol>
+                <li>A bright light illuminates the document.</li>
+                <li>A scan head moves across the document until the whole page is scanned. An image of the document is produced and sent to a lens using a series of mirrors.</li>
+                <li>The lens focuses on the document image.</li>
+                <li>The focused image now falls onto a <strong>charge-coupled device (CCD)</strong>, which consists of several integrated circuits.</li>
+                <li>The software produces a digital image in the electronic form.</li>
+            </ol>
+            <p><strong>Optical Character Recognition (OCR)</strong> is a software which converts scanned documents into a text file format. If the original document was a photo/image, then the scanned image forms an image file such as JPEG.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Three-dimensional Scanners</h3>
+            <img src="img/3d scanner.gif" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a 3D scanner">
+            <p>3D scanners can scan solid objects and produce a three-dimensional image. Scanners take images at several points, x, y and z (lasers, magnetic, white light). The scanned images can be used in <strong>Computer-Aided Design (CAD)</strong> or in a 3D printer to produce a working model.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Application of 2D Scanners at an Airport</h3>
+            <p>Make use of (<strong>OCR</strong>) to produce digital images which represent the passport pages.</p>
+            <ul>
+                <li>Text can be stored in <strong>ASCII</strong> format.</li>
+                <li>The 2D photograph in the passport is also scanned and stored as jpeg image.</li>
+                <li>The passenger’s face is also photographed using a digital camera and compared to using face recognition software.</li>
+                <li>Key parts of the face are compared (distance between eyes, width of nose).</li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Barcode readers/scanners</h3>
+            <!<img src="https://placehold.co/600x400/e6c969/ffffff?text=Barcode+Scanner" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a barcode scanner">
+            <p>A barcode is a series of dark and light parallel lines of varying thicknesses. The numbers 0 -9 are each represented by a unique series of lines. The left and right-hand sides of the barcode are separate using guard bars. This allows the barcode to be scanned in any direction. The barcode is read by a red laser or red LED. Light is reflected off the barcode; dark areas reflect little light, which allows the bars to be read. Reflected light is read by sensors (photoelectric cells). The pattern is generated, which is converted to digital.</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Quick Response (QR) Codes</h3>
+            <!<img src="https://placehold.co/600x400/e69c69/ffffff?text=QR+Code" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a QR code">
+            <p>Another type of barcode is the QR codes. Made up of a matrix of filled-in dark squares on a light background. Can hold more storage (7000 digits).</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Advantages of QR codes:</h4>
+            <ul>
+                <li>No need for the user to write down the website address.</li>
+                <li>QR codes can store website addresses.</li>
+                <li>QR Codes are easier to use as they can be read by phone cameras.</li>
+            </ul>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Digital Cameras</h3>
+            <!<img src="https://placehold.co/600x400/e66986/ffffff?text=Digital+Camera" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a digital camera">
+            <p>It is controlled by a microprocessor that adjusts the shutter speed, focuses the image, etc. Photo is captured when light passes through the lens onto a light sensitive cell. The cell is made up of pixels. The number of pixels determines the size of the file.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Keyboards</h3>
+            <!<img src="https://placehold.co/600x400/8c69e6/ffffff?text=Keyboard" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a keyboard">
+            <p>Connected to a computer with a USB connection or by wireless connection. Each character has an <strong>ASCII</strong> value and is converted into a digital signal. It is a slow method and prone to errors.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Pointing devices</h3>
+            <p><strong>Mouse/trackball</strong>: Traditional mechanical ball, connected by USB port. Modern type: red LEDs to detect movement.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Microphones</h3>
+            <p>Used to input sound to a computer. When a microphone picks up sound, a diaphragm vibrates, producing an electric signal. The signal goes to a sound card and is converted into digital values and stored in a computer. <strong>Voice recognition</strong>: voice is detected and converted into digital.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Touchscreens</h3>
+            <p><strong>Capacitive</strong> (medium cost tech): Made up of many layers of glass. Creating electric fields between glass plates in layers. When the top layer of glass is touched, electric current changes. Co-ordinates where the screen was touched are determined by an on-board microprocessor.</p>
+            <p><strong>Infra-red heat</strong> (expensive): Use glass as the screen material. Needs a warm object to carry an input operation.</p>
+            <p><strong>Infra-red optical</strong> (expensive): Uses glass as screen material. Uses an array of sensors (grid form). Point of contact is based on which grid co-ordinate is touched.</p>
+            <p><strong>Resistive</strong> (inexpensive): The upper layer of polyester, the bottom layer of glass. When the top polyester is touched, the top layer and bottom layer complete a circuit. Signals are then sent out, which are interpreted by a microprocessor to determine where the screen was touched.</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Sensors</h3>
+            <p>Devices that read or measure physical properties. Data needs to be converted to digital. <strong>Analogue-to-digital converter (ADC)</strong> converts physical values into digital.</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Sensors and their purposes:</h4>
+            <ul>
+                <li><strong>Acoustic</strong> - These sensors act like a microphone that converts sound to electric pulses.</li>
+                <li><strong>Accelerometer</strong> - These sensors measure an object's acceleration or deceleration and motion.</li>
+                <li><strong>Flow</strong> - This sensor measures the flow of liquid or gas.</li>
+                <li><strong>Gas</strong> - These sensors measure the amount/level of any gas in the environment.</li>
+                <li><strong>Humidity</strong> - This sensor measures the water vapour in the air or any sample.</li>
+                <li><strong>Infra-red (active)</strong> - This IR sensor uses an invisible infrared beam. When the beam is broken/disturbed, it changes the amount of infrared light reaching the detector.</li>
+                <li><strong>Infra-red (passive)</strong> - These sensors detect the heat emitted by any object.</li>
+                <li><strong>Level</strong> - This sensor detects the solids, liquids, or gas level.</li>
+                <li><strong>Light</strong> - These devices use light-sensitive cells that generate electric current based on light brightness.</li>
+                <li><strong>Magnetic field</strong> - This sensor detects the change in magnetic field.</li>
+                <li><strong>Moisture</strong> - This type of sensor detects the water content wherever this sensor has been installed.</li>
+                <li><strong>pH</strong> - This measures the acidity or alkalinity.</li>
+                <li><strong>Pressure</strong> - This sensor measures the pressure applied.</li>
+                <li><strong>Proximity</strong> - This sensor detects the nearby objects around the sensor.</li>
+                <li><strong>Temperature</strong> - These sensors measure the temperature of the environment.</li>
+            </ul>
+            <p>(Note: You do not need to know the working principle of the sensor. But have an idea of their purposes.)</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Control of Street Lighting</h3>
+            <ol>
+                <li>The light sensor sends data to the <strong>ADC</strong>.</li>
+                <li>The data is digitised and sent to the microprocessor.</li>
+                <li>Microprocessor samples data every minute.</li>
+                <li>If data from sensor &lt; value stored in memory:</li>
+                <li>Signal sent from microprocessor to street lamp.</li>
+                <li>Lamp switched on.</li>
+            </ol>
+        </div>
+
+        <div class="content-box">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Output Devices</h2>
+            <h3 class="text-xl font-bold text-gray-800 my-4">Inkjet Printers</h3>
+            <img src="https://i.ytimg.com/vi/0PKFQciUWBU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCNdBM9tqEMiaDJdVnPyxp3sdBIFA" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of an Inkjet printer">
+            <p>Used to print one-off pictures and documents. </p>
+            <ol>
+                <li>Data from the document sent to the printer driver.</li>
+                <li>The printer driver ensures data is in the correct format.</li>
+                <li>Check made by printer driver that the chosen printer is available.</li>
+                <li>Data is sent to the printer and stored in a temporary memory (printer buffer).</li>
+                <li>A sheet of paper is fed; the sensor detects if the paper is available in the paper tray.</li>
+                <li>The print head moves across paper printing text/image, four ink colours sprayed in the exact amount.</li>
+                <li>Paper is advanced, so the next line is printed.</li>
+                <li>Repeated until the buffer is empty.</li>
+                <li>Once it is done, the printer sends an interrupt to the processor (request for more data to be sent).</li>
+            </ol>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Laser Printers</h3>
+            <img src="https://media.licdn.com/dms/image/v2/D4D12AQF_fG5TPp9j7A/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1692599235799?e=2147483647&v=beta&t=vRXytT4hxngJe8WeU4ijJWH8s1Rw8pU5r8l5mNylv50" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a Laser printer">
+            <p>Used to print flyers, high quality. Use dry powder ink (<strong>toner</strong>) and static electricity to produce text and images. Prints the whole page in one go.</p>
+            <ol>
+                <li>(steps 1-4 same as inkjet)</li>
+                <li>The printing drum is given a positive charge; as the drum rotates, a laser beam is scanned across it; removing the positive charge leaves negatively charged areas which match the text/image.</li>
+                <li>The drum is then coated with positively charged <strong>toner</strong>; it only sticks to negatively charged parts of the drum.</li>
+                <li>A negatively charged sheet is rolled over the drum.</li>
+                <li>The toner on the drum now sticks to the paper to produce a copy of the page.</li>
+                <li>Paper finally goes through a <strong>fuser</strong> (set of heated rollers); heat melts the ink so it is permanent.</li>
+                <li>The discharge lamp removes all electric charge from the drum, ready to print on the next page.</li>
+            </ol>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">3D Printers</h3>
+            <img src="https://cdn.mos.cms.futurecdn.net/UJeoqPYwA7dSVuwKMj7RXa.png" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a 3D printer">
+            <p>Used for models of cars. Produce solid objects that work. Built up layer by layer, using powdered resin, ceramic powder. A design is made using <strong>Computer-aided Design (CAD)</strong>.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">2D and 3D Cutters</h3>
+            <p>3D cutters can recognise objects in x, y, z direction. 3D laser cutters can cut glass, crystal, metal, wood.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Actuators</h3>
+            <p>The actuators convert electrical signals to mechanical processes. Used in many control applications involving sensors and devices (<strong>ADC</strong> and <strong>DAC</strong>).</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Loudspeakers/Headphones</h3>
+            <p>Sound is produced by passing the digital data through a <strong>DAC</strong>, then through an amplifier, and then emerges from the loudspeaker. Produced by voltage differences vibrating a cone in the speaker at different frequencies.</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">LCD and LED Monitors</h3>
+            <img src="https://www.gadgetreview.com/wp-content/uploads/wTniDCcE7UsWAjt1R74-f2TgucTKgZUbKWiw6ZKHvPY-614x1024.png" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of an LCD monitor">
+            <p>The front layer of the monitor is made up of <strong>Liquid Crystal Display (LCD)</strong>; these tiny diodes are grouped in threes as pixels (LCD doesn’t emit any light). LCD monitors are backlit using <strong>Light Emitting Diode (LED)</strong> because:</p>
+            <ul>
+                <li>LEDs reach their maximum brightness immediately.</li>
+                <li>LEDs sharpen image (higher resolution), and CCFL has a yellow tint.</li>
+                <li>LEDs improve the colour image.</li>
+                <li>Monitors using LED are much thinner than CCFL.</li>
+                <li>LEDs consume very little power.</li>
+            </ul>
+            <p>Before LEDs, LCD monitors were backlit using <strong>CCFL</strong>. CCFL uses two fluorescent tubes behind the LCD screen, which supplies the light source.</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Light Projectors</h3>
+            <p>Two common types of light projectors: <strong>Digital Light Projector (DLP)</strong> and <strong>LCD Projector</strong>. Projectors are used to project computer output onto larger screens/interactive whiteboards.</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Digital Light Projectors (DLP)</h4>
+            <img src="https://i0.wp.com/simplehomecinema.com/wp-content/uploads/2023/10/how-a-Dlp-works.jpg?ssl=1" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of a DLP projector">
+            <p>Uses millions of micromirrors. The number of micromirrors and the way they are arranged on the DLP chip determines the resolution of the image. When the micromirrors tilt towards the light source they are <strong>on</strong>. When the micromirrors tilt away from the light source, they are <strong>off</strong>. This creates a light or dark pixel on the projection screen. A bright white light source passes through a colour filter on its way to the DLP chip. White light splits into primary colours.</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">LCD Projectors</h4>
+            <img src="https://media.cdn.sapphiretech.co/-/media/sites/sapphirenation/articles/2020/01/gaming-on-projector-part-1/04-small.ashx??v=278992329f7842389eb6ee5bf9a66be6&la=en?v&hash=2AED383D63F7BC0A391EEAA0D31AF90FE0B19D18" class="image-container" style="width: 600px; height: 400px;" alt="A diagram of an LCD projector">
+            <p>Older technology than DLP. A powerful beam of white light is generated from a bulb. This beam of light is then sent to a group of chromatic-coated mirrors; these reflect the light at different wavelengths. When the white light hits the mirrors, the reflected light has wavelengths corresponding to red, green, and blue. These three different lights pass through three LCD screens; these screens show the image to be projected as millions of pixels in grayscale. When the coloured light passes through the LCD screens, a red, green and blue version of the grey image emerges. Finally, the image passes through the projector lens onto the screen.</p>
+        </div>
+
+        <div class="content-box">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Memory, Storage Devices & Media</h2>
+            <h3 class="text-xl font-bold text-gray-800 my-4">Primary vs. Secondary Storage</h3>
+            <ul>
+                <li>The CPU directly accesses <strong>primary storage</strong>. <strong>RAM</strong>, <strong>ROM</strong>, and cache memory are some examples of primary storage.</li>
+                <li>The CPU does not directly access <strong>secondary storage</strong>. <strong>HDD</strong>, <strong>SSD</strong>, <strong>DVD</strong>, memory stick, and <strong>Blu-ray</strong> disc are some examples of secondary storage.</li>
+            </ul>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Primary Memory</h3>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Random Access Memory (RAM)</h4>
+            <img src="https://www.shutterstock.com/image-photo/installation-computer-memory-260nw-158849669.jpg" class="image-container" style="width: 600px; height: 400px;" alt="An image of a RAM chip">
+            <p><strong>RAM</strong> is used by a system when it needs to store and access data that is actively being used or processed by the user immediately.</p>
+            <h5 class="text-base font-semibold text-gray-800 mt-2">Features of RAM</h5>
+            <ul>
+                <li><strong>Volatile/temporary memory</strong> (contents lost if RAM is turned off).</li>
+                <li>Used to store; data, files.</li>
+                <li>It can be written to or read from, and the contents of the memory can be changed.</li>
+                <li>The larger the size of the <strong>RAM</strong>, the faster the computer will operate.</li>
+                <li><strong>RAM</strong> never runs out of memory and continues to run slow.</li>
+                <li>As <strong>RAM</strong> becomes full, the processor has to access the continually hard drive to overwrite old data on <strong>RAM</strong> with new data.</li>
+            </ul>
+            <p><strong>RAM</strong> is of two types: <strong>DRAM (Dynamic RAM)</strong> and <strong>SRAM (Static RAM)</strong>.</p>
+            
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Virtual memory</h4>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4liOLMFOuC_o8esyqHNrZbwdKWQTUibLNQw&s" class="image-container" style="width: 600px; height: 400px;" alt="A diagram illustrating virtual memory">
+            <p>When <strong>RAM</strong> runs out of memory, there is a problem with memory management; thus, the system has a high chance of crashing. This is why virtual memory comes into the picture. The virtual memory can be either <strong>HDD</strong> or <strohng>SSD</strong> (these storages are discussed below).</p>
+            <h5 class="text-base font-semibold text-gray-800 mt-2">The main advantages of virtual memory are:</h5>
+            <ul>
+                <li>They can be larger than the physical memory provided in the <strong>RAM</strong>.</li>
+                <li>Avoids the need to install/upgrade <strong>RAM</strong>, as it could be expensive.</li>
+                <li>The system wastes no storage on unwanted/unused data.</li>
+            </ul>
+
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Read Only Memory (ROM)</h4>
+            <h5 class="text-base font-semibold text-gray-800 mt-2">Features of ROM</h5>
+            <ul>
+                <li><strong>Non-volatile/permanent memories</strong> (contents remain even when <strong>ROM</strong> is turned off).</li>
+                <li>Used to store start-up instructions (basic input/output systems).</li>
+                <li>Data/contents of a <strong>ROM</strong> chip can only be read and cannot be changed.</li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Secondary Storage</h3>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Hard Disk Drives (HDD)</h4>
+            <!<img src="https://placehold.co/600x400/a39de6/ffffff?text=Hard+Disk+Drive" class="image-container" style="width: 600px; height: 400px;" alt="An image of a Hard Disk Drive">
+            <p>Data is stored in a digital format on the magnetic surface of the disks (<strong>platter</strong>). A number of read/write heads can access all of the surfaces of the disk. Each platter will have two surfaces which can be used to store the data. Data is stored on the surfaces in sectors and tracks. <strong>HDD</strong> has very slow data access compared to <strong>RAM</strong>.</p>
+            
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Solid-State Drive (SSD)</h4>
+            <!<img src="https://placehold.co/600x400/a869e6/ffffff?text=Solid-State+Drive" class="image-container" style="width: 600px; height: 400px;" alt="An image of a Solid-State Drive">
+            <p>There are no moving parts, and all data is received at the same time (not like <strong>HDD</strong>). Store data by controlling the movement of electrons within <strong>NAND</strong> chips, as 1s and 0s. Non-volatile rewritable memory.</p>
+            <h5 class="text-base font-semibold text-gray-800 mt-2">Benefits of using SSD rather than HDD:</h5>
+            <ul>
+                <li>More reliable (no moving parts).</li>
+                <li>Considerably lighter (suitable for laptops).</li>
+                <li>Lower power consumption.</li>
+                <li>Run much cooler than <strong>HDDs</strong>.</li>
+                <li>Very thin.</li>
+                <li>Data access is faster than <strong>HDD</strong>.</li>
+            </ul>
+            <p><strong>Drawback</strong> – questionable longevity (20GB per day).</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Off-Line Storage</h3>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">CD/DVD Disks</h4>
+            <!<img src="https://placehold.co/600x400/e669d6/ffffff?text=CD+and+DVDs" class="image-container" style="width: 600px; height: 400px;" alt="An image of a CD and DVD">
+            <p>Laser (red) light is used to read and write data on the surface of the disk. A thin layer of metal alloy is used to store data. Both systems use a single spiral track that runs from the centre of the disk to the edge. <strong>DVD</strong> uses <strong>Dual-Layering</strong>, which increases the storage capacity (two individual recording layers).</p>
+            
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Blu-ray Disks</h4>
+            <!<img src="https://placehold.co/600x400/e669e4/ffffff?text=Blu-ray+Disc" class="image-container" style="width: 600px; height: 400px;" alt="An image of a Blu-ray disc">
+            <p>Uses a blue laser to carry out read-and-write operations. The wavelength of laser light is less than CD and DVD (stores up to five times more data than DVD). Automatically come with secure encryption (prevent piracy and copyright infringement). Used as backup systems.</p>
+            
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">USB Flash Memories</h4>
+            <!<img src="https://placehold.co/600x400/e669b7/ffffff?text=USB+Flash+Drive" class="image-container" style="width: 600px; height: 400px;" alt="An image of a USB flash drive">
+            <p>Very small, lightweight, and suitable for transferring files. Small back-up devices for photo, music. Solid state, so needs to be treated with care.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Cloud Storage</h3>
+            <p>Cloud storage is a method of data storage where data is stored on remote servers. The same data is stored on more than one server in case of maintenance or repair, allowing clients to access data at any time. This is known as <strong>data redundancy</strong>.</p>
+            <h5 class="text-base font-semibold text-gray-800 mt-2">The following are its types:</h5>
+            <ul>
+                <li><strong>Public cloud</strong> – this is a storage environment where the customer/client and cloud storage provider are different companies.</li>
+                <li><strong>Private cloud</strong> – this is storage provided by a dedicated environment behind a company firewall; customer/client and cloud storage provider are integrated and operate as a single entity.</li>
+                <li><strong>Hybrid cloud</strong> – this is a combination of the two above environments; some data resides in the private cloud, and less sensitive/less commercial data can be accessed from a public cloud storage provider.</li>
+            </ul>
+        </div>
+
+        <div class="content-box">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Embedded System</h2>
+            <p>A combination of hardware and software is designed to carry out a specific set of tasks. Embedded systems may contain:</p>
+            <ul>
+                <li><strong>Microcontrollers</strong> - CPU, RAM, ROM and other peripherals on one single chip.</li>
+                <li><strong>Microprocessor</strong> - Integrated circuit with CPU only.</li>
+                <li><strong>System on Chips (SoC)</strong> - microprocessor with I/O ports, storage and memory.</li>
+            </ul>
+            <h3 class="text-xl font-bold text-gray-800 my-4">Process of Embedded Devices</h3>
+            <ol>
+                <li>Input from the user is sent to the microprocessor (<strong>ADC</strong> needed if the data is analogue).</li>
+                <li>Data from the user interface is also sent to the microprocessor.</li>
+                <li>The microprocessor then sends signals to actuators which are the output.</li>
+            </ol>
+            <p>Non-programmable devices need to be replaced if they need a software update. Programmable devices have two methods of updating:</p>
+            <ul>
+                <li>Connecting the device to a computer and downloading the update.</li>
+                <li>Updating automatically via a satellite, cellular or Wi-Fi link.</li>
+            </ul>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">Advantages and Disadvantages of using embedded systems</h3>
+            <div class="overflow-x-auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Advantages</th>
+                            <th>Disadvantages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Small in size, therefore can easily fit into devices</td>
+                            <td>Can be difficult to upgrade</td>
+                        </tr>
+                        <tr>
+                            <td>Low cost to make</td>
+                            <td>The interface can be confusing sometimes</td>
+                        </tr>
+                        <tr>
+                            <td>Requires very little power</td>
+                            <td>Troubleshooting is a specialist’s job</td>
+                        </tr>
+                        <tr>
+                            <td>Very fast reaction to changing input</td>
+                            <td>Often thrown away as difficult to upgrade and faults are harder to find</td>
+                        </tr>
+                        <tr>
+                            <td>Dedicated to one task only</td>
+                            <td>Increased garbage as they are thrown away</td>
+                        </tr>
+                        <tr>
+                            <td>Can be controlled remotely</td>
+                            <td>Any computerised system is prone to attacks</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Applications of Embedded devices</h3>
+            <ul>
+                <li>GPS systems</li>
+                <li>Security Systems</li>
+                <li>Vending Machines</li>
+                <li>Washing Machines</li>
+                <li>Oven</li>
+                <li>Microwave</li>
+            </ul>
+        </div>
+
+        <div class="content-box">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Network Hardware</h2>
+            <h3 class="text-xl font-bold text-gray-800 my-4">Network Interface Card (NIC)</h3>
+            <p>A <strong>network interface card (NIC)</strong> is needed to allow a device to connect to a network (such as the Internet).</p>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Media Access Control (MAC)</h3>
+            <p>A <strong>MAC address</strong> comprises 48 bits which are shown as six groups of hexadecimal digits. The first six display the manufacturer’s code, and the second half shows the device serial number. These do not change and are primarily constant for every device. there are two types of MAC addresses: the <strong>Universally Administered MAC Address (UAA)</strong> and the <strong>Locally Administered MAC Address (LAA)</strong>. The only difference between the two types is that <strong>UAA</strong> is made Universally and cannot be changed, but it is the opposite for <strong>LAA</strong>.</p>
+            
+            <h3 class="text-xl font-bold text-gray-800 my-4">IP Addresses</h3>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">IP address allocation:</h4>
+            <p>The network allocates IP addresses. Two types of IP addresses: <strong>static</strong> and <strong>dynamic</strong>.</p>
+            <ul>
+                <li><strong>Static IP addresses:</strong> Assigned manually to a device. Does not change over time.</li>
+                <li><strong>Dynamic IP addresses:</strong> Assigned automatically by a <strong>DHCP</strong> (Dynamic Host Configuration Protocol) server. Changes periodically or when the device connects to a different network.</li>
+            </ul>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">IPv4 (Internet Protocol version 4):</h4>
+            <p>Widely used protocol. Consists of four groups of decimal numbers separated by dots (e.g., 192.168.0.1). Provides approximately 4.3 billion unique addresses.</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">IPv6 (Internet Protocol version 6):</h4>
+            <p>Developed to address the limitations of <strong>IPv4</strong>. Uses eight groups of hexadecimal numbers separated by colons (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334). Provides an extremely large number of unique addresses (approximately 340 undecillion).</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Differences between IPv4 and IPv6:</h4>
+            <ul>
+                <li><strong>Address format:</strong> IPv4 uses a 32-bit address, while IPv6 uses a 128-bit address.</li>
+                <li><strong>Address space:</strong> IPv4 provides approximately 4.3 billion addresses, whereas IPv6 offers around 340 undecillion addresses.</li>
+                <li><strong>Address allocation:</strong> IPv4 addresses are allocated manually using <strong>DHCP</strong>, while IPv6 addresses are primarily assigned using stateless autoconfiguration.</li>
+            </ul>
+
+            <h3 class="text-xl font-bold text-gray-800 my-4">Routers</h3>
+            <img src="https://placehold.co/600x400/96e6d7/ffffff?text=Router" class="image-container" style="width: 600px; height: 400px;" alt="An image of a router">
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Router functionality:</h4>
+            <p>A router is a networking device that directs data packets between different networks. It determines the most efficient path for data transmission.</p>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Sending data to a specific destination on a network:</h4>
+            <ul>
+                <li>A router examines the destination IP address of incoming data packets.</li>
+                <li>It uses routing tables to determine the next hop or the next router on the path to the destination.</li>
+                <li>The router forwards the data packet to the appropriate next hop.</li>
+            </ul>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Router's role in IP address assignment:</h4>
+            <ul>
+                <li>A router can act as a <strong>DHCP server</strong> (Dynamic Host Configuration Protocol) and assign IP addresses to devices on a local network.</li>
+                <li>It dynamically allocates IP addresses from a predefined range to connected devices.</li>
+                <li><strong>DHCP</strong> allows for automatic IP address configuration and simplifies network management.</li>
+            </ul>
+            <h4 class="text-lg font-semibold text-gray-800 mt-4">Connecting a local network to the Internet:</h4>
+            <ul>
+                <li>A router serves as the gateway between a local network and the internet.</li>
+                <li>It connects the local network to an internet service provider (ISP) network.</li>
+                <li>The router receives data packets from devices on the local network and forwards them to the internet.</li>
+                <li>It also receives incoming data packets from the internet and routes them to the appropriate devices on the local network.</li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>
