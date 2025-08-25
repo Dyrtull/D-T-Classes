@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&T Role Profiler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .quiz-option {
+            transition: all 0.2s ease-in-out;
+        }
+        .quiz-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .quiz-option input:checked + label {
+            background-color: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
+        #result-card {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="quiz-container" class="w-full max-w-2xl bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-indigo-600">Discover Your D&T Superpower</h1>
+            <p class="text-gray-500 mt-2">Answer the questions to find your project role!</p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4">
+                <div id="progress-bar" class="bg-indigo-500 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Question Area -->
+        <div id="question-area">
+            <h2 id="question-text" class="text-xl font-semibold mb-6 text-center"></h2>
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Options will be injected here -->
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-8 flex justify-end">
+            <button id="next-btn" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">Next</button>
+        </div>
+    </div>
+
+    <!-- Result Container -->
+    <div id="result-container" class="hidden w-full max-w-2xl">
+        <div id="result-card" class="bg-white p-8 rounded-2xl shadow-lg text-center">
+            <h2 class="text-2xl font-bold text-gray-500">Your project role is...</h2>
+            <h1 id="result-title" class="text-5xl font-bold mt-2 mb-4"></h1>
+            <p id="result-description" class="text-gray-600 text-left leading-relaxed"></p>
+            <button id="restart-btn" class="mt-8 bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 transition-colors">Take the Quiz Again</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "A new project is announced! What's your very first thought?",
+                options: {
+                    A: "What tools and materials will I get to use?",
+                    B: "What's the core problem we're trying to solve?",
+                    C: "I can't wait to make the final result look amazing.",
+                    D: "Who is on the team and what's our deadline?"
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "When you get a new gadget, you're most likely to...",
+                options: {
+                    A: "Take it apart to see how the internal parts work.",
+                    B: "Think about how its design could be improved for users.",
+                    C: "Appreciate the quality of the materials and its finish.",
+                    D: "Read the manual cover-to-cover to understand all its functions."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "The team is stuck on a problem. What's your go-to move?",
+                options: {
+                    A: "Let's build a quick prototype to see if it works.",
+                    B: "Let's brainstorm some completely new approaches.",
+                    C: "Let's refine what we have and perfect the details.",
+                    D: "Let's list our options and vote on the best way forward."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "Which part of building a spaghetti bridge sounds most fun?",
+                options: {
+                    A: "Testing different truss structures to see which is strongest.",
+                    B: "Researching and sketching the most efficient bridge design.",
+                    C: "Carefully gluing each piece of spaghetti for a flawless look.",
+                    D: "Creating a step-by-step build plan for the team to follow."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "Your ideal workspace is filled with...",
+                options: {
+                    A: "Tools, wires, and components ready for building.",
+                    B: "Whiteboards, sticky notes, and sketchbooks for ideas.",
+                    C: "Different materials, color samples, and craft supplies.",
+                    D: "Calendars, checklists, and a neatly organized schedule."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "If you were to create a mobile app, your main focus would be...",
+                options: {
+                    A: "Writing clean, efficient code so the app runs fast.",
+                    B: "Solving a real-world problem for the app's users.",
+                    C: "Designing a beautiful and intuitive user interface.",
+                    D: "Managing the project timeline from idea to launch."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "A team member is struggling with their task. You...",
+                options: {
+                    A: "Show them a practical technique to get it done.",
+                    B: "Help them brainstorm a different way to approach it.",
+                    C: "Offer tips on how to improve the quality of their work.",
+                    D: "Ask if they need help and adjust the team plan if necessary."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "What's the most important quality of a finished project?",
+                options: {
+                    A: "It functions perfectly and reliably.",
+                    B: "It's a clever and innovative solution.",
+                    C: "It's beautifully made with great attention to detail.",
+                    D: "It was completed on time and met all requirements."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "You're watching a movie. What detail are you most likely to notice?",
+                options: {
+                    A: "The cool special effects and how they were made.",
+                    B: "The clever plot and character development.",
+                    C: "The stunning costumes and set design.",
+                    D: "The overall pacing and structure of the story."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "When you learn something new, you prefer...",
+                options: {
+                    A: "A hands-on workshop where you can practice.",
+                    B: "A lecture that explains the theory and concepts.",
+                    C: "A demonstration where you can see the technique.",
+                    D: "A structured course with clear goals and steps."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "The project instructions are unclear. You...",
+                options: {
+                    A: "Start experimenting with the materials to see what works.",
+                    B: "Try to understand the overall goal to figure out the steps.",
+                    C: "Focus on making your part look as good as possible.",
+                    D: "Ask for clarification so the whole team is on the right track."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "Which of these compliments would make you the proudest?",
+                options: {
+                    A: "'Wow, you really know how to make things work!'",
+                    B: "'That is such a brilliant and creative idea!'",
+                    C: "'The craftsmanship on this is absolutely incredible!'",
+                    D: "'This project is so well-organized and on schedule!'"
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "In a group discussion, you are the one who...",
+                options: {
+                    A: "Explains the technical details of how an idea could work.",
+                    B: "Comes up with the most out-of-the-box suggestions.",
+                    C: "Suggests how to make the final product more appealing.",
+                    D: "Makes sure everyone gets a chance to speak."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "You have an afternoon free. You'd rather spend it...",
+                options: {
+                    A: "Fixing a broken appliance or electronic device.",
+                    B: "Sketching inventions in a notebook.",
+                    C: "Working on a detailed craft or art project.",
+                    D: "Planning out your schedule for the upcoming week."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "When choosing a path on a map, you pick the one that...",
+                options: {
+                    A: "Is the most direct and efficient route.",
+                    B: "Leads to the most interesting and unexpected places.",
+                    C: "Is the most scenic and beautiful.",
+                    D: "Is clearly marked and easy to follow."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "A project is failing. Your first instinct is to check...",
+                options: {
+                    A: "If there's a mechanical or technical fault.",
+                    B: "If the original concept was flawed.",
+                    C: "If the quality of the construction is poor.",
+                    D: "If the team followed the plan correctly."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "Which 'behind-the-scenes' job at a play interests you most?",
+                options: {
+                    A: "Operating the lights and sound board.",
+                    B: "Developing the overall concept and story.",
+                    C: "Creating the detailed props and costumes.",
+                    D: "Stage managing and calling all the cues."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "When you look at a building, you first notice...",
+                options: {
+                    A: "The structural engineering that holds it up.",
+                    B: "The way it solves the problem of space for people.",
+                    C: "The decorative details and textures on its walls.",
+                    D: "The flow of people in and out of the entrance."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "You're asked to document the project. You choose to create...",
+                options: {
+                    A: "A technical manual explaining how it works.",
+                    B: "A presentation about the design process and ideas.",
+                    C: "A beautiful photo gallery of the finished product.",
+                    D: "A detailed report of the project's progress and timeline."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "You enjoy a game most when you are...",
+                options: {
+                    A: "Mastering the mechanics to become highly skilled.",
+                    B: "Figuring out clever strategies to win.",
+                    C: "Customizing your character or environment.",
+                    D: "Organizing a team and leading them to victory."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "When faced with a complex set of instructions, you...",
+                options: {
+                    A: "Follow them precisely to ensure it works correctly.",
+                    B: "Skim them for the main goal, then figure out your own way.",
+                    C: "Use them as a guideline, but add your own creative flair.",
+                    D: "Break them down into a checklist for your team."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "What does the word 'power' make you think of?",
+                options: {
+                    A: "Electrical currents and engines.",
+                    B: "A powerful, world-changing idea.",
+                    C: "A powerful piece of art or music.",
+                    D: "A powerful and effective leader."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "The project is almost done. What's your final step?",
+                options: {
+                    A: "Run one last test to make sure everything is working.",
+                    B: "Think if there's one last improvement to the design.",
+                    C: "Add a finishing touch to make it look perfect.",
+                    D: "Prepare the final presentation for the deadline."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "You'd be most frustrated by a project that...",
+                options: {
+                    A: "Doesn't work, despite your best efforts to fix it.",
+                    B: "Has no room for creativity or new ideas.",
+                    C: "Has to be made quickly with low-quality materials.",
+                    D: "Is disorganized and has no clear plan."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "When you give a gift, it's usually...",
+                options: {
+                    A: "Something practical and useful that you built or assembled.",
+                    B: "Something clever that perfectly suits their personality.",
+                    C: "Something handmade and beautiful.",
+                    D: "A well-planned experience, like a surprise party or trip."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "Which of these sounds like the best job title?",
+                options: {
+                    A: "Lead Engineer",
+                    B: "Chief Innovation Officer",
+                    C: "Creative Director",
+                    D: "Project Manager"
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "You're at a museum. Which exhibit do you visit first?",
+                options: {
+                    A: "The one with interactive machines and working models.",
+                    B: "The one about the history of design and invention.",
+                    C: "The gallery of handcrafted pottery or textiles.",
+                    D: "You check the map to plan the most efficient route through all of them."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "Your team has two great ideas but can only choose one. You suggest...",
+                options: {
+                    A: "Building a simple version of each to see which works better.",
+                    B: "Combining the best parts of both ideas into a new one.",
+                    C: "Choosing the one that will look more impressive in the end.",
+                    D: "Making a list of pros and cons for each to help the team decide."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "When you say something is 'elegant', you're usually describing...",
+                options: {
+                    A: "An efficient and well-built mechanism.",
+                    B: "A simple, yet brilliant, solution to a complex problem.",
+                    C: "A graceful shape or beautiful design.",
+                    D: "A perfectly executed and seamless plan."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            },
+            {
+                question: "Looking towards your future, you're most excited about...",
+                options: {
+                    A: "Working with new technologies and building the future.",
+                    B: "Coming up with ideas that will change the world.",
+                    C: "Creating beautiful things that bring people joy.",
+                    D: "Leading a team to achieve incredible things together."
+                },
+                roles: { A: "Technologist", B: "Designer", C: "Artisan", D: "Coordinator" }
+            }
+        ];
+
+        const resultsData = {
+            Technologist: {
+                title: "The Technologist 🛠️",
+                color: "text-red-500",
+                description: "You are the hands-on builder and problem-solver of the team. You're fascinated by how things work, and you aren't afraid to get your hands dirty to figure it out. You excel at turning ideas into reality, using tools and technology to construct, test, and perfect the project. Your strengths are your practicality, your technical skill, and your ability to make things function flawlessly. The team will count on you to build a strong and reliable spaghetti bridge."
+            },
+            Designer: {
+                title: "The Designer 💡",
+                color: "text-blue-500",
+                description: "You are the visionary and idea generator of the team. You love to ask 'What if?' and 'Why?'. You excel at understanding the core problem, brainstorming creative solutions, and planning the project's direction. You think about the user and the big picture, ensuring the final product is not just functional, but also clever and innovative. The team will rely on you to research and create the most effective and ingenious bridge design."
+            },
+            Artisan: {
+                title: "The Artisan 🎨",
+                color: "text-purple-500",
+                description: "You are the master of craft and detail. You have a keen eye for aesthetics and believe that how something looks and feels is just as important as what it does. You take immense pride in the quality of your work, focusing on precision, finish, and the small touches that make a project stand out. Your patience and dedication to craftsmanship are your greatest assets. The team will depend on you to ensure the bridge is built with care, precision, and looks incredible."
+            },
+            Coordinator: {
+                title: "The Coordinator 🧑‍💼",
+                color: "text-green-500",
+                description: "You are the organized leader and team director. You naturally see the path from start to finish and know how to get everyone there together. You excel at planning, setting deadlines, communicating, and making sure everyone has what they need to succeed. You keep the team focused, motivated, and on schedule. Your ability to manage the process is your superpower. The team will count on you to guide them through the project, ensuring a smooth and successful build."
+            }
+        };
+
+        let currentQuestionIndex = 0;
+        const scores = { Technologist: 0, Designer: 0, Artisan: 0, Coordinator: 0 };
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultContainer = document.getElementById('result-container');
+        const restartBtn = document.getElementById('restart-btn');
+
+        function loadQuestion() {
+            // Deselect any previous answers and disable the next button
+            const selected = document.querySelector('input[name="option"]:checked');
+            if(selected) selected.checked = false;
+            nextBtn.disabled = true;
+
+            const currentQuestion = quizData[currentQuestionIndex];
+            questionText.innerText = currentQuestion.question;
+            optionsContainer.innerHTML = '';
+
+            // Create and append options
+            Object.keys(currentQuestion.options).forEach(key => {
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('quiz-option');
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.id = `option${key}`;
+                input.name = 'option';
+                input.value = key;
+                input.classList.add('hidden');
+                input.addEventListener('change', () => {
+                    nextBtn.disabled = false;
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = `option${key}`;
+                label.innerText = currentQuestion.options[key];
+                label.classList.add('block', 'p-4', 'border-2', 'border-gray-300', 'rounded-lg', 'cursor-pointer', 'hover:border-indigo-500', 'transition-colors', 'h-full');
+
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            // Update progress bar
+            const progress = ((currentQuestionIndex) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function showResults() {
+            // Find the role with the highest score
+            let maxScore = 0;
+            let finalRole = "";
+            for (const role in scores) {
+                if (scores[role] > maxScore) {
+                    maxScore = scores[role];
+                    finalRole = role;
+                }
+            }
+
+            // Handle ties by defaulting to Designer or Coordinator as they are flexible roles
+            if (Object.values(scores).filter(score => score === maxScore).length > 1) {
+                if (scores.Designer === maxScore) finalRole = 'Designer';
+                else if (scores.Coordinator === maxScore) finalRole = 'Coordinator';
+            }
+
+            const result = resultsData[finalRole];
+            document.getElementById('result-title').innerText = result.title;
+            document.getElementById('result-title').className = `text-5xl font-bold mt-2 mb-4 ${result.color}`;
+            document.getElementById('result-description').innerText = result.description;
+
+            quizContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+        }
+
+        nextBtn.addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (!selectedOption) return;
+
+            const answerKey = selectedOption.value;
+            const role = quizData[currentQuestionIndex].roles[answerKey];
+            if (role) {
+                scores[role]++;
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        restartBtn.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            scores.Technologist = 0;
+            scores.Designer = 0;
+            scores.Artisan = 0;
+            scores.Coordinator = 0;
+            resultContainer.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            loadQuestion();
+        });
+
+        // Initial load
+        loadQuestion();
+    </script>
+</body>
+</html>
