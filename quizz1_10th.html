@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&T Theory Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #FDFBF8;
+            --card-background: #FFFFFF;
+            --text-color: #4A4A4A;
+            --primary-color: #0284c7; /* Sky Blue */
+            --correct-color: #22c55e; /* Green */
+            --incorrect-color: #ef4444; /* Red */
+            --border-color: #EAEAEA;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        #quiz-container {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #quiz-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #quiz-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #quiz-header p {
+            margin: 0.25rem 0 0;
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        
+        #question-card {
+            padding: 1.5rem;
+        }
+
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        #answer-buttons {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: left;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--card-background);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn:hover:not(:disabled) {
+            border-color: var(--primary-color);
+            background-color: #f0f9ff;
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .btn.correct {
+            border-color: var(--correct-color);
+            background-color: #f0fdf4;
+            color: #15803d;
+        }
+
+        .btn.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+
+        #controls {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end; /* Align button to the right */
+            align-items: center;
+        }
+        
+        #next-btn, #restart-btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #next-btn:hover, #restart-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        #rationale-text {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            color: #495057;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #results-card {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        #results-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        #score-text {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+
+        #grade-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-container">
+        <div id="quiz-header">
+            <h1 id="main-title">D&T Theory Quiz</h1>
+            <p id="progress-text">Question 1 of 10</p>
+        </div>
+
+        <div id="question-card">
+            <h2 id="question-text">Loading question...</h2>
+            <div id="answer-buttons">
+                </div>
+            <div id="controls" class="hidden">
+                <button id="next-btn">Next</button>
+            </div>
+             <p id="rationale-text" class="hidden"></p>
+        </div>
+
+        <div id="results-card" class="hidden">
+            <h2>Quiz Complete!</h2>
+            <p id="score-text">Your score: 0 out of 10</p>
+            <p id="grade-text">Grade: 1.0</p>
+            <button id="restart-btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // --- QUESTION BANK ---
+        const questionBank = [
+            // Concept 1: Definition of D&T
+            [
+                {
+                    question: "Which of the following best describes the primary goal of Design & Technology?",
+                    answers: [
+                        { text: "To apply practical and creative solutions to meet user or technical needs.", correct: true },
+                        { text: "To create artistic sculptures and paintings.", correct: false },
+                        { text: "To study historical inventions without creating new ones.", correct: false },
+                        { text: "To focus only on the theoretical science behind engineering.", correct: false }
+                    ]
+                },
+                {
+                    question: "Design & Technology is a subject that focuses on solving problems. What does this process typically involve?",
+                    answers: [
+                        { text: "Combining practical skills with creative thinking to meet a specific need.", correct: true },
+                        { text: "Writing essays about the history of technology.", correct: false },
+                        { text: "Memorizing scientific formulas without applying them.", correct: false },
+                        { text: "Exclusively learning to use computer software.", correct: false }
+                    ]
+                }
+            ],
+            // Concept 2: Need vs. Want
+            [
+                {
+                    question: "A smartphone user says, 'I need a phone that makes calls, but I want one with a holographic projector.' Which part is the 'Need'?",
+                    answers: [
+                        { text: "The ability to make calls.", correct: true },
+                        { text: "The holographic projector.", correct: false },
+                        { text: "Both are needs.", correct: false },
+                        { text: "Neither are needs.", correct: false }
+                    ]
+                },
+                {
+                    question: "In product development, what is the key difference between a 'need' and a 'want'?",
+                    answers: [
+                        { text: "A 'need' is an essential requirement, while a 'want' is a desirable but non-essential feature.", correct: true },
+                        { text: "A 'need' is cheaper to implement than a 'want'.", correct: false },
+                        { text: "A 'want' is more important to the user than a 'need'.", correct: false },
+                        { text: "There is no real difference; the terms are interchangeable.", correct: false }
+                    ]
+                }
+            ],
+            // Concept 3: Constraints in a Design Brief
+            [
+                {
+                    question: "In a design brief, which section would describe the project's budget and the deadline for completion?",
+                    answers: [
+                        { text: "Constraints", correct: true },
+                        { text: "Overall Goal", correct: false },
+                        { text: "Intended User", correct: false },
+                        { text: "Requirements", correct: false }
+                    ]
+                },
+                {
+                    question: "If a design brief states that a new chair must be made from recycled plastic, this information would be classified as a...",
+                    answers: [
+                        { text: "Constraint or Requirement", correct: true },
+                        { text: "Goal", correct: false },
+                        { text: "User Profile", correct: false },
+                        { text: "Want", correct: false }
+                    ]
+                }
+            ],
+            // Concept 4: Measurable Specification
+            [
+                {
+                    question: "Which statement is the best example of a measurable specification?",
+                    answers: [
+                        { text: "The chair must weigh no more than 4 kg.", correct: true },
+                        { text: "The chair must be comfortable for students.", correct: false },
+                        { text: "The bridge should be very strong.", correct: false },
+                        { text: "The product must be easy to use.", correct: false }
+                    ]
+                },
+                {
+                    question: "A design brief requires a bookshelf to be 'durable.' Which of the following is the best translation of this into a specific, measurable specification?",
+                    answers: [
+                        { text: "The bookshelf must support a load of 25 kg per shelf for 1 year without visible bending.", correct: true },
+                        { text: "The bookshelf should last for a long time.", correct: false },
+                        { text: "The bookshelf must be made from a strong material.", correct: false },
+                        { text: "The bookshelf must be resistant to damage.", correct: false }
+                    ]
+                }
+            ],
+            // Concept 5: Load
+            [
+                {
+                    question: "A heavy truck driving over a bridge is an example of a...",
+                    answers: [
+                        { text: "Load", correct: true },
+                        { text: "Structure", correct: false },
+                        { text: "Constraint", correct: false },
+                        { text: "Specification", correct: false }
+                    ]
+                },
+                {
+                    question: "In structural engineering, what is the correct term for the forces that a structure is designed to support?",
+                    answers: [
+                        { text: "Loads", correct: true },
+                        { text: "Stresses", correct: false },
+                        { text: "Strains", correct: false },
+                        { text: "Joints", correct: false }
+                    ]
+                }
+            ],
+            // Concept 6: Tension
+            [
+                {
+                    question: "When you pull on a rope in a game of tug-of-war, what type of force is the rope experiencing?",
+                    answers: [
+                        { text: "Tension", correct: true },
+                        { text: "Compression", correct: false },
+                        { text: "Load", correct: false },
+                        { text: "Structure", correct: false }
+                    ]
+                },
+                {
+                    question: "The main cables of a suspension bridge, which are stretched by the weight of the bridge deck, are primarily under what type of force?",
+                    answers: [
+                        { text: "Tension", correct: true },
+                        { text: "Compression", correct: false },
+                        { text: "Torsion", correct: false },
+                        { text: "Shear", correct: false }
+                    ]
+                }
+            ],
+            // Concept 7: Triangles in Trusses
+            [
+                {
+                    question: "What is the primary reason triangles are so common in truss bridge designs?",
+                    answers: [
+                        { text: "They distribute force efficiently into tension and compression.", correct: true },
+                        { text: "They are the easiest shape to manufacture.", correct: false },
+                        { text: "They look better than squares or circles.", correct: false },
+                        { text: "They require the least amount of material.", correct: false }
+                    ]
+                },
+                {
+                    question: "A square frame can be easily deformed by pushing on its corners, but a triangular frame holds its shape. This is because a triangle is an inherently...",
+                    answers: [
+                        { text: "Rigid and stable structure", correct: true },
+                        { text: "Flexible and dynamic shape", correct:false },
+                        { text: "Aesthetically pleasing form", correct: false },
+                        { text: "Material-efficient design", correct: false }
+                    ]
+                }
+            ],
+            // Concept 8: Compression
+            [
+                {
+                    question: "A structural member that is being squeezed or pushed together is under which type of force?",
+                    answers: [
+                        { text: "Compression", correct: true },
+                        { text: "Tension", correct: false },
+                        { text: "Specification", correct: false },
+                        { text: "Structure", correct: false }
+                    ]
+                },
+                {
+                    question: "The vertical pillars or columns holding up a heavy roof are primarily designed to withstand which force?",
+                    answers: [
+                        { text: "Compression", correct: true },
+                        { text: "Tension", correct: false },
+                        { text: "Bending", correct: false },
+                        { text: "Shear", correct: false }
+                    ]
+                }
+            ],
+            // Concept 9: Intended User
+            [
+                {
+                    question: "You are writing a design brief for a new school backpack. Stating that 'The primary users are high school students aged 14-18' belongs in which section?",
+                    answers: [
+                        { text: "Intended User", correct: true },
+                        { text: "Requirements", correct: false },
+                        { text: "Constraints", correct: false },
+                        { text: "Overall Goal", correct: false }
+                    ]
+                },
+                {
+                    question: "Why is it crucial to clearly define the 'Intended User' in a design brief?",
+                    answers: [
+                        { text: "It guides all design decisions to ensure the final product meets their specific needs.", correct: true },
+                        { text: "It is a legal requirement for all product documentation.", correct: false },
+                        { text: "It helps determine the final retail price of the product.", correct: false },
+                        { text: "It is only necessary for marketing purposes after the product is built.", correct: false }
+                    ]
+                }
+            ],
+            // Concept 10: ACCESSFM
+            [
+                {
+                    question: "In the ACCESSFM framework, which letter prompts a designer to consider the visual look and appeal of a product?",
+                    answers: [
+                        { text: "A (Aesthetics)", correct: true },
+                        { text: "C (Customer)", correct: false },
+                        { text: "F (Function)", correct: false },
+                        { text: "M (Materials)", correct: false }
+                    ]
+                },
+                {
+                    question: "Using the ACCESSFM framework to evaluate a bridge, which letter would relate to its purpose, such as carrying cars or pedestrians?",
+                    answers: [
+                        { text: "F (Function)", correct: true },
+                        { text: "S (Size)", correct: false },
+                        { text: "E (Environment)", correct: false },
+                        { text: "C (Cost)", correct: false }
+                    ]
+                }
+            ]
+        ];
+
+        const questionCard = document.getElementById('question-card');
+        const resultsCard = document.getElementById('results-card');
+        const questionText = document.getElementById('question-text');
+        const answerButtons = document.getElementById('answer-buttons');
+        const progressText = document.getElementById('progress-text');
+        const mainTitle = document.getElementById('main-title');
+        const controls = document.getElementById('controls');
+        const nextBtn = document.getElementById('next-btn');
+        const rationaleText = document.getElementById('rationale-text');
+        const scoreText = document.getElementById('score-text');
+        const gradeText = document.getElementById('grade-text');
+        const restartBtn = document.getElementById('restart-btn');
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizQuestions = [];
+
+        // Corresponds to scores 0 through 10
+        const gradingScale = [1.0, 1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0];
+
+        // --- RANDOMIZATION LOGIC ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        function generateQuiz() {
+            quizQuestions = [];
+            const conceptsToQuiz = [...questionBank];
+            shuffleArray(conceptsToQuiz);
+
+            for (const conceptGroup of conceptsToQuiz) {
+                if (conceptGroup.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * conceptGroup.length);
+                    const question = { ...conceptGroup[randomIndex] };
+                    shuffleArray(question.answers);
+                    quizQuestions.push(question);
+                }
+            }
+            quizQuestions = quizQuestions.slice(0, 10);
+        }
+
+        // --- QUIZ FLOW ---
+        function startQuiz() {
+            // Check if a quiz already exists in session storage
+            const storedQuiz = sessionStorage.getItem('quizQuestions');
+            if (storedQuiz) {
+                // If a quiz exists, load it
+                quizQuestions = JSON.parse(storedQuiz);
+                currentQuestionIndex = parseInt(sessionStorage.getItem('currentQuestionIndex')) || 0;
+                score = parseInt(sessionStorage.getItem('score')) || 0;
+            } else {
+                // If no quiz exists, generate a new one and store it
+                generateQuiz();
+                sessionStorage.setItem('quizQuestions', JSON.stringify(quizQuestions));
+                currentQuestionIndex = 0;
+                score = 0;
+                sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+                sessionStorage.setItem('score', score);
+            }
+
+            mainTitle.textContent = "D&T Theory Quiz";
+            progressText.classList.remove('hidden');
+            resultsCard.classList.add('hidden');
+            questionCard.classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            questionText.textContent = currentQuestion.question;
+            progressText.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.textContent = answer.text;
+                button.classList.add('btn');
+                button.dataset.correct = answer.correct;
+                button.addEventListener('click', selectAnswer);
+                answerButtons.appendChild(button);
+            });
+            
+            controls.classList.remove('hidden');
+        }
+
+        function resetState() {
+            while (answerButtons.firstChild) {
+                answerButtons.removeChild(answerButtons.firstChild);
+            }
+            nextBtn.classList.add('hidden');
+            rationaleText.classList.add('hidden');
+            rationaleText.textContent = '';
+        }
+
+        function selectAnswer(e) {
+            const selectedBtn = e.target;
+            const isCorrect = selectedBtn.dataset.correct === 'true';
+
+            if (isCorrect) {
+                score++;
+                sessionStorage.setItem('score', score); // Update score in storage
+            }
+            
+            let correctText = '';
+            Array.from(answerButtons.children).forEach(button => {
+                if(button.dataset.correct === 'true') {
+                    correctText = button.textContent;
+                }
+                setStatusClass(button, button.dataset.correct === 'true');
+                button.disabled = true;
+            });
+            
+            rationaleText.textContent = isCorrect 
+                ? `Correct! Well done.`
+                : `Not quite. The correct answer was: "${correctText}"`;
+            rationaleText.classList.remove('hidden');
+            
+            if (quizQuestions.length > currentQuestionIndex + 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                 setTimeout(showResults, 1500);
+            }
+        }
+        
+        function setStatusClass(element, correct) {
+            if (correct) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+            }
+        }
+        
+        function showResults() {
+            questionCard.classList.add('hidden');
+            progressText.classList.add('hidden');
+            mainTitle.textContent = "Quiz Complete!";
+            
+            const finalGrade = gradingScale[score];
+            scoreText.textContent = `You answered ${score} out of ${quizQuestions.length} questions correctly.`;
+            gradeText.textContent = `Grade: ${finalGrade.toFixed(1)}`;
+            
+            resultsCard.classList.remove('hidden');
+
+            // Clear session storage when the quiz is completed
+            sessionStorage.clear();
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex); // Update index in storage
+            showQuestion();
+        });
+
+        restartBtn.addEventListener('click', () => {
+            // Restart button clears session storage and starts a new quiz
+            sessionStorage.clear();
+            startQuiz();
+        });
+
+        // Start the quiz on page load
+        startQuiz();
+    </script>
+</body>
+</html>
