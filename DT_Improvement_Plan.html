@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT Improvement Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8FAFC;
+            color: #374151;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #1E293B, #059669);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(to bottom right, #3B82F6, #1D4ED8);
+        }
+
+        .shadow-glow {
+            box-shadow: 0 0 15px rgba(5, 150, 105, 0.4);
+        }
+
+        .card-content {
+            max-height: 2000px;
+            /* Expanded by default */
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        .card-content.collapsed {
+            max-height: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #111827;
+        }
+
+        .bg-white {
+            background-color: #fff;
+        }
+
+        .border-gray-200 {
+            border-color: #E5E7EB;
+        }
+
+        .progress-bar-inner {
+            transition: width 0.5s ease-in-out;
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .collapsible-content.expanded {
+            max-height: 2000px;
+            /* A large enough value for the content to expand fully */
+            opacity: 1;
+        }
+
+        .chevron-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .chevron-icon.rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        .collapsible-section.expanded {
+            max-height: 2000px;
+            /* Adjust as needed for content height */
+        }
+
+        .section-header .chevron-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .section-header.expanded .chevron-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="p-4 min-h-screen">
+    <div class="max-w-7xl w-full mx-auto py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-2">
+                <span class="text-gradient font-extrabold">ICT Department</span>
+            </h1>
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-light text-gray-600">Improvement Plan: 2024 - 2026</h2>
+        </header>
+
+        <section class="bg-white p-8 rounded-2xl shadow-xl mb-12 border border-gray-200">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Executive Overview</h3>
+            <p class="text-gray-600 leading-relaxed">
+                The ICT department's improvement plan for 2024–2026 aims for a more robust and hands-on curriculum,
+                focusing on implementing <strong>IGCSE Computer Science (0478)</strong> and <strong>ICT (0417)</strong>
+                and establishing a dedicated <strong>Design & Technology (D&T)</strong> lab. The goal is to boost IGCSE
+                results, develop critical <strong>21st-century skills</strong> such as problem-solving and critical
+                thinking, and build a strong presence in robotics and programming competitions.
+            </p>
+            <div class="flex items-center space-x-4 mt-6">
+                <div class="flex-1">
+                    <div class="h-2 bg-emerald-500 rounded-full"></div>
+                    <p class="text-sm text-gray-500 mt-1">2024-2025: Phase Completed</p>
+                </div>
+                <div class="flex-1">
+                    <div class="h-2 bg-amber-500 rounded-full"></div>
+                    <p class="text-sm text-gray-500 mt-1">2025-2026: Phase In Progress</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="mb-6 flex items-center justify-between cursor-pointer section-header">
+                <h3 class="text-4xl font-extrabold text-gray-800">
+                    <span class="text-gray-400 mr-2">📋</span>2024-2025 ORIGINAL STRATEGIC PLAN
+                </h3>
+                <svg class="h-8 w-8 text-gray-400 transform transition-transform duration-300 chevron-icon" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+            <div class="collapsible-section collapsed">
+                <div id="plan-container-2024" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="mb-6 flex items-center justify-between cursor-pointer section-header">
+                <h3 class="text-4xl font-extrabold text-gray-800">
+                    <span class="text-gray-400 mr-2">📋</span>2025-2026 CURRENT INITIATIVES
+                </h3>
+                <svg class="h-8 w-8 text-gray-400 transform transition-transform duration-300 chevron-icon" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+            <div class="collapsible-section collapsed">
+                <div id="plan-container-2025" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 1. Data arrays
+        const plan2024 = [
+            {
+                what: "Implement the IGCSE Computer Science (0478) curriculum from 1st-9th grade",
+                how: "ICT will follow IGCSE 0478 syllabus.\nRobotics 1st to 6th grade.",
+                when: "3 terms for the school year",
+                responsible: "ICT teachers",
+                indicator: "Between 1 and 2 terms per grade\nIGCSE 0478 2025 results. At least equal to Colombia's level",
+                impact: "Integration of computational thinking estrategies in the curriculum\nTransition towards Computer Science IGCSE 0478 Syllabus",
+                evaluation: "7 students presented this exam. Results: 2 B, 3 A, 2 A*",
+                status: "completed"
+            },
+            {
+                what: "Improve in IGCSE results, through adecuate training in the classroom, using the proper software tools.",
+                how: "ICT classes for 10th-11th will concentrate on IGCSE training for 0417 paper, emphasizing in databases and web design authoring tools throughout the curriculum.\nICT classes for 9th will concentrate on IGCSE training for 0478 paper, emphasizing in programming logic.",
+                when: "3 terms for the school year",
+                responsible: "ICT teachers for grades 5th-11th (Felipe Velasquez / Andrés Forero)",
+                indicator: "3 Mock tests per grade (1 per term)\nIGCSE 0417 2023 and 2024 Results: 65%>=C\nIGCSE 0478 2025 Results: At least equal to Colombia's level",
+                impact: "Improving IGCSE overall results, compared to previous year. * 65%>=C",
+                evaluation: `
+                    <div class="mt-4">
+                        <h4 class="text-md font-semibold text-gray-700 mb-2">IGCSE ICT Results Trend</h4>
+                        <img src="img/IGCSE_RESULTS.png"
+                            alt="IGCSE Results Trend Mock Data" class="rounded-xl shadow-lg w-full">
+                    </div>
+                `,
+                status: "completed"
+            },
+            {
+                what: "Plan the Maker Space",
+                how: "Imagine the future classroom and write all the needs for the construction plan.",
+                when: "2024 to 2025",
+                responsible: "ICT Department - School",
+                indicator: "Maker space implementation\nD&T lab render\nProjects creation tracking",
+                impact: "New options for all subjects to have a hands on experience during the classes and to create innovation/research projects.",
+                evaluation: {
+                    title: "D&T Lab Implementation: Phase 1 Complete",
+                    text: "The ICT Room has been adapted, with new equipment arriving for Phase 2.",
+                    images: [
+                        { src: "img/Sala1-3.jpeg", alt: "Render of the new Design and Technology Lab - View 1" },
+                        { src: "img/real2.jpeg", alt: "Render of the new Design and Technology Lab - View 2" },
+                        { src: "img/real3.jpeg", alt: "Render of the new Design and Technology Lab - View 3" }
+                    ]
+                },
+                status: "completed"
+            },
+            {
+                what: "Define the extracurricular Robotics program",
+                how: "Organizing the new robotics´ classroom.\nPlanning the competitions to participate with the extracurricular students.",
+                when: "2024 to 2025",
+                responsible: "ICT and RD&I Department",
+                indicator: "Students retention and new students: At least 10 students per level.\nNew material adquisition: 2-3 students/kit\nTournaments participation: One presential per level",
+                impact: "STEM abilities development\nSchool's name positioning in robotics competitions.\nExtracurricular growth",
+                evaluation: `
+                    <div class="mt-4">
+                        <h4 class="text-md font-semibold text-gray-700 mb-2">2024 Events attended:</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-600 ml-4 mt-1 space-y-1">
+                            <li>EIA Challenge</li>
+                            <li>Medellin Challenge</li>
+                            <li>Beebot Challenge</li>
+                            <li>Robojam Latam</li>
+                        </ul>
+                    </div>
+                `,
+                status: "completed"
+            }
+        ];
+
+        const plan2025 = [
+            {
+                what: "Implement the IGCSE Design & Technology (0445) curriculum from 5th-10th grade",
+                how: "D&T syllabus implementation 5th-10th\nCross-curricular projects",
+                when: "3 terms for the school year",
+                responsible: "ICT teachers",
+                indicator: "Functional Prototypes made by the students\nGOAL: 80% <= successful functional prototypes",
+                impact: "XXI Skills development",
+                evaluation: "IGCSE 0445 2027 result",
+                status: "in-progress"
+            },
+            {
+                what: "Implement the IGCSE ICT (0417) curriculum from 11th-12th grade\nImplement IGCSE Computer Science 0478 for some students in 12th grade",
+                how: "ICT will follow IGCSE 0417 syllabus in 11 and 12th grades\nICT will follow IGCSE 0478 syllabus in 12th grade",
+                when: "3 terms for the school year",
+                responsible: "Andrés Forero",
+                indicator: "3 Mock tests per grade (1 per term)\nGOAL: IGCSE 0417 65%>=C\nIGCSE 0478 2025 Results: At least equal to Colombia's level",
+                impact: "Closing of ICT IGCSE 0417 Syllabus \nClosing of Computer Science IGCSE 0478 Syllabus",
+                evaluation: "IGCSE 0478 2025 (6) results\nIGCSE 0417 2025 (6) results",
+                status: "in-progress"
+            },
+            {
+                what: "Plan the Design & Technology lab",
+                how: "Adapt 0445 syllabus to our school:\nClass adaptation\nFacilties planning\nBudget proposal\nClass projects planning\nCurricular alignment with other departmetns, including R&D department",
+                when: "2025 and onwards",
+                responsible: "ICT Department - School",
+                indicator: "D&T lfacilties usage\nPrototype development\nCross-curricular projects\nGOAL: D&T lab implementation: Amount and quality of produced projects\nOne cross-curricular project per grade per year.",
+                impact: "New options for all subjects to have a hands on experience during the classes and to create innovation/research projects.\nXXI Skills improvemente",
+                evaluation: "D&T lab implementation\nPhase 1: ICT Room\nPhase 2: New building",
+                status: "phase-complete"
+            },
+            {
+                what: "Define and develop extracurricular competitions and events in:\nRobotics\nMechatronics\nProgramming",
+                how: "Choose which events we will attend\nSkills/Interest center creation\nClub logo and T-shirt creation",
+                when: "2025 and onwards",
+                responsible: "D&T Department - R&D department",
+                indicator: "Students retention and new students: At least 5 students per level.\nNew material adquisition: 2-3 students/kit\nTournaments participation: Three presential per year",
+                impact: "STEM abilities development\nSchool's name positioning in robotics competitions.\nExtracurricular growth\nAim for international competition",
+                evaluation: "2025 -2026 competitions results",
+                status: "mixed-progress"
+            }
+        ];
+
+        // 2. DOM element references
+        const planContainer2024 = document.getElementById('plan-container-2024');
+        const planContainer2025 = document.getElementById('plan-container-2025');
+
+        // 3. Helper functions
+        function getIconSVG(name) {
+            const icons = {
+                what: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.674M9.663 17l.956 2.016m-1.912-2.016l-1.912 2.016M15.337 17l1.912 2.016m-1.912-2.016l-2.016 4.032M12 21v-4M7.817 10.183l-1.63 1.63M16.183 10.183l1.63 1.63M12 2v20m0-20L12 20M3.868 11.233L1.5 13.5M20.132 11.233L22.5 13.5M7.817 13.817l1.63-1.63M16.183 13.817l-1.63-1.63"/></svg>`,
+                how: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13.5m0-13.5C9.378 5.753 7 7.576 7 10v.5M12 6.253C14.622 5.753 17 7.576 17 10v.5M12 6.253a.25.25 0 01.25.25v.25a.25.25 0 00.25.25v.25a.25.25 0 01-.25.25v.25a.25.25 0 00.25.25v.25a.25.25 0 01-.25.25M7.25 12h9.5"/></svg>`,
+                when: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h.01M16 14h.01M16 11h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+                responsible: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>`,
+                indicator: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l-4-4m0 0L2 12m4 4l4-4m0 0l-4-4m4 4l-4 4m4-4l4 4m0 0l4-4m-4 4l4 4m-4-4l-4 4m4 4l-4 4" /></svg>`,
+                impact: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`,
+                evaluation: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>`,
+                completed: `<svg class="h-6 w-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+                'in-progress': `<svg class="h-6 w-6 text-amber-500 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.962 8.962 0 0120 12c0 4.418-3.582 8-8 8s-8-3.582-8-8c0-1.077.26-2.128.729-3.076M12 21v-4m0-4h4"/></svg>`,
+                'phase-complete': `<svg class="h-6 w-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+                'mixed-progress': `<svg class="h-6 w-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+                'planned': `<svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h.01M16 14h.01M16 11h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`
+            };
+            return icons[name] || '';
+        }
+
+        function createSection(iconName, title, content) {
+            if (!content || content.trim() === '') return '';
+
+            // Handle evaluation content, especially the HTML strings
+            if (iconName === 'evaluation') {
+                return `
+                    <div class="mb-4 last:mb-0">
+                        <div class="flex items-center mb-1">
+                            ${getIconSVG(iconName)}
+                            <h3 class="text-lg font-semibold text-gray-700">${title}</h3>
+                        </div>
+                        ${content.trim().startsWith('<') ? content : `<p class="text-sm text-gray-600">${content}</p>`}
+                    </div>
+                `;
+            }
+
+            const contentLines = content.split('\n').map(line => {
+                if (line.trim().startsWith('*')) {
+                    return `<li class="text-sm text-gray-600 list-disc ml-4">${line.trim().substring(1).trim()}</li>`;
+                }
+                if (line.trim().startsWith('-')) {
+                    return `<li class="text-sm text-gray-600 list-disc ml-4">${line.trim().substring(1).trim()}</li>`;
+                }
+                return `<p class="text-sm text-gray-600 mb-1">${line.trim()}</p>`;
+            }).join('');
+
+            return `
+            <div class="mb-4 last:mb-0">
+                <div class="flex items-center mb-1">
+                    ${getIconSVG(iconName)}
+                    <h3 class="text-lg font-semibold text-gray-700">${title}</h3>
+                </div>
+                ${contentLines.startsWith('<li') ? `<ul class="space-y-1">${contentLines}</ul>` : contentLines}
+            </div>
+        `;
+        }
+
+        // ... (your existing code)
+
+function createCard(item) {
+            const card = document.createElement('div');
+            const statusIcon = getIconSVG(item.status);
+            let statusText = '';
+            let statusColor = '';
+            let statusBg = '';
+            let additionalProgress = '';
+
+            switch (item.status) {
+                case 'completed':
+                    statusText = 'Complete';
+                    statusColor = 'text-emerald-500';
+                    statusBg = 'bg-emerald-100';
+                    break;
+                case 'in-progress':
+                    statusText = 'In Progress';
+                    statusColor = 'text-amber-500';
+                    statusBg = 'bg-amber-100';
+                    break;
+                case 'phase-complete':
+                    statusText = 'Phase 1 Complete';
+                    statusColor = 'text-emerald-500';
+                    statusBg = 'bg-emerald-100';
+                    additionalProgress = `
+                    <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
+                        <span class="text-emerald-500">✅ Phase 1 Complete</span>
+                        <span class="text-gray-400">📅 Phase 2 Planned</span>
+                    </div>
+                `;
+                    break;
+                case 'mixed-progress':
+                    statusText = 'Selection Complete, Training Active';
+                    statusColor = 'text-gray-700';
+                    statusBg = 'bg-gray-200';
+                    additionalProgress = `
+                    <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
+                        <span class="text-emerald-500">✅ Selection Complete</span>
+                        <span class="text-amber-500">🔄 Training In Progress</span>
+                    </div>
+                `;
+                    break;
+                default:
+                    statusText = 'Planned';
+                    statusColor = 'text-gray-400';
+                    statusBg = 'bg-gray-100';
+                    break;
+            }
+
+            card.className = "bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200";
+
+            let contentHtml = '';
+
+            if (item.indicator) {
+                contentHtml += createSection('indicator', 'Indicator and Goal', item.indicator);
+            }
+            if (item.impact) {
+                contentHtml += createSection('impact', 'Impact', item.impact);
+            }
+            if (additionalProgress) {
+                contentHtml += additionalProgress;
+            }
+            
+            if (item.evaluation) {
+                if (typeof item.evaluation === 'object' && item.evaluation.images) {
+                    let galleryHtml = `<div class="mt-4">
+                        <h4 class="text-md font-semibold text-gray-700 mb-2">${item.evaluation.title}</h4>
+                        <p class="text-sm text-gray-600 mb-2">${item.evaluation.text}</p>
+                        <div class="relative w-full overflow-hidden rounded-xl shadow-lg">
+                            <div class="flex transition-transform duration-500 ease-in-out gallery-container">`;
+
+                    item.evaluation.images.forEach(img => {
+                        galleryHtml += `<img src="${img.src}" alt="${img.alt}" class="w-full flex-shrink-0">`;
+                    });
+
+                    galleryHtml += `</div>
+                            <button class="absolute top-1/2 left-4 transform -translate-y-1/2 p-2 bg-white/50 rounded-full text-gray-800 hover:bg-white transition-colors prev-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                            </button>
+                            <button class="absolute top-1/2 right-4 transform -translate-y-1/2 p-2 bg-white/50 rounded-full text-gray-800 hover:bg-white transition-colors next-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                            </button>
+                        </div>
+                    </div>`;
+                    contentHtml += galleryHtml;
+                } else {
+                    contentHtml += createSection('evaluation', 'Evaluation', item.evaluation);
+                }
+            }
+
+            card.innerHTML = `
+            <div class="flex items-start justify-between mb-4 pb-4 border-b border-gray-200 cursor-pointer card-header">
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800 leading-tight">${item.what}</h2>
+                <div class="flex-shrink-0 ml-4 flex items-center space-x-2">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusBg} ${statusColor}">${statusText}</span>
+                    ${statusIcon}
+                    <svg class="h-6 w-6 text-gray-400 transform transition-transform duration-300 chevron-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+            <div class="collapsible-content collapsed">
+                ${contentHtml}
+            </div>
+        `;
+
+            card.querySelector('.card-header').addEventListener('click', () => {
+                const content = card.querySelector('.collapsible-content');
+                const chevron = card.querySelector('.chevron-icon');
+
+                const isExpanded = content.classList.contains('expanded');
+
+                document.querySelectorAll('.collapsible-content.expanded').forEach(otherContent => {
+                    otherContent.classList.remove('expanded');
+                    otherContent.classList.add('collapsed');
+                    otherContent.closest('.bg-white').querySelector('.chevron-icon').classList.remove('rotate-180');
+                });
+
+                if (!isExpanded) {
+                    content.classList.remove('collapsed');
+                    content.classList.add('expanded');
+                    chevron.classList.add('rotate-180');
+                }
+            });
+
+            const prevBtn = card.querySelector('.prev-btn');
+            const nextBtn = card.querySelector('.next-btn');
+            const galleryContainer = card.querySelector('.gallery-container');
+            const images = card.querySelectorAll('.gallery-container img');
+            let currentIndex = 0;
+
+            if (prevBtn && nextBtn && galleryContainer && images.length > 1) {
+                function updateGallery() {
+                    const offset = -currentIndex * 100;
+                    galleryContainer.style.transform = `translateX(${offset}%)`;
+                }
+
+                prevBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                    updateGallery();
+                });
+
+                nextBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                    updateGallery();
+                });
+            }
+
+            return card;
+        }
+        function renderPlan(container, plan) {
+            container.innerHTML = '';
+            plan.forEach(item => {
+                const card = createCard(item);
+                container.appendChild(card);
+            });
+        }
+
+        window.onload = function () {
+            // Select all section headers to add event listeners
+            const sectionHeaders = document.querySelectorAll('.section-header');
+
+            sectionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const collapsibleSection = header.nextElementSibling;
+                    const chevronIcon = header.querySelector('.chevron-icon');
+
+                    // Toggle the expanded class on the content section
+                    collapsibleSection.classList.toggle('expanded');
+
+                    // Toggle the rotation of the chevron icon
+                    chevronIcon.classList.toggle('rotate-180');
+                });
+            });
+
+            // Initial rendering of the cards
+            renderPlan(planContainer2024, plan2024);
+            renderPlan(planContainer2025, plan2025);
+        };
+    </script>
+</body>
+
+</html>

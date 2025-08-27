@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICT Fundamentals Quiz - 11th Grade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #FDFBF8;
+            --card-background: #FFFFFF;
+            --text-color: #4A4A4A;
+            --primary-color: #0284c7; /* Sky Blue */
+            --correct-color: #22c55e; /* Green */
+            --incorrect-color: #ef4444; /* Red */
+            --border-color: #EAEAEA;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        #quiz-container {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #quiz-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #quiz-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #quiz-header p {
+            margin: 0.25rem 0 0;
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        
+        #question-card {
+            padding: 1.5rem;
+        }
+
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        #answer-buttons {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: left;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--card-background);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn:hover:not(:disabled) {
+            border-color: var(--primary-color);
+            background-color: #f0f9ff;
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .btn.correct {
+            border-color: var(--correct-color);
+            background-color: #f0fdf4;
+            color: #15803d;
+        }
+
+        .btn.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+
+        #controls {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end; /* Align button to the right */
+            align-items: center;
+        }
+        
+        #next-btn, #restart-btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #next-btn:hover, #restart-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        #rationale-text {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            color: #495057;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #results-card {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        #results-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        #score-text {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+
+        #grade-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-container">
+        <div id="quiz-header">
+            <h1 id="main-title">ICT Fundamentals Quiz - 11th Grade</h1>
+            <p id="progress-text">Question 1 of 10</p>
+        </div>
+
+        <div id="question-card">
+            <h2 id="question-text">Loading question...</h2>
+            <div id="answer-buttons">
+                </div>
+            <div id="controls" class="hidden">
+                <button id="next-btn">Next</button>
+            </div>
+             <p id="rationale-text" class="hidden"></p>
+        </div>
+
+        <div id="results-card" class="hidden">
+            <h2>Quiz Complete!</h2>
+            <p id="score-text">Your score: 0 out of 10</p>
+            <p id="grade-text">Grade: -</p>
+            <button id="restart-btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // --- QUESTION BANK ---
+        const questionBank = [
+            // CLASS 1: Hardware vs. Software, Internal/External Components, RAM vs. ROM
+            {
+                question: "What is the main difference between hardware and software?",
+                answers: [
+                    { text: "Hardware is for gaming, software is for work.", correct: false },
+                    { text: "Hardware is the physical components of a computer, while software is the programs and data that run on it.", correct: true },
+                    { text: "Hardware is for input, while software is for output.", correct: false },
+                    { text: "Hardware is more expensive than software.", correct: false }
+                ]
+            },
+            {
+                question: "Which of the following is an example of a hardware component?",
+                answers: [
+                    { text: "A spreadsheet program", correct: false },
+                    { text: "A video game", correct: false },
+                    { text: "An operating system", correct: false },
+                    { text: "A keyboard", correct: true }
+                ]
+            },
+            {
+                question: "Which of the following is an example of a software component?",
+                answers: [
+                    { text: "A monitor", correct: false },
+                    { text: "A printer", correct: false },
+                    { text: "A graphics card", correct: false },
+                    { text: "A word processing application", correct: true }
+                ]
+            },
+            {
+                question: "What is the purpose of the CPU (Central Processing Unit)?",
+                answers: [
+                    { text: "To store long-term data", correct: false },
+                    { text: "To print documents", correct: false },
+                    { text: "To perform calculations and run programs", correct: true },
+                    { text: "To connect to the internet", correct: false }
+                ]
+            },
+            {
+                question: "Which internal hardware component is described as a printed circuit board containing the CPU and other key components?",
+                answers: [
+                    { text: "RAM", correct: false },
+                    { text: "Hard Drive", correct: false },
+                    { text: "Motherboard", correct: true },
+                    { text: "Sound Card", correct: false }
+                ]
+            },
+            {
+                question: "What is a characteristic of RAM (Random Access Memory)?",
+                answers: [
+                    { text: "It is non-volatile memory.", correct: false },
+                    { text: "It stores the computer's startup instructions.", correct: false },
+                    { text: "It is temporary storage that can be read from and written to.", correct: true },
+                    { text: "It is a type of storage device used for backups.", correct: false }
+                ]
+            },
+            {
+                question: "What kind of memory is **volatile**?",
+                answers: [
+                    { text: "ROM", correct: false },
+                    { text: "HDD", correct: false },
+                    { text: "RAM", correct: true },
+                    { text: "SSD", correct: false }
+                ]
+            },
+            {
+                question: "What does ROM (Read-Only Memory) primarily store?",
+                answers: [
+                    { text: "The user's documents", correct: false },
+                    { text: "The current instructions being used by the computer", correct: false },
+                    { text: "The startup instructions of a computer", correct: true },
+                    { text: "The user's programs", correct: false }
+                ]
+            },
+            {
+                question: "Which of these is an internal hardware component?",
+                answers: [
+                    { text: "Monitor", correct: false },
+                    { text: "Keyboard", correct: false },
+                    { text: "Processor", correct: true },
+                    { text: "Printer", correct: false }
+                ]
+            },
+            {
+                question: "What is an example of an external hardware component?",
+                answers: [
+                    { text: "Motherboard", correct: false },
+                    { text: "Sound Card", correct: false },
+                    { text: "Printer", correct: true },
+                    { text: "CPU", correct: false }
+                ]
+            },
+
+            // CLASS 2: Operating Systems, CLI vs. GUI, Types of Computers
+            {
+                question: "What is the primary role of an operating system (OS)?",
+                answers: [
+                    { text: "To run a single application program", correct: false },
+                    { text: "To manage the computer's hardware and software resources", correct: true },
+                    { text: "To connect the computer to the internet", correct: false },
+                    { text: "To store all user files", correct: false }
+                ]
+            },
+            {
+                question: "Which of the following is a function of an operating system?",
+                answers: [
+                    { text: "Writing a document", correct: false },
+                    { text: "Creating a presentation", correct: false },
+                    { text: "Playing a video game", correct: false },
+                    { text: "Managing files and directories", correct: true }
+                ]
+            },
+            {
+                question: "What is the main characteristic of a Command-Line Interface (CLI)?",
+                answers: [
+                    { text: "It uses icons, menus, and windows.", correct: false },
+                    { text: "It is a text-based interface where users type commands.", correct: true },
+                    { text: "It is only used by gamers.", correct: false },
+                    { text: "It requires a touchscreen to operate.", correct: false }
+                ]
+            },
+            {
+                question: "What does the acronym **GUI** stand for?",
+                answers: [
+                    { text: "General User Interface", correct: false },
+                    { text: "Graphic Utility Interface", correct: false },
+                    { text: "Graphical User Interface", correct: true },
+                    { text: "Gaming User Interaction", correct: false }
+                ]
+            },
+            {
+                question: "Which interface is more intuitive and user-friendly for most people?",
+                answers: [
+                    { text: "CLI", correct: false },
+                    { text: "Dialogue-based interface", correct: false },
+                    { text: "GUI", correct: true },
+                    { text: "Haptic interface", correct: false }
+                ]
+            },
+            {
+                question: "What type of computer is designed for a fixed location and is known for its power and upgradability?",
+                answers: [
+                    { text: "A laptop", correct: false },
+                    { text: "A smartphone", correct: false },
+                    { text: "An emerging computer", correct: false },
+                    { text: "A desktop computer", correct: true }
+                ]
+            },
+            {
+                question: "Which of these is a characteristic of a mobile computer?",
+                answers: [
+                    { text: "It is designed for a fixed location.", correct: false },
+                    { text: "It is not portable.", correct: false },
+                    { text: "It is characterized by portability and integrated components.", correct: true },
+                    { text: "It is typically used for complex scientific calculations.", correct: false }
+                ]
+            },
+            {
+                question: "A smartwatch is an example of what type of computer?",
+                answers: [
+                    { text: "A desktop computer", correct: false },
+                    { text: "An emerging computer", correct: true },
+                    { text: "A supercomputer", correct: false },
+                    { text: "A mainframe", correct: false }
+                ]
+            },
+            {
+                question: "A student needs a lightweight device for taking notes and writing essays in class. Which type of computer is most suitable?",
+                answers: [
+                    { text: "A desktop computer", correct: false },
+                    { text: "A mainframe computer", correct: false },
+                    { text: "An emerging computer like a smart thermostat", correct: false },
+                    { text: "A mobile computer like a laptop or tablet", correct: true }
+                ]
+            },
+            {
+                question: "A graphic designer who needs a powerful computer for rendering and complex software would likely use what type of computer?",
+                answers: [
+                    { text: "A mobile phone", correct: false },
+                    { text: "A tablet", correct: false },
+                    { text: "A desktop computer", correct: true },
+                    { text: "A smartwatch", correct: false }
+                ]
+            },
+
+            // CLASS 3: Input, Output, & Storage
+            {
+                question: "A device that sends data to a computer is called a(n)...",
+                answers: [
+                    { text: "Output device", correct: false },
+                    { text: "Processing device", correct: false },
+                    { text: "Input device", correct: true },
+                    { text: "Storage device", correct: false }
+                ]
+            },
+            {
+                question: "A device that receives data from a computer and displays it to the user is called a(n)...",
+                answers: [
+                    { text: "Input device", correct: false },
+                    { text: "Output device", correct: true },
+                    { text: "Storage device", correct: false },
+                    { text: "Processing device", correct: false }
+                ]
+            },
+            {
+                question: "Which of the following is a direct data entry device?",
+                answers: [
+                    { text: "A keyboard", correct: false },
+                    { text: "A monitor", correct: false },
+                    { text: "An OMR (Optical Mark Reader)", correct: true },
+                    { text: "A speaker", correct: false }
+                ]
+            },
+            {
+                question: "A microphone is an example of which type of device?",
+                answers: [
+                    { text: "Input device", correct: true },
+                    { text: "Output device", correct: false },
+                    { text: "Storage device", correct: false },
+                    { text: "Processing device", correct: false }
+                ]
+            },
+            {
+                question: "A speaker is an example of which type of device?",
+                answers: [
+                    { text: "Input device", correct: false },
+                    { text: "Output device", correct: true },
+                    { text: "Storage device", correct: false },
+                    { text: "Direct data entry device", correct: false }
+                ]
+            },
+            {
+                question: "Which input device is used to scan items at a computerized till?",
+                answers: [
+                    { text: "A mouse", correct: false },
+                    { text: "A keyboard", correct: false },
+                    { text: "A barcode reader", correct: true },
+                    { text: "A microphone", correct: false }
+                ]
+            },
+            {
+                question: "What is the primary benefit of using a solid-state drive (SSD) over a hard disk drive (HDD)?",
+                answers: [
+                    { text: "It is less expensive per gigabyte.", correct: false },
+                    { text: "It has moving parts, which makes it more reliable.", correct: false },
+                    { text: "It is more portable and has faster access speeds.", correct: true },
+                    { text: "It is immune to viruses.", correct: false }
+                ]
+            },
+            {
+                question: "Which storage medium is best for high-capacity, low-cost long-term archiving?",
+                answers: [
+                    { text: "Solid-State Drive (SSD)", correct: false },
+                    { text: "Optical Disc (CD/DVD)", correct: false },
+                    { text: "Magnetic Tape", correct: true },
+                    { text: "Random Access Memory (RAM)", correct: false }
+                ]
+            },
+            {
+                question: "Which storage type uses flash memory and has no moving parts?",
+                answers: [
+                    { text: "Hard Disk Drive (HDD)", correct: false },
+                    { text: "Solid-State Drive (SSD)", correct: true },
+                    { text: "Optical Disc", correct: false },
+                    { text: "Magnetic Tape", correct: false }
+                ]
+            },
+            {
+                question: "What is a disadvantage of using an optical disc (CD/DVD) for storage?",
+                answers: [
+                    { text: "High cost", correct: false },
+                    { text: "Large physical size", correct: false },
+                    { text: "Susceptible to scratches and heat", correct: true },
+                    { text: "Extremely fast read/write speeds", correct: false }
+                ]
+            },
+            {
+                question: "A technician needs to back up a large amount of data from a school network server. Which storage medium is most appropriate for this task?",
+                answers: [
+                    { text: "RAM", correct: false },
+                    { text: "ROM", correct: false },
+                    { text: "Solid-State Drive (SSD)", correct: false },
+                    { text: "Magnetic Tape", correct: true }
+                ]
+            },
+            {
+                question: "What is a disadvantage of using a solid-state drive (SSD)?",
+                answers: [
+                    { text: "They have a higher cost per gigabyte.", correct: true },
+                    { text: "They are more prone to physical shock.", correct: false },
+                    { text: "They have slower data transfer rates.", correct: false },
+                    { text: "They are not portable.", correct: false }
+                ]
+            },
+            {
+                question: "Which of the following devices is an output device on a tablet computer?",
+                answers: [
+                    { text: "Touchscreen", correct: false },
+                    { text: "Camera", correct: false },
+                    { text: "Microphone", correct: false },
+                    { text: "Speaker", correct: true }
+                ]
+            },
+            {
+                question: "A user is on a video call using a smartphone. The camera and the microphone are examples of what type of devices?",
+                answers: [
+                    { text: "Input", correct: true },
+                    { text: "Output", correct: false },
+                    { text: "Storage", correct: false },
+                    { text: "Processing", correct: false }
+                ]
+            },
+            {
+                question: "The screen on a smartphone is a(n) ____ device.",
+                answers: [
+                    { text: "Input only", correct: false },
+                    { text: "Output only", correct: false },
+                    { text: "Both input and output", correct: true },
+                    { text: "Neither input nor output", correct: false }
+                ]
+            },
+            {
+                question: "Which of these is a type of storage media?",
+                answers: [
+                    { text: "Mouse", correct: false },
+                    { text: "Printer", correct: false },
+                    { text: "USB Memory stick", correct: true },
+                    { text: "Monitor", correct: false }
+                ]
+            },
+            {
+                question: "What is one advantage of using a memory stick over cloud storage?",
+                answers: [
+                    { text: "It has a much larger capacity.", correct: false },
+                    { text: "It is cheaper to purchase.", correct: false },
+                    { text: "It does not require an internet connection.", correct: true },
+                    { text: "It is more durable.", correct: false }
+                ]
+            },
+            {
+                question: "A computer's current instructions are temporarily stored in what type of memory?",
+                answers: [
+                    { text: "ROM", correct: false },
+                    { text: "RAM", correct: true },
+                    { text: "HDD", correct: false },
+                    { text: "SSD", correct: false }
+                ]
+            },
+            {
+                question: "What device is used to convert the output from a sensor for a computer to use?",
+                answers: [
+                    { text: "An actuator", correct: false },
+                    { text: "A modem", correct: false },
+                    { text: "An ADC (Analog-to-Digital Converter)", correct: true },
+                    { text: "A router", correct: false }
+                ]
+            },
+            {
+                question: "Which device would be used as the primary storage for a high-performance gaming PC due to its speed?",
+                answers: [
+                    { text: "HDD", correct: false },
+                    { text: "CD-ROM", correct: false },
+                    { text: "SSD", correct: true },
+                    { text: "Magnetic tape", correct: false }
+                ]
+            }
+        ];
+
+        const questionCard = document.getElementById('question-card');
+        const resultsCard = document.getElementById('results-card');
+        const questionText = document.getElementById('question-text');
+        const answerButtons = document.getElementById('answer-buttons');
+        const progressText = document.getElementById('progress-text');
+        const mainTitle = document.getElementById('main-title');
+        const controls = document.getElementById('controls');
+        const nextBtn = document.getElementById('next-btn');
+        const rationaleText = document.getElementById('rationale-text');
+        const scoreText = document.getElementById('score-text');
+        const gradeText = document.getElementById('grade-text');
+        const restartBtn = document.getElementById('restart-btn');
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizQuestions = [];
+        const quizLength = 10;
+
+        const gradingScale = {
+            9: 4.0, 8: 3.7, 7: 3.3, 6: 3.0, 5: 2.7,
+            4: 2.3, 3: 2.0, 2: 1.7, 1: 1.3, 0: 1.0
+        };
+        
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        function generateQuiz() {
+            shuffleArray(questionBank);
+            quizQuestions = questionBank.slice(0, quizLength);
+        }
+
+        function startQuiz() {
+            const storedQuiz = sessionStorage.getItem('quizQuestions');
+            if (storedQuiz) {
+                quizQuestions = JSON.parse(storedQuiz);
+                currentQuestionIndex = parseInt(sessionStorage.getItem('currentQuestionIndex')) || 0;
+                score = parseInt(sessionStorage.getItem('score')) || 0;
+            } else {
+                generateQuiz();
+                sessionStorage.setItem('quizQuestions', JSON.stringify(quizQuestions));
+                currentQuestionIndex = 0;
+                score = 0;
+                sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+                sessionStorage.setItem('score', score);
+            }
+
+            mainTitle.textContent = "ICT Fundamentals Quiz - 11th Grade";
+            progressText.classList.remove('hidden');
+            resultsCard.classList.add('hidden');
+            questionCard.classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            questionText.textContent = currentQuestion.question;
+            progressText.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.textContent = answer.text;
+                button.classList.add('btn');
+                button.dataset.correct = answer.correct;
+                button.addEventListener('click', selectAnswer);
+                answerButtons.appendChild(button);
+            });
+            
+            controls.classList.remove('hidden');
+        }
+
+        function resetState() {
+            while (answerButtons.firstChild) {
+                answerButtons.removeChild(answerButtons.firstChild);
+            }
+            nextBtn.classList.add('hidden');
+            rationaleText.classList.add('hidden');
+            rationaleText.textContent = '';
+        }
+
+        function selectAnswer(e) {
+            const selectedBtn = e.target;
+            const isCorrect = selectedBtn.dataset.correct === 'true';
+
+            if (isCorrect) {
+                score++;
+                sessionStorage.setItem('score', score);
+            }
+            
+            let correctText = '';
+            Array.from(answerButtons.children).forEach(button => {
+                if(button.dataset.correct === 'true') {
+                    correctText = button.textContent;
+                }
+                setStatusClass(button, button.dataset.correct === 'true');
+                button.disabled = true;
+            });
+            
+            rationaleText.classList.remove('hidden');
+            
+            if (quizQuestions.length > currentQuestionIndex + 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                 setTimeout(showResults, 1500);
+            }
+        }
+        
+        function setStatusClass(element, correct) {
+            if (correct) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+            }
+        }
+        
+        function showResults() {
+            questionCard.classList.add('hidden');
+            progressText.classList.add('hidden');
+            mainTitle.textContent = "Quiz Complete!";
+            
+            let finalGrade = 1.0;
+            const sortedKeys = Object.keys(gradingScale).map(Number).sort((a, b) => a - b);
+            for (let i = 0; i < sortedKeys.length; i++) {
+                if (score >= sortedKeys[i]) {
+                    finalGrade = gradingScale[sortedKeys[i]];
+                } else {
+                    break;
+                }
+            }
+            
+            scoreText.textContent = `You answered ${score} out of ${quizQuestions.length} questions correctly.`;
+            gradeText.textContent = `Grade: ${finalGrade.toFixed(1)}`;
+            
+            resultsCard.classList.remove('hidden');
+
+            sessionStorage.clear();
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+            showQuestion();
+        });
+
+        restartBtn.addEventListener('click', () => {
+            sessionStorage.clear();
+            startQuiz();
+        });
+
+        startQuiz();
+    </script>
+</body>
+</html>
