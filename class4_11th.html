@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Networks and the Internet</title>
+  <!-- Tailwind CSS CDN for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 p-4 sm:p-8 flex items-center justify-center">
+
+  <div
+    class="bg-white rounded-2xl shadow-2xl overflow-hidden w-full max-w-4xl border border-gray-300 transform transition-transform duration-300 hover:scale-[1.01]">
+    <!-- Header Section -->
+    <header
+      class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 md:p-8 flex flex-col sm:flex-row justify-between items-center">
+      <div class="flex-1">
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-1">
+          Networks and the Internet
+        </h1>
+        <p class="text-lg opacity-90">An Interactive Learning Guide</p>
+      </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="flex flex-wrap justify-center sm:justify-start bg-gray-200 p-2">
+      <button onclick="showTab('theory')" id="theory-tab"
+        class="flex-1 min-w-[120px] text-center py-3 px-2 mx-1 my-1 rounded-xl font-semibold transition-all duration-300 bg-indigo-600 text-white shadow-lg">
+        Theory
+      </button>
+      <button onclick="showTab('exercises')" id="exercises-tab"
+        class="flex-1 min-w-[120px] text-center py-3 px-2 mx-1 my-1 rounded-xl font-semibold transition-all duration-300 bg-gray-300 text-gray-700 hover:bg-gray-400">
+        Exercises
+      </button>
+      <button onclick="showTab('homework')" id="homework-tab"
+        class="flex-1 min-w-[120px] text-center py-3 px-2 mx-1 my-1 rounded-xl font-semibold transition-all duration-300 bg-gray-300 text-gray-700 hover:bg-gray-400">
+        Homework
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="p-6 md:p-8">
+      <!-- Theory Tab Content -->
+      <div id="theory-content" class="tab-content space-y-6">
+        <h2 class="text-3xl font-bold mb-4 text-gray-800">Theory Concepts & Definitions</h2>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Network Types</h3>
+          <p class="text-lg text-gray-600 mb-4">
+            A network is a group of two or more devices connected together to share resources. There are three main
+            types of networks:
+          </p>
+          <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4">
+            <li>
+              <span class="font-semibold">Local Area Network (LAN):</span> A network that covers a small geographical
+              area, such as a single home, office, or school. All the hardware is typically owned by the organization or
+              household.
+              <div class="flex justify-center mt-4">
+                <img src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2024/03/lan.png"
+                  alt="A placeholder for a Local Area Network diagram" width="200" height="120"
+                  class="rounded-lg shadow-md" style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Wireless Local Area Network (WLAN):</span> A type of LAN where devices connect
+              wirelessly using radio waves (like Wi-Fi) instead of cables.
+              <div class="flex justify-center mt-4">
+                <img src="https://placehold.co/200x120/4f46e5/ffffff?text=WLAN"
+                  alt="A placeholder for a Wireless Local Area Network diagram" width="200" height="120"
+                  class="rounded-lg shadow-md" style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Wide Area Network (WAN):</span> A network that spans a large geographical area
+              (over one mile), connecting multiple LANs together. The Internet is the most well-known example of a WAN.
+              <div class="flex justify-center mt-4">
+                <img src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2024/03/wan.png"
+                  alt="A placeholder for a Wide Area Network diagram" width="200" height="120"
+                  class="rounded-lg shadow-md" style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Network Devices</h3>
+          <p class="text-lg text-gray-600 mb-4">
+            These are the pieces of hardware that allow networks to function.
+          </p>
+          <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4">
+            <li>
+              <span class="font-semibold">MAC(Media Access Control) address:</span> is a unique identifier given to
+              devices which communicate over a local area network (LAN)
+              MAC addresses are static, they can never change. Used by switches to efficiently forward data to the
+              intended recipient.
+              <div class="flex justify-center mt-4">
+                <img
+                  src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2024/02/mac-address-1.png"
+                  alt="MAC address" width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Bridge:</span> A network bridge is a device used to connect two local area networks (LANs) together to create one larger network.
+              Unlike a switch/hub, bridges only connect local area networks together.
+              <div class="flex justify-center mt-4">
+                <img
+                  src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2023/05/2-1-networks-common-network-devices-04.png"
+                  alt="Bridge" width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Router:</span> Routes data packets between different networks and assigns IP
+              addresses to devices on a network.
+              <div class="flex justify-center mt-4">
+                <img
+                  src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2024/03/router.png"
+                  alt="A placeholder for a network router" width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Switch:</span> Connects multiple devices on a network and sends data only to
+              the specific device it's intended for, which makes the network more efficient.
+              <div class="flex justify-center mt-4">
+                <img
+                  src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2024/03/switch.png"
+                  alt="A placeholder for a network switch" width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Hub:</span> A "dumb" device that connects multiple devices but broadcasts all
+              data to every device, which is inefficient and a security risk.
+              <div class="flex justify-center mt-4">
+                <img src="https://placehold.co/200x120/4f46e5/ffffff?text=Hub" alt="A placeholder for a network hub"
+                  width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Network Interface Card (NIC):</span> A component required for a computer to
+              connect to a network. It can be wired or wireless.
+              <div class="flex justify-center mt-4">
+                <img
+                  src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2024/03/nic-.png"
+                  alt="A placeholder for a network interface card" width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Cloud Computing</h3>
+          <p class="text-lg text-gray-600 mb-4">
+            <span class="font-semibold">Cloud computing</span> is the delivery of on-demand computing services—including
+            servers, storage, databases, networking, software, analytics, and intelligence—over the Internet ("the
+            cloud").
+          </p>
+          <div class="flex justify-center mt-4 mb-6">
+            <img src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2023/05/2-1-networks--cloud-computing.png"
+              alt="A placeholder for a cloud computing diagram" width="300" height="180" class="rounded-lg shadow-md"
+              style="width: 100%; max-width: 300px; height: auto;">
+          </div>
+          <div class="flex flex-col md:flex-row gap-6">
+            <div class="flex-1">
+              <h4 class="text-xl font-medium text-green-700 mb-2">Advantages:</h4>
+              <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                <li>Data can be accessed from anywhere on any device.</li>
+                <li>Easily scalable to increase or decrease storage capacity.</li>
+                <li>Data is often backed up automatically, reducing data loss risk.</li>
+                <li>Security features like data encryption are often provided by the provider.</li>
+              </ul>
+            </div>
+            <div class="flex-1">
+              <h4 class="text-xl font-medium text-red-700 mb-2">Disadvantages:</h4>
+              <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                <li>Requires a stable internet connection.</li>
+                <li>Vulnerable to security breaches and cyber-attacks.</li>
+                <li>Dependence on the provider's availability and reliability.</li>
+                <li>Can become expensive over time as usage increases.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Internet, Intranet, and Extranet</h3>
+          <p class="text-lg text-gray-600 mb-4">
+            An <span class="font-semibold">IP (Internet Protocol) address</span> is a unique identifier given to devices
+            that communicate over the Internet (WAN). It makes it possible to deliver data to the right device.
+          </p>
+          <p class="text-md text-gray-600 mb-2">
+            There are two main versions of IP addresses:
+          </p>
+          <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4">
+            <li>
+              <span class="font-semibold">IPv4:</span> The older version, represented as four blocks of numbers (0-255)
+              separated by dots, like <code>192.168.1.1</code>. It uses 32 bits and can provide over 4 billion unique
+              addresses.
+              <div class="flex justify-center mt-4">
+                <img
+                  src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2024/02/ipv4.png"
+                  alt="A placeholder for an IPv4 address" width="200" height="60" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">IPv6:</span> The newer version, represented as eight groups of four
+              hexadecimal digits separated by colons, like <code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code>. It uses
+              128 bits and can provide a nearly unlimited number of unique addresses.
+              <div class="flex justify-center mt-4">
+                <img
+                  src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2024/02/-ipv6.png"
+                  alt="A placeholder for an IPv6 address" width="200" height="60" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+          </ul>
+          <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4 mt-6">
+            <li>
+              <span class="font-semibold">Internet:</span> A global network of networks accessible to everyone.
+              <div class="flex justify-center mt-4">
+                <img src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2023/05/2-1-networks-extranet-intranet-and-internet-01.png"
+                  alt="A placeholder for an Internet diagram" width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Intranet:</span> A private network accessible only to employees within an
+              organization.
+              <div class="flex justify-center mt-4">
+                <img src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2023/05/2-1-networks-extranet-intranet-and-internet-02.png"
+                  alt="A placeholder for an Intranet diagram" width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+            <li>
+              <span class="font-semibold">Extranet:</span> An extension of an intranet that allows authorized external
+              users (like clients or partners) to access specific resources.
+              <div class="flex justify-center mt-4">
+                <img src="https://cdn.savemyexams.com/cdn-cgi/image/f=auto,width=1920/https://cdn.savemyexams.com/uploads/2023/05/2-1-networks-extranet-intranet-and-internet-03.png"
+                  alt="A placeholder for an Extranet diagram" width="200" height="120" class="rounded-lg shadow-md"
+                  style="width: 100%; max-width: 200px; height: auto;">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Exercises Tab Content -->
+      <div id="exercises-content" class="tab-content space-y-6 hidden">
+        <h2 class="text-3xl font-bold mb-4 text-gray-800">In-Class Exercises</h2>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Network Diagramming</h3>
+          <p class="text-lg text-gray-600">
+            Draw a simple diagram of a home network, including and labeling devices like a router, switch, computers,
+            and a printer. Show how they are connected. You can do this on paper or using a digital tool.
+          </p>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Cloud Computing Pros & Cons</h3>
+          <p class="text-lg text-gray-600">
+            In a class debate, argue for or against using cloud storage. Consider the advantages and disadvantages
+            discussed in the theory section.
+          </p>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Network Scenario Matching</h3>
+          <p class="text-lg text-gray-600">
+            In groups, discuss and identify the most appropriate network type (LAN, WLAN, or WAN) for the following
+            scenarios:
+          </p>
+          <ul class="list-disc list-inside text-gray-700 mt-4 pl-4 space-y-2">
+            <li>Connecting all the computers in a single school building.</li>
+            <li>Connecting your phone to a wireless printer in your room.</li>
+            <li>Connecting a company's offices in London and New York.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Homework Tab Content -->
+      <div id="homework-content" class="tab-content space-y-6 hidden">
+        <h2 class="text-3xl font-bold mb-4 text-gray-800">Possible Homework</h2>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Research & Application</h3>
+          <p class="text-lg text-gray-600">
+            Find a popular online service (e.g., Google Docs, Netflix, Spotify) that relies on cloud computing. Describe
+            how they use it. For example, where is your data stored and how is it accessed?
+          </p>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner border border-gray-200">
+          <h3 class="text-2xl font-semibold text-indigo-700 mb-2">Define in Your Own Words</h3>
+          <p class="text-lg text-gray-600">
+            What is the primary difference between a hub and a switch? Explain your answer in your own words, using a
+            simple analogy if it helps.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function showTab(tabName) {
+      // Get all tab content divs
+      const tabContents = document.querySelectorAll('.tab-content');
+      // Hide all of them
+      tabContents.forEach(content => {
+        content.classList.add('hidden');
+      });
+
+      // Get all tab buttons
+      const tabButtons = document.querySelectorAll('button');
+      // Reset button styling
+      tabButtons.forEach(button => {
+        button.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg');
+        button.classList.add('bg-gray-300', 'text-gray-700', 'hover:bg-gray-400');
+      });
+
+      // Show the selected tab content
+      const selectedTabContent = document.getElementById(tabName + '-content');
+      if (selectedTabContent) {
+        selectedTabContent.classList.remove('hidden');
+      }
+
+      // Apply active styling to the clicked button
+      const selectedTabButton = document.getElementById(tabName + '-tab');
+      if (selectedTabButton) {
+        selectedTabButton.classList.remove('bg-gray-300', 'text-gray-700', 'hover:bg-gray-400');
+        selectedTabButton.classList.add('bg-indigo-600', 'text-white', 'shadow-lg');
+      }
+    }
+  </script>
+</body>
+
+</html>

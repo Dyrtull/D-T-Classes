@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 4: Bridge Building Mathematics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+            /* stone-100 */
+            color: #292524;
+            /* stone-800 */
+        }
+
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .nav-link.active {
+            color: #0284c7;
+            /* sky-600 */
+            border-bottom-color: #0284c7;
+            /* sky-600 */
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .interactive-joint {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .interactive-joint:hover,
+        .interactive-joint.active {
+            transform: scale(1.5);
+            fill: #0284c7;
+            /* sky-600 */
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .placeholder-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            text-align: center;
+            background-color: #e2e8f0;
+            color: #475569;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl font-bold text-stone-700">Bridge Building Mathematics</h1>
+                <div class="hidden sm:block">
+                    <div class="flex items-baseline space-x-4">
+                        <a href="#forces"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Forces</a>
+                        <a href="#fbd"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">FBDs</a>
+                        <a href="#trigonometry"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Trigonometry</a>
+                        <a href="#pratt_truss_analysis"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Pratt
+                            Truss Example</a>
+                        <a href="#analysis"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Your
+                            Bridge Analysis</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Section 1: Forces Refresher -->
+        <section id="forces" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Forces Refresher: The Two Big
+                    Ones</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">Last class, we saw how forces like
+                    <strong>tension</strong> and <strong>compression</strong> work in a truss. Let's quickly review them
+                    with a practical example from your last homework: the bridge failure documentary.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-semibold text-blue-700">Case Study: The Tacoma Narrows Bridge Failure</h3>
+                <p class="mt-2 text-stone-600">The Tacoma Narrows Bridge failed because of an unusual force called
+                    <strong>torsion</strong> (twisting) caused by wind, but the final collapse was a dramatic example of
+                    <strong>compression</strong> and <strong>tension</strong>. As the bridge twisted, the road deck was
+                    stretched and pulled (tension) on one side and squeezed (compression) on the other. Eventually,
+                    these forces became too large, causing the structure to snap apart. This shows why a designer must
+                    calculate the maximum forces a bridge can withstand.</p>
+                <div class="mt-4 flex flex-col md:flex-row gap-8 items-center">
+                    <div class="w-full md:w-1/2">
+                        <h4 class="text-xl font-semibold text-red-600">Compression</h4>
+                        <p class="mt-2 text-stone-600">A <strong>squeezing</strong> or <strong>pushing</strong> force.
+                            Members under compression are getting shorter. Think of a soda can you crush with your hand.
+                        </p>
+                        <div class="mt-4 h-24 flex items-center justify-center bg-red-50 rounded-lg">
+                            <div class="flex items-center w-full px-4">
+                                <span class="text-3xl font-bold text-red-500">→</span>
+                                <div class="w-full h-4 bg-red-400 mx-2 rounded"></div>
+                                <span class="text-3xl font-bold text-red-500">←</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <h4 class="text-xl font-semibold text-green-600">Tension</h4>
+                        <p class="mt-2 text-stone-600">A <strong>stretching</strong> or <strong>pulling</strong> force.
+                            Members under tension are getting longer. Think of a rubber band you pull apart.</p>
+                        <div class="mt-4 h-24 flex items-center justify-center bg-green-50 rounded-lg">
+                            <div class="flex items-center w-full px-4">
+                                <span class="text-3xl font-bold text-green-500">←</span>
+                                <div class="w-full h-4 bg-green-400 mx-2 rounded"></div>
+                                <span class="text-3xl font-bold text-green-500">→</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: FBDs -->
+        <section id="fbd" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Free-Body Diagrams (FBDs)</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">How do engineers figure out which parts are in tension
+                    or compression? They use <strong>Free-Body Diagrams (FBDs)</strong> and simple math at each joint.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">Free-Body Diagrams (FBDs)</h3>
+                <p class="mt-2 text-stone-600">An FBD is a simplified drawing of a single joint, showing all the forces
+                    acting on it as arrows. Arrows pointing away from the joint represent tension (pulling), and arrows
+                    pointing towards the joint represent compression (pushing). For the bridge to be stable, all forces
+                    at a joint must cancel each other out.</p>
+                <div class="mt-4 placeholder-image h-48">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20240208153557/FBD-Solved-Example-2-Solution-2(iii).png"
+                        alt="A diagram showing a single joint with force arrows pointing away."
+                        class="rounded-lg shadow-md w-full md:w-1/2">
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">The Method of Joints</h3>
+                <p class="mt-2 text-stone-600">This method applies a fundamental rule of physics: for an object to be
+                    stationary, all forces must be in balance. We apply this at each joint of the truss. We ensure that:
+                </p>
+                <ul class="list-disc list-inside mt-2 space-y-1 text-stone-600">
+                    <li>The sum of all vertical (up/down) forces is zero (&Sigma;F<sub>y</sub> = 0).</li>
+                    <li>The sum of all horizontal (left/right) forces is zero (&Sigma;F<sub>x</sub> = 0).</li>
+                </ul>
+                <p class="mt-2 text-stone-600">By using these two equations with some trigonometry, we can solve for the
+                    force in each bridge member.</p>
+                <div class="mt-4 placeholder-image h-48">
+                    <img src="https://engcourses-uofa.ca/wp-content/uploads/eng130C6_9.jpg"
+                        alt="Image of a calculation for the method of joints"
+                        class="rounded-lg shadow-md w-full md:w-1/2">
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">Why Joints Matter Most</h3>
+                <p class="mt-2 text-stone-600">In a truss bridge, the members are designed to only handle forces at
+                    their ends. This means they are only pushed or pulled along their length, which is called an <strong>axial
+                    force</strong>. The joints are the only places where these forces meet and can be transferred from one
+                    member to another or to a support.</p>
+                <p class="mt-2 text-stone-600">Engineers make the simplifying assumption that the joints are <strong>pins</strong> or
+                    <strong>hinges</strong>. This means the members can pivot freely, so there's no bending force (or moment)
+                    transferred through the joint. Because of this, a truss is in a state of <strong>equilibrium</strong> , and we
+                    only need to worry about the forces at each of the joints to understand the stress on the entire
+                    structure.</p>
+                <div class="mt-4 placeholder-image h-48">
+                    <img src="https://i.ytimg.com/vi/wCZox6_EOjs/sddefault.jpg"
+                        alt="A close-up diagram of a truss bridge joint showing members meeting at a single point."
+                        class="rounded-lg shadow-md w-full md:w-1/2">
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Role of Trigonometry -->
+        <section id="trigonometry" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Why Triangles Are Key:
+                    Trigonometry</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">Your spaghetti bridge is a <strong>Warren
+                        Truss</strong>, which is a series of triangles. When a force is applied to a diagonal member, it
+                    needs to be broken down into its horizontal (x) and vertical (y) components using
+                    <strong>trigonometry</strong>. </p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">SOH CAH TOA for Bridge Building</h3>
+                <p class="mt-2 text-stone-600">To find the horizontal and vertical parts of a diagonal force, you use
+                    the sine and cosine of the angle of the triangle. For a force <var>F</var> at an angle &theta;:</p>
+                <div class="mt-4 bg-stone-50 p-4 rounded-md">
+                    <p class="text-xl font-semibold">Horizontal Component: <var>F</var><sub>x</sub> = <var>F</var>
+                        cos(&theta;)</p>
+                    <p class="text-xl font-semibold mt-2">Vertical Component: <var>F</var><sub>y</sub> = <var>F</var>
+                        sin(&theta;)</p>
+                </div>
+                <p class="mt-4 text-stone-600">
+                    This is a crucial step! Once you have the horizontal and vertical components of all forces at a
+                    joint, you can use the <strong>&Sigma;F<sub>x</sub> = 0</strong> and <strong>&Sigma;F<sub>y</sub> =
+                        0</strong> equations to solve for the unknown forces.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">Example: A Simple Joint</h3>
+                <p class="mt-2 text-stone-600">Let's say we have a member with an unknown force
+                    <var>F</var><sub>AB</sub> at an angle of 45&deg; and a known load of 10 N pushing down. The joint
+                    must be in equilibrium.</p>
+                <div class="mt-4 bg-stone-50 p-4 rounded-md whitespace-pre-wrap font-mono text-sm">
+                    <p>Knowns:</p>
+                    <p>Load = 10 N (vertical force pushing down)</p>
+                    <p>Angle = 45&deg;</p>
+                    <br>
+                    <p>Calculations:</p>
+                    <p>&Sigma;F<sub>y</sub> = 0: Load + <var>F</var><sub>AB,y</sub> = 0</p>
+                    <p>-10 + <var>F</var><sub>AB</sub> sin(45&deg;) = 0</p>
+                    <p><var>F</var><sub>AB</sub> sin(45&deg;) = 10</p>
+                    <p><var>F</var><sub>AB</sub> = 10 / sin(45&deg;) = 10 / 0.707 = 14.14 N (Tension)</p>
+                    <br>
+                    <p>Now find the horizontal force:</p>
+                    <p>&Sigma;F<sub>x</sub> = 0: <var>F</var><sub>AB,x</sub> + <var>F</var><sub>AC</sub> = 0</p>
+                    <p><var>F</var><sub>AB</sub> cos(45&deg;) + <var>F</var><sub>AC</sub> = 0</p>
+                    <p>14.14 * 0.707 + <var>F</var><sub>AC</sub> = 0</p>
+                    <p>10 + <var>F</var><sub>AC</sub> = 0</p>
+                    <p><var>F</var><sub>AC</sub> = -10 N (Compression)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Section: Pratt Truss Example -->
+        <section id="pratt_truss_analysis" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Pratt Truss Analysis: Your
+                    Step-by-Step Example</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">Now, let's put everything together. We'll find the
+                    forces in a different kind of bridge called a <strong>Pratt truss</strong>. This is the exact
+                    process engineers follow to make sure their designs are safe.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">The Problem</h3>
+                <p class="mt-2 text-stone-600">You have a Pratt truss bridge with a central load of <strong>1000
+                        N</strong>. The bridge is <strong>8 meters long</strong> and <strong>4 meters tall</strong>. We
+                    need to calculate the force in each of the members.</p>
+                <div class="mt-4 placeholder-image h-48">
+                    <img src="img/pratt_truss_bridge.jpeg"
+                        alt="Image of a simple Pratt truss with a central load"
+                        class="rounded-lg shadow-md w-full md:w-1/2">
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">Step 1: Calculate the Reaction Forces</h3>
+                <p class="mt-2 text-stone-600">The first thing an engineer does is find the forces acting on the bridge
+                    from the ground up. Because our bridge is symmetrical and the load is exactly in the center, the
+                    load is split evenly between the two supports at points A and D.</p>
+                <div class="mt-4 bg-stone-50 p-4 rounded-md whitespace-pre-wrap font-mono text-sm">
+                    <p>Total downward force = 1000 N</p>
+                    <p>Total upward force = Must also be 1000 N to keep the bridge from falling.</p>
+                    <p>Force at each support = (Total downward force) / 2</p>
+                    <br>
+                    <p>R<sub>A</sub> = R<sub>D</sub> = 1000 N / 2 = 500 N</p>
+                    <p class="mt-2">So, the support at A pushes up with 500 N, and the support at D also pushes up with
+                        500 N.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">Step 2: Analyze Joint A (The Left Support)</h3>
+                <p class="mt-2 text-stone-600">Now we can isolate one part of the bridge and solve for the unknown
+                    forces. We'll start with Joint A, where we know the reaction force (R<sub>A</sub> = 500 N) and have
+                    two unknown member forces: <var>F</var><sub>AC</sub> (the bottom horizontal member) and
+                    <var>F</var><sub>AB</sub> (the diagonal member). We assume both are in tension (pointing away from
+                    the joint).</p>
+                <p class="mt-2 text-stone-600">First, we need the angle (&theta;) of the diagonal member AB. We can use
+                    the dimensions of the triangle formed by A, C, and B. The side AC is 4 meters (half of the 8m span),
+                    and the side CB is 4 meters (the height).</p>
+                <p class="mt-2 text-stone-600">
+                    <br> tan(&theta;) = 4 m / 4 m = 1
+                    <br> &theta; = arctan(1) = 45&deg;
+                </p>
+                <div class="mt-4 bg-stone-50 p-4 rounded-md whitespace-pre-wrap font-mono text-sm">
+                    <p><strong>Vertical Forces (&Sigma;F<sub>y</sub> = 0)</strong></p>
+                    <p>The upward force from the ground (R<sub>A</sub>) must be balanced by the downward component of
+                        the diagonal member (<var>F</var><sub>AB</sub>).</p>
+                    <p>R<sub>A</sub> + <var>F</var><sub>AB</sub> sin(45&deg;) = 0</p>
+                    <p>500 + <var>F</var><sub>AB</sub>(0.707) = 0</p>
+                    <p><var>F</var><sub>AB</sub> = -500 / 0.707 = -707 N</p>
+                    <p class="mt-2">The negative sign means our initial assumption was wrong. <var>F</var><sub>AB</sub>
+                        is actually a <strong>COMPRESSION</strong> force, pushing into the joint.</p>
+                    <p><strong>Horizontal Forces (&Sigma;F<sub>x</sub> = 0)</strong></p>
+                    <p>The horizontal member <var>F</var><sub>AC</sub> must be balanced by the horizontal component of
+                        the diagonal member <var>F</var><sub>AB</sub>.</p>
+                    <p><var>F</var><sub>AC</sub> + <var>F</var><sub>AB</sub> cos(45&deg;) = 0</p>
+                    <p><var>F</var><sub>AC</sub> + (-707)(0.707) = 0</p>
+                    <p><var>F</var><sub>AC</sub> - 500 = 0</p>
+                    <p><var>F</var><sub>AC</sub> = 500 N</p>
+                    <p class="mt-2">The positive sign means our assumption was correct. <var>F</var><sub>AC</sub> is a
+                        <strong>TENSION</strong> force, pulling the joint.</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">Step 3: Analyze Joint C (The Midpoint)</h3>
+                <p class="mt-2 text-stone-600">Next, we move to Joint C to find the force in the vertical member,
+                    <var>F</var><sub>CB</sub>. At this joint, we have the known force from member AC
+                    (<var>F</var><sub>AC</sub> = 500 N, tension), and two unknowns: <var>F</var><sub>CB</sub> and
+                    <var>F</var><sub>CD</sub>.</p>
+                <div class="mt-4 bg-stone-50 p-4 rounded-md whitespace-pre-wrap font-mono text-sm">
+                    <p><strong>Vertical Forces (&Sigma;F<sub>y</sub> = 0)</strong></p>
+                    <p>The only vertical force is from the vertical member <var>F</var><sub>CB</sub>.</p>
+                    <p><var>F</var><sub>CB</sub> = 0 N</p>
+                    <p class="mt-2">This is an interesting result! Member CB is a <strong>zero-force member</strong> in
+                        this specific case. It's only needed if the load isn't perfectly centered.</p>
+                    <p><strong>Horizontal Forces (&Sigma;F<sub>x</sub> = 0)</strong></p>
+                    <p>The horizontal force from AC (<var>F</var><sub>AC</sub>) must be balanced by the horizontal force
+                        from CD (<var>F</var><sub>CD</sub>).</p>
+                    <p><var>F</var><sub>AC</sub> + <var>F</var><sub>CD</sub> = 0</p>
+                    <p>500 + <var>F</var><sub>CD</sub> = 0</p>
+                    <p><var>F</var><sub>CD</sub> = -500 N</p>
+                    <p class="mt-2">The negative sign means <var>F</var><sub>CD</sub> is in
+                        <strong>COMPRESSION</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: ACCESSFM to Math -->
+        <section id="analysis" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Connect Your ACCESSFM Research
+                    to Physics</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">Now it's your turn to use what you've learned. You
+                    researched a real-world truss bridge and applied the ACCESSFM framework to it. Let's think about
+                    that bridge with our new knowledge.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold">Exercise: Your Real-World Bridge</h3>
+                <p class="mt-2 text-stone-600">Think about the bridge you analyzed. Now answer these questions about it:
+                </p>
+                <ul class="list-disc list-inside mt-4 space-y-3 text-stone-600">
+                    <li><strong>Function:</strong> How do the triangles in your bridge's design help it handle the load
+                        (cars, trains, people)? Where do you think the <strong>maximum compression</strong> is located?
+                        Where is the <strong>maximum tension</strong>?</li>
+                    <li><strong>Materials:</strong> Your ACCESSFM analysis looked at materials. Why do you think steel
+                        is a common material for bridges? How does steel's strength in <strong>tension</strong> and
+                        <strong>compression</strong> compare to spaghetti?</li>
+                    <li><strong>Safety:</strong> You watched a bridge failure documentary. How did understanding tension
+                        and compression help you better understand why that bridge failed?</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            function updateActiveLink(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+                });
+            }
+
+            function showSection(targetId) {
+                sections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+                updateActiveLink(targetId);
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.target.getAttribute('href').substring(1);
+                    showSection(targetId);
+                });
+            });
+
+            const initialHash = window.location.hash.substring(1) || 'forces';
+            showSection(initialHash);
+        });
+    </script>
+</body>
+
+</html>
