@@ -97,6 +97,12 @@
 
         .btn:disabled {
             cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .btn.selected {
+            border-color: var(--primary-color);
+            background-color: #e0f2fe; /* Light blue background for selection */
         }
 
         .btn.correct {
@@ -118,7 +124,7 @@
             align-items: center;
         }
         
-        #next-btn, #restart-btn {
+        #next-btn, #show-feedback-btn {
             padding: 0.75rem 1.5rem;
             font-size: 1rem;
             font-weight: 700;
@@ -130,7 +136,7 @@
             transition: transform 0.2s ease;
         }
 
-        #next-btn:hover, #restart-btn:hover {
+        #next-btn:hover, #show-feedback-btn:hover {
             transform: scale(1.05);
         }
         
@@ -147,6 +153,11 @@
 
         .hidden {
             display: none;
+        }
+        
+        #feedback-container {
+            margin-top: 2rem;
+            text-align: left;
         }
 
         #results-card {
@@ -195,7 +206,7 @@
             <h2>Quiz Complete!</h2>
             <p id="score-text">Your score: 0 out of 10</p>
             <p id="grade-text">Grade: -</p>
-            <button id="restart-btn">Restart Quiz</button>
+            <button id="show-feedback-btn" class="hidden">Show Feedback</button>
         </div>
     </div>
 
@@ -580,11 +591,11 @@
         const rationaleText = document.getElementById('rationale-text');
         const scoreText = document.getElementById('score-text');
         const gradeText = document.getElementById('grade-text');
-        const restartBtn = document.getElementById('restart-btn');
+        const showFeedbackBtn = document.getElementById('show-feedback-btn');
 
         let currentQuestionIndex = 0;
-        let score = 0;
         let quizQuestions = [];
+        let userAnswers = [];
         const quizLength = 10;
 
         const gradingScale = {
@@ -609,20 +620,21 @@
             if (storedQuiz) {
                 quizQuestions = JSON.parse(storedQuiz);
                 currentQuestionIndex = parseInt(sessionStorage.getItem('currentQuestionIndex')) || 0;
-                score = parseInt(sessionStorage.getItem('score')) || 0;
+                userAnswers = JSON.parse(sessionStorage.getItem('userAnswers')) || [];
             } else {
                 generateQuiz();
                 sessionStorage.setItem('quizQuestions', JSON.stringify(quizQuestions));
                 currentQuestionIndex = 0;
-                score = 0;
+                userAnswers = [];
                 sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
-                sessionStorage.setItem('score', score);
+                sessionStorage.setItem('userAnswers', JSON.stringify(userAnswers));
             }
 
             mainTitle.textContent = "ICT Fundamentals Quiz - 11th Grade";
             progressText.classList.remove('hidden');
             resultsCard.classList.add('hidden');
             questionCard.classList.remove('hidden');
+            showFeedbackBtn.classList.add('hidden');
             showQuestion();
         }
 
@@ -632,16 +644,38 @@
             questionText.textContent = currentQuestion.question;
             progressText.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
 
-            currentQuestion.answers.forEach(answer => {
+            const selectedAnswerIndex = userAnswers[currentQuestionIndex];
+            const hasAnswered = selectedAnswerIndex !== undefined;
+
+            currentQuestion.answers.forEach((answer, index) => {
                 const button = document.createElement('button');
                 button.textContent = answer.text;
                 button.classList.add('btn');
-                button.dataset.correct = answer.correct;
+                button.dataset.index = index;
                 button.addEventListener('click', selectAnswer);
+
+                if (hasAnswered) {
+                    button.disabled = true;
+                    if (index === selectedAnswerIndex) {
+                        button.classList.add('selected');
+                    }
+                }
+
                 answerButtons.appendChild(button);
             });
             
             controls.classList.remove('hidden');
+            
+            if (hasAnswered) {
+                if (quizQuestions.length > currentQuestionIndex + 1) {
+                    nextBtn.classList.remove('hidden');
+                } else {
+                    nextBtn.textContent = 'Show Grade';
+                    nextBtn.classList.remove('hidden');
+                }
+            } else {
+                nextBtn.classList.add('hidden');
+            }
         }
 
         function resetState() {
@@ -649,50 +683,44 @@
                 answerButtons.removeChild(answerButtons.firstChild);
             }
             nextBtn.classList.add('hidden');
-            rationaleText.classList.add('hidden');
-            rationaleText.textContent = '';
         }
 
         function selectAnswer(e) {
             const selectedBtn = e.target;
-            const isCorrect = selectedBtn.dataset.correct === 'true';
+            const answerIndex = parseInt(selectedBtn.dataset.index);
 
-            if (isCorrect) {
-                score++;
-                sessionStorage.setItem('score', score);
-            }
-            
-            let correctText = '';
             Array.from(answerButtons.children).forEach(button => {
-                if(button.dataset.correct === 'true') {
-                    correctText = button.textContent;
-                }
-                setStatusClass(button, button.dataset.correct === 'true');
+                button.classList.remove('selected');
                 button.disabled = true;
             });
-            
-            rationaleText.classList.remove('hidden');
+
+            selectedBtn.classList.add('selected');
+
+            userAnswers[currentQuestionIndex] = answerIndex;
+            sessionStorage.setItem('userAnswers', JSON.stringify(userAnswers));
             
             if (quizQuestions.length > currentQuestionIndex + 1) {
                 nextBtn.classList.remove('hidden');
             } else {
-                 setTimeout(showResults, 1500);
+                nextBtn.textContent = 'Show Grade';
+                nextBtn.classList.remove('hidden');
             }
         }
-        
-        function setStatusClass(element, correct) {
-            if (correct) {
-                element.classList.add('correct');
-            } else {
-                element.classList.add('incorrect');
-            }
-        }
-        
+
         function showResults() {
             questionCard.classList.add('hidden');
             progressText.classList.add('hidden');
             mainTitle.textContent = "Quiz Complete!";
             
+            let correctAnswersCount = 0;
+            userAnswers.forEach((userAnswerIndex, index) => {
+                const questionData = quizQuestions[index];
+                if (questionData.answers[userAnswerIndex].correct) {
+                    correctAnswersCount++;
+                }
+            });
+            
+            const score = correctAnswersCount;
             let finalGrade = 1.0;
             const sortedKeys = Object.keys(gradingScale).map(Number).sort((a, b) => a - b);
             for (let i = 0; i < sortedKeys.length; i++) {
@@ -707,19 +735,57 @@
             gradeText.textContent = `Grade: ${finalGrade.toFixed(1)}`;
             
             resultsCard.classList.remove('hidden');
-
+            showFeedbackBtn.classList.remove('hidden');
+            
+            // Clear session storage when the quiz is completed
             sessionStorage.clear();
         }
 
+        function showDetailedFeedback() {
+            const existingFeedback = document.getElementById('feedback-container');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+
+            const detailedFeedbackContainer = document.createElement('div');
+            detailedFeedbackContainer.id = 'feedback-container';
+            
+            let detailedFeedbackHTML = '';
+            
+            userAnswers.forEach((userAnswerIndex, index) => {
+                const questionData = quizQuestions[index];
+                const isCorrect = questionData.answers[userAnswerIndex].correct;
+                const correctAnswerText = questionData.answers.find(answer => answer.correct).text;
+                
+                detailedFeedbackHTML += `<div style="margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #EAEAEA;">`;
+                detailedFeedbackHTML += `<strong>Question ${index + 1}:</strong> ${questionData.question}<br>`;
+                
+                if (isCorrect) {
+                    detailedFeedbackHTML += `<span style="color: #22c55e; font-weight: bold;">&#10004; You answered correctly: "${questionData.answers[userAnswerIndex].text}"</span>`;
+                } else {
+                    detailedFeedbackHTML += `<span style="color: #ef4444; font-weight: bold;">&#10006; Your answer: "${questionData.answers[userAnswerIndex].text}"</span><br>`;
+                    detailedFeedbackHTML += `<span style="color: #22c55e; font-weight: bold;">Correct answer: "${correctAnswerText}"</span>`;
+                }
+                detailedFeedbackHTML += `</div>`;
+            });
+
+            detailedFeedbackContainer.innerHTML = detailedFeedbackHTML;
+            resultsCard.insertBefore(detailedFeedbackContainer, showFeedbackBtn);
+        }
+
         nextBtn.addEventListener('click', () => {
-            currentQuestionIndex++;
-            sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
-            showQuestion();
+            if (quizQuestions.length > currentQuestionIndex + 1) {
+                currentQuestionIndex++;
+                sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+                showQuestion();
+            } else {
+                showResults();
+            }
         });
 
-        restartBtn.addEventListener('click', () => {
-            sessionStorage.clear();
-            startQuiz();
+        showFeedbackBtn.addEventListener('click', () => {
+            showDetailedFeedback();
+            showFeedbackBtn.classList.add('hidden');
         });
 
         startQuiz();
