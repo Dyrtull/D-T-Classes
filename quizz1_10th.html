@@ -46,6 +46,9 @@
         #quiz-header {
             padding: 1.5rem;
             border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         #quiz-header h1 {
@@ -54,7 +57,7 @@
             font-weight: 700;
         }
 
-        #quiz-header p {
+        #progress-text {
             margin: 0.25rem 0 0;
             font-size: 1rem;
             color: #6c757d;
@@ -124,7 +127,7 @@
             align-items: center;
         }
         
-        #next-btn, #show-feedback-btn {
+        #next-btn, #start-btn, #show-feedback-btn {
             padding: 0.75rem 1.5rem;
             font-size: 1rem;
             font-weight: 700;
@@ -136,7 +139,7 @@
             transition: transform 0.2s ease;
         }
 
-        #next-btn:hover, #show-feedback-btn:hover {
+        #next-btn:hover, #start-btn:hover, #show-feedback-btn:hover {
             transform: scale(1.05);
         }
         
@@ -177,20 +180,100 @@
             color: var(--primary-color);
             margin-bottom: 2rem;
         }
+
+        #timer-display {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #d97706; /* Amber color */
+            padding: 0.5rem 1rem;
+            background-color: #fffbeb;
+            border-radius: 0.5rem;
+            border: 1px solid #fde68a;
+        }
+
+        #intro-card {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        #intro-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        #intro-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        #intro-card ul {
+            text-align: left;
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+        
+        #grading-scale {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        #grading-scale th, #grading-scale td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        #grading-scale th {
+            background-color: #f8f9fa;
+            color: var(--text-color);
+        }
+
     </style>
 </head>
 <body>
 
     <div id="quiz-container">
-        <div id="quiz-header">
+        <div id="quiz-header" class="hidden">
             <h1 id="main-title">D&T Theory Quiz</h1>
-            <p id="progress-text">Question 1 of 10</p>
+            <span id="timer-display"></span>
+            <span id="progress-text">Question 1 of 10</span>
         </div>
 
-        <div id="question-card">
+        <div id="intro-card">
+            <h2>Welcome to the Quiz!</h2>
+            <p><strong>Please read the following instructions carefully before you begin:</strong></p>
+            <ul>
+                <li>This is a closed-book quiz. You are not allowed to use any notes, textbooks, or online resources.</li>
+                <li>You will have <strong id="quiz-duration-text"></strong> to answer 10 questions. The quiz will automatically submit when the time runs out.</li>
+                <li>Once you select an answer, it is locked in. You cannot change your choice, even if you have not clicked the "Next" button.</li>
+                <li>You cannot go back to previous questions.</li>
+                <li>Once the quiz is complete, please wait for the teacher's instructions before reviewing the feedback (DO NOT CLICK THE BUTTON)</li>
+            </ul>
+            
+            <h3>Grading Rubric</h3>
+            <table id="grading-scale">
+                <thead>
+                    <tr>
+                        <th>Correct Answers</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody id="grading-table-body">
+                </tbody>
+            </table>
+            
+            <button id="start-btn">Start Quiz</button>
+        </div>
+
+        <div id="question-card" class="hidden">
             <h2 id="question-text">Loading question...</h2>
             <div id="answer-buttons">
-                </div>
+            </div>
             <div id="controls" class="hidden">
                 <button id="next-btn">Next</button>
             </div>
@@ -419,6 +502,9 @@
         ]
     ];
 
+    // --- DOM Elements ---
+    const introCard = document.getElementById('intro-card');
+    const startBtn = document.getElementById('start-btn');
     const questionCard = document.getElementById('question-card');
     const resultsCard = document.getElementById('results-card');
     const questionText = document.getElementById('question-text');
@@ -431,22 +517,91 @@
     const scoreText = document.getElementById('score-text');
     const gradeText = document.getElementById('grade-text');
     const showFeedbackBtn = document.getElementById('show-feedback-btn');
+    const timerDisplay = document.getElementById('timer-display');
+    const quizHeader = document.getElementById('quiz-header');
+    const gradingTableBody = document.getElementById('grading-table-body');
+    const quizDurationText = document.getElementById('quiz-duration-text');
 
+    // --- Quiz Variables ---
     let currentQuestionIndex = 0;
     let quizQuestions = [];
-    let userAnswers = []; // Array to store user's choices
+    let userAnswers = [];
+    let timerInterval;
+    const QUIZ_DURATION_MINUTES = 1 ; // Set the quiz duration here
 
     // Corresponds to scores 0 through 10
     const gradingScale = [1.0, 1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0];
 
-    // --- RANDOMIZATION LOGIC ---
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+    // --- Initialization ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check if there is an ongoing quiz in sessionStorage
+        if (sessionStorage.getItem('quizInProgress') === 'true') {
+            loadQuiz();
+        } else {
+            setupIntro();
+        }
+    });
+
+    // --- UI Setup ---
+    function setupIntro() {
+        quizDurationText.textContent = `${QUIZ_DURATION_MINUTES} minutes`;
+        
+        // Populate the grading rubric table
+        let gradingTableHTML = '';
+        for (let i = 0; i < gradingScale.length; i++) {
+            gradingTableHTML += `<tr><td>${i}</td><td>${gradingScale[i].toFixed(1)}</td></tr>`;
+        }
+        gradingTableBody.innerHTML = gradingTableHTML;
+    }
+
+    // --- Quiz Logic ---
+    function startQuiz() {
+        // Set up and save initial quiz state
+        generateQuiz();
+        currentQuestionIndex = 0;
+        userAnswers = new Array(quizQuestions.length).fill(null);
+        
+        sessionStorage.setItem('quizInProgress', 'true');
+        sessionStorage.setItem('quizQuestions', JSON.stringify(quizQuestions));
+        sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+        sessionStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+        sessionStorage.setItem('quizStartTime', Date.now());
+
+        // Display the quiz
+        introCard.classList.add('hidden');
+        quizHeader.classList.remove('hidden');
+        questionCard.classList.remove('hidden');
+
+        startTimer();
+        showQuestion();
+    }
+
+    function loadQuiz() {
+        // Load quiz state from sessionStorage
+        quizQuestions = JSON.parse(sessionStorage.getItem('quizQuestions'));
+        currentQuestionIndex = parseInt(sessionStorage.getItem('currentQuestionIndex'));
+        userAnswers = JSON.parse(sessionStorage.getItem('userAnswers'));
+        const startTime = parseInt(sessionStorage.getItem('quizStartTime'));
+
+        // Display the quiz
+        introCard.classList.add('hidden');
+        quizHeader.classList.remove('hidden');
+        questionCard.classList.remove('hidden');
+
+        // Restart the timer from where it left off
+        const elapsedTime = (Date.now() - startTime) / 1000;
+        const totalDuration = QUIZ_DURATION_MINUTES * 60;
+        const timeRemaining = Math.max(0, totalDuration - elapsedTime);
+        startTimer(timeRemaining);
+        
+        // Check if quiz is completed upon load
+        if (currentQuestionIndex >= quizQuestions.length) {
+            showResults();
+        } else {
+            showQuestion();
         }
     }
-    
+
     function generateQuiz() {
         quizQuestions = [];
         const conceptsToQuiz = [...questionBank];
@@ -463,70 +618,41 @@
         quizQuestions = quizQuestions.slice(0, 10);
     }
 
-    // --- QUIZ FLOW ---
-    function startQuiz() {
-        // Check if a quiz already exists in session storage
-        const storedQuiz = sessionStorage.getItem('quizQuestions');
-        if (storedQuiz) {
-            // If a quiz exists, load it
-            quizQuestions = JSON.parse(storedQuiz);
-            currentQuestionIndex = parseInt(sessionStorage.getItem('currentQuestionIndex')) || 0;
-            userAnswers = JSON.parse(sessionStorage.getItem('userAnswers')) || [];
-        } else {
-            // If no quiz exists, generate a new one and store it
-            generateQuiz();
-            sessionStorage.setItem('quizQuestions', JSON.stringify(quizQuestions));
-            currentQuestionIndex = 0;
-            userAnswers = [];
-            sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
-            sessionStorage.setItem('userAnswers', JSON.stringify(userAnswers));
-        }
-
-        mainTitle.textContent = "D&T Theory Quiz";
-        progressText.classList.remove('hidden');
-        resultsCard.classList.add('hidden');
-        questionCard.classList.remove('hidden');
-        showFeedbackBtn.classList.add('hidden'); // Ensure feedback button is hidden on start
-        showQuestion();
-    }
-
     function showQuestion() {
         resetState();
         const currentQuestion = quizQuestions[currentQuestionIndex];
         questionText.textContent = currentQuestion.question;
         progressText.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
 
-        const selectedAnswerIndex = userAnswers[currentQuestionIndex];
-        const hasAnswered = selectedAnswerIndex !== undefined;
+        const selectedAnswerIndex = userAnswers[currentQuestionIndex] ? userAnswers[currentQuestionIndex].index : null;
+        const hasAnswered = selectedAnswerIndex !== null;
 
         currentQuestion.answers.forEach((answer, index) => {
             const button = document.createElement('button');
             button.textContent = answer.text;
             button.classList.add('btn');
-            button.dataset.index = index; // Store the index of the answer
+            button.dataset.index = index;
+            button.disabled = hasAnswered; // Disable if an answer is already selected
             button.addEventListener('click', selectAnswer);
-            
-            if (hasAnswered) {
-                button.disabled = true;
-                if (index === selectedAnswerIndex) {
-                    button.classList.add('selected');
-                }
+
+            if (hasAnswered && index === selectedAnswerIndex) {
+                button.classList.add('selected');
             }
             
             answerButtons.appendChild(button);
         });
         
         controls.classList.remove('hidden');
-        // The next button should be visible if an answer has already been selected
         if (hasAnswered) {
-             if (quizQuestions.length > currentQuestionIndex + 1) {
-                nextBtn.classList.remove('hidden');
-            } else {
-                nextBtn.textContent = 'Show Grade';
-                nextBtn.classList.remove('hidden');
-            }
+            nextBtn.classList.remove('hidden');
         } else {
-            nextBtn.classList.add('hidden'); // Hide next button until a new answer is selected
+            nextBtn.classList.add('hidden');
+        }
+
+        if (currentQuestionIndex === quizQuestions.length - 1) {
+            nextBtn.textContent = 'Show Grade';
+        } else {
+            nextBtn.textContent = 'Next';
         }
     }
 
@@ -539,47 +665,38 @@
     function selectAnswer(e) {
         const selectedBtn = e.target;
         const answerIndex = parseInt(selectedBtn.dataset.index);
+        
+        // Prevent re-selection
+        if (userAnswers[currentQuestionIndex] !== null) {
+            return;
+        }
 
-        // Remove 'selected' class from all buttons before adding to the clicked one
+        // Disable all buttons for this question
         Array.from(answerButtons.children).forEach(button => {
             button.classList.remove('selected');
-            button.disabled = true; // Disable all buttons
+            button.disabled = true;
         });
 
         // Add 'selected' class to the clicked button
         selectedBtn.classList.add('selected');
 
-        // Store the user's answer
-        userAnswers[currentQuestionIndex] = answerIndex;
+        // Store the user's answer and save to sessionStorage
+        const isCorrect = quizQuestions[currentQuestionIndex].answers[answerIndex].correct;
+        userAnswers[currentQuestionIndex] = { index: answerIndex, correct: isCorrect };
         sessionStorage.setItem('userAnswers', JSON.stringify(userAnswers));
-
+        
         // Show the next button
-        if (quizQuestions.length > currentQuestionIndex + 1) {
-            nextBtn.classList.remove('hidden');
-        } else {
-            nextBtn.textContent = 'Show Grade';
-            nextBtn.classList.remove('hidden');
-        }
-    }
-    
-    function setStatusClass(element, correct) {
-        if (correct) {
-            element.classList.add('correct');
-        } else {
-            element.classList.add('incorrect');
-        }
+        nextBtn.classList.remove('hidden');
     }
     
     function showResults() {
+        clearInterval(timerInterval);
         questionCard.classList.add('hidden');
-        progressText.classList.add('hidden');
-        mainTitle.textContent = "Quiz Complete!";
+        quizHeader.classList.add('hidden');
         
-        // Calculate the final score
         let correctAnswersCount = 0;
-        userAnswers.forEach((userAnswerIndex, index) => {
-            const questionData = quizQuestions[index];
-            if (questionData.answers[userAnswerIndex].correct) {
+        userAnswers.forEach(answer => {
+            if (answer && answer.correct) {
                 correctAnswersCount++;
             }
         });
@@ -606,31 +723,66 @@
         
         let detailedFeedbackHTML = '';
         
-        userAnswers.forEach((userAnswerIndex, index) => {
+        userAnswers.forEach((userAnswer, index) => {
             const questionData = quizQuestions[index];
-            const isCorrect = questionData.answers[userAnswerIndex].correct;
+            const isCorrect = userAnswer && userAnswer.correct;
             const correctAnswerText = questionData.answers.find(answer => answer.correct).text;
             
             detailedFeedbackHTML += `<div style="margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #EAEAEA;">`;
             detailedFeedbackHTML += `<strong>Question ${index + 1}:</strong> ${questionData.question}<br>`;
             
             if (isCorrect) {
-                detailedFeedbackHTML += `<span style="color: #22c55e; font-weight: bold;">&#10004; You answered correctly: "${questionData.answers[userAnswerIndex].text}"</span>`;
+                detailedFeedbackHTML += `<span style="color: #22c55e; font-weight: bold;">&#10004; You answered correctly: "${questionData.answers[userAnswer.index].text}"</span>`;
             } else {
-                detailedFeedbackHTML += `<span style="color: #ef4444; font-weight: bold;">&#10006; Your answer: "${questionData.answers[userAnswerIndex].text}"</span><br>`;
+                const userAnswerText = userAnswer ? questionData.answers[userAnswer.index].text : "No answer selected.";
+                detailedFeedbackHTML += `<span style="color: #ef4444; font-weight: bold;">&#10006; Your answer: "${userAnswerText}"</span><br>`;
                 detailedFeedbackHTML += `<span style="color: #22c55e; font-weight: bold;">Correct answer: "${correctAnswerText}"</span>`;
             }
             detailedFeedbackHTML += `</div>`;
         });
 
         detailedFeedbackContainer.innerHTML = detailedFeedbackHTML;
-        resultsCard.insertBefore(detailedFeedbackContainer, showFeedbackBtn.nextSibling); // Insert before next element (if any)
+        resultsCard.insertBefore(detailedFeedbackContainer, showFeedbackBtn.nextSibling);
     }
+
+    // --- Timer Logic ---
+    function startTimer(initialTime = QUIZ_DURATION_MINUTES * 60) {
+        let timeRemaining = initialTime;
+        timerDisplay.textContent = formatTime(timeRemaining);
+
+        timerInterval = setInterval(() => {
+            timeRemaining--;
+            timerDisplay.textContent = formatTime(timeRemaining);
+
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                alert("Time's up! The quiz will now submit automatically.");
+                showResults();
+            }
+        }, 1000);
+    }
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    }
+
+    // --- Helper Functions ---
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startQuiz);
 
     nextBtn.addEventListener('click', () => {
         if (quizQuestions.length > currentQuestionIndex + 1) {
             currentQuestionIndex++;
-            sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex); // Update index in storage
+            sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
             showQuestion();
         } else {
             showResults();
@@ -641,9 +793,6 @@
         showDetailedFeedback();
         showFeedbackBtn.classList.add('hidden');
     });
-
-    // Start the quiz on page load
-    startQuiz();
 </script>    
 </body>
 </html>
