@@ -180,7 +180,15 @@
                 responsible: "ICT teachers",
                 indicator: "Between 1 and 2 terms per grade\nIGCSE 0478 2025 results. At least equal to Colombia's level",
                 impact: "Integration of computational thinking estrategies in the curriculum\nTransition towards Computer Science IGCSE 0478 Syllabus",
-                evaluation: "7 students presented this exam. Results: 2 B, 3 A, 2 A*",
+                evaluation:`
+                    <div class="mt-4">
+                        <h4 class="text-md font-semibold text-gray-700 mb-2">IGCSE Computer Science Results Trend</h4>
+                        <img src="img/computer_science.jpeg"
+                            alt="IGCSE Results Trend Mock Data" class="rounded-xl shadow-lg w-full">
+                    </div>
+                `
+
+                ,
                 status: "completed"
             },
             {
@@ -344,7 +352,7 @@
 
         // ... (your existing code)
 
-function createCard(item) {
+        function createCard(item) {
             const card = document.createElement('div');
             const statusIcon = getIconSVG(item.status);
             let statusText = '';
@@ -405,7 +413,7 @@ function createCard(item) {
             if (additionalProgress) {
                 contentHtml += additionalProgress;
             }
-            
+
             if (item.evaluation) {
                 if (typeof item.evaluation === 'object' && item.evaluation.images) {
                     let galleryHtml = `<div class="mt-4">
