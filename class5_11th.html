@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Issues & Security</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        }
+        .section-header {
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .exercise-card {
+            background-color: #e0f2fe;
+            border-left: 4px solid #0284c7;
+        }
+        .exercise-card .answer-section {
+            display: none;
+        }
+        .exercise-card.active .answer-section {
+            display: block;
+        }
+        .toggle-btn {
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+        .toggle-btn:hover {
+            color: #0284c7;
+        }
+        /* Custom modal styles for alerts */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-8">
+
+    <!-- Custom Modal UI for alerts -->
+    <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title" class="text-xl font-bold"></h3>
+                <span class="close-btn">&times;</span>
+            </div>
+            <p id="modal-message" class="text-gray-700"></p>
+            <div class="flex justify-end mt-4">
+                <button onclick="closeModal()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="text-center my-8">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800">Network Issues & Security</h1>
+        <p class="mt-2 text-lg text-gray-600">Cognitive and Social-Emotional Learning Goals</p>
+    </header>
+
+    <main class="container mx-auto px-4">
+        <!-- Section 1: Data Transfer & Passwords -->
+        <section id="data-transfer" class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 section-header pb-4 mb-4">Data Transfer & Passwords</h2>
+            <p class="text-gray-700 mb-4">Data transfer is a fundamental part of using a network, but it poses significant security risks. Understanding these threats is the first step to staying safe online. Data can be vulnerable to unauthorized access and manipulation, often due to weak security practices.</p>
+
+            <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-2">Common Security Risks</h3>
+            <ul class="list-disc list-inside text-gray-600 space-y-1 pl-4">
+                <li><strong class="text-gray-800">Hackers:</strong> Exploit network weaknesses to steal, access, or delete confidential data.</li>
+                <li><strong class="text-gray-800">Insider Threats:</strong> Data interception or theft by people within an organization.</li>
+                <li><strong class="text-gray-800">Social Engineering:</strong> Manipulating users to give away confidential information or install malware.</li>
+                <li><strong class="text-gray-800">Weak Encryption:</strong> Using outdated or no encryption protocols when transferring sensitive data.</li>
+                <li><strong class="text-gray-800">Insecure Protocols:</strong> Using <span class="font-mono bg-gray-200 px-1 rounded">HTTP</span> instead of <span class="font-mono bg-green-200 px-1 rounded">HTTPS</span> for sensitive information.</li>
+            </ul>
+            
+            <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-2">Passwords and Authentication</h3>
+            <p class="text-gray-700 mb-4">A strong password is a crucial defense against unauthorized access. Passwords are often stored in an encrypted form to protect them, even if a database is compromised. A strong password should be at least eight characters long and include a mix of uppercase letters, lowercase letters, numbers, and symbols.</p>
+
+            <!-- Video: Remote users in a PC -->
+            <div class="mt-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Video: Check for Remote Users in a PC</h4>
+                <p class="text-gray-600 mb-4">Watch this video to learn a quick command to check for active remote desktop connections on your computer. This can help you identify unauthorized access attempts.</p>
+                <div class="relative w-full aspect-video">
+                    <iframe class="absolute top-0 left-0 w-full h-full rounded-lg" src="https://www.youtube.com/embed/dGBM-BWd2UQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- Video: Social Engineering -->
+            <div class="mt-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Video: The Art of Social Engineering</h4>
+                <p class="text-gray-600 mb-4">This video explains social engineering through a real-world example, demonstrating how easy it is for an attacker to manipulate someone into giving away information.</p>
+                <div class="relative w-full aspect-video">
+                    <iframe class="absolute top-0 left-0 w-full h-full rounded-lg" src="https://www.youtube.com/embed/PWVN3Rq4gzw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- Strong Password Workshop Exercise -->
+            <div class="exercise-card p-4 mt-6 rounded-lg">
+                <h4 class="font-bold text-lg text-blue-900 mb-2">In-Class Exercise: Strong Password Workshop</h4>
+                <p class="text-blue-800 mb-2">Evaluate the following passwords and explain what makes them weak or strong. Then, create a strong password for each weak example. Explain your reasoning.</p>
+                
+                <div id="password-exercise" class="space-y-4">
+                    <!-- Password 1 -->
+                    <div class="bg-white p-3 rounded-lg border border-blue-200">
+                        <p class="font-semibold">Password 1: <span class="font-mono">ilovecats123</span></p>
+                        <textarea class="w-full h-24 p-2 mt-2 border border-gray-300 rounded-md" placeholder="Your analysis and suggested strong password..."></textarea>
+                    </div>
+                    <!-- Password 2 -->
+                    <div class="bg-white p-3 rounded-lg border border-blue-200">
+                        <p class="font-semibold">Password 2: <span class="font-mono">P@$$w0rd!23</span></p>
+                        <textarea class="w-full h-24 p-2 mt-2 border border-gray-300 rounded-md" placeholder="Your analysis and suggested strong password..."></textarea>
+                    </div>
+                    <!-- Password 3 -->
+                    <div class="bg-white p-3 rounded-lg border border-blue-200">
+                        <p class="font-semibold">Password 3: <span class="font-mono">MySecureP@ssw0rd$10</span></p>
+                        <textarea class="w-full h-24 p-2 mt-2 border border-gray-300 rounded-md" placeholder="Your analysis and suggested strong password..."></textarea>
+                    </div>
+                    <button onclick="checkPasswordAnswers()" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors shadow-md">Submit Answers</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Electronic Conferencing -->
+        <section id="e-conferencing" class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 section-header pb-4 mb-4">Electronic Conferencing</h2>
+            <p class="text-gray-700 mb-4">Electronic conferencing enables real-time communication between people who are geographically separated. There are several methods, each with its own uses, advantages, and disadvantages.</p>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Video-Conferencing Card -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg text-blue-900 mb-2">Video-Conferencing</h3>
+                    <p class="text-blue-800 text-sm">Real-time audio and visual communication. Ideal for small groups for an engaging meeting experience. Requires a webcam, microphone, and a stable connection.</p>
+                </div>
+                <!-- Audio-Conferencing Card -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg text-blue-900 mb-2">Audio-Conferencing</h3>
+                    <p class="text-blue-800 text-sm">Real-time audio-only communication, often over standard phone lines or VoIP. Cheaper and more accessible, but lacks visual cues which can lead to miscommunication.</p>
+                </div>
+                <!-- Web-Conferencing Card -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg text-blue-900 mb-2">Web-Conferencing</h3>
+                    <p class="text-blue-800 text-sm">Audio and visual communication via the internet, emphasizing collaboration features like screen sharing, whiteboards, and instant messaging. Best for large groups and webinars.</p>
+                </div>
+            </div>
+
+            <!-- Conferencing Scenario Challenge -->
+            <div class="exercise-card p-4 mt-6 rounded-lg">
+                <h4 class="font-bold text-lg text-blue-900 mb-2">Challenge: Conferencing Scenario</h4>
+                <p class="text-blue-800 mb-2">A large multinational corporation needs to host a global conference with over 500 employees, including a Q&A session and collaborative brainstorming. Based on what you've learned, what type of conferencing would be most suitable? Justify your choice by listing at least three specific features that support this scenario.</p>
+                <textarea class="w-full h-32 p-2 mt-2 border border-gray-300 rounded-md" placeholder="Your answer..."></textarea>
+                <button onclick="submitConferencingAnswer()" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors shadow-md mt-2">Submit Answer</button>
+            </div>
+        </section>
+
+        <!-- Section 3: Email Communication & Spam Prevention -->
+        <section id="email" class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 section-header pb-4 mb-4">Email Communication & Spam</h2>
+            <p class="text-gray-700 mb-4">Email is a cornerstone of digital communication. However, it's also a major vector for security threats like spam and phishing.</p>
+            
+            <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-2">Spam Prevention</h3>
+            <p class="text-gray-700 mb-4">Spam is unsolicited junk mail that can contain malware, phishing attempts, or scams. Anti-malware and anti-spam software can help, but it's also important to be vigilant. Be cautious about clicking suspicious links or downloading attachments from unknown senders.</p>
+            
+            <!-- Video: Spam Prevention -->
+            <div class="mt-6">
+                <h4 class="font-semibold text-gray-700 mb-2">Video: How To Stop Spam Calls and Texts</h4>
+                <p class="text-gray-600 mb-4">While this video focuses on calls and texts, the principles of blocking and reporting unsolicited contact apply to email as well, helping you understand how to filter out spam.</p>
+                <div class="relative w-full aspect-video">
+                    <iframe class="absolute top-0 left-0 w-full h-full rounded-lg" src="https://www.youtube.com/embed/HJOf2mPgbF8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- Email Etiquette Role Play Exercise -->
+            <div class="exercise-card p-4 mt-6 rounded-lg">
+                <h4 class="font-bold text-lg text-blue-900 mb-2">In-Class Exercise: Email Etiquette Scenario</h4>
+                <p class="text-blue-800 mb-2">Imagine you are a student writing an email to a professor to ask a question about an assignment. Write a draft of this email, focusing on proper etiquette, a clear subject line, and professional tone.</p>
+                <textarea class="w-full h-32 p-2 mt-2 border border-gray-300 rounded-md" placeholder="Dear Professor..."></textarea>
+                <button onclick="submitEmailAnswer()" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors shadow-md mt-2">Submit Answer</button>
+            </div>
+        </section>
+
+        <!-- Section 4: Internet Functionalities & Risks -->
+        <section id="internet-risks" class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 section-header pb-4 mb-4">Internet Functionalities & Risks</h2>
+            <p class="text-gray-700 mb-4">The internet provides a wealth of information and services, but it comes with its own set of risks. Understanding key concepts and protocols is vital for safe and effective use.</p>
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <div class="bg-gray-50 p-4 rounded-lg flex-1">
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">Key Concepts</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 pl-4">
+                        <li><strong class="text-gray-800">ISP (Internet Service Provider):</strong> The company that provides internet access.</li>
+                        <li><strong class="text-gray-800">URL (Uniform Resource Locator):</strong> The address used to locate a resource on the web.</li>
+                        <li><strong class="text-gray-800">Web Browser:</strong> Software used to access the internet.</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg flex-1">
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">Internet Protocols</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 pl-4">
+                        <li><strong class="text-gray-800">HTTP:</strong> Standard protocol for web pages (unencrypted).</li>
+                        <li><strong class="text-gray-800">HTTPS:</strong> Secure version of HTTP (encrypted with SSL/TLS).</li>
+                        <li><strong class="text-gray-800">FTP (File Transfer Protocol):</strong> Used to transfer files between computers.</li>
+                        <li><strong class="text-gray-800">SSL (Secure Sockets Layer):</strong> A security protocol that encrypts data in transit.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Homework: HTTPS Reflection -->
+            <div class="exercise-card p-4 mt-6 rounded-lg">
+                <h4 class="font-bold text-lg text-blue-900 mb-2">Homework: Why HTTPS?</h4>
+                <p class="text-blue-800 mb-2">In a short reflection, explain why it is critically important to use HTTPS for online banking or any website where you enter personal or financial information. What specific security risks does HTTPS mitigate?</p>
+                <textarea class="w-full h-32 p-2 mt-2 border border-gray-300 rounded-md" placeholder="Your reflection..."></textarea>
+                <button onclick="submitHomework()" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors shadow-md mt-2">Submit Homework</button>
+            </div>
+
+            <!-- Homework: Mini-Report -->
+            <div class="exercise-card p-4 mt-6 rounded-lg">
+                <h4 class="font-bold text-lg text-blue-900 mb-2">Homework: Malware Prevention</h4>
+                <p class="text-blue-800 mb-2">Conduct research and write a mini-report (150-200 words) explaining one specific method to prevent computer viruses or malware. Be detailed in your explanation. Possible topics include: Anti-malware software, heuristic checking, or firewalls.</p>
+                <textarea class="w-full h-48 p-2 mt-2 border border-gray-300 rounded-md" placeholder="Your mini-report..."></textarea>
+                <button onclick="submitMiniReport()" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 transition-colors shadow-md mt-2">Submit Mini-Report</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm mt-8 pb-8">
+        © 2025 ARTIFEX 3D. All rights reserved.
+    </footer>
+
+    <script>
+        // Custom modal functions
+        const modal = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const closeBtn = document.querySelector('.close-btn');
+
+        function showModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        closeBtn.onclick = closeModal;
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+
+        // Exercise submission logic
+        function checkPasswordAnswers() {
+            const password1Answer = document.querySelector('#password-exercise textarea').value;
+            const password2Answer = document.querySelector('#password-exercise textarea:nth-of-type(2)').value;
+            const password3Answer = document.querySelector('#password-exercise textarea:nth-of-type(3)').value;
+            showModal("Password Workshop", "Thank you for your submission! You'll receive feedback on your answers shortly.");
+        }
+
+        function submitConferencingAnswer() {
+            const answer = document.querySelector('#e-conferencing textarea').value;
+            if (answer.trim() === '') {
+                showModal("Submission Error", "Please provide a detailed answer before submitting.");
+                return;
+            }
+            const correctResponse = "The most suitable conferencing method is Web-Conferencing. It supports large groups and has features specifically designed for collaboration. Key features include:\n\n1. Screen Sharing: Allows for collaborative brainstorming and sharing of visual content.\n2. Q&A and Polling: Enables interactive sessions with a large audience.\n3. Chat Functionality: Provides a way for participants to communicate without interrupting the main speaker.";
+            showModal("Challenge Answer", correctResponse);
+        }
+        
+        function submitEmailAnswer() {
+            const answer = document.querySelector('#email textarea').value;
+            if (answer.trim() === '') {
+                showModal("Submission Error", "Please write your email draft before submitting.");
+                return;
+            }
+            showModal("Draft Submitted", "Your email draft has been submitted. Look for feedback soon!");
+        }
+
+        function submitHomework() {
+            const answer = document.querySelector('#internet-risks textarea:nth-of-type(1)').value;
+            if (answer.trim() === '') {
+                showModal("Submission Error", "Please write your reflection before submitting.");
+                return;
+            }
+            showModal("Homework Submitted", "Your reflection on HTTPS has been submitted. Nice job!");
+        }
+        
+        function submitMiniReport() {
+            const answer = document.querySelector('#internet-risks textarea:nth-of-type(2)').value;
+            if (answer.trim() === '') {
+                showModal("Submission Error", "Please write your mini-report before submitting.");
+                return;
+            }
+            showModal("Homework Submitted", "Your mini-report has been submitted. Keep up the great work!");
+        }
+    </script>
+
+</body>
+</html>
