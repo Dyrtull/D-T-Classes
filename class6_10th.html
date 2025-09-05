@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 6: Material Properties and Strong Joints</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+            color: #292524;
+        }
+
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .nav-link.active {
+            color: #0284c7;
+            border-bottom-color: #0284c7;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .placeholder-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            text-align: center;
+            background-color: #e2e8f0;
+            color: #475569;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .img-placeholder {
+            background-color: #e2e8f0;
+            color: #475569;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl font-bold text-stone-700">Bridge Building: Joints & Materials</h1>
+                <div class="hidden sm:block">
+                    <div class="flex items-baseline space-x-4">
+                        <a href="#introduction"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Introduction</a>
+                        <a href="#experiment"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Experiment</a>
+                        <a href="#findings"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Findings</a>
+                        <a href="#homework"
+                            class="nav-link text-stone-600 hover:text-sky-600 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Homework</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <section id="introduction" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Introduction: The Importance
+                    of Joints</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">
+                    In our last class, we learned how to analyze the forces on a truss bridge. Today, we're going to
+                    focus on a critical but often overlooked part of any structure: the <strong>joints</strong>. A building is only
+                    as strong as its weakest point, and that's usually where the pieces are connected. We will act like
+                    engineers and experiment with different ways to connect two pieces of spaghetti to find the strongest
+                    method.
+                </p>
+                <div class="mt-8 flex flex-col items-center">
+                    <div class="img-placeholder w-full max-w-md h-64 p-4 text-center">
+                        <img src="https://fractory.com/wp-content/uploads/2023/05/welding-joint-types.jpg"
+                            alt="Metal Joints" class="mt-4 max-h-48 object-contain">
+                        <img src="https://www.thespruce.com/thmb/iUg3YvWbMmCI0vEnH5m_mO1HOxE=/3000x0/filters:no_upscale():max_bytes(150000):strip_icc()/Wood-Joints-fdf0ae5b6e2c40438e6800fe91fe2733.png"
+                            alt="Wood Joints" class="mt-4 max-h-48 object-contain">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experiment" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Hands-On Joint Experimentation
+                </h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">
+                    Now it's time for our main challenge! In your groups, you will become engineers and test different
+                    methods for joining two pieces of spaghetti. Your goal is to create the strongest joint possible.
+                </p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-semibold text-blue-700">Instructions:</h3>
+                <ol class="mt-2 list-decimal list-inside space-y-3 text-stone-600">
+                    <li>Work in your groups with the provided materials: spaghetti, different types of glue (PVA, hot
+                        glue), string, tape, and small weights.</li>
+                    <li>Try at least <strong>three different methods</strong> for creating a joint between two pieces of spaghetti.
+                    </li>
+                    <li>For each method, make sure to note the materials you used and a brief description of the
+                        process.</li>
+                    <li>Once the glue has dried, you will test your joint's strength by adding weights until it breaks.
+                        Record the total weight it held before failing.</li>
+                    <li><strong>Important:</strong> When testing, hold your joint by the very ends so you are testing the strength of
+                        the joint itself, not the spaghetti.</li>
+                </ol>
+                <div class="mt-8 flex flex-col items-center">
+                    <div class="img-placeholder w-full max-w-xl h-72 p-4 text-center">
+                        
+                        <img src="https://thumbs.dreamstime.com/b/miniature-construction-workers-building-spaghetti-bridge-tiny-safety-gear-seen-assembling-made-creating-surreal-357430622.jpg"
+                            alt="Spaghetti Bridge Experiment" class="mt-4 max-h-48 object-contain">
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+                <h3 class="text-2xl font-semibold text-blue-700">Experiment Log:</h3>
+                <p class="mt-2 text-stone-600">Use this space to record your group's findings:</p>
+                <div class="mt-4 p-4 border rounded-md">
+                    <p class="font-bold">Joint Method #1:</p>
+                    <p>Materials Used: _______________________</p>
+                    <p>Description: _______________________</p>
+                    <p>Weight Held: _______________________</p>
+                </div>
+                <div class="mt-4 p-4 border rounded-md">
+                    <p class="font-bold">Joint Method #2:</p>
+                    <p>Materials Used: _______________________</p>
+                    <p>Description: _______________________</p>
+                    <p>Weight Held: _______________________</p>
+                </div>
+                <div class="mt-4 p-4 border rounded-md">
+                    <p class="font-bold">Joint Method #3:</p>
+                    <p>Materials Used: _______________________</p>
+                    <p>Description: _______________________</p>
+                    <p>Weight Held: _______________________</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="findings" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Class Findings: What Makes a
+                    Strong Joint?</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">
+                    Now that you've all had a chance to experiment, let's share what we discovered. Each group will
+                    briefly present their best joint and the weight it held. We will then discuss the common methods
+                    that worked and why they were successful.
+                </p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-semibold text-blue-700">Key Concepts:</h3>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-stone-600">
+                    <li><strong>Surface Area:</strong> The more contact area between the two pieces of spaghetti and the glue, the
+                        stronger the joint will be. Think about the difference between a <strong>butt joint</strong> (end-to-end) and
+                        a <strong>lap joint</strong> (overlapping).</li>
+                    <li><strong>Reinforcement:</strong> Materials like string or tape help to distribute the force, preventing a
+                        single point of failure. This is a form of reinforcement.</li>
+                    <li><strong>Load Distribution:</strong> Strong joints are designed to handle the different types of forces (or
+                        stresses) that will be applied to them.</li>
+                    <li><strong>Material Properties:</strong>
+                        <ul class="list-circle list-inside mt-2 space-y-2">
+                            <li><strong>Brittleness:</strong> The tendency of a material to break without significant deformation.
+                                Spaghetti is a great example of a brittle material.</li>
+                            <li><strong>Elasticity:</strong> A material's ability to return to its original shape after being
+                                stretched or compressed.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Types of Stress:</strong> Beyond the <strong>tension</strong> and <strong>compression</strong> we learned about, joints also
+                        experience other stresses:
+                        <ul class="list-circle list-inside mt-2 space-y-2">
+                            <li><strong>Shear Stress:</strong> A force that causes a sliding motion between two parts.</li>
+                            <li><strong>Torsion:</strong> A twisting force.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="mt-8 flex flex-col items-center">
+                    <div class="img-placeholder w-full max-w-xl h-64 p-4 text-center">
+                        
+                        <img src="https://i.ytimg.com/vi/MRvB4PIeGy4/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAC1rYXaSlTjSdEiTPfWhOyqZijmw"
+                            alt="Joint Types Diagram" class="mt-4 max-h-48 object-contain">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="homework" class="content-section space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">Homework & Conclusion</h2>
+                <p class="mt-4 text-lg leading-8 text-stone-600">
+                    Today was all about discovering the importance of a strong foundation. Next week, we will apply
+                    what we've learned to the next major challenge: understanding the forces on your bridge.
+                </p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-semibold text-blue-700">Homework Assignment:</h3>
+                <ul class="mt-4 list-disc list-inside space-y-3 text-stone-600">
+                    <li>Choose the strongest joint method you discovered today.</li>
+                    <li>Take a photo or draw a detailed diagram of it.</li>
+                    <li>Write a brief paragraph (3-5 sentences) explaining why this joint was the strongest and why you
+                        will use it for your bridge.</li>
+                </ul>
+            </div>
+            <div class="mt-8 flex flex-col items-center">
+                <div class="img-placeholder w-full max-w-xl h-64 p-4 text-center">
+                    <p>Placeholder for an image or diagram of an example of a well-constructed spaghetti bridge joint.</p>
+                    <img src="https://i.ytimg.com/vi/hjLWp6XaNcI/maxresdefault.jpg"
+                        alt="Example Joint" class="mt-4 max-h-48 object-contain">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+
+            function updateActiveLink(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+                });
+            }
+
+            function showSection(targetId) {
+                sections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+                updateActiveLink(targetId);
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.target.getAttribute('href').substring(1);
+                    showSection(targetId);
+                });
+            });
+
+            const initialHash = window.location.hash.substring(1) || 'introduction';
+            showSection(initialHash);
+        });
+    </script>
+</body>
+
+</html>
