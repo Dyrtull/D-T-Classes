@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Tutorial: Database Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application is structured as an interactive, tabbed tutorial. This design breaks the multi-step database task from the source material into five logical sections: Setup, Form Creation, Main Report, Second Report, and Concepts. This structure was chosen because a linear, step-by-step process is the most intuitive way to follow a set of procedural instructions. Users can focus on one part of the task at a time, preventing overwhelm. Interactive checklists within the report sections allow users to click on each requirement to get specific, context-sensitive guidance, which is a more engaging and effective learning method than a static document. -->
+    <!-- Visualization & Content Choices: Instead of data visualizations like charts (which are not applicable here), the core interactive elements are clickable navigation tabs and detailed checklists. Each checklist item corresponds to a specific requirement from the source document (e.g., a filter, a calculated field). Goal: Guide the user. Presentation: Interactive checklist. Interaction: Clicking an item reveals a modal with detailed instructions. Justification: This method directly translates the procedural text of the source document into an interactive, self-paced guide, which is the most effective way to "visualize" a set of instructions and make it consumable. All elements are built with structured HTML and styled with Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .tab-active {
+            border-color: #D5A021;
+            color: #D5A021;
+            background-color: #FEFBF3;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #7a7a7a;
+        }
+        .task-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #F0EAE0;
+        }
+        .instruction-item {
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .instruction-item:hover {
+            background-color: #FEFBF3;
+        }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="app" class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#3A3A3A]">Database Task Tutorial</h1>
+            <p class="mt-2 text-lg text-gray-600">An interactive guide to completing Task 3</p>
+        </header>
+
+        <nav id="tabs" class="flex flex-wrap justify-center border-b border-gray-200 mb-8">
+            <button data-tab="setup" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-active">1. Setup & Relationships</button>
+            <button data-tab="form" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-inactive">2. Data Entry Form</button>
+            <button data-tab="report1" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-inactive">3. Main Report</button>
+            <button data-tab="report2" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-inactive">4. Second Report</button>
+            <button data-tab="concepts" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-inactive">5. Validation Concepts</button>
+        </nav>
+
+        <main id="tab-content">
+            <div id="setup" class="space-y-6">
+                <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Step 21: Import Students Table</h2>
+                    <p class="mb-4">First, you need to import the student data and set it up correctly in your database.</p>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                        <li>Open your database package and import `J218STUDENTS.csv`.</li>
+                        <li>Use the following field names and data types:
+                            <ul class="list-disc list-inside ml-6 mt-2 bg-gray-50 p-3 rounded-md">
+                                <li><strong>First_Name</strong>, <strong>Family_Name</strong>, <strong>Student_ID</strong>, <strong>Faculty</strong>, <strong>Telephone</strong>: Text</li>
+                                <li><strong>Birth_Date</strong>: Date (format as dd-MMM-yy)</li>
+                                <li><strong>Full_Time</strong>: Boolean/Logical (display as Yes/No)</li>
+                            </ul>
+                        </li>
+                        <li>Set the <strong>Student_ID</strong> field as the primary key.</li>
+                        <li>Save the table. You can skip taking screenshot evidence.</li>
+                    </ol>
+                </div>
+                <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Step 22: Import Test Data & Create Relationship</h2>
+                    <p class="mb-4">Next, import the test results and link the two tables together.</p>
+                     <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                        <li>Import the file `J218TEST_DATA.csv` as a new table.</li>
+                        <li>Ensure date and time fields are imported with the correct formats.</li>
+                        <li>Do <strong>not</strong> set a primary key for this table.</li>
+                        <li>Create a <strong>one-to-many relationship</strong> between the two tables.</li>
+                        <li>Link `Student_ID` from the students table to `Reg_ID` from the test data table.</li>
+                        <li>Enforce referential integrity.</li>
+                         <li>Save the relationship. You can skip taking screenshot evidence.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div id="form" class="hidden space-y-6">
+                 <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Step 23: Create Data Entry Form</h2>
+                    <p class="mb-4">Build a simple form to make adding new test data easy and consistent.</p>
+                     <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                        <li>Create a new form based on the test data table.</li>
+                        <li>Include all fields from the table.</li>
+                        <li>Choose a <strong>columnar</strong> layout. This will stack the fields vertically.</li>
+                        <li>Ensure all field headings are aligned to the left.</li>
+                        <li>Adjust the layout so that all field headings and their data are fully visible.</li>
+                    </ol>
+                </div>
+                <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Step 24: Enter New Record</h2>
+                    <p class="mb-4">Use the form you just created to add the following new record to the test data table.</p>
+                    <div class="bg-gray-50 p-4 rounded-md text-gray-700">
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                            <span class="font-semibold">Syllabus:</span><span>V1.0</span>
+                            <span class="font-semibold">Unit:</span><span>Internet and email</span>
+                            <span class="font-semibold">Test Version:</span><span>1.12-A</span>
+                            <span class="font-semibold">Reg_ID:</span><span>CIE5437801</span>
+                            <span class="font-semibold">Result:</span><span>Pass</span>
+                            <span class="font-semibold">Score:</span><span>55</span>
+                            <span class="font-semibold">Test Date:</span><span>15-Feb-17</span>
+                            <span class="font-semibold">Start Time:</span><span>14:30:00</span>
+                            <span class="font-semibold">Test_Day:</span><span>Wednesday</span>
+                            <span class="font-semibold">Test Duration:</span><span>00:36:10</span>
+                            <span class="font-semibold">Invigilator:</span><span>Jarek Bosko</span>
+                        </div>
+                    </div>
+                     <p class="mt-4 text-gray-700">After entering the data, check it for errors and save the record. You can skip taking screenshot evidence.</p>
+                </div>
+            </div>
+
+            <div id="report1" class="hidden space-y-6">
+                <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Step 25: Produce the 'Internet Units' Report</h2>
+                    <p class="mb-4">This report requires filtering, calculations, and specific formatting. It is best to create a query first to gather and filter the data, then use that query to build the report. Click each requirement below for detailed instructions.</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Fields', 'Your query and report must show these fields in this specific order: Student_ID, First_Name, Family_Name, Birth_Date, Full_Time, Test_Date, Unit, Score, Result, and the new %_Mark field.')">
+                            <h3 class="font-semibold text-gray-800">Fields to Display</h3>
+                        </div>
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Calculated Field', 'Create a new field named <strong>%_Mark</strong>. <br><br><strong>Formula:</strong> [Score] / 60 <br><br>This calculation should be done at run-time in your query. Format the result as a percentage with 0 decimal places.')">
+                             <h3 class="font-semibold text-gray-800">New Field: %_Mark</h3>
+                        </div>
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Filters', 'Apply all of the following criteria in your query design: <br><br><ul class=list-disc list-inside ml-4><li><strong>Full_Time</strong> is Yes</li><li><strong>Unit</strong> includes the word \'Internet\' (use wildcards like *Internet*)</li><li><strong>Test_Date</strong> is on or after 01/09/2016 AND on or before 31/08/2017.</li></ul>')">
+                             <h3 class="font-semibold text-gray-800">Data Filters</h3>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Sorting', 'Sort the data first by <strong>Unit</strong> in ascending order, then by <strong>Score</strong> in descending order.')">
+                             <h3 class="font-semibold text-gray-800">Sorting Order</h3>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Layout', 'Set the page orientation to <strong>Landscape</strong>. Ensure the report fits on a single page wide.')">
+                             <h3 class="font-semibold text-gray-800">Page Layout</h3>
+                        </div>
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Title', 'Include the title <strong>Internet Units Completed</strong>. <br><br>It must be at the top of the page, centered, bold, serif, and 28 points.')">
+                            <h3 class="font-semibold text-gray-800">Report Title</h3>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Calculation', 'Calculate the average of the <strong>Score</strong> column. Place this value at the end of the report, below the column. <br><br>Display the result as an integer and add the label <strong>Average mark</strong> to its left.')">
+                             <h3 class="font-semibold text-gray-800">Average Score Calculation</h3>
+                        </div>
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Footer', 'Ensure your name, Centre number, and candidate number appear on the report, typically in the page footer.')">
+                            <h3 class="font-semibold text-gray-800">Your Details</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="report2" class="hidden space-y-6">
+                 <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Step 26: Produce the 'Evening Testing' Report</h2>
+                    <p class="mb-4">This second report selects records based on the day and time of the tests. Click each requirement below for instructions.</p>
+                     <div class="mt-4 space-y-2">
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Filters', 'Select records where: <br><br><ul class=list-disc list-inside ml-4><li><strong>Test_Day</strong> is \'Friday\' OR \'Monday\'</li><li><strong>Start_Time</strong> is 18:00:00 or later (>=#18:00:00#)</li></ul>')">
+                             <h3 class="font-semibold text-gray-800">Data Filters</h3>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Fields', 'Display only these fields in this order: Student_ID, Unit, Result, Test_Date, Test_Day, and Start_Time.')">
+                            <h3 class="font-semibold text-gray-800">Fields to Display</h3>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Sorting', 'Sort the report by <strong>Test_Date</strong> with the oldest date first (ascending order).')">
+                             <h3 class="font-semibold text-gray-800">Sorting Order</h3>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Layout', 'Set the page orientation to <strong>Portrait</strong> and ensure it fits on a single page.')">
+                             <h3 class="font-semibold text-gray-800">Page Layout</h3>
+                        </div>
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Title', 'Add the title <strong>Evening Testing Sessions</strong> at the top of the page in a large font.')">
+                            <h3 class="font-semibold text-gray-800">Report Title</h3>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3" onclick="showModal('Footer', 'Ensure your name, Centre number, and candidate number appear on the report.')">
+                            <h3 class="font-semibold text-gray-800">Your Details</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div id="concepts" class="hidden space-y-6">
+                <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Step 27: Data Validation Concepts</h2>
+                    <p class="mb-4">This section covers key data validation concepts mentioned in the task.</p>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-gray-800">a) Definition of Data Validation</h3>
+                            <p class="text-gray-700 mt-1">Data validation is an automatic check performed by a computer to ensure that data entered is sensible and reasonable. It helps prevent incorrect data from being entered, but it does not guarantee that the data is 100% accurate.</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-gray-800">b) Validation for 'Score' Field</h3>
+                            <p class="text-gray-700 mt-1">The most appropriate type of validation would be a <strong>Range Check</strong>.</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-gray-800">c) Validation Criteria for 'Score'</h3>
+                            <p class="text-gray-700 mt-1">Since the test is marked out of 60, the criteria would be to accept values that are <strong>greater than or equal to 0 AND less than or equal to 60</strong>.</p>
+                        </div>
+                         <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="font-semibold text-gray-800">d) Another Validation Type</h3>
+                            <p class="text-gray-700 mt-1">Other common types of validation include: <strong>Presence Check</strong> (ensures a field is not left empty), <strong>Format Check</strong> (ensures data matches a pattern, like a postcode), or <strong>Type Check</strong> (ensures data is of the correct type, e.g., numeric).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center hidden modal-backdrop">
+        <div class="bg-white rounded-lg shadow-xl w-11/12 md:max-w-lg mx-auto p-6 relative">
+            <h3 id="modal-title" class="text-xl font-bold text-[#D5A021] mb-4">Instruction Details</h3>
+            <div id="modal-body" class="text-gray-700">
+                <!-- Modal content goes here -->
+            </div>
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        const tabs = document.querySelectorAll('#tabs button');
+        const tabContents = document.querySelectorAll('#tab-content > div');
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+
+                tabs.forEach(t => {
+                    t.classList.remove('tab-active');
+                    t.classList.add('tab-inactive');
+                });
+
+                tab.classList.remove('tab-inactive');
+                tab.classList.add('tab-active');
+
+                tabContents.forEach(content => {
+                    if (content.id === target) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        function showModal(title, body) {
+            modalTitle.innerHTML = title;
+            modalBody.innerHTML = body;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+        
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
