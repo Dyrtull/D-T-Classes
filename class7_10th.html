@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spaghetti Bridge Project Guide</title>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is structured as an interactive timeline/checklist. This task-oriented design transforms the static instructions into a dynamic guide, helping student groups manage their time and track progress. Key reference materials (vocabulary, video link) are separated into a dedicated, accessible "Resources" section for easy lookup, rather than being buried in one step. This structure is chosen over a simple document layout to be more engaging and functional for a 9th-grade project-based class. -->
+    <!-- Visualization & Content Choices: Report Info: Class activities & vocabulary -> Goal: Guide students through a timed project -> Presentation: Interactive checklist with checkboxes for tasks, clickable cards for vocabulary definitions, and a simple knowledge check quiz. -> Interaction: JS toggles "completed" styles on tasks, reveals definitions on card click, and toggles answers for the quiz. -> Justification: These interactions promote engagement and a sense of progress, which is crucial for a self-directed class. The quiz adds accountability. This is more effective than a static text document. -> Library/Method: Vanilla JS for interactions, Tailwind CSS for layout and styling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaf6;
+            color: #374151;
+        }
+        .task-checkbox:checked + label {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+        .concept-card .back {
+            transform: rotateY(180deg);
+        }
+        .concept-card.flipped .front {
+            transform: rotateY(-180deg);
+        }
+        .concept-card.flipped .back {
+            transform: rotateY(0deg);
+        }
+        .concept-card, .front, .back {
+            backface-visibility: hidden;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800">Spaghetti Bridge Project</h1>
+            <p class="mt-2 text-lg text-gray-600">Your 90-Minute Guide to Design & Prototyping</p>
+        </header>
+        
+        <section id="goals" class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-emerald-300 pb-2 mb-6">Class Goals</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <p class="mb-4 text-gray-700">By the end of this session, your team will have made significant progress toward the final project by achieving both cognitive and social-emotional goals.</p>
+                <div class="flex flex-col md:flex-row md:space-x-8 space-y-4 md:space-y-0">
+                    <div class="flex-1">
+                        <h3 class="font-bold text-lg text-gray-800 mb-2">Cognitive Goals</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li>Apply learned concepts like tension, compression, and truss design to a real-world problem.</li>
+                            <li>Develop a formal design brief and a detailed specification.</li>
+                            <li>Practice critical thinking by analyzing different design options.</li>
+                        </ul>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-lg text-gray-800 mb-2">Social-Emotional (SEL) Goals</h3>
+                        <ul class="list-disc list-inside text-gray-700">
+                            <li>Collaborate effectively within a team of four.</li>
+                            <li>Communicate design ideas and technical concepts clearly.</li>
+                            <li>Demonstrate problem-solving and resilience when faced with design challenges.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main class="space-y-16">
+            
+            <section id="resources">
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-amber-300 pb-2 mb-6">Key Resources</h2>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                   <p class="mb-6 text-gray-700">Before you begin, get familiar with the core concepts of bridge engineering. Watch the video to see these ideas in action, and click on the vocabulary cards below to review the definitions. Understanding these principles is the first step to designing a strong bridge.</p>
+                    <a href="https://www.youtube.com/watch?v=8YGhU8C2BEw" target="_blank" rel="noopener noreferrer" class="inline-block bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-colors text-center w-full sm:w-auto mb-8">
+                        ▶️ Watch the Required Video
+                    </a>
+                    
+                    <div id="concepts-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    </div>
+                    
+                    <div id="quiz-section" class="mt-8 pt-8 border-t-2 border-gray-200">
+                        <h3 class="font-bold text-lg text-gray-800 mb-4">Knowledge Check</h3>
+                        <p class="text-gray-700 mb-4">Complete this quick check after watching the video. No peeking at the vocabulary cards!</p>
+                        <ol class="list-decimal list-inside space-y-4 text-gray-700">
+                            <li>What force pulls a material apart? A force of __________.</li>
+                            <li>A force that pushes or squeezes a material together is called __________.</li>
+                            <li>What is the name for the sudden failure of a structural member under high compressive stress? __________.</li>
+                            <li>What kind of bridge uses a series of interconnected triangles to distribute weight? A __________ bridge.</li>
+                        </ol>
+                        <div class="mt-6 text-center">
+                            <button id="show-answers" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors">
+                                Show Answers
+                            </button>
+                        </div>
+                        <div id="answers" class="hidden mt-6 bg-gray-100 p-4 rounded-lg">
+                            <h4 class="font-bold text-sm mb-2 text-gray-800">Answer Key:</h4>
+                            <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                                <li><strong>Tension</strong></li>
+                                <li><strong>Compression</strong></li>
+                                <li><strong>Buckling</strong></li>
+                                <li><strong>Truss</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="class-plan">
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-sky-300 pb-2 mb-6">Your Class Plan</h2>
+                 <p class="mb-8 text-gray-700">Follow these four activities to guide your team through the class. The time suggestions will help you stay on track. Check off tasks as you complete them to monitor your progress. Good luck!</p>
+                <div class="space-y-8">
+                    <article class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-sky-500 text-white text-2xl font-bold rounded-full w-12 h-12 flex items-center justify-center mr-4">1</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">Video Analysis & Vocabulary</h3>
+                                <p class="text-sm font-medium text-sky-600">Time: 15 minutes</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3 pl-4 border-l-2 ml-6">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task1-1" class="task-checkbox h-5 w-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500">
+                                <label for="task1-1" class="ml-3 block text-gray-700">Watch the video linked in the "Key Resources" section with your team.</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task1-2" class="task-checkbox h-5 w-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500">
+                                <label for="task1-2" class="ml-3 block text-gray-700">Review the vocabulary and concepts to ensure everyone understands the key terms.</label>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-green-500 text-white text-2xl font-bold rounded-full w-12 h-12 flex items-center justify-center mr-4">2</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">Design & Documentation</h3>
+                                <p class="text-sm font-medium text-green-600">Time: 30 minutes</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3 pl-4 border-l-2 ml-6">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task2-1" class="task-checkbox h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500">
+                                <label for="task2-1" class="ml-3 block text-gray-700">Open the MS Word project template.</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task2-2" class="task-checkbox h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500">
+                                <label for="task2-2" class="ml-3 block text-gray-700">Write your team's unique <strong>Design Brief</strong>.</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task2-3" class="task-checkbox h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500">
+                                <label for="task2-3" class="ml-3 block text-gray-700">Sketch at least <strong>two</strong> different bridge designs on paper. Label tension and compression members.</label>
+                            </div>
+                             <div class="flex items-center">
+                                <input type="checkbox" id="task2-4" class="task-checkbox h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500">
+                                <label for="task2-4" class="ml-3 block text-gray-700">Write a detailed <strong>Specification</strong> list for your chosen design.</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task2-5" class="task-checkbox h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500">
+                                <label for="task2-5" class="ml-3 block text-gray-700">Format your document using the correct styles for titles, headers, and footers.</label>
+                            </div>
+                        </div>
+                    </article>
+
+                     <article class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-indigo-500 text-white text-2xl font-bold rounded-full w-12 h-12 flex items-center justify-center mr-4">3</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">Prototyping & Construction</h3>
+                                <p class="text-sm font-medium text-indigo-600">Time: 40 minutes</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3 pl-4 border-l-2 ml-6">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task3-1" class="task-checkbox h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                <label for="task3-1" class="ml-3 block text-gray-700">Choose the best design from your sketches to build.</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task3-2" class="task-checkbox h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                <label for="task3-2" class="ml-3 block text-gray-700">Organize your workspace and gather materials (spaghetti, hot glue, etc.).</label>
+                            </div>
+                             <div class="flex items-center">
+                                <input type="checkbox" id="task3-3" class="task-checkbox h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                <label for="task3-3" class="ml-3 block text-gray-700">Begin building a main component, like a side truss. Focus on strong, clean joints.</label>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-gray-500 text-white text-2xl font-bold rounded-full w-12 h-12 flex items-center justify-center mr-4">4</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">Wrap-up</h3>
+                                <p class="text-sm font-medium text-gray-600">Time: 5 minutes</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3 pl-4 border-l-2 ml-6">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task4-1" class="task-checkbox h-5 w-5 rounded border-gray-300 text-gray-600 focus:ring-gray-500">
+                                <label for="task4-1" class="ml-3 block text-gray-700">Clean up your work area completely.</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task4-2" class="task-checkbox h-5 w-5 rounded border-gray-300 text-gray-600 focus:ring-gray-500">
+                                <label for="task4-2" class="ml-3 block text-gray-700">Save your Word document in the correct location.</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="task4-3" class="task-checkbox h-5 w-5 rounded border-gray-300 text-gray-600 focus:ring-gray-500">
+                                <label for="task4-3" class="ml-3 block text-gray-700">Carefully store your bridge parts for the next class.</label>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16">
+            <p class="text-gray-600">Great work today! Your planning and design are the foundation for a strong bridge.</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const concepts = [
+                { term: 'Truss Bridge', definition: 'A bridge that uses a series of connected triangles to distribute weight and provide support.' },
+                { term: 'Beam Bridge', definition: 'The most basic type of bridge, consisting of a horizontal beam supported at each end.' },
+                { term: 'Axial Loads', definition: 'Forces that act along the length of a bridge member.' },
+                { term: 'Bending', definition: 'The curving of a structural piece under a load.' },
+                { term: 'Compression', definition: 'A force that pushes or squeezes a material together.' },
+                { term: 'Tension', definition: 'A force that stretches or pulls a material apart.' },
+                { term: 'Stiffness', definition: "A material's resistance to changing shape when a force is applied." },
+                { term: 'Pin Connections', definition: 'The joints in a truss that are designed to allow the members to rotate freely.' },
+                { term: 'Gusset Plates', definition: 'Plates used to connect truss members at the joints. In your project, these will be your hot glue joints.' },
+                { term: 'Buckling', definition: 'The sudden failure of a structural member under a compressive force, where it bends or bows. This is a major concern with spaghetti!' }
+            ];
+            
+            const conceptsGrid = document.getElementById('concepts-grid');
+            
+            concepts.forEach(concept => {
+                const card = document.createElement('div');
+                card.className = 'concept-card w-full h-32 cursor-pointer perspective';
+                card.innerHTML = `
+                    <div class="front relative w-full h-full p-2 flex items-center justify-center text-center bg-amber-100 text-amber-800 font-bold rounded-lg shadow">
+                        ${concept.term}
+                    </div>
+                    <div class="back absolute top-0 left-0 w-full h-full p-2 flex items-center justify-center text-center bg-amber-200 text-amber-900 text-sm rounded-lg shadow">
+                        ${concept.definition}
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                });
+                conceptsGrid.appendChild(card);
+            });
+            
+            const showAnswersBtn = document.getElementById('show-answers');
+            const answersDiv = document.getElementById('answers');
+            showAnswersBtn.addEventListener('click', () => {
+                answersDiv.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
