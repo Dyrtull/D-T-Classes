@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Tutorial: Spreadsheet Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application is structured as a series of interactive, tabbed sections. This design breaks the multi-step spreadsheet task from the source material into four logical parts: Setup & Formatting, Basic Calculations, Conditional Logic, and Final Adjustments. This structure was chosen because it allows the user to follow a natural progression of tasks, moving from basic setup to more complex functions. The use of clickable instructional items within each section, which trigger a modal with detailed steps, is the most user-friendly way to present and make complex formulas and instructions consumable. -->
+    <!-- Visualization & Content Choices: The application's core interactivity comes from its checklist-like interface and modal windows. Instead of data visualizations like charts, the key interactive element is the reveal of detailed, precise formulas and instructions. Goal: Guide the user through a procedural task. Presentation: A clear tabbed navigation with interactive, titled list items. Interaction: Clicking a list item shows a modal with a precise formula or instruction. Justification: This method directly translates the procedural text of the source document into an interactive, self-paced guide. All elements are built with structured HTML and styled with Tailwind CSS to ensure a clean, responsive layout. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .tab-active {
+            border-color: #D5A021;
+            color: #D5A021;
+            background-color: #FEFBF3;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #7a7a7a;
+        }
+        .task-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #F0EAE0;
+        }
+        .instruction-item {
+            transition: background-color 0.2s ease-in-out;
+        }
+        .instruction-item:hover {
+            background-color: #FEFBF3;
+        }
+        .formula-container {
+            display: none;
+        }
+        code {
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="app" class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#3A3A3A]">Spreadsheet Task Tutorial</h1>
+            <p class="mt-2 text-lg text-gray-600">An interactive guide to completing Task 2</p>
+        </header>
+
+        <nav id="tabs" class="flex flex-wrap justify-center border-b border-gray-200 mb-8">
+            <button data-tab="setup" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-active">1. Setup & Formatting</button>
+            <button data-tab="calculations" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-inactive">2. Basic Calculations</button>
+            <button data-tab="logic" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-inactive">3. Conditional Logic</button>
+            <button data-tab="final" class="py-3 px-4 md:px-6 text-sm md:text-base font-semibold border-b-2 tab-inactive">4. Final Adjustments</button>
+        </nav>
+
+        <main id="tab-content">
+            <div id="setup" class="space-y-6">
+                <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Initial Setup and Formatting</h2>
+                    <p class="mb-4 text-gray-700">These steps prepare your spreadsheet for the calculations. Follow the instructions to get your file ready.</p>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                        <li>Open the `n24hits.csv` file in your spreadsheet software.</li>
+                        <li>Merge cells `A1` to `Y1`. Then, apply the following formatting: bold, center-aligned, and a font size of 24pt.</li>
+                        <li>Merge cells `A3` to `C3`. Right-align the text.</li>
+                        <li>Format the values in cells `E4` to `F6` to display with 2 decimal places.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div id="calculations" class="hidden space-y-6">
+                 <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Key Calculations (Steps 5-7)</h2>
+                    <p class="mb-4 text-gray-700">This section focuses on placing three automated functions to calculate key metrics from the data. Click on each instruction to view the exact formula you need to use.</p>
+                     <div class="mt-4 space-y-2">
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3">
+                            <h3 class="font-semibold text-gray-800">Average Hourly Hits</h3>
+                            <p class="text-gray-700 mt-2">Place a function in cell <strong>B8</strong> to calculate the average hourly number of hits for the `n24web.htm` web page.</p>
+                            <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-3 mt-2 rounded-md hover:bg-gray-300 transition-colors" onclick="toggleFormula('avg-hits')">Show Formula</button>
+                            <div id="avg-hits" class="formula-container mt-2">
+                                <h4 class="font-bold text-gray-600">Actual Formula:</h4>
+                                <code class="block bg-gray-100 p-2 rounded-md overflow-x-auto">=SUM(F8:Y8)/24</code>
+                            </div>
+                        </div>
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3">
+                            <h3 class="font-semibold text-gray-800">Count Pages with High Total Hits</h3>
+                            <p class="text-gray-700 mt-2">Place a function in cell <strong>B9</strong> to count the number of web pages with a total number of hits greater than 1000.</p>
+                            <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-3 mt-2 rounded-md hover:bg-gray-300 transition-colors" onclick="toggleFormula('count-total')">Show Formula</button>
+                            <div id="count-total" class="formula-container mt-2">
+                                <h4 class="font-bold text-gray-600">Actual Formula:</h4>
+                                <code class="block bg-gray-100 p-2 rounded-md overflow-x-auto">=COUNTIF(B8:B31, ">1000")</code>
+                            </div>
+                        </div>
+                        <div class="instruction-item border border-gray-200 rounded-lg p-3">
+                            <h3 class="font-semibold text-gray-800">Count Pages with High Average Hits</h3>
+                            <p class="text-gray-700 mt-2">Place a function in cell <strong>B10</strong> to count the number of web pages with an average hourly number of hits greater than 30.</p>
+                            <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-3 mt-2 rounded-md hover:bg-gray-300 transition-colors" onclick="toggleFormula('count-avg')">Show Formula</button>
+                            <div id="count-avg" class="formula-container mt-2">
+                                <h4 class="font-bold text-gray-600">Actual Formula:</h4>
+                                <code class="block bg-gray-100 p-2 rounded-md overflow-x-auto">=COUNTIF(C8:C31, ">30")</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="logic" class="hidden space-y-6">
+                 <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Conditional Logic & Lookups (Steps 8-10)</h2>
+                    <p class="mb-4 text-gray-700">These steps require using logical functions to determine traffic levels and calculate advertising revenue. Pay close attention to the conditions.</p>
+                     <div class="mt-4 space-y-2">
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3">
+                            <h3 class="font-semibold text-gray-800">Determine Traffic Level</h3>
+                            <p class="text-gray-700 mt-2">In cell <strong>D8</strong>, place a formula to display the traffic level for the `n24web.htm` web page.<br><br>The text should be "High" if the average hourly number of hits (cell <strong>B8</strong>) is greater than 400. <br><br>It should be "Medium" if the value is greater than 250. <br><br>Otherwise, it should be "Low".</p>
+                             <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-3 mt-2 rounded-md hover:bg-gray-300 transition-colors" onclick="toggleFormula('traffic-level')">Show Formula</button>
+                             <div id="traffic-level" class="formula-container mt-2">
+                                <h4 class="font-bold text-gray-600">Actual Formula:</h4>
+                                <code class="block bg-gray-100 p-2 rounded-md overflow-x-auto">=IF(C8>400, "High", IF(C8>250, "Medium", "Low"))</code>
+                             </div>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3">
+                            <h3 class="font-semibold text-gray-800">Calculate Advertising Revenue</h3>
+                            <p class="text-gray-700 mt-2">In cell <strong>E8</strong>, place a formula to calculate advertising revenue for the `n24web.htm` web page.<br><br><strong>Formula:</strong> Total number of hits * the rate from the threshold table.<br><br>The rate depends on the traffic level you just calculated (High, Medium, or Low).</p>
+                             <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-3 mt-2 rounded-md hover:bg-gray-300 transition-colors" onclick="toggleFormula('ad-revenue')">Show Formula</button>
+                             <div id="ad-revenue" class="formula-container mt-2">
+                                <h4 class="font-bold text-gray-600">Actual Formula:</h4>
+                                <code class="block bg-gray-100 p-2 rounded-md overflow-x-auto">=B8*VLOOKUP(D8, $D$4:$E$6, 2, FALSE)</code>
+                            </div>
+                        </div>
+                         <div class="instruction-item border border-gray-200 rounded-lg p-3">
+                            <h3 class="font-semibold text-gray-800">Traffic Level for Highest Hits</h3>
+                            <p class="text-gray-700 mt-2">In cell <strong>D9</strong>, place a formula to display the traffic level for the web page with the highest total number of hits. You will need to use a lookup function.</p>
+                             <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-3 mt-2 rounded-md hover:bg-gray-300 transition-colors" onclick="toggleFormula('highest-traffic')">Show Formula</button>
+                             <div id="highest-traffic" class="formula-container mt-2">
+                                <h4 class="font-bold text-gray-600">Actual Formula:</h4>
+                                <code class="block bg-gray-100 p-2 rounded-md overflow-x-auto">=VLOOKUP(MAX(B:B), A:D, 4, FALSE)</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="final" class="hidden space-y-6">
+                <div class="task-card p-6">
+                    <h2 class="text-2xl font-bold text-[#D5A021] mb-4">Final Adjustments (Steps 11-14)</h2>
+                    <p class="mb-4 text-gray-700">These steps ensure your spreadsheet is ready to be printed and submitted for review.</p>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                        <li>Format all values representing currency to display with the currency symbol and 2 decimal places.</li>
+                        <li>Adjust all column widths to ensure that all text and data is fully visible without being cut off.</li>
+                        <li>Save your spreadsheet.</li>
+                        <li>Print one copy of the spreadsheet showing the formulas, in landscape orientation.</li>
+                        <li>Print a second copy of the spreadsheet showing the values, in portrait orientation.</li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('#tabs button');
+        const tabContents = document.querySelectorAll('#tab-content > div');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+
+                tabs.forEach(t => {
+                    t.classList.remove('tab-active');
+                    t.classList.add('tab-inactive');
+                });
+
+                tab.classList.remove('tab-inactive');
+                tab.classList.add('tab-active');
+
+                tabContents.forEach(content => {
+                    if (content.id === target) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        function toggleFormula(id) {
+            const formulaContainer = document.getElementById(id);
+            const button = formulaContainer.previousElementSibling;
+            if (formulaContainer.style.display === 'block') {
+                formulaContainer.style.display = 'none';
+                button.textContent = 'Show Formula';
+            } else {
+                formulaContainer.style.display = 'block';
+                button.textContent = 'Hide Formula';
+            }
+        }
+    </script>
+</body>
+</html>
