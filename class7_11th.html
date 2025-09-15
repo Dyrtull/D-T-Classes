@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Literacy: File Management & Copyright</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f9;
+            --text-color: #333;
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --card-bg: #fff;
+            --border-color: #ddd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --success-color: #28a745;
+            --error-color: #dc3545;
+        }
+
+        body.dark-mode {
+            --bg-color: #2c3e50;
+            --text-color: #ecf0f1;
+            --primary-color: #3498db;
+            --secondary-color: #bdc3c7;
+            --card-bg: #34495e;
+            --border-color: #555;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: 60px; /* Space for the fixed header */
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            background-color: var(--border-color);
+            height: 5px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0;
+            background-color: var(--primary-color);
+            transition: width 0.4s ease-in-out;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        main {
+            padding-top: 20px;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            margin-bottom: 25px;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        h3 {
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .card {
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .card.active .card-header::after {
+            transform: rotate(45deg);
+        }
+
+        .card-content {
+            display: none;
+            margin-top: 15px;
+            animation: fadeIn 0.5s;
+        }
+
+        .card.active .card-content {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .drag-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .draggable {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+
+        .draggable:active {
+            transform: scale(1.05);
+            cursor: grabbing;
+        }
+
+        .dropzone {
+            background-color: var(--bg-color);
+            border: 2px dashed var(--secondary-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            min-height: 100px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropzone.hovered {
+            background-color: rgba(0, 123, 255, 0.1);
+            border-color: var(--primary-color);
+        }
+        
+        .drag-feedback {
+            color: var(--error-color);
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+
+        .quiz-question {
+            margin-bottom: 15px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-options label {
+            background-color: var(--bg-color);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .quiz-options label:hover {
+            background-color: var(--border-color);
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .feedback {
+            font-weight: bold;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .correct {
+            color: var(--success-color);
+        }
+
+        .incorrect {
+            color: var(--error-color);
+        }
+
+        .button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .hint-button {
+            background-color: var(--secondary-color);
+        }
+
+        .hint-button:hover {
+            background-color: #5a6268;
+        }
+
+        #file-explorer {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre;
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .file-entry {
+            margin-left: 20px;
+        }
+        .file-entry.root {
+            margin-left: 0;
+        }
+        
+        .folder::before {
+            content: '📁 ';
+        }
+        
+        .file::before {
+            content: '📄 ';
+        }
+
+        .prompt-box {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--bg-color);
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                padding: 10px;
+            }
+            nav {
+                margin-top: 10px;
+            }
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header and Navigation -->
+    <header>
+        <div class="logo">Digital Literacy</div>
+        <nav>
+            <a href="#objectives">Objectives</a>
+            <a href="#concepts">Concepts</a>
+            <a href="#applied">Examples</a>
+            <a href="#activities">Activities</a>
+            <a href="#practice">Practice</a>
+            <a href="#synthesis">Synthesis</a>
+            <a href="#wrapup">Wrap-up</a>
+            <a href="#extension">Extension</a>
+        </nav>
+        <div class="toggle-container">
+            <span class="theme-toggle" id="theme-toggle">☀️</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Section 1: Objectives (5-10 min) -->
+        <section id="objectives">
+            <h2>1. Objectives & Motivation</h2>
+            <div class="card">
+                <h3>Cognitive Goals</h3>
+                <p>By the end of this class, you will be able to:</p>
+                <ul>
+                    <li>Explain the need for copyright legislation, especially for computer software.</li>
+                    <li>Describe methods used by software producers to prevent copyright infringement.</li>
+                    <li>Demonstrate how to locate, open, and save files effectively.</li>
+                    <li>Understand the importance of planned hierarchical directory/folder structures and appropriate file names.</li>
+                    <li>Identify common file formats and their uses.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Social-Emotional Goals</h3>
+                <p>We will work on:</p>
+                <ul>
+                    <li>Fostering ethical behavior and respect for intellectual property.</li>
+                    <li>Developing organizational skills for digital assets.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Motivation: The Digital Mess</h3>
+                <p>Think about a time you couldn't find a file you saved. Maybe a school project, a photo, or a game save. The frustration is real! This class will teach you how to get organized and manage your digital life effectively.</p>
+                <div class="prompt-box">
+                    <p><strong>Interactive Prompt:</strong> What's the biggest digital "mess" you've ever had? Reflect on this before we begin.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Concept Exploration (20-25 min) -->
+        <section id="concepts">
+            <h2>2. Concept Exploration</h2>
+            
+            <h3>Understanding Copyright</h3>
+            <p>Copyright is the legal right of a creator to control the use and distribution of their original work. It protects everything from books and music to, importantly, computer software.</p>
+            <p><strong>Software Piracy</strong> is the unauthorized duplication and use of computer software. This is a common form of copyright infringement. To combat this, producers use several methods to protect their work.</p>
+            <div class="card">
+                <div class="card-header">Methods to Prevent Copyright Infringement</div>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>License Agreements:</strong> A legal document you agree to before installing software that defines how you can use it.</li>
+                        <li><strong>Activation Codes & Serial Numbers:</strong> Unique codes that prove you have a legitimate copy. Without it, the software won't work.</li>
+                        <li><strong>Dongles:</strong> A small hardware device that must be plugged into a computer for the software to run.</li>
+                        <li><strong>Digital Watermarks:</strong> Invisible data embedded in a file to identify the copyright holder.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>File Management: Structure & Naming</h3>
+            <p>A good file system is like a well-organized library. A **hierarchical directory structure** is the key. Think of it as a tree: the root is the main drive (like <code>C:</code>), and folders are the branches. Each folder can contain more folders (subfolders) or files.</p>
+            <div id="file-explorer" class="card">
+                <span class="file-entry root folder">Projects</span><br>
+                <span class="file-entry folder">├── School</span><br>
+                <span class="file-entry folder">│   ├── History</span><br>
+                <span class="file-entry file">│   │   └── notes-11-05-2023.txt</span><br>
+                <span class="file-entry folder">│   └── Science</span><br>
+                <span class="file-entry file">│       └── experiment-data-2023.xls</span><br>
+                <span class="file-entry folder">└── Personal</span><br>
+                <span class="file-entry folder">    ├── Photos</span><br>
+                <span class="file-entry file">    │   └── vacation-2023.jpg</span><br>
+                <span class="file-entry folder">    └── Documents</span><br>
+                <span class="file-entry file">        └── resume-2024-final.docx</span>
+            </div>
+            <p>Choosing a good file name is crucial for finding your work later. Use clear, descriptive names and avoid special characters like <code>*</code>, <code>?</code>, <code><</code>, <code>></code>, <code>|</code>, or <code>"</code>.</p>
+            
+            <h3>Common File Formats & Compression</h3>
+            <p>Files have different formats, indicated by their extension, like <code>.docx</code> or <code>.jpg</code>. Each format has a specific purpose.</p>
+            <div class="card">
+                <div class="card-header">Common File Formats</div>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Documents:</strong> <code>.docx</code> (MS Word), <code>.pdf</code> (Adobe Portable Document Format).</li>
+                        <li><strong>Images:</strong> <code>.jpg</code>, <code>.gif</code>, <code>.png</code>.</li>
+                        <li><strong>Audio:</strong> <code>.mp3</code>, <code>.wav</code>.</li>
+                        <li><strong>Video:</strong> <code>.avi</code>, <code>.mp4</code>.</li>
+                        <li><strong>Compressed:</strong> <code>.zip</code>, <code>.rar</code>.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">File Compression: Lossy vs. Lossless</div>
+                <div class="card-content">
+                    <p>Compression reduces file size, which is useful for storage and sharing. There are two main types:</p>
+                    <p><strong>Lossless Compression:</strong> This method keeps all original data. When you decompress the file, it is an exact copy of the original. This is ideal for text documents or data files where losing any information would be a problem. Examples include <code>.zip</code> and <code>.png</code>.</p>
+                    <p><strong>Lossy Compression:</strong> This method permanently removes some data to achieve a much smaller file size. The goal is to remove information that the human eye or ear won't easily notice. This is why it's great for images (<code>.jpg</code>) and audio (<code>.mp3</code>). However, you can't restore the original data once it's compressed.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Applied Examples (15-20 min) -->
+        <section id="applied">
+            <h2>3. Applied Examples</h2>
+            <h3>Example 1: Naming a History Report</h3>
+            <p>You have a history report due. Which file name is best?</p>
+            <div class="card">
+                <p><strong>Bad:</strong> <code>report_final_final_new.docx</code></p>
+                <p><strong>Good:</strong> <code>history-report-2024-05-15.docx</code></p>
+                <button class="button" onclick="alert('The second name is better because it is more descriptive, includes the date, and is easy to sort.')">Show Solution</button>
+            </div>
+            
+            <h3>Example 2: Organizing Your Project</h3>
+            <p>Let's plan a folder structure for a group project on climate change.</p>
+            <div class="card">
+                <p><strong>Step 1:</strong> Create a main project folder: <code>ClimateChangeProject</code></p>
+                <p><strong>Step 2:</strong> Inside, create subfolders for different types of work: <code>Research</code>, <code>Presentations</code>, <code>Images</code>.</p>
+                <p><strong>Step 3:</strong> Save your files in the right place. Research papers go in <code>Research</code>, slides go in <code>Presentations</code>, and photos you find online go in <code>Images</code>.</p>
+            </div>
+        </section>
+
+        <!-- Section 4: Interactive Activities (25-35 min) -->
+        <section id="activities">
+            <h2>4. Interactive Activities</h2>
+            <h3>Activity 1: File Format Match</h3>
+            <p>Drag the file types to their correct descriptions. Get points for each correct match!</p>
+            <div class="drag-container">
+                <div class="draggable" draggable="true" data-file-type="audio">.mp3</div>
+                <div class="draggable" draggable="true" data-file-type="document">.pdf</div>
+                <div class="draggable" draggable="true" data-file-type="image">.jpg</div>
+                <div class="draggable" draggable="true" data-file-type="compressed">.zip</div>
+            </div>
+            <div class="drag-container">
+                <div class="dropzone" data-file-type="audio">
+                    <p>Audio File</p>
+                </div>
+                <div class="dropzone" data-file-type="document">
+                    <p>Document</p>
+                </div>
+                <div class="dropzone" data-file-type="image">
+                    <p>Image</p>
+                </div>
+                <div class="dropzone" data-file-type="compressed">
+                    <p>Compressed Archive</p>
+                </div>
+            </div>
+            <div class="drag-feedback" id="drag-feedback"></div>
+            <p><strong>Score:</strong> <span id="drag-score">0</span></p>
+
+            <h3>Activity 2: Software Piracy Quiz</h3>
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <p>1. What is the unauthorized duplication and use of computer software?</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q1" value="A"> A) Copyright Protection</label>
+                        <label><input type="radio" name="q1" value="B"> B) Software Piracy</label>
+                        <label><input type="radio" name="q1" value="C"> C) Licensing</label>
+                    </div>
+                    <div class="feedback" id="q1-feedback"></div>
+                </div>
+                <div class="quiz-question">
+                    <p>2. A file format that loses some data during compression is called:</p>
+                    <div class="quiz-options">
+                        <label><input type="radio" name="q2" value="A"> A) Lossless</label>
+                        <label><input type="radio" name="q2" value="B"> B) Lossy</label>
+                        <label><input type="radio" name="q2" value="C"> C) Compressed</label>
+                    </div>
+                    <div class="feedback" id="q2-feedback"></div>
+                </div>
+                <button class="button" id="submit-quiz">Submit Quiz</button>
+            </div>
+        </section>
+        
+        <!-- Section 5: Practice Exercises (15-20 min) -->
+        <section id="practice">
+            <h2>5. Practice Exercises</h2>
+            <p>Work through these problems. You can use the "Hint" button if you get stuck.</p>
+            <div class="card">
+                <h3>Exercise 1: Organizing Photos</h3>
+                <p>Imagine you have 100 photos from a trip to the mountains. What folder structure would you create to organize them by year and by place (e.g., Colorado, Utah)?</p>
+                <div class="prompt-box">
+                    <p id="practice-prompt">Think about what folders you would create inside a main "Vacation" folder.</p>
+                </div>
+                <button class="button hint-button" id="practice-hint">Hint</button>
+            </div>
+        </section>
+
+        <!-- Section 6: Synthesis and Assessment (10-15 min) -->
+        <section id="synthesis">
+            <h2>6. Synthesis and Assessment</h2>
+            <h3>Reflect and Connect</h3>
+            <p>Take a moment to reflect on the concepts. How do they connect?</p>
+            <div class="prompt-box">
+                <p><strong>Activity:</strong> In a separate document or on paper, try to create a concept map connecting "Copyright", "Software Piracy", "File Formats", and "File Management".</p>
+            </div>
+            
+            <h3>Adaptive Review Quiz</h3>
+            <p>This quiz will adapt based on your previous performance to test your understanding.</p>
+            <button class="button" id="start-adaptive-quiz">Start Review Quiz</button>
+            <div id="adaptive-quiz-container"></div>
+        </section>
+
+        <!-- Section 7: Wrap-up and Objective Confirmation (5-10 min) -->
+        <section id="wrapup">
+            <h2>7. Wrap-up & Reflection</h2>
+            <h3>Self-Assessment Checklist</h3>
+            <p>Check off the objectives you feel you have mastered. Your progress will be saved!</p>
+            <ul>
+                <li><label><input type="checkbox" id="obj1"> Explain the need for copyright legislation.</label></li>
+                <li><label><input type="checkbox" id="obj2"> Describe methods to prevent infringement.</label></li>
+                <li><label><input type="checkbox" id="obj3"> Locate, open, and save files effectively.</label></li>
+                <li><label><input type="checkbox" id="obj4"> Understand hierarchical structures and file names.</label></li>
+                <li><label><input type="checkbox" id="obj5"> Identify common file formats.</label></li>
+            </ul>
+            <p><strong>Total Points:</strong> <span id="total-points">0</span></p>
+        </section>
+
+        <!-- Section 8: Extension and Assignments -->
+        <section id="extension">
+            <h2>8. Extension & Assignments</h2>
+            <p><strong>For Advanced Students:</strong> Explore more about file encryption and its role in digital security. How is it different from compression?</p>
+            <div class="card">
+                <h3>Assignment Options</h3>
+                <p>Choose one of the following to demonstrate your understanding:</p>
+                <ul>
+                    <li><strong>Option A (Product):</strong> Create a 3-minute video explaining the difference between lossless and lossy compression.</li>
+                    <li><strong>Option B (Process):</strong> Develop a file management system for a hypothetical project, documenting your folder structure and file naming conventions.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <!-- No footer content, just to have the tag -->
+    </footer>
+
+    <script>
+        // --- Core JavaScript for Interactivity ---
+
+        // 1. Progress Bar and LocalStorage for Progress
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        const sections = document.querySelectorAll('section');
+        const totalSections = sections.length;
+
+        function updateProgressBar() {
+            let completedSections = 0;
+            sections.forEach(section => {
+                const sectionId = section.id;
+                // Check if any activity within the section is completed
+                if (localStorage.getItem(sectionId + '_completed')) {
+                    completedSections++;
+                }
+            });
+            const progress = (completedSections / totalSections) * 100;
+            progressBarFill.style.width = `${progress}%`;
+        }
+
+        // 2. Light/Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        function setTheme(mode) {
+            if (mode === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            setTheme(currentTheme === 'light' ? 'dark' : 'light');
+        });
+
+        // Load saved theme from localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        // 3. Accordion/Expandable Card Logic
+        document.querySelectorAll('.card-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const card = header.parentElement;
+                card.classList.toggle('active');
+            });
+        });
+
+        // 4. Drag-and-Drop Activity Logic
+        const draggables = document.querySelectorAll('.draggable');
+        const dropzones = document.querySelectorAll('.dropzone');
+        const dragFeedback = document.getElementById('drag-feedback');
+        let dragScore = parseInt(localStorage.getItem('dragScore')) || 0;
+        document.getElementById('drag-score').textContent = dragScore;
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', draggable.dataset.fileType);
+                e.target.classList.add('dragging');
+            });
+            draggable.addEventListener('dragend', (e) => {
+                e.target.classList.remove('dragging');
+            });
+        });
+
+        dropzones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('hovered');
+            });
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('hovered');
+            });
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('hovered');
+                const droppedFileType = e.dataTransfer.getData('text/plain');
+                const zoneFileType = zone.dataset.fileType;
+                
+                if (droppedFileType === zoneFileType) {
+                    zone.appendChild(document.querySelector(`[data-file-type="${droppedFileType}"].dragging`));
+                    dragFeedback.textContent = 'Correct!';
+                    dragFeedback.classList.remove('incorrect');
+                    dragFeedback.classList.add('correct');
+                    dragScore++;
+                    localStorage.setItem('dragScore', dragScore);
+                    document.getElementById('drag-score').textContent = dragScore;
+                } else {
+                    dragFeedback.textContent = 'Incorrect, try again.';
+                    dragFeedback.classList.remove('correct');
+                    dragFeedback.classList.add('incorrect');
+                }
+            });
+        });
+
+        // 5. Multiple Choice Quiz Logic
+        const quizContainer = document.querySelector('.quiz-container');
+        const quizFeedback = document.querySelectorAll('.feedback');
+        const correctAnswers = {
+            'q1': 'B',
+            'q2': 'B'
+        };
+        let quizScore = parseInt(localStorage.getItem('quizScore')) || 0;
+        
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            let userScore = 0;
+            const quizResults = {};
+            document.querySelectorAll('.quiz-question').forEach((question, index) => {
+                const questionName = `q${index + 1}`;
+                const selectedOption = question.querySelector(`input[name="${questionName}"]:checked`);
+                const feedbackEl = document.getElementById(`${questionName}-feedback`);
+
+                if (selectedOption) {
+                    const isCorrect = selectedOption.value === correctAnswers[questionName];
+                    quizResults[questionName] = isCorrect;
+                    if (isCorrect) {
+                        feedbackEl.textContent = 'Correct!';
+                        feedbackEl.classList.add('correct');
+                        feedbackEl.classList.remove('incorrect');
+                        userScore++;
+                    } else {
+                        feedbackEl.textContent = 'Incorrect. The correct answer is ' + correctAnswers[questionName] + '.';
+                        feedbackEl.classList.add('incorrect');
+                        feedbackEl.classList.remove('correct');
+                    }
+                    feedbackEl.style.display = 'block';
+                }
+            });
+            quizScore += userScore;
+            localStorage.setItem('quizScore', quizScore);
+            localStorage.setItem('quizResults', JSON.stringify(quizResults));
+            updateTotalPoints();
+        });
+
+        // 6. Practice Exercise Hint
+        const practiceHintButton = document.getElementById('practice-hint');
+        practiceHintButton.addEventListener('click', () => {
+            document.getElementById('practice-prompt').textContent = 'Hint: Start with a main folder, then use subfolders to separate by year and place. Example: "Vacation / 2023 / Colorado" and "Vacation / 2024 / Utah".';
+        });
+
+        // 7. Objective Confirmation & Total Points
+        const checkboxes = document.querySelectorAll('#wrapup input[type="checkbox"]');
+
+        function updateTotalPoints() {
+            const total = (parseInt(localStorage.getItem('dragScore')) || 0) + (parseInt(localStorage.getItem('quizScore')) || 0) + (parseInt(localStorage.getItem('adaptiveQuizScore')) || 0);
+            document.getElementById('total-points').textContent = total;
+        }
+
+        checkboxes.forEach(checkbox => {
+            const objectiveId = checkbox.id;
+            // Load saved state
+            if (localStorage.getItem(objectiveId) === 'true') {
+                checkbox.checked = true;
+            }
+            // Save state on change
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(objectiveId, checkbox.checked);
+                
+                // Check if all objectives are complete
+                let allChecked = true;
+                checkboxes.forEach(cb => {
+                    if (!cb.checked) {
+                        allChecked = false;
+                    }
+                });
+
+                if (allChecked) {
+                    // This section is "completed"
+                    localStorage.setItem('wrapup_completed', 'true');
+                    updateProgressBar();
+                }
+            });
+        });
+
+        // --- New Adaptive Quiz Logic ---
+        const adaptiveQuizData = [
+            {
+                question: "Which of the following is NOT a method used to protect software from copyright infringement?",
+                options: ["Activation Codes", "Digital Watermarks", "Lossy Compression", "License Agreements"],
+                answer: "Lossy Compression",
+                type: "copyright"
+            },
+            {
+                question: "What is the key advantage of lossless compression?",
+                options: ["Removes unnecessary data", "Creates a smaller file size than lossy", "Keeps all original data", "It is only used for images"],
+                answer: "Keeps all original data",
+                type: "compression"
+            },
+            {
+                question: "What is the purpose of a dongle in software protection?",
+                options: ["To encrypt the software", "To act as a physical key to run the software", "To compress the software files", "To track the user's location"],
+                answer: "To act as a physical key to run the software",
+                type: "copyright"
+            },
+            {
+                question: "Which file format is an example of lossy compression?",
+                options: [".docx", ".png", ".jpg", ".zip"],
+                answer: ".jpg",
+                type: "compression"
+            }
+        ];
+
+        document.getElementById('start-adaptive-quiz').addEventListener('click', () => {
+            const quizResults = JSON.parse(localStorage.getItem('quizResults')) || {};
+            const adaptiveQuizContainer = document.getElementById('adaptive-quiz-container');
+            adaptiveQuizContainer.innerHTML = '';
+            let selectedQuestions = [];
+
+            // Adapt the quiz based on previous performance
+            if (quizResults.q1 === false) { // If piracy question was wrong
+                selectedQuestions.push(...adaptiveQuizData.filter(q => q.type === 'copyright'));
+            }
+            if (quizResults.q2 === false) { // If compression question was wrong
+                selectedQuestions.push(...adaptiveQuizData.filter(q => q.type === 'compression'));
+            }
+            if (selectedQuestions.length === 0) {
+                // If both were correct, give a random mix
+                selectedQuestions = adaptiveQuizData;
+            }
+            
+            selectedQuestions.forEach((q, index) => {
+                const questionEl = document.createElement('div');
+                questionEl.classList.add('quiz-question');
+                questionEl.innerHTML = `
+                    <p>${index + 1}. ${q.question}</p>
+                    <div class="quiz-options">
+                        ${q.options.map(option => `
+                            <label>
+                                <input type="radio" name="adaptive-q${index}" value="${option}"> ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="adaptive-feedback-${index}"></div>
+                `;
+                adaptiveQuizContainer.appendChild(questionEl);
+            });
+
+            const submitBtn = document.createElement('button');
+            submitBtn.classList.add('button');
+            submitBtn.textContent = 'Submit Adaptive Quiz';
+            submitBtn.addEventListener('click', () => {
+                let score = 0;
+                let allAnswered = true;
+                selectedQuestions.forEach((q, index) => {
+                    const selectedOption = document.querySelector(`input[name="adaptive-q${index}"]:checked`);
+                    const feedbackEl = document.getElementById(`adaptive-feedback-${index}`);
+                    
+                    if (!selectedOption) {
+                        allAnswered = false;
+                        return;
+                    }
+                    
+                    if (selectedOption.value === q.answer) {
+                        feedbackEl.textContent = 'Correct!';
+                        feedbackEl.classList.add('correct');
+                        score++;
+                    } else {
+                        feedbackEl.textContent = `Incorrect. The correct answer is: ${q.answer}`;
+                        feedbackEl.classList.add('incorrect');
+                    }
+                    feedbackEl.style.display = 'block';
+                });
+
+                if (allAnswered) {
+                    let adaptiveQuizScore = parseInt(localStorage.getItem('adaptiveQuizScore')) || 0;
+                    adaptiveQuizScore += score;
+                    localStorage.setItem('adaptiveQuizScore', adaptiveQuizScore);
+                    localStorage.setItem('synthesis_completed', 'true');
+                    updateTotalPoints();
+                    updateProgressBar();
+                    submitBtn.disabled = true;
+                } else {
+                    const messageBox = document.createElement('div');
+                    messageBox.style.cssText = "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);padding:20px;background:var(--card-bg);border-radius:8px;box-shadow:0 4px 10px var(--shadow-color);z-index:2000;";
+                    messageBox.innerHTML = "<p>Please answer all questions before submitting.</p><br><button onclick='this.parentElement.remove()' class='button'>OK</button>";
+                    document.body.appendChild(messageBox);
+                }
+            });
+            adaptiveQuizContainer.appendChild(submitBtn);
+        });
+
+        // Initial calls on page load
+        updateProgressBar();
+        updateTotalPoints();
+
+    </script>
+</body>
+</html>
