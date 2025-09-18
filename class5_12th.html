@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Science: Hardware Components</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+        :root {
+            --bg-color: #f7fafc;
+            --text-color: #2d3748;
+            --primary-color: #4c51bf;
+            --secondary-color: #e2e8f0;
+            --accent-color: #ecc94b;
+        }
+        [data-theme="dark"] {
+            --bg-color: #1a202c;
+            --text-color: #e2e8f0;
+            --primary-color: #667eea;
+            --secondary-color: #2d3748;
+            --accent-color: #f6ad55;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .primary-color { color: var(--primary-color); }
+        .bg-primary-color { background-color: var(--primary-color); }
+        .secondary-color { color: var(--secondary-color); }
+        .bg-secondary-color { background-color: var(--secondary-color); }
+        .accent-color { color: var(--accent-color); }
+        .bg-accent-color { background-color: var(--accent-color); }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Accordion Styles */
+        .accordion-item {
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid var(--secondary-color);
+        }
+        
+        .accordion-header {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-header:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+            background-color: var(--bg-color);
+        }
+        
+        .accordion-content.open {
+            max-height: 1000px;
+            padding: 1rem;
+        }
+        
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-icon.rotated {
+            transform: rotate(45deg);
+        }
+
+        /* Interactive Elements */
+        .drag-item {
+            cursor: grab;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .drag-item:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+        }
+        .drag-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+        .drop-zone {
+            min-height: 100px;
+            border: 2px dashed var(--secondary-color);
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.drag-over {
+            border-color: var(--primary-color);
+            background-color: rgba(76, 81, 191, 0.1);
+        }
+        .drop-zone.correct {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+        .drop-zone.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Solution and Hint Styles */
+        .solution, .hint {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--primary-color);
+            background-color: rgba(76, 81, 191, 0.1);
+        }
+        
+        .solution.show, .hint.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Quiz Styles */
+        .quiz-question {
+            display: none;
+        }
+        .quiz-question.active {
+            display: block;
+        }
+        .quiz-option {
+            cursor: pointer;
+            padding: 0.75rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 0.5rem;
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        .quiz-option:hover {
+            border-color: var(--primary-color);
+        }
+        .quiz-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(76, 81, 191, 0.1);
+        }
+        .quiz-option.correct {
+            border-color: #10b981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Vocabulary Styles */
+        .vocab-term {
+            cursor: help;
+            border-bottom: 2px dotted var(--primary-color);
+            position: relative;
+        }
+
+        /* Cards and Interactive Elements */
+        .concept-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .concept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .accordion-content.open {
+                max-height: 800px;
+            }
+            .drag-item {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div id="progress-bar"></div>
+    
+    <nav class="bg-white dark:bg-gray-800 shadow-md fixed w-full top-0 z-50 mt-1">
+        <div class="max-w-4xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold primary-color">Computer Hardware Components</h1>
+                <div class="flex items-center space-x-4">
+                    <button id="light-dark-mode-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        <span class="dark:hidden">🌙</span>
+                        <span class="hidden dark:inline">☀️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 mt-16">
+        <!-- Class Objectives Section -->
+        <section class="section mb-12" id="objectives">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6 primary-color">Class Objectives</h2>
+                
+                <div class="accordion-item">
+                    <button class="accordion-header w-full text-left font-semibold py-2 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                        Cognitive Objectives <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Identify and define the purpose of input and output devices.</li>
+                            <li>Differentiate between primary and secondary storage.</li>
+                            <li>Explain the function of network hardware like NICs and routers.</li>
+                            <li>Compare and contrast MAC addresses and IP addresses.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header w-full text-left font-semibold py-2 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                        Social-Emotional Objectives <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Collaborate effectively on problem-solving tasks.</li>
+                            <li>Demonstrate critical thinking by analyzing real-world scenarios.</li>
+                            <li>Develop self-regulation through self-assessment and guided reflection.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header w-full text-left font-semibold py-3 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                        Connection to Prior Knowledge <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Think about the devices you use every day—your phone, a computer, a game console. What are some of the components you interact with to give commands or receive information?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!-- Core Concepts Section - Enhanced based on PDFs -->
+<section class="section mb-12" id="concepts">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-6 primary-color">Core Concepts</h2>
+        
+        <div class="accordion-item">
+            <button class="accordion-header w-full text-left font-semibold py-2 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                Input Devices <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">
+                <p class="mb-4"><strong>Input devices</strong> are hardware components that allow users to interact with a computer system. They enable the user to input data or commands into the system, which the computer then processes to produce an output .</p>
+                
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                        <thead>
+                            <tr class="bg-gray-100 dark:bg-gray-700">
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Device</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">What It Does</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Where Used</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Why Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Barcode Scanner</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Reads barcodes to capture product information</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Supermarkets, warehouses, libraries</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Quickly and accurately retrieves product details for stock and checkout </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Digital Camera</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Captures photographs or videos as digital images</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Photography, smartphones, webcams</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">High-quality visual content </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Keyboard</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Inputs text and commands by pressing keys</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Computers, tablets, laptops</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Type documents, enter data, control software </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Microphone</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Captures analogue sound and converts it into digital signals</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Recording studios, smartphones, computers</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Audio recording, voice communication </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Optical Mouse</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Moves cursor based on hand movements over a surface</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Computers, laptops</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Precise control and navigation on computer screen </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>QR Code Scanner</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Reads QR codes to access stored information</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Retail shops, mobile apps</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Quickly retrieves data from QR codes, website links or product information </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="font-semibold mb-3">Touch Screen Types</h4>
+                <ul class="list-disc list-inside space-y-2 mb-4">
+                    <li><strong>Resistive Touch Screen:</strong> Detects touch by pressing a flexible screen layer. Used in ATMs and older smartphones for direct interaction </li>
+                    <li><strong>Infra-red Touch Screen:</strong> Detects touch by interrupting infrared light beams across the screen. Used in kiosks and large touch displays with accurate detection </li>
+                    <li><strong>Capacitive Touch Screen:</strong> Detects touch through changes in electrical charge on screen surface. Used in modern smartphones and tablets for smooth, responsive multi-touch experience </li>
+                </ul>
+
+                <h4 class="font-semibold mb-3">Scanner Types</h4>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>Two-Dimensional (2D) Scanner:</strong> Captures flat, 2D images of documents or photos. Used in offices, libraries, schools to digitise documents and photos for storage, editing, or sharing </li>
+                    <li><strong>Three-Dimensional (3D) Scanner:</strong> Captures detailed 3D shapes and dimensions of objects. Used in manufacturing, design, medical imaging to create digital models for design, analysis, or reproduction </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header w-full text-left font-semibold py-2 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                Output Devices <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">
+                <p class="mb-4"><strong>Output devices</strong> are hardware components that receive information from a computer system and present it to the user in an understandable form. They enable the computer to communicate the results of processed data or commands .</p>
+                
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                        <thead>
+                            <tr class="bg-gray-100 dark:bg-gray-700">
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Device</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">What It Does</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Where Used</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Why Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Actuator</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Converts energy into motion, makes things move, performs physical tasks</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Robot arms, valves, motors</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Essential in any system that requires movement </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>DLP Projector</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Projects images onto screen by shining light through tiny mirrors</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Cinemas, classrooms, large presentations</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">High-quality images </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>LCD Projector</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Projects images by shining light through liquid crystal panels</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Offices, classrooms, home cinemas</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Bright, excellent balance of quality and affordability </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Inkjet Printer</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Prints text and images by spraying tiny droplets of ink onto paper</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Home, schools, offices</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Low cost compared to other types of printer </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Laser Printer</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Heat from laser fuses toner (fine powder) onto paper</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Offices, schools</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">High-quality prints, fast print speed </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>LED Screen</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Displays images and video using tiny lights called LEDs</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Televisions, computer monitors, smartphones</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">High-quality images, bright, energy efficient, thin </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>LCD Screen</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Displays images using liquid crystals with backlight</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Televisions, monitors, smartphones, laptops</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Energy efficient, thin, sharp images, lightweight </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Speaker</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Converts electrical signals into analogue sound waves</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Televisions, radios, smartphones</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Multiple shapes and sizes available </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>3D Printer</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Adds thin layers of plastic to form three-dimensional objects</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Manufacturing, medicine, education, home</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Create prototypes, custom parts </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="font-semibold mb-3">Choosing the Right Device</h4>
+                <p class="mb-2">When recommending a device for a specific situation, consider these factors :</p>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>User Needs:</strong> What tasks will the user perform? (e.g., graphic designer needs graphics tablet, data entry clerk needs keyboard with number pad)</li>
+                    <li><strong>User Skills:</strong> Is the user comfortable with the device? (touch screen vs mouse/keyboard preference)</li>
+                    <li><strong>Environment:</strong> Where will it be used? (wireless mouse for clutter-free office vs wired mouse for public lab to prevent theft)</li>
+                    <li><strong>Cost:</strong> Higher-end devices have more features but cost more - consider budget and value of extra features</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header w-full text-left font-semibold py-2 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                Sensors <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">
+                <p class="mb-4"><strong>Sensors</strong> are input devices that measure a physical property of their environment such as light levels, temperature or movement. Sensors can be used for monitoring systems and control systems .</p>
+                
+                <div class="mb-4">
+                    <h4 class="font-semibold mb-3">System Types</h4>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li><strong>Monitoring System:</strong> Tracks the state of a system, gathers data and may issue warning messages </li>
+                        <li><strong>Control System:</strong> Controls the system based on input from sensors (e.g., fish tank heater that automatically starts when water temperature falls below acceptable level) </li>
+                        <li><strong>Feedback Loop:</strong> A process where outputs are recycled and used as inputs, creating a continuous cycle </li>
+                    </ul>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                        <thead>
+                            <tr class="bg-gray-100 dark:bg-gray-700">
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Sensor Type</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">What It Measures</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Typical Use</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Acoustic</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Sound levels</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Detect changes in industrial machinery sound levels, monitor noise pollution, security systems </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Accelerometer</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Acceleration rate, tilt, vibration</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Vehicle safety features, mobile phone orientation detection </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Flow</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Rate of gas, liquid or powder flow</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Detect changes in flow through pipes in water systems </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Gas</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Presence of gas (e.g., carbon monoxide)</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Detect gas levels in confined spaces, monitor during gas leak repairs </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Humidity</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Levels of water vapour</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Monitor humidity in greenhouses </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Infra-red</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Detecting motion or heat source</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Security systems detecting intruders, emergency services detecting people </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Level</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Liquid levels</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Petrol levels in car tanks, water levels in tanks, detect leaks </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Light</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Light levels</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Automatically switching on lights (street lights, headlights) </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Magnetic Field</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Presence and strength</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Anti-lock braking systems, monitoring rotating machinery </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Moisture</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Presence and levels of moisture</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Monitoring soil moisture, building dampness </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>pH</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Acidity or alkaline</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Monitoring soil for optimum growing conditions, chemical processes </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Pressure</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Gas, liquid or physical pressure</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Monitoring tyre pressure, pipe pressure in manufacturing </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Proximity</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Distance</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Monitoring object positions in robotics, safety systems to prevent collisions </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2"><strong>Temperature</strong></td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Temperature in Celsius, Fahrenheit or Kelvin</td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-2">Maintain swimming pool temperature, control chemical processes </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header w-full text-left font-semibold py-2 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                Primary Storage <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">
+                <p class="mb-4"><strong>Primary storage</strong> is directly accessed by the CPU. Computer systems need both primary and secondary storage to operate .</p>
+                
+                <div class="mb-4">
+                    <h4 class="font-semibold mb-3">Why Primary Storage is Needed</h4>
+                    <p class="mb-3">A computer needs primary storage because access times are considerably faster than secondary storage. This dramatically reduces the time taken to complete operations such as the Fetch-Execute Cycle .</p>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Holds data and instructions that the CPU needs to access whilst computer is turned on </li>
+                        <li>Used as short-term, working memory in hardware directly connected to CPU </li>
+                        <li>Higher performance means much higher cost, limiting the amount used </li>
+                        <li>RAM commonly purchased in 16-32 GB whereas secondary storage is in terabytes </li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">RAM (Random Access Memory)</h4>
+                    <p class="mb-3"><strong>RAM</strong> is primary storage directly connected to the CPU and holds data and instructions currently in use .</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Volatile:</strong> Contents lost when power is turned off </li>
+                        <li><strong>Very fast:</strong> Much faster than secondary storage </li>
+                        <li><strong>Read/write:</strong> Data can be read from and written to </li>
+                        <li><strong>Larger capacity:</strong> Compared to ROM </li>
+                        <li><strong>CPU Access:</strong> Data and instructions must be copied from secondary storage to RAM for CPU access </li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">ROM (Read Only Memory)</h4>
+                    <p class="mb-3"><strong>ROM</strong> is primary storage that holds the first instructions a computer needs to start up (Bootstrap) .</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Contains BIOS:</strong> Basic Input Output System </li>
+                        <li><strong>Location:</strong> Small memory chip on the motherboard </li>
+                        <li><strong>Non-volatile:</strong> Contents not lost when power is turned off </li>
+                        <li><strong>Read only:</strong> Data can only be read from </li>
+                        <li><strong>Speed:</strong> Fast memory, faster than secondary storage but slower than RAM </li>
+                        <li><strong>Smaller capacity:</strong> Compared to RAM </li>
+                    </ul>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                        <thead>
+                            <tr class="bg-gray-100 dark:bg-gray-700">
+                                <th class="border border-gray-300 dark:border-gray-600 p-3 text-left">Primary Storage</th>
+                                <th class="border border-gray-300 dark:border-gray-600 p-3 text-left">Secondary Storage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-3">Volatile (except ROM) </td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-3">Non-volatile </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-3">Small capacity </td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-3">Large capacity </td>
+                            </tr>
+                            <tr>
+                                <td class="border border-gray-300 dark:border-gray-600 p-3">Very fast access times </td>
+                                <td class="border border-gray-300 dark:border-gray-600 p-3">Slower access times </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header w-full text-left font-semibold py-2 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                Secondary Storage <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">
+                <p class="mb-4"><strong>Secondary storage</strong> devices are non-volatile storage that retain digital data within a computer system. They provide means of storing, accessing, and retrieving data including software applications, documents, images, videos, and more .</p>
+                
+                <div class="mb-4">
+                    <h4 class="font-semibold mb-3">Why Secondary Storage is Needed</h4>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li>Long term storage of programs and data currently not in use </li>
+                        <li>ROM is read only and RAM is volatile, so secondary storage needed </li>
+                        <li>Holds programs and data whilst computer is turned off (non-volatile) </li>
+                        <li>Slower than primary storage but much higher capacity - perfect for backup and archive </li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">Storage Characteristics</h4>
+                    <ul class="list-disc list-inside space-y-2 mb-4">
+                        <li><strong>Capacity:</strong> Maximum amount of data that can be stored </li>
+                        <li><strong>Speed:</strong> How fast data can be read from and written to </li>
+                        <li><strong>Cost:</strong> Price consideration </li>
+                        <li><strong>Portability:</strong> How easy to move around, physical size and weight </li>
+                        <li><strong>Durability:</strong> How robust is the storage </li>
+                        <li><strong>Reliability:</strong> Probability device will consistently perform its function </li>
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">Magnetic Storage</h4>
+                    <p class="mb-3">Magnetic storage uses magnets (polarity) to store binary 0s and 1s. Made up of several metal discs (platters) coated with magnetic material where iron particles are magnetised to represent data .</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <h5 class="font-medium mb-2 text-green-600">Advantages</h5>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>High storage capacity </li>
+                                <li>Low cost per gigabyte </li>
+                                <li>Moderate read/write access speed </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-medium mb-2 text-red-600">Disadvantages</h5>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Moving parts can get damaged if dropped </li>
+                                <li>Heavy and bulky, less convenient for transport </li>
+                                <li>Prone to mechanical failure </li>
+                                <li>Loud (spinning disks) </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">Solid-State (Flash Memory)</h4>
+                    <p class="mb-3">Solid-state storage uses electronic circuits to store binary 0s and 1s. Examples include SSDs and USB flash drives. Uses NAND and NOR gates in electrical circuits with cells containing transistors that act as switches .</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <h5 class="font-medium mb-2 text-green-600">Advantages</h5>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Medium/high storage capacity </li>
+                                <li>Very fast read/write access </li>
+                                <li>No moving parts (durable) </li>
+                                <li>Small and portable </li>
+                                <li>Silent operation </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-medium mb-2 text-red-600">Disadvantages</h5>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Very high cost per gigabyte </li>
+                                <li>Limited read/write cycles </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">Optical Storage</h4>
+                    <p class="mb-3">Optical storage uses lasers to burn the surface of a disk, creating pits and lands for storing binary 0s and 1s. Examples include CDs, DVDs, and Blu-rays. Works by shining laser at disk and processing the reflection .</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <h5 class="font-medium mb-2 text-green-600">Advantages</h5>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Very low cost per gigabyte </li>
+                                <li>No moving parts (durable) </li>
+                                <li>Small and portable </li>
+                                <li>Silent operation </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-medium mb-2 text-red-600">Disadvantages</h5>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Very low capacity </li>
+                                <li>Very slow read/write access </li>
+                                <li>Prone to scratches </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">Virtual Memory</h4>
+                    <p class="mb-3"><strong>Virtual memory</strong> is an extension of primary storage (RAM) located on secondary storage. Used when RAM is close to being full so computer remains operational .</p>
+                    <ul class="list-disc list-inside space-y-2 mb-3">
+                        <li>Programs and data not currently being executed are transferred to virtual memory </li>
+                        <li>Programs stored as pages of data, transferred between RAM and virtual memory when needed </li>
+                        <li>Much slower than RAM and negatively impacts system performance </li>
+                        <li>To avoid virtual memory use, increase RAM size </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-3">Cloud Storage</h4>
+                    <p class="mb-3"><strong>Cloud storage</strong> describes long-term secondary storage of data in a remote location, accessible only via wide area network (Internet). Data stored on remote servers using magnetic (HDD) or solid state (SSD) storage .</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h5 class="font-medium mb-2 text-green-600">Advantages</h5>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Access data anywhere, any time, from any device </li>
+                                <li>Automatic backups </li>
+                                <li>Endless storage space (cost permitting) </li>
+                                <li>Multiple people can access same file simultaneously </li>
+                                <li>Advanced security features (encryption, multi-factor authentication) </li>
+                                <li>Scalable - increase or decrease capacity as needed </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-medium mb-2 text-red-600">Disadvantages</h5>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Monthly/yearly subscription cost </li>
+                                <li>No access without internet connection </li>
+                                <li>Can be expensive for large amounts of data </li>
+                                <li>Data sent over internet can be intercepted </li>
+                                <li>User doesn't have complete control over security </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header w-full text-left font-semibold py-2 px-4 bg-gray-300 dark:bg-gray-700 rounded-lg flex justify-between items-center">
+                Network Hardware <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-content">
+                <p class="mb-4"><strong>Network hardware</strong> is a selection of essential components that enable connectivity and communication of devices within computer networks [file:4].</p>
+                
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">Network Interface Card (NIC)</h4>
+                    <p class="mb-3">The <strong>Network Interface Card (NIC)</strong> is required for a computer to connect to a network. A NIC can be both wired and wireless and allows your computer to send and receive data over a network [file:4].</p>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">Address Systems</h4>
+                    <p class="mb-3">Devices on a network send and receive data. A device needs an address to ensure it sends data to the correct place. There are two types of network address systems [file:4]:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h5 class="font-semibold mb-3">MAC Address</h5>
+                            <p class="mb-2">A <strong>MAC (Media Access Control) address</strong> is a unique identifier for devices on local area networks (LAN) [file:4].</p>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Given to NIC at point of manufacture [file:4]</li>
+                                <li>Static - can never change [file:4]</li>
+                                <li>Stays same if device moves to different network [file:4]</li>
+                                <li>12 hexadecimal digits (48 bits), grouped in pairs [file:4]</li>
+                                <li>First 3 pairs: manufacturer ID (OUI) [file:4]</li>
+                                <li>Last 3 pairs: serial number of NIC [file:4]</li>
+                                <li>Enough addresses for 281 trillion devices [file:4]</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <h5 class="font-semibold mb-3">IP Address</h5>
+                            <p class="mb-2">An <strong>IP (Internet Protocol) address</strong> is a unique identifier for devices on the Internet (WAN) [file:4].</p>
+                            <ul class="list-disc list-inside space-y-1 text-sm">
+                                <li>Can be static (stays same) or dynamic (can change) [file:4]</li>
+                                <li>Static used for servers and websites [file:4]</li>
+                                <li>Dynamic assigned by DHCP server [file:4]</li>
+                                <li>Changes if device moves to different network [file:4]</li>
+                                <li><strong>IPv4:</strong> 4 blocks (0-255), 32 bits, 4+ billion addresses [file:4]</li>
+                                <li><strong>IPv6:</strong> 8 blocks of 4 hex digits, 128 bits, billions of addresses per person [file:4]</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3">Key Differences: MAC vs IP Addresses</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="border border-gray-300 dark:border-gray-600 p-3 text-left">MAC Address</th>
+                                    <th class="border border-gray-300 dark:border-gray-600 p-3 text-left">IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 p-3">Static - cannot change [file:4]</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 p-3">Dynamic - can change [file:4]</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-gray-300 dark:border-gray-600 p-3">Used for LAN communication [file:4]</td>
+                                    <td class="border border-gray-300 dark:border-gray-600 p-3">Used for WAN/Internet communication [file:4]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-3">Router</h4>
+                    <p class="mb-3">The <strong>router</strong> is responsible for routing data packets between different networks. It connects local area networks (LAN) to the wider internet (WAN) [file:4].</p>
+                    
+                    <h5 class="font-medium mb-2">Router Tasks:</h5>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Send and receive packets of data [file:4]</li>
+                        <li>Connect local network to the internet [file:4]</li>
+                        <li>Assign IP addresses to devices on the network [file:4]</li>
+                        <li>Convert packets from one protocol to another [file:4]</li>
+                        <li>Manage and prioritise data traffic for stable connections [file:4]</li>
+                        <li>Direct internet traffic to correct destination/devices [file:4]</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+        <!-- Applied Examples Section -->
+        <section class="section mb-12" id="examples">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6 primary-color">Applied Examples</h2>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Smart TV Storage</h3>
+                    <p class="mb-3">A smart television uses RAM. Give two examples of data that the smart television could store in RAM.</p>
+                    <button class="show-solution bg-primary-color text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Show Solution</button>
+                    <div class="solution">
+                        <h4 class="font-semibold mb-2">Solution:</h4>
+                        <ul class="list-disc list-inside">
+                            <li>Currently running applications (Netflix, YouTube app)</li>
+                            <li>Buffered video data for smooth streaming</li>
+                            <li>User interface elements and menu systems</li>
+                            <li>Recently accessed settings and preferences</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Car Reversing Sensor</h3>
+                    <p class="mb-3">What type of sensor would be used to help a driver when reversing, and is it a monitoring or control system?</p>
+                    <button class="show-solution bg-primary-color text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Show Solution</button>
+                    <div class="solution">
+                        <h4 class="font-semibold mb-2">Solution:</h4>
+                        <p><strong>Ultrasonic sensor</strong> - This is a <strong>monitoring system</strong> as it detects obstacles and provides feedback to the driver through audio/visual alerts, but doesn't automatically control the car's movement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Activities Section -->
+        <section class="section mb-12" id="activities">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6 primary-color">Interactive Activities</h2>
+                
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-4">Activity: Drag & Drop</h3>
+                    <p class="mb-4">Drag each device type to its correct category.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <h4 class="font-semibold mb-3">Devices</h4>
+                            <div id="devices-container" class="space-y-2">
+                                <div class="drag-item bg-yellow-100 dark:bg-yellow-800 p-3 rounded-lg" draggable="true" data-device="keyboard">Keyboard</div>
+                                <div class="drag-item bg-yellow-100 dark:bg-yellow-800 p-3 rounded-lg" draggable="true" data-device="monitor">Monitor</div>
+                                <div class="drag-item bg-yellow-100 dark:bg-yellow-800 p-3 rounded-lg" draggable="true" data-device="mouse">Mouse</div>
+                                <div class="drag-item bg-yellow-100 dark:bg-yellow-800 p-3 rounded-lg" draggable="true" data-device="printer">Printer</div>
+                                <div class="drag-item bg-yellow-100 dark:bg-yellow-800 p-3 rounded-lg" draggable="true" data-device="microphone">Microphone</div>
+                                <div class="drag-item bg-yellow-100 dark:bg-yellow-800 p-3 rounded-lg" draggable="true" data-device="speaker">Speaker</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold mb-3">Input Devices</h4>
+                            <div class="drop-zone" data-category="input">
+                                <p class="text-gray-500 dark:text-gray-400 text-center py-8">Drop input devices here</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold mb-3">Output Devices</h4>
+                            <div class="drop-zone" data-category="output">
+                                <p class="text-gray-500 dark:text-gray-400 text-center py-8">Drop output devices here</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="check-drag-drop" class="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Check Answers</button>
+                    <div id="drag-drop-feedback" class="mt-4"></div>
+                </div>
+
+                <!-- Quiz Section -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-4">Activity: Quiz</h3>
+                    <div id="quiz-container">
+                        <div class="quiz-question active" data-question="0">
+                            <p class="mb-4"><strong>Question 1:</strong> Which of the following is a primary storage device?</p>
+                            <div class="quiz-option" data-answer="a">A) Hard Disk Drive</div>
+                            <div class="quiz-option" data-answer="b">B) RAM</div>
+                            <div class="quiz-option" data-answer="c">C) USB Flash Drive</div>
+                            <div class="quiz-option" data-answer="d">D) CD-ROM</div>
+                        </div>
+                        
+                        <div class="quiz-question" data-question="1">
+                            <p class="mb-4"><strong>Question 2:</strong> What type of address is unique to each network interface card?</p>
+                            <div class="quiz-option" data-answer="a">A) IP Address</div>
+                            <div class="quiz-option" data-answer="b">B) MAC Address</div>
+                            <div class="quiz-option" data-answer="c">C) URL</div>
+                            <div class="quiz-option" data-answer="d">D) DNS Address</div>
+                        </div>
+                        
+                        <div class="quiz-question" data-question="2">
+                            <p class="mb-4"><strong>Question 3:</strong> Which storage type uses lasers to read and write data?</p>
+                            <div class="quiz-option" data-answer="a">A) Magnetic</div>
+                            <div class="quiz-option" data-answer="b">B) Solid State</div>
+                            <div class="quiz-option" data-answer="c">C) Optical</div>
+                            <div class="quiz-option" data-answer="d">D) Volatile</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-between">
+                        <button id="prev-question" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors" disabled>Previous</button>
+                        <span id="question-counter" class="self-center">Question 1 of 3</span>
+                        <button id="next-question" class="bg-primary-color text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Next</button>
+                    </div>
+                    
+                    <div id="quiz-results" class="mt-4 hidden">
+                        <h4 class="font-semibold mb-2">Quiz Results:</h4>
+                        <p id="quiz-score"></p>
+                        <button id="restart-quiz" class="mt-2 bg-primary-color text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">Restart Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Exercises Section -->
+        <section class="section mb-12" id="exercises">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6 primary-color">Practice Exercises</h2>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Differentiate RAM vs. ROM</h3>
+                    <p class="mb-3">Create a table or a list to describe the key differences between RAM and ROM, focusing on their purpose and characteristics.</p>
+                    <button class="show-hint bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">Show Hint</button>
+                    <div class="hint">
+                        <h4 class="font-semibold mb-2">Hint:</h4>
+                        <p>Think about: Volatility (does it lose data when power is off?), Purpose (what is each used for?), Capacity (how much data can each store?), Speed (which is faster?), and Cost (which is more expensive?).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Vocabulary Section -->
+        <section class="section mb-12" id="vocabulary">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6 primary-color">Key Vocabulary</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="concept-card bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2 vocab-term">Input Device</h3>
+                        <p class="text-sm">Hardware that allows users to enter data into a computer system.</p>
+                    </div>
+                    
+                    <div class="concept-card bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2 vocab-term">Output Device</h3>
+                        <p class="text-sm">Hardware that presents processed data to users in a readable form.</p>
+                    </div>
+                    
+                    <div class="concept-card bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2 vocab-term">Primary Storage</h3>
+                        <p class="text-sm">Memory directly accessible by the CPU, typically volatile and fast.</p>
+                    </div>
+                    
+                    <div class="concept-card bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2 vocab-term">Secondary Storage</h3>
+                        <p class="text-sm">Non-volatile storage for long-term data retention, slower than primary storage.</p>
+                    </div>
+                    
+                    <div class="concept-card bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2 vocab-term">MAC Address</h3>
+                        <p class="text-sm">Unique identifier for network interface cards on local networks.</p>
+                    </div>
+                    
+                    <div class="concept-card bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-semibold mb-2 vocab-term">IP Address</h3>
+                        <p class="text-sm">Unique identifier for devices on wide area networks or the internet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wrap-up & Reflection Section -->
+        <section class="section mb-12" id="reflection">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-6 primary-color">Wrap-up & Reflection</h2>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Objective Checklist</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-3"> I can identify and define input and output devices
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-3"> I can differentiate between primary and secondary storage
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-3"> I can explain network hardware functions
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-3"> I can compare MAC and IP addresses
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Reflective Prompts</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-medium mb-2">What was the most challenging concept for you today?</label>
+                            <textarea class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600" rows="3" placeholder="Write your reflection here..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-medium mb-2">How will you apply this knowledge in real-world scenarios?</label>
+                            <textarea class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600" rows="3" placeholder="Write your thoughts here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Progress Bar and Scroll Handling
+            const progressBar = document.getElementById('progress-bar');
+            const mainContent = document.querySelector('main');
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('nav a');
+            const lightDarkModeToggle = document.getElementById('light-dark-mode-toggle');
+
+            const updateProgressBar = () => {
+                const scrollPosition = window.scrollY;
+                const totalHeight = mainContent.clientHeight - window.innerHeight;
+                let progress = (scrollPosition / totalHeight) * 100;
+                progress = Math.min(100, Math.max(0, progress));
+                progressBar.style.width = `${progress}%`;
+            };
+
+            window.addEventListener('scroll', updateProgressBar);
+
+            // Dark Mode Toggle
+            if (lightDarkModeToggle) {
+                lightDarkModeToggle.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                });
+
+                // Load saved theme
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+
+            // Accordion Functionality - FIXED
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('.accordion-icon');
+                    
+                    if (content && content.classList.contains('accordion-content')) {
+                        // Close all other accordions
+                        accordionHeaders.forEach(otherHeader => {
+                            if (otherHeader !== header) {
+                                const otherContent = otherHeader.nextElementSibling;
+                                const otherIcon = otherHeader.querySelector('.accordion-icon');
+                                if (otherContent) {
+                                    otherContent.classList.remove('open');
+                                }
+                                if (otherIcon) {
+                                    otherIcon.classList.remove('rotated');
+                                    otherIcon.textContent = '+';
+                                }
+                            }
+                        });
+                        
+                        // Toggle current accordion
+                        content.classList.toggle('open');
+                        if (icon) {
+                            icon.classList.toggle('rotated');
+                            icon.textContent = content.classList.contains('open') ? '−' : '+';
+                        }
+                    }
+                });
+            });
+
+            // Show Solution/Hint Button Functionality - FIXED
+            const showSolutionButtons = document.querySelectorAll('.show-solution');
+            showSolutionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const solution = button.parentElement.querySelector('.solution');
+                    if (solution) {
+                        solution.classList.toggle('show');
+                        button.textContent = solution.classList.contains('show') ? 'Hide Solution' : 'Show Solution';
+                    }
+                });
+            });
+
+            const showHintButtons = document.querySelectorAll('.show-hint');
+            showHintButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const hint = button.parentElement.querySelector('.hint');
+                    if (hint) {
+                        hint.classList.toggle('show');
+                        button.textContent = hint.classList.contains('show') ? 'Hide Hint' : 'Show Hint';
+                    }
+                });
+            });
+
+            // Drag and Drop Functionality - FIXED
+            const dragItems = document.querySelectorAll('.drag-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            // Device categorization
+            const deviceCategories = {
+                'keyboard': 'input',
+                'mouse': 'input',
+                'microphone': 'input',
+                'monitor': 'output',
+                'printer': 'output',
+                'speaker': 'output'
+            };
+
+            dragItems.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', e.target.dataset.device);
+                    e.target.classList.add('dragging');
+                });
+
+                item.addEventListener('dragend', (e) => {
+                    e.target.classList.remove('dragging');
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('drag-over');
+                });
+
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drag-over');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    
+                    const deviceType = e.dataTransfer.getData('text/plain');
+                    const draggedElement = document.querySelector(`[data-device="${deviceType}"]`);
+                    
+                    if (draggedElement && zone.dataset.category) {
+                        // Remove from current location
+                        draggedElement.remove();
+                        
+                        // Add to new location
+                        const deviceElement = document.createElement('div');
+                        deviceElement.className = 'drag-item bg-blue-100 dark:bg-blue-800 p-3 rounded-lg';
+                        deviceElement.draggable = true;
+                        deviceElement.dataset.device = deviceType;
+                        deviceElement.textContent = draggedElement.textContent;
+                        
+                        // Clear placeholder text if this is the first item
+                        const placeholder = zone.querySelector('p');
+                        if (placeholder) {
+                            placeholder.style.display = 'none';
+                        }
+                        
+                        zone.appendChild(deviceElement);
+                        
+                        // Re-add event listeners for the new element
+                        deviceElement.addEventListener('dragstart', (e) => {
+                            e.dataTransfer.setData('text/plain', e.target.dataset.device);
+                            e.target.classList.add('dragging');
+                        });
+
+                        deviceElement.addEventListener('dragend', (e) => {
+                            e.target.classList.remove('dragging');
+                        });
+                    }
+                });
+            });
+
+            // Check Drag and Drop Answers - FIXED
+            const checkDragDropButton = document.getElementById('check-drag-drop');
+            if (checkDragDropButton) {
+                checkDragDropButton.addEventListener('click', () => {
+                    const feedback = document.getElementById('drag-drop-feedback');
+                    let correct = 0;
+                    let total = 0;
+                    let feedbackHTML = '<div class="mt-4">';
+                    
+                    dropZones.forEach(zone => {
+                        const devices = zone.querySelectorAll('.drag-item');
+                        devices.forEach(device => {
+                            total++;
+                            const deviceType = device.dataset.device;
+                            const expectedCategory = deviceCategories[deviceType];
+                            const actualCategory = zone.dataset.category;
+                            
+                            if (expectedCategory === actualCategory) {
+                                correct++;
+                                device.classList.add('correct');
+                                zone.classList.add('correct');
+                            } else {
+                                device.classList.add('incorrect');
+                                zone.classList.add('incorrect');
+                            }
+                        });
+                    });
+                    
+                    feedbackHTML += `<p class="font-semibold">Score: ${correct}/${total} correct</p>`;
+                    
+                    if (correct === total) {
+                        feedbackHTML += '<p class="text-green-600 font-medium">Excellent! All devices categorized correctly!</p>';
+                    } else {
+                        feedbackHTML += '<p class="text-red-600 font-medium">Some devices need to be moved to the correct category.</p>';
+                    }
+                    
+                    feedbackHTML += '</div>';
+                    feedback.innerHTML = feedbackHTML;
+                    
+                    // Reset colors after 3 seconds
+                    setTimeout(() => {
+                        dragItems.forEach(item => {
+                            item.classList.remove('correct', 'incorrect');
+                        });
+                        dropZones.forEach(zone => {
+                            zone.classList.remove('correct', 'incorrect');
+                        });
+                    }, 3000);
+                });
+            }
+
+            // Quiz Functionality - FIXED
+            let currentQuestion = 0;
+            const quizQuestions = document.querySelectorAll('.quiz-question');
+            const prevButton = document.getElementById('prev-question');
+            const nextButton = document.getElementById('next-question');
+            const questionCounter = document.getElementById('question-counter');
+            const quizResults = document.getElementById('quiz-results');
+            const restartButton = document.getElementById('restart-quiz');
+            
+            const quizAnswers = ['b', 'b', 'c']; // Correct answers
+            const userAnswers = [];
+            
+            const updateQuizDisplay = () => {
+                quizQuestions.forEach((q, index) => {
+                    q.classList.toggle('active', index === currentQuestion);
+                });
+                
+                prevButton.disabled = currentQuestion === 0;
+                nextButton.textContent = currentQuestion === quizQuestions.length - 1 ? 'Finish Quiz' : 'Next';
+                questionCounter.textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+            };
+            
+            // Quiz option selection
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    const question = e.target.closest('.quiz-question');
+                    const questionIndex = parseInt(question.dataset.question);
+                    
+                    // Clear previous selection
+                    question.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Select current option
+                    e.target.classList.add('selected');
+                    userAnswers[questionIndex] = e.target.dataset.answer;
+                });
+            });
+            
+            if (prevButton) {
+                prevButton.addEventListener('click', () => {
+                    if (currentQuestion > 0) {
+                        currentQuestion--;
+                        updateQuizDisplay();
+                    }
+                });
+            }
+            
+            if (nextButton) {
+                nextButton.addEventListener('click', () => {
+                    if (currentQuestion < quizQuestions.length - 1) {
+                        currentQuestion++;
+                        updateQuizDisplay();
+                    } else {
+                        // Finish quiz
+                        finishQuiz();
+                    }
+                });
+            }
+            
+            const finishQuiz = () => {
+                let score = 0;
+                
+                // Check answers and highlight correct/incorrect
+                quizQuestions.forEach((question, qIndex) => {
+                    const options = question.querySelectorAll('.quiz-option');
+                    const correctAnswer = quizAnswers[qIndex];
+                    const userAnswer = userAnswers[qIndex];
+                    
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                    }
+                    
+                    options.forEach(option => {
+                        if (option.dataset.answer === correctAnswer) {
+                            option.classList.add('correct');
+                        } else if (option.dataset.answer === userAnswer && userAnswer !== correctAnswer) {
+                            option.classList.add('incorrect');
+                        }
+                    });
+                });
+                
+                // Show results
+                document.getElementById('quiz-score').textContent = `You scored ${score} out of ${quizQuestions.length}`;
+                quizResults.classList.remove('hidden');
+                nextButton.style.display = 'none';
+                prevButton.style.display = 'none';
+                questionCounter.style.display = 'none';
+            };
+            
+            if (restartButton) {
+                restartButton.addEventListener('click', () => {
+                    // Reset quiz
+                    currentQuestion = 0;
+                    userAnswers.length = 0;
+                    
+                    // Clear all selections and colors
+                    document.querySelectorAll('.quiz-option').forEach(option => {
+                        option.classList.remove('selected', 'correct', 'incorrect');
+                    });
+                    
+                    // Hide results
+                    quizResults.classList.add('hidden');
+                    nextButton.style.display = 'inline-block';
+                    prevButton.style.display = 'inline-block';
+                    questionCounter.style.display = 'inline-block';
+                    
+                    updateQuizDisplay();
+                });
+            }
+            
+            // Initialize quiz
+            updateQuizDisplay();
+
+            // Vocabulary Tooltips - FIXED
+            const vocabTerms = document.querySelectorAll('.vocab-term');
+            vocabTerms.forEach(term => {
+                term.addEventListener('mouseenter', (e) => {
+                    // Simple tooltip implementation could go here
+                    term.style.backgroundColor = 'var(--primary-color)';
+                    term.style.color = 'white';
+                });
+                
+                term.addEventListener('mouseleave', (e) => {
+                    term.style.backgroundColor = '';
+                    term.style.color = '';
+                });
+            });
+
+            // Concept Cards Hover Effects - Already working with CSS
+
+            // Initialize all functionality
+            updateProgressBar();
+        });
+    </script>
+</body>
+</html>
