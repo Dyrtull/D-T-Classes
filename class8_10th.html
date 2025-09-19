@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IGCSE Design & Technology: Structures and Forces</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://kit.fontawesome.com/a1d47823f6.js" crossorigin="anonymous"></script>
+<!-- Corrected MathJax Configuration for GitHub Pages -->
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        options: {
+            ignoreHtmlClass: 'tex2jax_ignore',
+            processHtmlClass: 'tex2jax_process'
+        },
+        chtml: {
+            display: true
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                },
+                colors: {
+                    primary: '#0066cc',
+                    accent: '#0077dd',
+                    cardBgLight: '#fff',
+                    cardBgDark: '#1f1f1f',
+                },
+            },
+        },
+    };
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+  .bg-primary-dark {
+    background-color: #004d99;
+  }
+  .section.hidden {
+      display: none;
+  }
+  .card-container > .card {
+    transition: all 0.3s ease-in-out;
+  }
+  .card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  /* Custom Modal Styling */
+  .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .modal-content {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      max-width: 90%;
+      max-height: 90%;
+      overflow-y: auto;
+      z-index: 1001;
+  }
+  .dark .modal-content {
+      background-color: #1f1f1f;
+  }
+</style>
+</head>
+<body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-500">
+  <div id="modal-container" class="hidden"></div>
+
+  <!-- Header -->
+  <header class="bg-primary-dark text-white p-4 md:p-6 flex flex-col md:flex-row justify-between items-center shadow-lg rounded-b-xl">
+    <h1 class="text-xl md:text-2xl font-bold text-center md:text-left mb-4 md:mb-0">IGCSE Design & Technology: Structures and Forces</h1>
+    <nav class="flex flex-wrap justify-center gap-2 md:gap-4 font-semibold text-sm md:text-base">
+      <button class="nav-button bg-white text-primary rounded-full px-4 py-2 transition-all duration-300 hover:bg-gray-200" data-target="welcome-section">Welcome</button>
+      <button class="nav-button bg-white text-primary rounded-full px-4 py-2 transition-all duration-300 hover:bg-gray-200" data-target="concepts-section">Concepts</button>
+      <button class="nav-button bg-white text-primary rounded-full px-4 py-2 transition-all duration-300 hover:bg-gray-200" data-target="bridge-examples-section">Bridge Examples</button>
+      <button class="nav-button bg-white text-primary rounded-full px-4 py-2 transition-all duration-300 hover:bg-gray-200" data-target="challenge-section">Challenge</button>
+      <button class="nav-button bg-white text-primary rounded-full px-4 py-2 transition-all duration-300 hover:bg-gray-200" data-target="planner-section">Planner</button>
+    </nav>
+    <button id="mode-toggle" class="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded-full px-4 py-2 font-semibold transition-colors duration-500 mt-4 md:mt-0" aria-pressed="false" title="Toggle light/dark mode">
+      Dark Mode
+    </button>
+  </header>
+
+  <main class="container mx-auto mt-8 p-4 md:p-8">
+    <!-- Breadcrumb and Progress -->
+    <div class="mb-6 flex flex-col md:flex-row justify-between items-center">
+      <nav id="breadcrumb-nav" aria-label="Breadcrumb" class="text-sm text-gray-500 dark:text-gray-400 mb-2 md:mb-0">
+        <ol class="list-none p-0 inline-flex space-x-2">
+          <!-- Breadcrumb will be dynamically generated here -->
+        </ol>
+      </nav>
+      <div class="w-full md:w-1/2">
+        <div id="progress-container" class="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-2.5 mb-2">
+          <div id="progress-bar" class="bg-accent h-2.5 rounded-full" style="width: 0%;"></div>
+        </div>
+        <div id="time-estimate" class="text-sm text-primary font-semibold text-right" aria-live="polite"></div>
+      </div>
+    </div>
+    
+    <!-- Welcome Section (Hook & Goals) -->
+    <section id="welcome-section" class="section">
+        <h2 class="text-3xl font-bold mb-4 border-b-4 border-primary pb-2">Welcome to Your Structural Journey!</h2>
+        <p class="mb-4 text-lg">In this lesson, you'll learn to identify different types of structures, understand the forces that act on them, and apply these concepts to design your own bridge. Let's begin by setting a goal for this lesson.</p>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md space-y-4">
+            <h3 class="text-2xl font-semibold mb-2">Personal Learning Goals</h3>
+            <p>What do you hope to learn or be able to do by the end of this lesson?</p>
+            <textarea id="goal-setting" rows="3" placeholder="Example: I want to be able to explain the difference between tension and compression in a bridge truss." class="w-full rounded-lg px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+            <div id="goal-feedback" class="text-green-600 dark:text-green-400 font-semibold hidden">Goal saved! Let's get started.</div>
+            <button id="save-goal-btn" class="w-full bg-primary text-white font-bold rounded-full py-2 px-4 shadow-md hover:bg-accent transition-colors duration-300">Save Goal</button>
+        </div>
+        <div class="flex justify-end mt-4">
+            <button class="next-btn bg-primary text-white font-bold rounded-full py-2 px-6 shadow-md hover:bg-accent transition-colors duration-300">Next <i class="fa-solid fa-arrow-right ml-2"></i></button>
+        </div>
+    </section>
+
+    <!-- Concepts Section (Structure Types & Forces) -->
+    <section id="concepts-section" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4 border-b-4 border-primary pb-2">Concept Exploration</h2>
+        <h3 class="text-2xl font-semibold mb-4">Structure Types</h3>
+        <p class="mb-4">Structures are categorized by how they handle forces. Let's explore the three main types.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Frame Structure Card -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h4 class="text-xl font-bold text-primary mb-2">Frame Structures</h4>
+                <p class="mb-2">Made of rigid parts joined together. They are strong but light.</p>
+                <div class="real-world-examples mt-4 space-y-2">
+                    <img src="img/Steel_Frame_Building.png" alt="Steel frame of a building under construction" class="w-full h-auto rounded-lg shadow-md border border-gray-300 dark:border-gray-600">
+                    <img src="img/Truss_Bridge.png" alt="Truss bridge structure" class="w-full h-auto rounded-lg shadow-md border border-gray-300 dark:border-gray-600">
+                </div>
+            </div>
+            <!-- Solid Structure Card -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h4 class="text-xl font-bold text-primary mb-2">Solid Structures</h4>
+                <p class="mb-2">Made of a solid mass of material. They are very strong and heavy.</p>
+                <div class="real-world-examples mt-4 space-y-2">
+                    <img src="img/hoover_dam.png" alt="Hoover Dam, an example of a solid structure" class="w-full h-auto rounded-lg shadow-md border border-gray-300 dark:border-gray-600">
+                </div>
+            </div>
+            <!-- Shell Structure Card -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h4 class="text-xl font-bold text-primary mb-2">Shell Structures</h4>
+                <p class="mb-2">Thin, curved forms that enclose space. They distribute loads efficiently.</p>
+                <div class="real-world-examples mt-4 space-y-2">
+                    <img src="img/Eggshell.png" alt="Eggshell, a classic example of a shell structure" class="w-full h-auto rounded-lg shadow-md border border-gray-300 dark:border-gray-600">
+                </div>
+            </div>
+        </div>
+        
+        <h3 class="text-2xl font-semibold mb-4">Force Units and Pressure</h3>
+        <p class="mb-4">In physics and engineering, we measure forces and pressure using specific units. Understanding these is key to making accurate calculations for your projects.</p>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md space-y-4">
+            <div>
+                <h4 class="text-xl font-bold text-primary mb-2">Force: The Newton (N)</h4>
+                <p>The <b>Newton</b> is the standard unit of force. It is defined as the force needed to accelerate a one-kilogram mass at the rate of one meter per second squared.</p>
+                <p class="text-center font-bold mt-2">$$F = m \cdot a$$</p>
+                <p class="text-center mt-1">$$1 \text{ N} = 1 \text{ kg} \cdot \text{m}/\text{s}^2$$</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold text-primary mb-2">Pressure: The Pascal (Pa)</h4>
+                <p>Pressure is the force applied perpendicular to the surface of an object per unit area. It is a critical concept for how weight is distributed on a structure.</p>
+                <p class="text-center font-bold mt-2">$$P = \frac{F}{A}$$</p>
+                <p class="text-center mt-1">$$1 \text{ Pa} = 1 \text{ N}/\text{m}^2$$</p>
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Since Pascal is a small unit, we often use <b>Kilopascal (kPa)</b> where $1 \text{ kPa} = 1000 \text{ Pa}$.</p>
+            </div>
+        </div>
+
+        <div class="flex justify-between mt-6">
+            <button class="prev-btn bg-gray-400 text-white font-bold rounded-full py-2 px-6 shadow-md hover:bg-gray-500 transition-colors duration-300"><i class="fa-solid fa-arrow-left mr-2"></i> Previous</button>
+            <button class="next-btn bg-primary text-white font-bold rounded-full py-2 px-6 shadow-md hover:bg-accent transition-colors duration-300">Next <i class="fa-solid fa-arrow-right ml-2"></i></button>
+        </div>
+    </section>
+    
+    <!-- Bridge Examples Section -->
+    <section id="bridge-examples-section" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4 border-b-4 border-primary pb-2">Forces in Bridges: Examples</h2>
+        <p class="mb-4">Different bridge designs manage forces in unique ways. Let's analyze how tension and compression are distributed in various bridge types.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Existing Bridge Examples -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+                <h3 class="text-2xl font-semibold mb-4">Truss Bridge</h3>
+                <img src="https://cdn.britannica.com/74/22074-050-04A1F97E/truss-bridge-forces-lines-tension-compression.jpg" alt="Truss bridge with force arrows" class="w-full rounded-lg mb-4">
+                <h4 class="text-xl font-bold text-primary mb-2">Force Analysis:</h4>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>The <b>top members</b> of the truss are in <b>compression</b> (they are being squeezed by the load).</li>
+                    <li>The <b>bottom members</b> are in <b>tension</b> (they are being stretched by the load).</li>
+                    <li>The <b>diagonal members</b> alternate between tension and compression, distributing the load efficiently across the entire structure.</li>
+                </ul>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+                <h3 class="text-2xl font-semibold mb-4">Suspension Bridge</h3>
+                <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/suspension-bridge-science-photo-library.jpg" alt="Suspension bridge with force arrows" class="w-full rounded-lg mb-4">
+                <h4 class="text-xl font-bold text-primary mb-2">Force Analysis:</h4>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>The main <b>cables</b> are under extreme <b>tension</b> from the weight of the deck.</li>
+                    <li>The <b>towers</b> are pushed down by the cables, so they are in <b>compression</b>.</li>
+                    <li>The <b>anchorage blocks</b> are also under tension, holding the ends of the cables firmly in place.</li>
+                </ul>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+                <h3 class="text-2xl font-semibold mb-4">Arch Bridge</h3>
+                <img src="https://informedinfrastructure.com/wp-content/uploads/2025/05/TiedArch.jpg" alt="Arch bridge with force arrows" class="w-full rounded-lg mb-4">
+                <h4 class="text-xl font-bold text-primary mb-2">Force Analysis:</h4>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>The entire <b>arch</b> is designed to be in <b>compression</b>. The curved shape directs the downward force of the load outward and downward.</li>
+                    <li>The <b>foundations</b> or abutments at the base of the arch must be strong enough to resist the outward thrust.</li>
+                    <li>Arch bridges are highly effective at distributing vertical loads into the ground.</li>
+                </ul>
+            </div>
+
+            <!-- New Spaghetti Bridge Analysis -->
+            <div class="md:col-span-3 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md mt-6">
+                <h3 class="text-2xl font-semibold mb-4">Spaghetti Warren Truss Bridge Design</h3>
+                <p class="mb-2 text-lg font-bold text-primary">Complete Engineering Analysis for 2 kg Load Capacity</p>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Concept Definitions and Fundamental Theory</h4>
+                <h5 class="font-semibold mt-2">What is a Truss?</h5>
+                <p>A truss is a structural framework composed of triangulated elements (members) connected at joints (nodes). Trusses are designed to carry loads primarily through axial forces - either tension or compression - rather than bending moments.</p>
+                <p class="font-semibold mt-2">Key Principles:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Members are assumed to be connected by frictionless pins</li>
+                    <li>Loads are applied only at joints</li>
+                    <li>Members carry only axial loads (no bending)</li>
+                    <li>The structure is statically determinate</li>
+                </ul>
+
+                <h5 class="font-semibold mt-4">Warren Truss Characteristics</h5>
+                <p>The Warren truss is a type of truss characterized by:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Angled struts forming a series of equilateral or isosceles triangles</li>
+                    <li>No vertical members (except at supports)</li>
+                    <li>Alternating tension and compression in diagonal members</li>
+                    <li>Efficient load distribution through triangular geometry</li>
+                </ul>
+                <p class="font-semibold mt-2">Advantages:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Fewer members than other truss types</li>
+                    <li>Good strength-to-weight ratio</li>
+                    <li>Uniform load distribution</li>
+                    <li>Suitable for moderate spans</li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Fundamental Structural Formulas</h4>
+                <h5 class="font-semibold mt-2">Static Equilibrium (Method of Joints)</h5>
+                <p>For each joint in the truss:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>$\Sigma F_x = 0$    (Sum of horizontal forces = 0)</li>
+                    <li>$\Sigma F_y = 0$    (Sum of vertical forces = 0)</li>
+                    <li>$\Sigma M = 0$     (Sum of moments about any point = 0)</li>
+                </ul>
+
+                <h5 class="font-semibold mt-4">Stress and Strain Relationships</h5>
+                <p>Stress: $\sigma = F/A$</p>
+                <p class="text-sm ml-8">where: $\sigma = \text{stress (Pa)}$, $F = \text{force (N)}$, $A = \text{cross-sectional area (m}^2)$</p>
+                <p class="mt-2">Strain: $\epsilon = \Delta L/L_0$</p>
+                <p class="text-sm ml-8">where: $\epsilon = \text{strain (unitless)}$, $\Delta L = \text{change in length (m)}$, $L_0 = \text{original length (m)}$</p>
+                <p class="mt-2">Hooke's Law: $\sigma = E \times \epsilon$</p>
+                <p class="text-sm ml-8">where: $E = \text{elastic modulus (Pa)}$</p>
+
+                <h5 class="font-semibold mt-4">Buckling Analysis (Euler's Formula)</h5>
+                <p>For compression members:</p>
+                <p>Critical Buckling Load: $$P_{cr} = \frac{\pi^2 \times E \times I}{(K \times L)^2}$$</p>
+                <p class="text-sm ml-8">where:</p>
+                <ul class="list-disc list-inside space-y-1 ml-12">
+                    <li>$E = \text{elastic modulus (Pa)}$</li>
+                    <li>$I = \text{second moment of area (m}^4)$</li>
+                    <li>$K = \text{effective length factor (1.0 for pinned-pinned)}$</li>
+                    <li>$L = \text{member length (m)}$</li>
+                </ul>
+                <p class="mt-2">Slenderness Ratio: $\lambda = KL/r$</p>
+                <p class="text-sm ml-8">where: $r = \text{radius of gyration} = \sqrt{(I/A)}$</p>
+
+                <h5 class="font-semibold mt-4">Deflection Formulas</h5>
+                <p>For simply supported beam under point load:</p>
+                <p>Maximum Deflection: $$\delta_{max} = \frac{P \times L^3}{48 \times E \times I}$$</p>
+                <p class="mt-2">For trusses (approximate):</p>
+                <p>$$\delta_{max} = \frac{P \times L^3}{192 \times E \times I_{\text{equivalent}}}$$</p>
+                <p class="text-sm ml-8">where: $$I_{\text{equivalent}} = \frac{A_{\text{chord}} \times h^2}{2}$$</p>
+                <p class="text-sm ml-8">h = truss height</p>
+
+                <h5 class="font-semibold mt-4">Safety Factor</h5>
+                <p>Factor of Safety (FS) = $\sigma_{\text{ultimate}}/\sigma_{\text{working}}$</p>
+                <p class="mt-2">Design Stress: $\sigma_{\text{allowable}} = \sigma_{\text{ultimate}}/\text{FS}$</p>
+                
+                <h5 class="font-semibold mt-4">Geometric Relationships for Warren Truss</h5>
+                <p>Diagonal Length: $L_d = \sqrt{P^2 + h^2}$</p>
+                <p class="text-sm ml-8">where: $P = \text{panel length}$, $h = \text{truss height}$</p>
+                <p class="mt-2">Diagonal Angle: $\theta = \arctan(h/P)$</p>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Load Types and Combinations</h4>
+                <p class="font-semibold mt-2">Dead Load (DL)</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Self-weight of the structure</li>
+                    <li>Permanent loads</li>
+                    <li>For spaghetti bridge: weight of pasta members</li>
+                </ul>
+                <p class="font-semibold mt-2">Live Load (LL)</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Applied loads during use</li>
+                    <li>Variable loads</li>
+                    <li>For bridge testing: the test weight</li>
+                </ul>
+                <p class="font-semibold mt-2">Load Combinations</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Service Load = DL + LL</li>
+                    <li>Design Load = (DL + LL) $\times$ Safety Factor</li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Material Properties Definitions</h4>
+                <p class="font-semibold mt-2">Tensile Strength</p>
+                <p>Maximum stress a material can withstand while being stretched before failure.</p>
+                <p class="font-semibold mt-2">Compressive Strength</p>
+                <p>Maximum stress a material can withstand while being compressed before failure.</p>
+                <p class="font-semibold mt-2">Elastic Modulus (E)</p>
+                <p>Measure of material stiffness - ratio of stress to strain in elastic region.</p>
+                <p class="font-semibold mt-2">Second Moment of Area (I)</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>For circular cross-section: $I = \pi \times d^4/64$</li>
+                    <li>For hollow circular: $I = \pi \times (D^4 - d^4)/64$</li>
+                </ul>
+                <p class="text-sm ml-8">Where d = diameter, D = outer diameter</p>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Design Specifications</h4>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Bridge Type: Warren Truss</li>
+                    <li>Span Length: 600 mm</li>
+                    <li>Bridge Width: 100 mm</li>
+                    <li>Design Load: 2 kg (19.6 N)</li>
+                    <li>Safety Factor: 2.5</li>
+                    <li>Material: Standard spaghetti pasta</li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 1: Material Properties and Assumptions</h4>
+                <p class="font-semibold mt-2">Spaghetti Properties (Based on Testing Data)</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Diameter: 2.0 mm</li>
+                    <li>Cross-sectional Area: $A = \pi \times (1.0)^2 = 3.14 \text{ mm}^2$</li>
+                    <li>Tensile Strength: $\sigma_t = 45 \text{ MPa}$</li>
+                    <li>Compressive Strength: $\sigma_c = 35 \text{ MPa}$</li>
+                    <li>Elastic Modulus: $E = 12 \text{ GPa} = 12,000 \text{ MPa}$</li>
+                    <li>Density: $\rho = 1.5 \text{ g/cm}^3$</li>
+                </ul>
+                <p class="font-semibold mt-2">Design Parameters</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Bridge Length: $L = 600 \text{ mm}$</li>
+                    <li>Bridge Height: $H = 120 \text{ mm}$ (L/5 ratio for optimal efficiency)</li>
+                    <li>Panel Length: $P = 100 \text{ mm}$ (6 panels)</li>
+                    <li>Number of Trusses: 2 (parallel trusses connected by cross-bracing)</li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 2: Load Analysis</h4>
+                <p class="font-semibold mt-2">Load Calculations</p>
+                <p>Dead Load (estimated bridge weight):</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Spaghetti mass $\approx 80 \text{ strands} \times 0.6 \text{ m} \times 1.5 \text{ g/cm}^3 \times \pi \times (0.1)^2 \text{ cm}^2$</li>
+                    <li>Dead Load $\approx 0.25 \text{ kg} = 2.45 \text{ N}$</li>
+                </ul>
+                <p class="mt-2">Live Load:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Applied load = $2 \text{ kg} = 19.6 \text{ N}$</li>
+                </ul>
+                <p class="mt-2">Total Service Load = $2.45 + 19.6 = 22.05 \text{ N}$</p>
+                <p class="mt-2">Design Load (with safety factor):</p>
+                <p>Design Load = $22.05 \times 2.5 = 55.1 \text{ N}$</p>
+
+                <p class="font-semibold mt-4">Load Distribution</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Load applied at center of bridge (300 mm from each support)</li>
+                    <li>Load distributed equally between two trusses: $27.6 \text{ N}$ per truss</li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 3: Structural Analysis - Warren Truss</h4>
+                <p class="font-semibold mt-2">Geometry Setup</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Top Chord Nodes: T1, T2, T3, T4, T5, T6, T7 (7 nodes)</li>
+                    <li>Bottom Chord Nodes: B1, B2, B3, B4, B5, B6, B7 (7 nodes)</li>
+                    <li>Panel Points: 6 panels of 100 mm each</li>
+                    <li>Diagonal Angle: $\theta = \arctan(120/100) = 50.2^\circ$</li>
+                </ul>
+
+                <p class="font-semibold mt-4">Member Forces Using Method of Joints</p>
+                <p>Support Reactions:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Left Support (vertical): $R_1 = 27.6 \text{ N} \uparrow$</li>
+                    <li>Right Support (vertical): $R_2 = 27.6 \text{ N} \uparrow$</li>
+                </ul>
+                <p class="mt-2">Member Force Analysis (per truss):</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Bottom Chord Members (Tension):
+                        <ul class="list-circle list-inside ml-8">
+                            <li>B1-B2: $F = 27.6 \times 500/120 = 115.0 \text{ N}$ (Tension)</li>
+                            <li>B2-B3: $F = 27.6 \times 400/120 = 92.0 \text{ N}$ (Tension)</li>
+                            <li>B3-B4: $F = 27.6 \times 300/120 = 69.0 \text{ N}$ (Tension)</li>
+                            <li>B4-B5: $F = 69.0 \text{ N}$ (Tension)</li>
+                            <li>B5-B6: $F = 92.0 \text{ N}$ (Tension)</li>
+                            <li>B6-B7: $F = 115.0 \text{ N}$ (Tension)</li>
+                        </ul>
+                    </li>
+                    <li>Top Chord Members (Compression):
+                        <ul class="list-circle list-inside ml-8">
+                            <li>T1-T2: $F = 27.6 \times 500/120 = 115.0 \text{ N}$ (Compression)</li>
+                            <li>T2-T3: $F = 92.0 \text{ N}$ (Compression)</li>
+                            <li>T3-T4: $F = 69.0 \text{ N}$ (Compression)</li>
+                            <li>T4-T5: $F = 69.0 \text{ N}$ (Compression)</li>
+                            <li>T5-T6: $F = 92.0 \text{ N}$ (Compression)</li>
+                            <li>T6-T7: $F = 115.0 \text{ N}$ (Compression)</li>
+                        </ul>
+                    </li>
+                    <li>Diagonal Members:
+                        <ul class="list-circle list-inside ml-8">
+                            <li>Diagonal length = $\sqrt{100^2 + 120^2} = 156.2 \text{ mm}$</li>
+                            <li>T1-B2: $F = 27.6/\sin(50.2^\circ) = 35.9 \text{ N}$ (Compression)</li>
+                            <li>B1-T2: $F = 35.9 \text{ N}$ (Tension)</li>
+                            <li>T2-B3: $F = 35.9 \text{ N}$ (Compression)</li>
+                            <li>B2-T3: $F = 35.9 \text{ N}$ (Tension)</li>
+                            <li>[Pattern continues for remaining diagonals]</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 4: Member Design</h4>
+                <p class="font-semibold mt-2">Critical Member Analysis</p>
+                <p>Most Critical Member: Bottom chord B1-B2 (115.0 N tension)</p>
+
+                <p class="font-semibold mt-4">Tension Member Design:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Required stress capacity: $\sigma_{\text{required}} = F/A = 115.0 \text{ N} / 3.14 \text{ mm}^2$</li>
+                    <li>$\sigma_{\text{required}} = 36.6 \text{ MPa}$</li>
+                    <li>Available strength: $\sigma_{\text{allowable}} = 45 \text{ MPa} / 1.5 = 30 \text{ MPa}$ (Factor of safety = 1.5 on material strength)</li>
+                    <li>Since $36.6 > 30 \text{ MPa}$, we need multiple strands:</li>
+                    <li>Number of strands = $36.6 / 30 = 1.22 \approx 2$ strands minimum</li>
+                </ul>
+
+                <p class="font-semibold mt-4">Compression Member Design (Top Chord):</p>
+                <p>Critical buckling load for single strand:</p>
+                <p>$$P_{cr} = \frac{\pi^2 \times E \times I}{L^2}$$</p>
+                <p class="mt-2">Second moment of area: $I = \pi \times d^4/64 = \pi \times (2.0)^4/64 = 0.785 \text{ mm}^4$</p>
+                <p class="mt-2">For $L = 100 \text{ mm}$:</p>
+                <p>$$P_{cr} = \frac{\pi^2 \times 12,000 \times 0.785}{(100)^2} = 93.3 \text{ N}$$</p>
+                <p class="mt-2">Required load capacity = $115.0 \text{ N}$</p>
+                <p>Since $115.0 > 93.3 \text{ N}$, we need multiple strands:</p>
+                <p>Number of strands = $115.0 / 93.3 = 1.23 \approx 2$ strands minimum</p>
+                
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 5: Final Member Design Summary</h4>
+                <p class="font-semibold mt-2">Bottom Chord (Tension Members):</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>B1-B2, B6-B7: 2 spaghetti strands each</li>
+                    <li>B2-B3, B5-B6: 2 spaghetti strands each</li>
+                    <li>B3-B4, B4-B5: 2 spaghetti strands each</li>
+                </ul>
+                <p class="font-semibold mt-2">Top Chord (Compression Members):</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>T1-T2, T6-T7: 2 spaghetti strands each</li>
+                    <li>T2-T3, T5-T6: 2 spaghetti strands each</li>
+                    <li>T3-T4, T4-T5: 2 spaghetti strands each</li>
+                </ul>
+                <p class="font-semibold mt-2">Diagonal Members:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>All diagonals: 1 spaghetti strand each (Force = 35.9 N < 93.3 N buckling capacity)</li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 6: Deflection Analysis</h4>
+                <p class="font-semibold mt-2">Maximum Deflection Calculation:</p>
+                <p>For warren truss under point load at center:</p>
+                <p>$$\delta_{\text{max}} = \frac{P \times L^3}{192 \times E \times I_{\text{equivalent}}}$$</p>
+                <p class="mt-2">Equivalent moment of inertia for truss:</p>
+                <p>$$I_{\text{equivalent}} = \frac{A_{\text{chord}} \times h^2}{2}$$</p>
+                <p class="text-sm ml-8">where h = truss height = 120 mm</p>
+                <p class="mt-2">$$I_{\text{equivalent}} = \frac{2 \times 3.14 \times 120^2}{2} = 45,216 \text{ mm}^4$$</p>
+                <p class="mt-2">$$\delta_{\text{max}} = \frac{27.6 \times 600^3}{192 \times 12,000 \times 45,216}$$</p>
+                <p>$$\delta_{\text{max}} = \frac{5,943,360}{104,186,880} = 0.057 \text{ mm}$$</p>
+                <p class="mt-2">Allowable deflection = $L/250 = 600/250 = 2.4 \text{ mm}$</p>
+                <p class="font-bold text-green-500 mt-2">Since $0.057 < 2.4 \text{ mm}$, Deflection is acceptable.</p>
+                
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 7: Connection Design</h4>
+                <p class="font-semibold mt-2">Joint Analysis:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Critical Joint: Center bottom joint (highest force concentration)</li>
+                    <li>Connection Method: Epoxy adhesive bonds</li>
+                    <li>Joint Reinforcement: Small cardboard gusset plates</li>
+                </ul>
+                <p class="font-semibold mt-2">Adhesive Joint Capacity:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Shear strength of epoxy $\approx 20 \text{ MPa}$</li>
+                    <li>Required bond area per connection: $A_{\text{bond}} = F_{\text{max}} / \sigma_{\text{shear}} = 115.0 \text{ N} / 20 \text{ MPa} = 5.75 \text{ mm}^2$</li>
+                    <li>Minimum bond length = $5.75 / (\pi \times 2.0) = 0.91 \text{ mm}$</li>
+                    <li>Recommended bond length = 10 mm (safety factor > 10)</li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 8: Material Quantity Calculation</h4>
+                <p class="font-semibold mt-2">Total Spaghetti Required:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Bottom Chord: 6 members $\times 100 \text{ mm} \times 2 \text{ strands} = 1,200 \text{ mm}$</li>
+                    <li>Top Chord: 6 members $\times 100 \text{ mm} \times 2 \text{ strands} = 1,200 \text{ mm}$</li>
+                    <li>Diagonals: 12 members $\times 156.2 \text{ mm} \times 1 \text{ strand} = 1,874 \text{ mm}$</li>
+                    <li>Cross Bracing (between trusses): 8 cross members $\times 100 \text{ mm} \times 1 \text{ strand} = 800 \text{ mm}$</li>
+                    <li>Total Length Required: $5,074 \text{ mm} = 5.07 \text{ m}$</li>
+                </ul>
+                <p class="mt-2">Number of Standard Spaghetti (250mm long): 21 pieces minimum</p>
+                <p>Recommended Purchase: 30 pieces (includes waste factor)</p>
+                
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 9: Construction Guidelines</h4>
+                <p class="font-semibold mt-2">Assembly Sequence:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Cut all members to required lengths</li>
+                    <li>Create assembly jig with precise node locations</li>
+                    <li>Assemble bottom chord first</li>
+                    <li>Add vertical supports temporarily</li>
+                    <li>Install diagonal members</li>
+                    <li>Install top chord</li>
+                    <li>Add cross-bracing between trusses</li>
+                    <li>Apply reinforcing gussets at critical joints</li>
+                    <li>Allow adhesive to cure for 24 hours before testing</li>
+                </ul>
+                <p class="font-semibold mt-2">Quality Control Checks:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Verify all joint alignments</li>
+                    <li>Check member lengths $\pm 1 \text{ mm}$</li>
+                    <li>Ensure no twisted or bent members</li>
+                    <li>Test joint strength on sample connections</li>
+                </ul>
+                
+                <h4 class="text-xl font-bold mb-2 mt-4">Step 10: Expected Performance</h4>
+                <p class="font-semibold mt-2">Load Capacity Analysis:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Theoretical Capacity: $55.1 \text{ N}$ (with SF = 2.5)</li>
+                    <li>Expected Test Capacity: $60-70 \text{ N}$</li>
+                    <li>Target Load: $19.6 \text{ N}$ (2 kg)</li>
+                    <li>Performance Margin: 3.0x - 3.5x above required load</li>
+                </ul>
+                <p class="font-semibold mt-2">Weight Estimate:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4">
+                    <li>Total Bridge Weight: $\approx 250-300$ grams</li>
+                    <li>Strength-to-Weight Ratio: $65-78 \text{ N/kg}$</li>
+                </ul>
+
+                <h4 class="text-xl font-bold mb-2 mt-4">Conclusion</h4>
+                <p>This warren truss design provides a robust solution for supporting 2 kg with significant safety margin. The dual-strand approach for chord members ensures adequate capacity while maintaining reasonable material usage. The design balances structural efficiency with practical construction considerations for a spaghetti bridge competition.</p>
+            </div>
+        </div>
+        <div class="flex justify-between mt-6">
+            <button class="prev-btn bg-gray-400 text-white font-bold rounded-full py-2 px-6 shadow-md hover:bg-gray-500 transition-colors duration-300"><i class="fa-solid fa-arrow-left mr-2"></i> Previous</button>
+            <button class="next-btn bg-primary text-white font-bold rounded-full py-2 px-6 shadow-md hover:bg-accent transition-colors duration-300">Next <i class="fa-solid fa-arrow-right ml-2"></i></button>
+        </div>
+    </section>
+
+    <!-- Challenge Section (Captsone & Peer Review) -->
+    <section id="challenge-section" class="section hidden">
+      <h2 class="text-3xl font-bold mb-4 border-b-4 border-primary pb-2">Spaghetti Bridge Design Tutorial for Beginners</h2>
+      <p class="mb-2 text-lg font-bold text-primary">A Step-by-Step Guide (No Physics or Trigonometry Required!)</p>
+      
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md space-y-6">
+        <h3 class="text-2xl font-semibold">Welcome! Let's Build a Strong Bridge Together</h3>
+        <p>This tutorial will teach you how to design a spaghetti bridge that can hold 2 kg (4.4 pounds) - that's like holding 4 soup cans! We'll use simple math and explain everything clearly.</p>
+        
+        <h4 class="text-xl font-bold">What You'll Learn:</h4>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>How bridges work (the basics)</li>
+          <li>Simple calculations anyone can do</li>
+          <li>How to design your own bridge</li>
+          <li>Why your bridge won't break</li>
+        </ul>
+        
+        <h4 class="text-xl font-bold">What You Need:</h4>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Calculator (or phone calculator)</li>
+          <li>Ruler</li>
+          <li>Paper and pencil</li>
+          <li>This tutorial!</li>
+        </ul>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 1: Understanding Bridges (The Fun Stuff!)</h3>
+        <h4 class="text-xl font-bold">What Makes a Bridge Strong?</h4>
+        <p>Think of a bridge like a team of people working together:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Some people pull (<b>tension</b> - like a rope)</li>
+          <li>Some people push (<b>compression</b> - like a pillar holding up a roof)</li>
+        </ul>
+        <p>When they work together correctly, they can hold heavy things!</p>
+        
+        <h4 class="text-xl font-bold">The Triangle Secret 伴</h4>
+        <p>Why triangles? Try this experiment:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Make a square with 4 pencils - you can push it and it wobbles</li>
+          <li>Make a triangle with 3 pencils - try to push it - it stays strong!</li>
+        </ul>
+        <p>This is why bridges use triangles - they don't wobble!</p>
+        
+        <h4 class="text-xl font-bold">What is a Warren Truss?</h4>
+        <p>Imagine looking at your bridge from the side - it looks like a bunch of triangles connected together, like this pattern:</p>
+        <pre class="bg-gray-100 dark:bg-gray-700 p-4 rounded-md overflow-x-auto"><code>Top ----\    /----\    /----\    /---- Top
+         \  /      \  /      \  /
+          \/        \/        \/
+         /\        /\        /\  
+        /  \      /  \      /  \
+Bottom ----/    \----/    \----/    \---- Bottom</code></pre>
+        <p>The diagonal lines go up and down, creating triangles. This is called a "Warren Truss."</p>
+
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 2: Planning Your Bridge (Getting Started)</h3>
+        <h4 class="text-xl font-bold">Step 1: Decide Your Bridge Size</h4>
+        <p>Let's design a bridge that's:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Length: <b>60 cm</b> (about 2 feet)</li>
+          <li>Height: <b>12 cm</b> (about 5 inches)</li>
+          <li>Width: <b>10 cm</b> (about 4 inches)</li>
+        </ul>
+        <p>Why these sizes?</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Long enough to be impressive</li>
+          <li>Not too big to build easily</li>
+          <li>Good proportions for strength</li>
+        </ul>
+        
+        <h4 class="text-xl font-bold">Step 2: Understanding the Load</h4>
+        <p>What load do we need to hold?</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Your bridge needs to hold <b>2 kg</b></li>
+          <li>But we want to be extra safe, so let's design it to hold <b>5 kg</b></li>
+        </ul>
+        <p>This gives us a "safety cushion" - like wearing a seatbelt!</p>
+        <h5 class="font-semibold mt-2">Converting to Force (Don't worry, it's easy!):</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Weight in kg $\times 10 = \text{Force in Newtons (N)}$</li>
+          <li>Our load: $5 \text{ kg} \times 10 = 50 \text{ N}$</li>
+        </ul>
+        <p class="text-sm text-gray-500 dark:text-gray-400">(50 N is the "push" that gravity creates)</p>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 3: Simple Math for Bridge Design</h3>
+        <h4 class="text-xl font-bold">Understanding Spaghetti Strength</h4>
+        <p>First, let's learn about our building material - spaghetti!</p>
+        <p class="font-semibold">One Piece of Spaghetti Can:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Pull apart at: About <b>15 N</b> (like hanging 1.5 kg from it)</li>
+          <li>Get crushed at: About <b>10 N</b> (like pressing down with 1 kg)</li>
+          <li>Diameter: <b>2 mm</b> (about as thick as a paperclip wire)</li>
+        </ul>
+
+        <h4 class="text-xl font-bold">Step 3: Drawing Your Bridge Plan</h4>
+        <p>Let's make a simple plan:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Draw a rectangle 60 cm long and 12 cm tall on paper</li>
+          <li>Divide the bottom into 6 equal parts (each 10 cm long)</li>
+          <li>Connect the corners with diagonal lines to make triangles</li>
+          <li>Label each connection point (we call these "joints")</li>
+        </ul>
+        <p class="font-semibold mt-2">Your drawing should look like:</p>
+        <pre class="bg-gray-100 dark:bg-gray-700 p-4 rounded-md overflow-x-auto"><code>A-----B-----C-----D-----E-----F-----G  (Top of bridge)
+|\   /|\   /|\   /|\   /|\   /|\   /|
+| \ / | \ / | \ / | \ / | \ / | \ / |
+|  X  |  X  |  X  |  X  |  X  |  X  |
+| / \ | / \ | / \ | / \ | / \ | / \ |
+|/   \|/   \|/   \|/   \|/   \|/   \|
+H-----I-----J-----K-----L-----M-----N  (Bottom of bridge)</code></pre>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 4: Calculating Forces (The Magic Numbers)</h3>
+        <h4 class="text-xl font-bold">Step 4: Understanding How Forces Work</h4>
+        <p>When you put 5 kg in the middle of your bridge:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>The weight "spreads out" through all the pieces</li>
+          <li>Some pieces get pulled (<b>tension</b>)</li>
+          <li>Some pieces get squeezed (<b>compression</b>)</li>
+        </ul>
+        <p>We need to figure out how much each piece feels</p>
+        
+        <h4 class="text-xl font-bold">Step 5: Simple Force Calculations</h4>
+        <p>Don't worry - we'll use simple ratios!</p>
+        <p>For our bridge design, here are the maximum forces each type of piece will feel:</p>
+        <p class="font-semibold">Bottom pieces (the ones being pulled):</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>End pieces: <b>24 N</b> each</li>
+          <li>Middle pieces: <b>18 N</b> each</li>
+        </ul>
+        <p class="font-semibold mt-2">Top pieces (the ones being squeezed):</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>End pieces: <b>24 N</b> each</li>
+          <li>Middle pieces: <b>18 N</b> each</li>
+        </ul>
+        <p class="font-semibold mt-2">Diagonal pieces (the slanted ones):</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>All diagonals: <b>8 N</b> each</li>
+        </ul>
+        <p>How did we get these numbers?</p>
+        <p>We used engineering formulas, but you don't need to know them - just use these numbers!</p>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 5: Designing Each Part of Your Bridge</h3>
+        <h4 class="text-xl font-bold">Step 6: How Many Spaghetti Pieces Do We Need?</h4>
+        <p>Now we'll figure out how many pieces of spaghetti to use for each part.</p>
+        <p class="font-semibold">Rule 1 - For pieces being PULLED (tension):</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>If force is less than 15 N: Use 1 spaghetti</li>
+          <li>If force is 15-30 N: Use 2 spaghetti</li>
+          <li>If force is 30-45 N: Use 3 spaghetti</li>
+        </ul>
+        <p class="font-semibold mt-2">Rule 2 - For pieces being SQUEEZED (compression):</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">These can "buckle" (bend and break) more easily</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>If force is less than 10 N: Use 1 spaghetti</li>
+          <li>If force is 10-20 N: Use 2 spaghetti</li>
+          <li>If force is 20-30 N: Use 3 spaghetti</li>
+        </ul>
+        
+        <h4 class="text-xl font-bold">Step 7: Applying the Rules</h4>
+        <p class="font-semibold">Bottom pieces (being pulled):</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>End pieces feel 24 N $\to$ Use <b>2 spaghetti</b> each</li>
+          <li>Middle pieces feel 18 N $\to$ Use <b>2 spaghetti</b> each</li>
+        </ul>
+        <p class="font-semibold mt-2">Top pieces (being squeezed):</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>End pieces feel 24 N $\to$ Use <b>3 spaghetti</b> each</li>
+          <li>Middle pieces feel 18 N $\to$ Use <b>2 spaghetti</b> each</li>
+        </ul>
+        <p class="font-semibold mt-2">Diagonal pieces:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>All feel 8 N (being squeezed) $\to$ Use <b>1 spaghetti</b> each</li>
+        </ul>
+
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 6: Calculating Materials Needed</h3>
+        <h4 class="text-xl font-bold">Step 8: Measuring Each Piece</h4>
+        <p class="font-semibold">Bottom and top pieces (horizontal):</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Each piece is 10 cm long</li>
+          <li>We have 6 bottom pieces and 6 top pieces</li>
+          <li>Total horizontal pieces: 12 pieces</li>
+        </ul>
+        <p class="font-semibold mt-2">Diagonal pieces (slanted):</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>These are longer because they're slanted</li>
+          <li>Length = $\sqrt{10^2 + 12^2} = \sqrt{100 + 144} = \sqrt{244} \approx 15.6 \text{ cm}$</li>
+          <li>We have 12 diagonal pieces</li>
+        </ul>
+        <p class="font-semibold mt-2">Don't know how to calculate square roots?</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Use your phone calculator</li>
+          <li>Type: 10 $\times$ 10 + 12 $\times$ 12 = 244</li>
+          <li>Then press the $\sqrt{}$ button (or $x^{0.5}$)</li>
+          <li>Answer: 15.6 cm</li>
+        </ul>
+        
+        <h4 class="text-xl font-bold">Step 9: Total Spaghetti Count</h4>
+        <p class="font-semibold">Bottom pieces:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>6 pieces $\times$ 10 cm $\times$ 2 spaghetti = 120 cm of spaghetti</li>
+        </ul>
+        <p class="font-semibold mt-2">Top pieces:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>End pieces: 2 pieces $\times$ 10 cm $\times$ 3 spaghetti = 60 cm</li>
+          <li>Middle pieces: 4 pieces $\times$ 10 cm $\times$ 2 spaghetti = 80 cm</li>
+          <li>Total top: 140 cm</li>
+        </ul>
+        <p class="font-semibold mt-2">Diagonal pieces:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>12 pieces $\times$ 15.6 cm $\times$ 1 spaghetti = 187 cm</li>
+        </ul>
+        <p class="font-semibold mt-2">Grand Total: $120 + 140 + 187 = 447 \text{ cm} = 4.47 \text{ meters}$</p>
+        <p class="font-semibold mt-2">How many spaghetti boxes?</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Regular spaghetti is about 25 cm long</li>
+          <li>We need: $447 \div 25 = 18 \text{ pieces of spaghetti}$</li>
+          <li>Buy extra for mistakes: Get <b>25-30 pieces</b></li>
+        </ul>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 7: Building Your Bridge</h3>
+        <h4 class="text-xl font-bold">Step 10: Assembly Tips</h4>
+        <h5 class="font-semibold mt-2">What you'll need:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Hot glue gun (ask an adult to help!)</li>
+          <li>Ruler</li>
+          <li>The spaghetti pieces you calculated</li>
+          <li>Patience!</li>
+        </ul>
+        <h5 class="font-semibold mt-2">Building order:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Build the bottom frame first (it's easier to work on a flat surface)</li>
+          <li>Add the diagonal pieces one at a time</li>
+          <li>Add the top frame last</li>
+          <li>Double-check all connections are solid</li>
+        </ul>
+        <h5 class="font-semibold mt-2">Pro Tips:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Measure twice, cut once!</li>
+          <li>Keep pieces straight - no bent spaghetti</li>
+          <li>Make sure glue joints are strong</li>
+          <li>Work on a flat table</li>
+        </ul>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 8: Testing Your Bridge</h3>
+        <h4 class="text-xl font-bold">Step 11: Safety First!</h4>
+        <h5 class="font-semibold mt-2">Before testing:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Make sure all glue is dry (wait 24 hours)</li>
+          <li>Check that no pieces are loose</li>
+          <li>Have an adult help with testing</li>
+          <li>Test gradually - don't just drop 2 kg on it!</li>
+        </ul>
+        <h5 class="font-semibold mt-2">Testing steps:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Support your bridge on two blocks (like books)</li>
+          <li>Start with 0.5 kg in the middle</li>
+          <li>Gradually add weight: 1 kg, 1.5 kg, 2 kg</li>
+          <li>Stop if you hear cracking sounds!</li>
+        </ul>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 9: Understanding Your Results</h3>
+        <h4 class="text-xl font-bold">Step 12: Why Your Bridge Works (or Doesn't)</h4>
+        <p class="font-semibold">If your bridge holds 2 kg easily:</p>
+        <p>脂 Congratulations! Your calculations worked!</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>The triangles shared the load properly</li>
+          <li>You used enough spaghetti for each part</li>
+          <li>Your construction was careful</li>
+        </ul>
+        <p class="font-semibold mt-2">If your bridge breaks:</p>
+        <p>肌 Don't worry - this is how engineers learn!</p>
+        <h5 class="font-semibold mt-2">Common problems:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Broke at a joint: Need more/better glue</li>
+          <li>Spaghetti snapped: That piece needed more spaghetti strands</li>
+          <li>Buckled (bent suddenly): Top pieces might need more support</li>
+        </ul>
+        
+        <h4 class="text-xl font-bold">Step 13: Making It Better</h4>
+        <p>For version 2.0:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Add more spaghetti to pieces that broke</li>
+          <li>Improve glue joints</li>
+          <li>Consider adding cross-bracing (diagonal pieces connecting the sides)</li>
+          <li>Test your glue joints separately first</li>
+        </ul>
+
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Part 10: The Science Behind Your Success</h3>
+        <h4 class="text-xl font-bold">What You Just Learned!</h4>
+        <h5 class="font-semibold mt-2">Engineering Concepts:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Load distribution: How weight spreads through structures</li>
+          <li>Triangulation: Why triangles make structures strong</li>
+          <li>Safety factors: Why we design for more than we need</li>
+          <li>Material properties: Understanding what spaghetti can do</li>
+          <li>Testing: How to verify your design works</li>
+        </ul>
+        <h5 class="font-semibold mt-2">Math Skills:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Ratios: Figuring out how forces spread</li>
+          <li>Unit conversion: kg to Newtons</li>
+          <li>Basic geometry: Measuring diagonal lengths</li>
+          <li>Practical arithmetic: Adding up materials</li>
+        </ul>
+        <h5 class="font-semibold mt-2">Real-World Applications</h5>
+        <p>Your bridge uses the same principles as:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Real highway bridges</li>
+          <li>Building roof trusses</li>
+          <li>Cell phone towers</li>
+          <li>Cranes and construction equipment</li>
+        </ul>
+        <h5 class="font-semibold mt-2">You're thinking like an engineer!</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Plan first, build second</li>
+          <li>Calculate before constructing</li>
+          <li>Test to verify your design</li>
+          <li>Learn from failures and improve</li>
+        </ul>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Quick Reference: Your Complete Shopping List</h3>
+        <h5 class="font-semibold mt-2">Materials Needed:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Spaghetti: 25-30 pieces (1 standard box)</li>
+          <li>Hot glue sticks: 3-4 sticks</li>
+          <li>Tools: Hot glue gun, ruler, scissors/knife for cutting</li>
+        </ul>
+        <h5 class="font-semibold mt-2">Your Bridge Specifications:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Length: 60 cm</li>
+          <li>Height: 12 cm</li>
+          <li>Expected capacity: 5+ kg (with 2 kg target)</li>
+          <li>Weight: About 200-300 grams</li>
+        </ul>
+        <h5 class="font-semibold mt-2">Time Required:</h5>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Planning: 1 hour</li>
+          <li>Building: 2-3 hours</li>
+          <li>Drying: 24 hours</li>
+          <li>Testing: 30 minutes</li>
+        </ul>
+        
+        <hr class="border-gray-300 dark:border-gray-700">
+        
+        <h3 class="text-2xl font-semibold">Congratulations! 至</h3>
+        <p>You've just completed a real engineering design process! You've learned to:</p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Analyze structural loads</li>
+          <li>Calculate material requirements</li>
+          <li>Design for safety factors</li>
+          <li>Plan a construction sequence</li>
+          <li>These are exactly the same steps professional engineers use to design real bridges, buildings, and other structures. The only difference is they use more complex math and stronger materials.</li>
+        </ul>
+        <p>Keep exploring! Try different truss designs, experiment with other materials, or challenge yourself with longer spans or heavier loads. Engineering is all about creative problem-solving, and you're well on your way!</p>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Remember: Engineering is about learning from both successes and failures. Every broken bridge teaches us something valuable for the next design!</p>
+
+      </div>
+      <div class="flex justify-between mt-6">
+        <button class="prev-btn bg-gray-400 text-white font-bold rounded-full py-2 px-6 shadow-md hover:bg-gray-500 transition-colors duration-300"><i class="fa-solid fa-arrow-left mr-2"></i> Previous</button>
+        <button class="next-btn bg-primary text-white font-bold rounded-full py-2 px-6 shadow-md hover:bg-accent transition-colors duration-300">Next <i class="fa-solid fa-arrow-right ml-2"></i></button>
+      </div>
+    </section>
+
+    <!-- Bridge Design Planner Section (Portfolio Prep) -->
+    <section id="planner-section" class="section hidden">
+        <h2 class="text-3xl font-bold mb-4 border-b-4 border-primary pb-2">Bridge Design Planner & Reflection</h2>
+        <p class="mb-4">Use this section to finalize your bridge design and reflect on your learning.</p>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md space-y-6">
+            <!-- Reflection Prompt -->
+            <div>
+                <h3 class="text-2xl font-semibold mb-2">Reflection</h3>
+                <p>Reflect on your initial learning goals. Have you achieved them? What was the most surprising thing you learned?</p>
+                <textarea id="reflection-notes" rows="3" placeholder="Write your reflection here..." class="w-full rounded-lg px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+            </div>
+            <!-- Quiz for Final Check -->
+            <div>
+                <h3 class="text-2xl font-semibold mb-2">Final Quiz</h3>
+                <p class="mb-4">Test your knowledge with these final questions before moving on.</p>
+                <div id="final-quiz-container" class="space-y-4">
+                    <div class="quiz-question bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                        <p class="font-semibold mb-2">1. Why are triangles commonly used in frame structures?</p>
+                        <div class="space-y-2">
+                            <label class="block cursor-pointer p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"><input type="radio" name="final-q1" value="flexibility" class="mr-2"> They are flexible.</label>
+                            <label class="block cursor-pointer p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"><input type="radio" name="final-q1" value="rigidity" class="mr-2"> They provide rigidity and strength.</label>
+                            <label class="block cursor-pointer p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"><input type="radio" name="final-q1" value="aesthetics" class="mr-2"> They look good.</label>
+                        </div>
+                    </div>
+                    <div class="quiz-question bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                        <p class="font-semibold mb-2">2. What force is a suspension bridge's main cable subjected to?</p>
+                        <div class="space-y-2">
+                            <label class="block cursor-pointer p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"><input type="radio" name="final-q2" value="compression" class="mr-2"> Compression</label>
+                            <label class="block cursor-pointer p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"><input type="radio" name="final-q2" value="tension" class="mr-2"> Tension</label>
+                            <label class="block cursor-pointer p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"><input type="radio" name="final-q2" value="shear" class="mr-2"> Shear</label>
+                        </div>
+                    </div>
+                </div>
+                <button id="final-quiz-submit" class="w-full bg-primary text-white font-bold rounded-full py-2 px-4 shadow-md hover:bg-accent transition-colors duration-300 mt-4">Submit Quiz</button>
+                <div id="final-quiz-results" class="mt-4 text-center text-lg font-semibold"></div>
+            </div>
+        </div>
+        <div class="flex justify-start mt-6">
+            <button class="prev-btn bg-gray-400 text-white font-bold rounded-full py-2 px-6 shadow-md hover:bg-gray-500 transition-colors duration-300"><i class="fa-solid fa-arrow-left mr-2"></i> Previous</button>
+        </div>
+    </section>
+  </main>
+  <script>
+    // --- Global Variables & Initialization ---
+    const sections = document.querySelectorAll('.section');
+    const navButtons = document.querySelectorAll('.nav-button');
+    const progressBar = document.getElementById('progress-bar');
+    const breadcrumbNav = document.getElementById('breadcrumb-nav');
+    const timeEstimate = document.getElementById('time-estimate');
+    const sectionData = [
+        { id: 'welcome-section', title: 'Welcome', time: 5 },
+        { id: 'concepts-section', title: 'Concepts', time: 20 },
+        { id: 'bridge-examples-section', title: 'Bridge Examples', time: 15 },
+        { id: 'challenge-section', title: 'Challenge', time: 20 },
+        { id: 'planner-section', title: 'Planner & Reflection', time: 10 }
+    ];
+    let currentSectionIndex = 0;
+    
+    // --- UI/UX Functions ---
+    const showModal = (message) => {
+      const modalContainer = document.getElementById('modal-container');
+      const modal = document.createElement('div');
+      modal.className = 'modal-content';
+      modal.innerHTML = `
+        <p class="text-xl font-bold mb-4">${message}</p>
+        <button class="bg-primary hover:bg-accent text-white font-semibold py-2 px-4 rounded-full transition-colors" onclick="closeModal()">Close</button>
+      `;
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.onclick = closeModal;
+      modalContainer.innerHTML = '';
+      modalContainer.classList.remove('hidden');
+      modalContainer.appendChild(overlay);
+      modalContainer.appendChild(modal);
+    };
+    const closeModal = () => {
+      document.getElementById('modal-container').classList.add('hidden');
+      document.getElementById('modal-container').innerHTML = '';
+    };
+    const updateUI = () => {
+        sections.forEach((section, index) => {
+            section.classList.toggle('hidden', index !== currentSectionIndex);
+        });
+        navButtons.forEach(btn => btn.classList.remove('bg-gray-200'));
+        navButtons[currentSectionIndex].classList.add('bg-gray-200');
+        updateProgressBar();
+        updateBreadcrumb();
+        updateTimeEstimate();
+    };
+    const updateProgressBar = () => {
+        const progress = ((currentSectionIndex + 1) / sections.length) * 100;
+        progressBar.style.width = `${progress}%`;
+    };
+    const updateBreadcrumb = () => {
+      const ol = breadcrumbNav.querySelector('ol');
+      ol.innerHTML = '';
+      sectionData.slice(0, currentSectionIndex + 1).forEach((section, index) => {
+        const li = document.createElement('li');
+        li.className = 'inline-flex items-center';
+        li.innerHTML = `<a href="#" class="text-primary font-semibold hover:underline" data-section-index="${index}">${section.title}</a>`;
+        if (index < currentSectionIndex) {
+            li.innerHTML += `<i class="fa-solid fa-chevron-right mx-2 text-gray-400"></i>`;
+        }
+        ol.appendChild(li);
+      });
+    };
+    const updateTimeEstimate = () => {
+        let totalTime = sectionData.reduce((acc, section) => acc + section.time, 0);
+        let timeElapsed = sectionData.slice(0, currentSectionIndex + 1).reduce((acc, section) => acc + section.time, 0);
+        timeEstimate.textContent = `Time: ${timeElapsed} / ${totalTime} min`;
+    };
+    // --- Navigation Logic ---
+    const navigateToSection = (index) => {
+        if (index >= 0 && index < sections.length) {
+            currentSectionIndex = index;
+            updateUI();
+            sections[currentSectionIndex].focus();
+        }
+    };
+    document.querySelectorAll('.prev-btn').forEach(btn => {
+        btn.addEventListener('click', () => navigateToSection(currentSectionIndex - 1));
+    });
+    document.querySelectorAll('.next-btn').forEach(btn => {
+        btn.addEventListener('click', () => navigateToSection(currentSectionIndex + 1));
+    });
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const index = sectionData.findIndex(s => s.id === btn.dataset.target);
+            navigateToSection(index);
+        });
+    });
+    breadcrumbNav.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        const index = parseInt(e.target.dataset.sectionIndex, 10);
+        navigateToSection(index);
+      }
+    });
+    
+    // --- Section-Specific Logic ---
+    // Welcome Section
+    document.getElementById('save-goal-btn').addEventListener('click', () => {
+        const goal = document.getElementById('goal-setting').value;
+        if (goal.trim() !== '') {
+            showModal('Great! Your goal has been saved. You can always come back to review it later.');
+            document.getElementById('goal-feedback').classList.remove('hidden');
+        } else {
+            showModal('Please enter a goal before proceeding.');
+        }
+    });
+    // Challenge Section Load Calculation (removed as per new content)
+    // Final Quiz Logic
+    document.getElementById('final-quiz-submit').addEventListener('click', () => {
+        const correctAnswers = {
+            'final-q1': 'rigidity',
+            'final-q2': 'tension'
+        };
+        let score = 0;
+        let total = Object.keys(correctAnswers).length;
+        
+        for (const question in correctAnswers) {
+            const selected = document.querySelector(`input[name="${question}"]:checked`);
+            if (selected && selected.value === correctAnswers[question]) {
+                score++;
+                selected.parentElement.classList.add('bg-green-200', 'dark:bg-green-800');
+            } else if (selected) {
+                selected.parentElement.classList.add('bg-red-200', 'dark:bg-red-800');
+            }
+        }
+        
+        const resultDiv = document.getElementById('final-quiz-results');
+        resultDiv.textContent = `You scored ${score} out of ${total}. Well done!`;
+    });
+    // --- Initial Load ---
+    document.addEventListener('DOMContentLoaded', () => {
+        updateUI();
+    });
+    // --- Dark Mode Toggle ---
+    const modeToggle = document.getElementById('mode-toggle');
+    modeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDarkMode = document.documentElement.classList.contains('dark');
+      modeToggle.setAttribute('aria-pressed', isDarkMode);
+      modeToggle.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+    });
+  </script>
+</body>
+</html>
