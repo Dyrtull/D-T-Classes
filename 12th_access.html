@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE ICT Database Tutorial - Task 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .step-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .step-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .step-content p, .step-content ul, .step-content ol {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+        }
+        .step-content li {
+            margin-left: 1.5rem;
+            list-style-type: decimal;
+            padding-left: 0.5rem;
+        }
+        .step-content ul li {
+            list-style-type: disc;
+        }
+        .step-content code {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        /* Active state for navigation */
+        .sidebar-link.active {
+            background-color: #e0f2fe;
+            color: #0c4a6e;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 bg-white w-64 p-6 border-r border-slate-200 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-30">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="bg-sky-500 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7a8 8 0 0116 0" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold text-slate-700">Database Tutorial</h1>
+            </div>
+            <nav id="sidebar-nav">
+                <a href="#step11" class="sidebar-link block py-2.5 px-4 rounded-lg hover:bg-slate-100 transition-colors">Step 11: Import Games</a>
+                <a href="#step12_13" class="sidebar-link block py-2.5 px-4 rounded-lg hover:bg-slate-100 transition-colors">Steps 12 & 13: Import Tables</a>
+                <a href="#step14" class="sidebar-link block py-2.5 px-4 rounded-lg hover:bg-slate-100 transition-colors">Step 14: Relationships</a>
+                <a href="#step15" class="sidebar-link block py-2.5 px-4 rounded-lg hover:bg-slate-100 transition-colors">Step 15: Add New Record</a>
+                <a href="#step16" class="sidebar-link block py-2.5 px-4 rounded-lg hover:bg-slate-100 transition-colors">Step 16: First Report</a>
+                <a href="#step17" class="sidebar-link block py-2.5 px-4 rounded-lg hover:bg-slate-100 transition-colors">Step 17: Second Report</a>
+            </nav>
+        </aside>
+
+        <!-- Mobile Header -->
+        <header class="md:hidden fixed top-0 left-0 right-0 bg-white shadow-md z-20 flex items-center justify-between p-4">
+             <div class="flex items-center gap-3">
+                <div class="bg-sky-500 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7a8 8 0 0116 0" />
+                    </svg>
+                </div>
+                <h1 class="text-lg font-bold text-slate-700">Database Tutorial</h1>
+            </div>
+            <button id="menu-toggle" class="p-2 rounded-md hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="md:ml-64 flex-1 p-6 md:p-10 transition-all duration-300 ease-in-out">
+             <div class="mt-16 md:mt-0"> <!-- Add margin-top for mobile header -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">IGCSE ICT (0417) - Task 3 Database Tutorial</h2>
+                    <p class="text-slate-500">A step-by-step guide to completing the database task using Microsoft Access, based on the Feb/Mar 2024 paper.</p>
+                    <div class="mt-6 pt-6 border-t border-slate-200">
+                        <h4 class="text-lg font-semibold text-slate-700 mb-3">Required Files</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="https://drive.google.com/drive/folders/1YgPuV2F2kFO1sDWpbJ_bE7IK7OkNv-kN?usp=sharing" target="_blank" class="inline-flex items-center gap-2 bg-amber-100 text-amber-800 text-sm font-medium px-4 py-2 rounded-full hover:bg-amber-200 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                                </svg>
+                                Google Drive Folder
+                            </a>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="step-content bg-white p-8 rounded-2xl shadow-lg">
+                    <!-- Step 11 -->
+                    <section id="step11">
+                        <h3>Step 11: Import `c02games.csv` & Set Primary Key</h3>
+                        <p>Our first task is to import the main data file and set it up correctly. The primary key is a unique identifier for each record in a table. By examining <code>c02games.csv</code>, we can see that <strong>Game_Code</strong> is unique for every game, making it the perfect primary key.</p>
+                        
+                        <h4>Importing and Setup Process:</h4>
+                        <ol>
+                            <li>Open MS Access and create a new, blank database.</li>
+                            <li>Go to the <strong>External Data</strong> tab, click <strong>New Data Source</strong> &rarr; <strong>From File</strong> &rarr; <strong>Text File</strong>.</li>
+                            <li>Browse for and select <code>c02games.csv</code>.</li>
+                            <li>In the wizard, ensure <strong>Delimited</strong> is selected and check the box for <strong>First Row Contains Field Names</strong>. The delimiter should be a comma.</li>
+                            <li>On the next screen, you can set the data types. Click the <strong>Advanced...</strong> button for more control. Set the data types as specified in the exam paper. Pay close attention to numbers, currency, and decimals.</li>
+                        </ol>
+                        
+                        <div class="overflow-x-auto my-4 bg-slate-50 p-4 rounded-lg">
+                             <table class="min-w-full divide-y divide-slate-200">
+                                <thead class="bg-slate-100">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Field Name</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Data Type</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Format / Field Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-slate-200">
+                                    <tr><td class="px-4 py-2">Game_Title</td><td>Short Text</td><td>-</td></tr>
+                                    <tr><td class="px-4 py-2">Release_Year</td><td>Number</td><td>Integer (0 decimal places)</td></tr>
+                                    <tr><td class="px-4 py-2">Gen_Code</td><td>Short Text</td><td>-</td></tr>
+                                    <tr><td class="px-4 py-2">Game_Code</td><td>Short Text</td><td>-</td></tr>
+                                    <tr><td class="px-4 py-2">Age_Code</td><td>Short Text</td><td>-</td></tr>
+                                    <tr><td class="px-4 py-2">Game_Publisher</td><td>Short Text</td><td>-</td></tr>
+                                    <tr><td class="px-4 py-2">Price</td><td>Currency</td><td>2 decimal places</td></tr>
+                                    <tr><td class="px-4 py-2">Console_Type</td><td>Short Text</td><td>-</td></tr>
+                                    <tr><td class="px-4 py-2">Platform</td><td>Short Text</td><td>-</td></tr>
+                                    <tr><td class="px-4 py-2">Global_Sales</td><td>Number</td><td>Double (2 decimal places)</td></tr>
+                                    <tr><td class="px-4 py-2">Rank</td><td>Number</td><td>Integer (0 decimal places)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <ol start="6">
+                            <li>After setting data types, choose your own primary key and select <strong>Game_Code</strong> from the dropdown menu.</li>
+                            <li>Finish the import process. Open the new table in <strong>Design View</strong> to double-check that all data types and formats are correct.</li>
+                        </ol>
+
+                        <div class="mt-6 border-l-4 border-sky-500 bg-sky-50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-sky-800">Evidence Requirement</h4>
+                            <p class="text-sky-700">Take a screenshot of the table in <strong>Design View</strong>. It must clearly show all field names, data types, and the key symbol 🔑 next to <code>Game_Code</code>. Paste this into your evidence document.</p>
+                             <img src="https://placehold.co/600x400/e0f2fe/0c4a6e?text=Screenshot+of+Games+Table+Design" alt="Placeholder for table design screenshot" class="mt-4 rounded-lg shadow-md w-full max-w-lg mx-auto">
+                        </div>
+                    </section>
+    
+                    <!-- Steps 12 & 13 -->
+                    <section id="step12_13">
+                        <h3>Steps 12 & 13: Import Supporting Tables</h3>
+                        <p>Now, repeat the import process for the other two CSV files. The steps are identical to the first import, but you'll need to set different primary keys.</p>
+                        <ul>
+                            <li><strong>Import `c02classifications.csv`</strong>: Set <strong>Age_Code</strong> as the primary key.</li>
+                            <li><strong>Import `c02genre.csv`</strong>: Set <strong>Gen_Code</strong> as the primary key.</li>
+                        </ul>
+                        <div class="mt-6 border-l-4 border-sky-500 bg-sky-50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-sky-800">Evidence Requirement</h4>
+                            <p class="text-sky-700">For each table, take a screenshot of the <strong>Design View</strong> showing the field names, data types, and primary key. Paste both screenshots into your evidence document.</p>
+                        </div>
+                    </section>
+    
+                    <!-- Step 14 -->
+                    <section id="step14">
+                        <h3>Step 14: Create One-to-Many Relationships</h3>
+                        <p>Linking tables allows us to combine data from all three sources in our reports. We will connect the tables using their common fields (the primary keys we just set).</p>
+                        <ol>
+                            <li>Go to the <strong>Database Tools</strong> tab and click on <strong>Relationships</strong>.</li>
+                            <li>Add all three tables to the Relationships window.</li>
+                            <li>Click and drag <code>Gen_Code</code> from the <strong>genre</strong> table and drop it onto <code>Gen_Code</code> in the <strong>games</strong> table. Click "Create" in the pop-up window.</li>
+                            <li>Click and drag <code>Age_Code</code> from the <strong>classifications</strong> table and drop it onto <code>Age_Code</code> in the <strong>games</strong> table. Click "Create".</li>
+                        </ol>
+                         <div class="mt-6 border-l-4 border-sky-500 bg-sky-50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-sky-800">Evidence Requirement</h4>
+                            <p class="text-sky-700">Take a screenshot of the Relationships window showing the links between the three tables. The "1" and "∞" symbols should be visible on the lines connecting the tables. Paste this into your evidence document.</p>
+                             <img src="https://placehold.co/600x300/e0f2fe/0c4a6e?text=Screenshot+of+Table+Relationships" alt="Placeholder for relationships screenshot" class="mt-4 rounded-lg shadow-md w-full max-w-lg mx-auto">
+                        </div>
+                    </section>
+    
+                    <!-- Step 15 -->
+                    <section id="step15">
+                        <h3>Step 15: Add a New Record</h3>
+                        <p>Now we'll add a new game to our main table.</p>
+                        <ol>
+                            <li>Open the <code>c02games</code> table in Datasheet View.</li>
+                            <li>Scroll to the bottom to the empty row marked with an asterisk (*).</li>
+                            <li>Carefully enter the new record data as provided in the exam paper. Double-check your entry for errors before moving on.</li>
+                        </ol>
+                    </section>
+    
+                    <!-- Step 16 -->
+                    <section id="step16">
+                        <h3>Step 16: Produce the 'Latest Cyrus Console Games' Report</h3>
+                        <p>For complex reports, it's best to create a query first to select and filter the data, and then use that query to build the report.</p>
+                        <h4>Part A: Create the Query</h4>
+                        <ol>
+                            <li>Go to <strong>Create &rarr; Query Wizard &rarr; Simple Query Wizard</strong>.</li>
+                            <li>Add the required fields from all three tables: <code>Game_Title</code>, <code>Genre</code>, <code>Age_Category</code>, <code>Release_Year</code>, <code>Console_Type</code>, and <code>Rank</code>.</li>
+                            <li>Save the query and open it in <strong>Design View</strong>.</li>
+                            <li>In the "Criteria" row, enter:
+                                <ul>
+                                    <li>Under <code>Console_Type</code>: <code>Like "Cyrus*"</code> (The * is a wildcard).</li>
+                                    <li>Under <code>Release_Year</code>: <code>>=2010</code>.</li>
+                                </ul>
+                            </li>
+                            <li>In the "Sort" row, select <strong>Ascending</strong> under the <code>Rank</code> field.</li>
+                            <li>Run the query to test it. Save and close.</li>
+                        </ol>
+                        <h4>Part B: Create the Report</h4>
+                        <ol>
+                            <li>Go to <strong>Create &rarr; Report Wizard</strong>.</li>
+                            <li>Select your query as the data source. Add all the fields.</li>
+                            <li>Do not add any grouping levels. The data should already be sorted by rank.</li>
+                            <li>Choose a <strong>Tabular</strong> layout and <strong>Portrait</strong> orientation.</li>
+                            <li>Title the report <code>Latest Cyrus Console Games</code> and open it in Design or Layout View to format it.</li>
+                            <li>Make the title larger, ensure all data and labels are fully visible, and check in Print Preview that it fits on a single page.</li>
+                            <li>Finally, add your name, centre number, and candidate number to the report header or footer.</li>
+                        </ol>
+                    </section>
+    
+                    <!-- Step 17 -->
+                    <section id="step17">
+                        <h3>Step 17: Produce the 'Junior Tomas Games' Report</h3>
+                        <p>This report is more advanced, involving a run-time calculation and a summary total.</p>
+                        <h4>Part A: Create the Query</h4>
+                        <ol>
+                            <li>Go to <strong>Create &rarr; Query Design</strong> and add the <code>games</code> and <code>classifications</code> tables.</li>
+                            <li>Add the required fields.</li>
+                            <li>In the "Criteria" row, enter:
+                                <ul>
+                                    <li>Under <code>Game_Title</code>: <code>Like "*Tomas*"</code>.</li>
+                                    <li>Under <code>Age_Code</code>: <code>"C3" Or "C7"</code> (you may need to add this field just for the criteria, then uncheck 'Show').</li>
+                                </ul>
+                            </li>
+                            <li><strong>Create the calculated field:</strong> In an empty field column, type: <code>Sales_%: ([Global_Sales]/354)*100</code>. Right-click this new field, go to Properties, and set the Format to <strong>Standard</strong> and Decimal Places to <strong>2</strong>.</li>
+                             <li>Set the sort order: <strong>Ascending</strong> for <code>Console_Type</code> and <strong>Descending</strong> for <code>Global_Sales</code>.</li>
+                        </ol>
+                        <h4>Part B: Create and Format the Report</h4>
+                         <ol>
+                            <li>Use the <strong>Report Wizard</strong> with your new query as the source.</li>
+                            <li>Select a <strong>Tabular</strong> layout and <strong>Landscape</strong> orientation.</li>
+                            <li>Title the report <code>Junior Tomas Games</code>.</li>
+                            <li>Open in Layout or Design View. Resize the title and columns to fit a single page width.</li>
+                            <li><strong>Calculate the average:</strong> Click on any value in the Price column. Go to the <strong>Report Design</strong> tab, click <strong>Totals</strong>, and select <strong>Average</strong>.</li>
+                            <li>Add a new label to the left of the calculated average with the text <code>Average game price</code>.</li>
+                            <li>Add your name, centre number, and candidate number in the footer.</li>
+                        </ol>
+
+                         <div class="mt-6 border-l-4 border-sky-500 bg-sky-50 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-sky-800">Evidence Requirement</h4>
+                            <p class="text-sky-700">In the report's Design View, click the calculated average field. In the Property Sheet, you will see its Control Source is <code>=Avg([Price])</code>. Take a screenshot showing this formula and paste it into your evidence document.</p>
+                            <img src="https://placehold.co/600x300/e0f2fe/0c4a6e?text=Screenshot+of+Average+Price+Formula" alt="Placeholder for formula screenshot" class="mt-4 rounded-lg shadow-md w-full max-w-lg mx-auto">
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            // Toggle sidebar on mobile
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Intersection Observer to highlight active sidebar link
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('#sidebar-nav a');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Close mobile sidebar when a link is clicked
+             navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768) { // md breakpoint in Tailwind
+                        sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

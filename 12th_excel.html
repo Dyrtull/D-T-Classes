@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spreadsheet Tutorial: Task 4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 bg-gray-100 min-h-screen">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl p-6 sm:p-10 border border-gray-200">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">Spreadsheet Tutorial: Task 4</h1>
+            <p class="text-lg text-gray-600">A step-by-step guide to completing the spreadsheet task in Excel.</p>
+            <a href="https://drive.google.com/drive/folders/1f54RVBrZRU1dA7q6gmPHSPeLn6bFr1dV?usp=sharing" class="text-blue-600 hover:text-blue-800 transition-colors duration-200 mt-2 inline-block">Click here to add the necessary files</a>
+        </header>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">Step 1: Open and Save the File</h2>
+            <div class="space-y-4">
+                <p>
+                    Open the file `m25calc.csv` in your spreadsheet software. Since it's a CSV file, it will likely open in a plain format without any special formatting.
+                </p>
+                <p>
+                    Immediately save the file in a format that supports formulas and formatting, such as an Excel Workbook (`.xlsx`). It is a good practice to save it with a new file name, such as `m25calc_solution.xlsx`.
+                </p>
+            </div>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">Step 2: Add Your Details and Replicate the Layout</h2>
+            <div class="space-y-4">
+                <p>
+                    In cells `A3` and `A4`, enter your name and candidate number. These details are important for identifying your work.
+                </p>
+                <p>
+                    Replicate the spreadsheet layout as it appears in the source file, merging cells A1 and B1 to make them one cell and centring the text. Your spreadsheet should look like the image below after this step.
+                </p>
+                <div class="flex justify-center my-4">
+                    
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 pb-2 border-b-2 border-gray-200">Step 3: Enter and Format Formulas</h2>
+            <div class="space-y-4">
+                <p>
+                    This is the main part of the task. You will need to calculate the plaster area for the ceiling and the walls. The instructions in the PDF are to:
+                </p>
+                <ul class="list-disc list-inside space-y-2 pl-4 text-gray-700">
+                    <li>Calculate the plaster area for the ceiling.</li>
+                    <li>Calculate the plaster area for the walls.</li>
+                </ul>
+                <p>
+                    Here are the formulas you need to enter into the specified cells:
+                </p>
+                <div class="bg-gray-800 text-white rounded-md p-4 overflow-x-auto">
+                    <pre><code class="language-excel">
+                        <!-- Ceiling Area -->
+                        =B6*B5
+
+                        <!-- Wall Area -->
+                        =(2*B5*B4)+(2*B6*B4)-(B8*B7)-(B11*B10)
+                    </code></pre>
+                </div>
+                <p>
+                    Enter the formula for the ceiling area in cell `B19`. The ceiling area is the length multiplied by the width of the room. This corresponds to cells `B6` and `B5`.
+                </p>
+                <p>
+                    Enter the formula for the wall area in cell `B20`. The wall area is the total area of the four walls minus the area of the door and any windows. The total wall area is calculated as $(2 \times \text{Room Width} \times \text{Room Height}) + (2 \times \text{Room Length} \times \text{Room Height})$. This corresponds to $(2 \times B5 \times B4) + (2 \times B6 \times B4)$. From this, you subtract the door area $(B8 \times B7)$ and the window area $(B11 \times B10)$.
+                </p>
+                <p class="font-bold mt-4">Make sure to format the cells containing the formulas to display only one decimal place as required by the task.</p>
+                <div class="flex justify-center my-4">
+                    
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 pb-2 border-b-2 border-gray-200">Step 4: Hide and Print</h2>
+            <div class="space-y-4">
+                <p>
+                    After entering all the formulas and formatting, you need to prepare the spreadsheet for printing according to the instructions. The requirements are:
+                </p>
+                <ul class="list-disc list-inside space-y-2 pl-4 text-gray-700">
+                    <li>Hide the rows from 1 to 18.</li>
+                    <li>Ensure the printout fits on a single page.</li>
+                    <li>The printout should be in portrait orientation.</li>
+                    <li>Row and column headings are not displayed.</li>
+                    <li>The contents of all cells are fully visible.</li>
+                </ul>
+                <p>
+                    To hide rows, select rows 1 through 18, right-click, and choose 'Hide'. You may need to adjust print settings in your software to ensure it fits on a single portrait page and that row and column headings are turned off before printing.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2">Step 5: Save and Print the Final Version</h2>
+            <div class="space-y-4">
+                <p>
+                    Save your final spreadsheet. It is now ready to be printed and submitted. Make sure to check the print preview one last time to confirm all the requirements are met.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>

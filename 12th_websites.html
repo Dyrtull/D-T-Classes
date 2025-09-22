@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Page Tutorial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .container {
+            max-width: 1000px;
+        }
+        .card {
+            background-color: #2d3748;
+            border-radius: 12px;
+        }
+        .step-number {
+            background-color: #4c51bf;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+        }
+        code {
+            background-color: #4a5568;
+            color: #a0aec0;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #171923;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="p-8">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-6 text-indigo-400">Tawara Construction Web Page Tutorial</h1>
+        <p class="text-center text-lg mb-8">A step-by-step guide to completing Task 3 from the 0417/31 Information and Communication Technology paper using Microsoft Expression Web 4.</p>
+        <p class="text-center text-lg mb-8"><a href="https://drive.google.com/drive/folders/1f54RVBrZRU1dA7q6gmPHSPeLn6bFr1dV?usp=sharing" class="text-indigo-300 hover:text-indigo-200 underline">Click here to see the necessary files for this task</a></p>
+
+        <!-- Step 2 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">2</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Create the Web Page and Table Structure</h2>
+            </div>
+            <p class="mb-4">First, open Microsoft Expression Web 4. Go to <strong>File > New > PHP</strong>. Save the file as <code>m25plaster.htm</code> in your <code>plaster</code> folder.</p>
+            <p class="mb-4">Now, you need to create the table structure. Go to <strong>Insert > Table</strong>. Set the following properties for the table:</p>
+            <ul class="list-disc list-inside space-y-2 mb-4 ml-4">
+                <li>Rows: 3</li>
+                <li>Columns: 2</li>
+                <li>Width: 95%</li>
+                <li>Alignment: Center</li>
+            </ul>
+            <p class="mb-4">Modify the table to match the required layout. You will need to merge cells to achieve the structure A, B, C, D, E, F, G. The diagram shows a 3x2 table with merged cells:</p>
+            <ul class="list-disc list-inside space-y-2 ml-4">
+                <li>Merge the two cells in the first row to create Cell A.</li>
+                <li>The second row has two cells, B and C.</li>
+                <li>The third row will have four cells. You can achieve this by splitting the two cells in the third row into two columns each, or by inserting a 1-row, 4-column table into the merged third row cell.</li>
+            </ul>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">3</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Insert the Logo Image</h2>
+            </div>
+            <p class="mb-4">In Cell A, place the image <code>m25logo.jpg</code>. Go to <strong>Insert > Picture > From File</strong> and select the image. Once the image is in the cell, right-click it and choose <strong>Picture Properties</strong>. In the "Appearance" tab, set the "Width" to 100% and ensure the "Maintain aspect ratio" checkbox is selected. You can also do this in the code view by adding <code>width="100%"</code> to the <code>&lt;img&gt;</code> tag.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">4</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Add the Video</h2>
+            </div>
+            <p class="mb-4">In Cell B, you need to add the video <code>m25plaster.mp4</code>. The simplest way is to go into the code view and add the following HTML:</p>
+            <pre class="mb-4"><code>&lt;video width="100%" controls loop&gt;
+    &lt;source src="m25plaster.mp4" type="video/mp4"&gt;
+    Your browser does not support the video tag.
+&lt;/video&gt;</code></pre>
+            <p class="mb-4">This code will display the video, show controls, and make it loop. The text "Your browser does not support the video tag." is the automated error message for browsers that don't support the video.</p>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">5</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Place the Text and Apply Style</h2>
+            </div>
+            <p class="mb-4">In Cell C, open the file <code>m25text.txt</code>, copy the content, and paste it into the cell. Then, select the text and apply the paragraph style. In the design view, you can typically find a dropdown menu for styles (e.g., "p", "h1", "h2") on the toolbar. Select "p" for paragraph.</p>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">6</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Add and Style the Footer Text</h2>
+            </div>
+            <p class="mb-4">Enter the following text into the respective cells:</p>
+            <ul class="list-disc list-inside space-y-2 mb-4 ml-4">
+                <li>Cell D: Specialist plastering</li>
+                <li>Cell E: Other construction</li>
+                <li>Cell F: Contact us</li>
+                <li>Cell G: Edited by: [Your Name], [Centre Number], [Candidate Number]</li>
+            </ul>
+            <p class="mb-4">Select all this text and apply the <code>h2</code> style to it. You can do this in the same way you applied the paragraph style in the previous step.</p>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">7</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Create the Hyperlinks</h2>
+            </div>
+            <p class="mb-4">This step is crucial. You need to create three different types of links:</p>
+            <ul class="list-disc list-inside space-y-2 mb-4 ml-4">
+                <li><strong>Specialist plastering:</strong> Select the text, right-click, and choose <strong>Hyperlink</strong>. In the dialog, link to the file <code>m25spec.htm</code>. Click the <strong>Target Frame</strong> button and select <code>New Window (_blank)</code>.</li>
+                <li><strong>Other construction:</strong> Select the text and link it to the file <code>m25const.htm</code>. This link should open in the same window, so you don't need to change the target frame.</li>
+                <li><strong>Contact us:</strong> Select the text, right-click, and choose <strong>Hyperlink</strong>. In the dialog, choose "E-mail Address" from the left sidebar. Enter <code>tawara.construction@cambridge.org</code> in the email address field and <code>More information please!</code> in the subject field.</li>
+            </ul>
+        </div>
+        
+        <!-- Step 8 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">8</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Create a New Stylesheet</h2>
+            </div>
+            <p class="mb-4">Go to <strong>File > New > CSS</strong>. Add the following CSS code to the file. Remember to replace <code>[Your Name]</code>, <code>[Centre Number]</code>, and <code>[Candidate Number]</code> with your actual details.</p>
+            <pre class="mb-4"><code>/* Created by: [Your Name], [Centre Number], [Candidate Number] */
+table {
+  border-collapse: separate;
+  border-style: solid;
+  border-spacing: 0; /* Important: reset border-spacing to 0 for this style */
+  border-color: #ffffff;
+  border-width: 2px;
+}
+
+td {
+  border-style: solid;
+  border-color: #ffffff;
+  border-width: 2px;
+}</code></pre>
+            <p class="mb-4">Save this file in your <code>plaster</code> folder with the name <code>m25plaster2_ZZ999_9999.css</code>, replacing the <code>ZZ999_9999</code> with your centre and candidate numbers.</p>
+        </div>
+
+        <!-- Step 9 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">9</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Attach the Stylesheets</h2>
+            </div>
+            <p class="mb-4">Go back to your <code>m25plaster.htm</code> file. To attach the stylesheets, you can go to <strong>Format > CSS Styles > Attach Stylesheet</strong> or manually edit the code in the <code>&lt;head&gt;</code> section. You need to attach two stylesheets with <code>m25plaster2.css</code> having a higher priority.</p>
+            <pre class="mb-4"><code>&lt;link rel="stylesheet" type="text/css" href="m25plaster.css"&gt;
+&lt;link rel="stylesheet" type="text/css" href="m25plaster2_ZZ999_9999.css"&gt;</code></pre>
+            <p class="mb-4">The stylesheet that appears last in the code has the highest priority, so the order is correct. Make sure to replace the file name with your actual file name.</p>
+        </div>
+
+        <!-- Step 10 -->
+        <div class="card p-6 md:p-8 mb-8 shadow-lg">
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="step-number flex items-center justify-center font-bold text-xl rounded-full">10</div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Final Save and Evidence</h2>
+            </div>
+            <p class="mb-4">Save your web page (<code>m25plaster.htm</code>). Now, you need to provide the required evidence. For the HTML source, go to <strong>Code</strong> view, copy all the code, and paste it into your Evidence Document. For the browser view, save the file, then open it in a web browser. Resize the window to fit the page and show the address bar, then take a screenshot. Place the screenshot in your Evidence Document.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

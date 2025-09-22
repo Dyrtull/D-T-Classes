@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPoint Tutorial: Task 6 - Tawara University Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .step-card, .info-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .step-card:hover, .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .task-list li {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .task-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10B981; /* Tailwind green-500 */
+        }
+        /* Tab Styles */
+        .tab-button.active {
+            border-color: #4f46e5; /* indigo-600 */
+            color: #4f46e5;
+            background-color: #eef2ff; /* indigo-50 */
+        }
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        /* Accordion for Solutions */
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto px-4 py-12">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">IGCSE ICT PowerPoint Tutorial</h1>
+            <p class="mt-4 text-lg text-gray-600">A Step-by-Step Guide to Completing Task 6 (0417/m21/qp/21)</p>
+        </header>
+
+        <!-- File Links -->
+        <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Task Files</h2>
+            <p class="text-gray-700 mb-4">You will need the following source files to complete this task. They are available in the Google Drive folder linked below:</p>
+            <div class="mt-4">
+                <a href="https://drive.google.com/drive/folders/1pTjteHj_eKwYvqKbdlDPwj4xpHgU-7HB?usp=sharing" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-md">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M19.5 21a3 3 0 003-3V9a3 3 0 00-3-3h-5.25a3 3 0 00-2.62 1.518l-2.07 3.682A3.004 3.004 0 007.06 15H4.5a3 3 0 00-3 3v3a3 3 0 003 3h15z"></path>
+                        <path d="M19.5 6a3 3 0 00-3-3H9a3 3 0 00-3 3v.556A4.5 4.5 0 0110.06 12H15a4.5 4.5 0 014.5-4.5V6z"></path>
+                    </svg>
+                    <span>IGCSE Task 6 Files - Google Drive</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="mb-8 border-b border-gray-200">
+            <nav class="flex space-x-4" aria-label="Tabs">
+                <button class="tab-button active text-lg font-medium py-4 px-6 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" onclick="changeTab(event, 'tutorial')">
+                    Task 6 Tutorial
+                </button>
+                <button class="tab-button text-lg font-medium py-4 px-6 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" onclick="changeTab(event, 'syllabus')">
+                    Syllabus Breakdown
+                </button>
+            </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div>
+            <!-- Tutorial Tab Panel -->
+            <div id="tutorial" class="tab-panel active">
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md mb-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Objective</h2>
+                    <p class="text-gray-700">This tutorial will guide you through creating a 3-slide presentation for Tawara University as required by Task 6. We will use the provided source files, `M21STORESPRES.rtf` and `M21CHART.csv`, to build the presentation in Microsoft PowerPoint.</p>
+                </div>
+                 <div class="space-y-8">
+                    <!-- Step 1 -->
+                    <div class="step-card bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-indigo-600 mb-4">Step 1: Setting Up the Master Slide</h3>
+                        <ul class="task-list list-none space-y-2 text-gray-700">
+                            <li>Open PowerPoint and create a new blank presentation. You will need 3 slides in total.</li>
+                            <li>Go to the <strong class="font-semibold">View</strong> tab and click on <strong class="font-semibold">Slide Master</strong>.</li>
+                            <li>Select the main parent master slide (the top slide in the left-hand pane).</li>
+                            <li>Go to the <strong class="font-semibold">Insert</strong> tab, click <strong class="font-semibold">Header & Footer</strong>.</li>
+                            <li>In the dialog box, check the <strong class="font-semibold">Slide number</strong> box.</li>
+                            <li>Check the <strong class="font-semibold">Footer</strong> box and type your <strong class="font-semibold">Name, Centre Number, and Candidate Number</strong> into the text field.</li>
+                            <li>Click <strong class="font-semibold">Apply to All</strong>.</li>
+                            <li>Now, adjust the positions: move the slide number placeholder to the top right corner.</li>
+                            <li>Move the footer placeholder with your details to the bottom left corner.</li>
+                            <li>Click <strong class="font-semibold">Close Master View</strong> from the <strong class="font-semibold">Slide Master</strong> tab.</li>
+                        </ul>
+                    </div>
+                    <!-- Step 2 -->
+                     <div class="step-card bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-indigo-600 mb-4">Step 2: Creating the Title Slide (Slide 1)</h3>
+                        <ul class="task-list list-none space-y-2 text-gray-700">
+                            <li>Make sure Slide 1 has a <strong class="font-semibold">Title Slide</strong> layout.</li>
+                            <li>Open the `M21STORESPRES.rtf` file. Copy the first line, "Tawara Science Stores".</li>
+                            <li>Paste this into the title placeholder on Slide 1.</li>
+                            <li>In the subtitle placeholder, type <strong class="font-semibold">Presented by:</strong> followed by your name.</li>
+                        </ul>
+                    </div>
+                     <!-- Step 3 -->
+                    <div class="step-card bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-indigo-600 mb-4">Step 3: Importing Content (Slide 2)</h3>
+                        <ul class="task-list list-none space-y-2 text-gray-700">
+                            <li>Go to Slide 2. Use a <strong class="font-semibold">Title and Content</strong> layout.</li>
+                            <li>Set the title of the slide to <strong class="font-semibold">Stores Information</strong>.</li>
+                            <li>In the `M21STORESPRES.rtf` file, copy all the text from "Departments served" to the end.</li>
+                            <li>Paste this text into the content box on Slide 2.</li>
+                            <li>Format the text as a bulleted list, demoting items to create sub-bullets as needed.</li>
+                        </ul>
+                    </div>
+                     <!-- Step 4 -->
+                    <div class="step-card bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-indigo-600 mb-4">Step 4: Creating the Bar Chart (Slide 3)</h3>
+                         <ul class="task-list list-none space-y-2 text-gray-700">
+                            <li>Go to Slide 3. Use a <strong class="font-semibold">Title and Content</strong> layout and set the title to <strong class="font-semibold">Product Analysis</strong>.</li>
+                            <li>Open `M21CHART.csv` in a spreadsheet program.</li>
+                            <li>Select the data and insert a <strong class="font-semibold">Clustered Column</strong> chart.</li>
+                            <li>Format the chart: set the title to <strong class="font-semibold">Number of Products Supplied</strong>, add axis titles (<strong class="font-semibold">Number of Products</strong> for vertical, <strong class="font-semibold">Supplier</strong> for horizontal), add data labels on top of the bars, and remove the legend.</li>
+                             <li>Copy the finished chart and paste it onto Slide 3 in PowerPoint.</li>
+                        </ul>
+                    </div>
+                     <!-- Step 5 -->
+                    <div class="step-card bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-indigo-600 mb-4">Step 5: Finalizing and Printing</h3>
+                        <ul class="task-list list-none space-y-2 text-gray-700">
+                            <li>On Slide 3, add the speaker note: <strong class="font-semibold">This chart shows the diversity of our supplier base.</strong></li>
+                            <li>Print the presentation as handouts with <strong class="font-semibold">2 slides per page</strong>.</li>
+                            <li>Print only Slide 3 as a <strong class="font-semibold">full page slide</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Syllabus Tab Panel -->
+            <div id="syllabus" class="tab-panel">
+                <div class="space-y-8">
+                    <!-- Presentations Section -->
+                    <div class="info-card bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Syllabus Focus: Presentations</h3>
+                        <p class="mb-6 text-gray-700">In the IGCSE ICT (0417) syllabus, presentation skills are a core component of Paper 2. The exam tests your ability to create a professional presentation with a consistent corporate identity, clear information, and integrated objects like charts.</p>
+                        
+                        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Key Skills Required</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 mb-6">
+                            <li><strong class="font-semibold">Master Slides:</strong> Creating and modifying master slides to ensure a consistent layout.</li>
+                            <li><strong class="font-semibold">Layouts:</strong> Choosing and applying appropriate slide layouts.</li>
+                            <li><strong class="font-semibold">Content Management:</strong> Importing and formatting text.</li>
+                            <li><strong class="font-semibold">Object Insertion:</strong> Placing objects like charts and images.</li>
+                            <li><strong class="font-semibold">Speaker Notes:</strong> Adding notes for the presenter.</li>
+                            <li><strong class="font-semibold">Printing:</strong> Printing in various formats like handouts.</li>
+                        </ul>
+
+                        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Practice Exercise with Solution</h4>
+                        <div class="bg-indigo-50 p-6 rounded-lg border border-indigo-200">
+                            <p class="font-semibold text-gray-800 mb-2">Task:</p>
+                            <p class="text-gray-800">Create a short, 2-slide presentation about a school event.
+                                <br>1. The master slide must show your name in the bottom-right and automatic slide numbers in the top-left.
+                                <br>2. Slide 1 should be a Title Slide with the event name and your name.
+                                <br>3. Slide 2 should use a Title and Content layout, with a title and at least four bullet points describing the event.
+                            </p>
+                            <details class="mt-4">
+                                <summary class="font-semibold text-indigo-700 hover:text-indigo-900">Click to see Step-by-Step Solution</summary>
+                                <div class="mt-4 pt-4 border-t border-indigo-200">
+                                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                        <li><strong>Open PowerPoint:</strong> Start a new blank presentation.</li>
+                                        <li><strong>Edit Master Slide:</strong> Go to <code class="text-sm bg-gray-200 p-1 rounded">View > Slide Master</code>. Select the top parent slide.</li>
+                                        <li><strong>Insert Footer & Slide Number:</strong> Go to <code class="text-sm bg-gray-200 p-1 rounded">Insert > Header & Footer</code>. Check "Slide number" and "Footer". In the footer box, type your name. Click "Apply to All".</li>
+                                        <li><strong>Reposition Placeholders:</strong> Drag the slide number placeholder (`<#>` or `(#)`) to the top-left corner. Drag the footer placeholder with your name to the bottom-right.</li>
+                                        <li><strong>Close Master View:</strong> Click the "Close Master View" button.</li>
+                                        <li><strong>Create Slide 1:</strong> On the first slide, which should already be a Title Slide layout, enter the event name (e.g., "Annual Sports Day") as the title and your name as the subtitle.</li>
+                                        <li><strong>Create Slide 2:</strong> Add a new slide (<code class="text-sm bg-gray-200 p-1 rounded">Home > New Slide</code>). Change its layout to "Title and Content".</li>
+                                        <li><strong>Add Content to Slide 2:</strong> Enter a title (e.g., "Event Details"). In the content box, add at least four bullet points (e.g., "- Date: Friday, October 25th", "- Time: 9:00 AM - 3:00 PM", "- Location: School Sports Field", "- Events: 100m Sprint, Relay Race, Long Jump").</li>
+                                    </ol>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="info-card bg-white p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Syllabus Focus: Charts & Graphs</h3>
+                        <p class="mb-6 text-gray-700">Charts are part of Data Analysis, typically covered in Paper 3 (Spreadsheets), but the skill of creating and integrating them is often tested in the Paper 2 Presentations task. You must be able to represent data visually and accurately.</p>
+                        
+                        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Key Skills Required</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700 mb-6">
+                            <li><strong class="font-semibold">Data Selection:</strong> Correctly selecting data to create a chart.</li>
+                            <li><strong class="font-semibold">Chart Type:</strong> Choosing the appropriate chart type.</li>
+                            <li><strong class="font-semibold">Chart Elements:</strong> Adding and formatting titles, axes, labels, and legends.</li>
+                            <li><strong class="font-semibold">Formatting:</strong> Modifying the chart's appearance for clarity.</li>
+                            <li><strong class="font-semibold">Integration:</strong> Copying and pasting the chart into other documents.</li>
+                        </ul>
+
+                        <h4 class="text-xl font-semibold text-indigo-600 mb-3">Practice Exercise with Solution</h4>
+                        <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                             <p class="font-semibold text-gray-800 mb-2">Task:</p>
+                             <p class="text-gray-800">In a spreadsheet program, enter the following data for monthly sales: <br>
+                                - January: 150 <br>
+                                - February: 180 <br>
+                                - March: 220 <br>
+                                Create a vertical bar (column) chart to display this data. Set the chart title to "Q1 Sales". Label the vertical axis "Sales ($)" and the horizontal axis "Month". Add the value of each bar as a data label on top of the bar.
+                            </p>
+                             <details class="mt-4">
+                                <summary class="font-semibold text-green-700 hover:text-green-900">Click to see Step-by-Step Solution</summary>
+                                <div class="mt-4 pt-4 border-t border-green-200">
+                                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                        <li><strong>Open Spreadsheet & Enter Data:</strong> Open a program like Excel. In cell A1, type "Month". In B1, type "Sales". Enter the months and values in the rows below.</li>
+                                        <li><strong>Select Data:</strong> Click and drag to select the range A1:B4.</li>
+                                        <li><strong>Insert Chart:</strong> Go to the <code class="text-sm bg-gray-200 p-1 rounded">Insert</code> tab and click on the "Column or Bar Chart" icon. Choose the first option, "Clustered Column".</li>
+                                        <li><strong>Set Chart Title:</strong> Click on the default "Chart Title" text on the chart itself. Delete the existing text and type "Q1 Sales".</li>
+                                        <li><strong>Add Axis Titles:</strong> Click on the chart. A `+` icon will appear on the right. Click it, then check the box for "Axis Titles".</li>
+                                        <li><strong>Edit Axis Titles:</strong> Click on the new "Axis Title" placeholder on the vertical (Y) axis and type "Sales ($)". Click the horizontal (X) axis title and type "Month".</li>
+                                        <li><strong>Add Data Labels:</strong> Click the `+` icon again and check the box for "Data Labels". This will add the values on top of each bar.</li>
+                                    </ol>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-gray-500">Tutorial complete! Remember to check that your name, centre number, and candidate number are on all printouts.</p>
+        </footer>
+    </div>
+    
+    <script>
+        function changeTab(event, tabId) {
+            // Hide all tab panels
+            const tabPanels = document.querySelectorAll('.tab-panel');
+            tabPanels.forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Deactivate all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected tab panel
+            document.getElementById(tabId).classList.add('active');
+
+            // Activate the selected tab button
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+
