@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Assessment Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            transition: all 0.3s ease-in-out;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 960px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .anti-fraud-warning {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background-color: #fca5a5;
+            color: #b91c1c;
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .anti-fraud-warning.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .question-navigation-button {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db;
+            background-color: #e5e7eb;
+            color: #6b7280;
+            transition: all 0.2s ease;
+        }
+
+        .question-navigation-button:hover:not(.active) {
+            background-color: #d1d5db;
+        }
+
+        .question-navigation-button.answered {
+            background-color: #10b981;
+            color: white;
+            border-color: #059669;
+        }
+
+        .question-navigation-button.current {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #2563eb;
+            transform: scale(1.1);
+        }
+        
+        /* Custom modal styles for alerts */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover, .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Custom Modal UI -->
+    <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title" class="text-xl font-bold"></h3>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <p id="modal-message" class="text-gray-700"></p>
+            <div class="flex justify-end mt-4">
+                <button onclick="closeModal()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Anti-Fraud Warning -->
+    <div id="anti-fraud-warning" class="anti-fraud-warning">
+        <span id="warning-message">Warning! Detected suspicious activity.</span>
+    </div>
+
+    <div class="container mx-auto">
+        <header class="text-center py-6">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800">Exam Platform</h1>
+            <p class="mt-2 text-lg text-gray-600" id="header-subtitle">Setup your exam and get started.</p>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="app-container" class="space-y-8">
+            <!-- Setup Phase -->
+            <div id="setup-view" class="card p-8">
+                <h2 class="text-2xl font-bold mb-4">Exam Configuration</h2>
+                <div class="mb-4">
+                    <label for="concept-input" class="block text-gray-700 font-semibold mb-2">Paste Concepts (one per line):</label>
+                    <textarea id="concept-input" rows="10" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 resize-y" placeholder="e.g.&#10;Network Types - A network is a group of two or more devices connected together to share resources.&#10;IP Addresses - A unique identifier given to devices that communicate over the Internet."></textarea>
+                </div>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
+                    <div class="flex-1">
+                        <label for="exam-duration" class="block text-gray-700 font-semibold mb-2">Exam Duration (minutes):</label>
+                        <input type="number" id="exam-duration" value="30" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="flex-1">
+                        <label for="num-questions" class="block text-gray-700 font-semibold mb-2">Number of Questions:</label>
+                        <input type="number" id="num-questions" value="20" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                <button id="start-exam-button" class="w-full px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors">Start Exam</button>
+            </div>
+
+            <!-- Exam Interface View -->
+            <div id="exam-view" class="card p-8 hidden">
+                <div class="flex justify-between items-center mb-6 border-b pb-4">
+                    <div class="text-xl font-bold text-gray-800">Question <span id="current-question-number">1</span> of <span id="total-questions">20</span></div>
+                    <div class="text-xl font-bold text-gray-800" id="timer">30:00</div>
+                </div>
+                
+                <!-- Anti-fraud violation counter -->
+                <div class="text-red-500 font-semibold text-center mb-4">
+                    Security Violations: <span id="violation-count">0</span>
+                </div>
+
+                <div id="question-container" class="min-h-[200px]"></div>
+
+                <!-- Navigation and Progress -->
+                <div class="flex items-center justify-between mt-8">
+                    <button id="prev-button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors font-bold">&lt; Previous</button>
+                    <div class="flex-1 mx-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
+                        <div id="question-nav-buttons" class="inline-flex gap-2 p-2"></div>
+                    </div>
+                    <button id="next-button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors font-bold">Next &gt;</button>
+                </div>
+
+                <div class="w-full h-2 bg-gray-200 rounded-full mt-4">
+                    <div id="progress-bar" class="h-full bg-blue-500 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                </div>
+
+                <button id="submit-button" class="w-full px-6 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors mt-6">Submit Exam</button>
+            </div>
+
+            <!-- Results View -->
+            <div id="results-view" class="card p-8 hidden text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Exam Results</h2>
+                <div class="space-y-4">
+                    <p class="text-xl">Your Score: <span id="final-score" class="font-bold"></span></p>
+                    <p class="text-xl">Percentage: <span id="final-percentage" class="font-bold"></span></p>
+                    <p class="text-3xl font-extrabold">Final Grade: <span id="final-grade" class="text-blue-600"></span></p>
+                </div>
+                <button id="restart-button" class="mt-8 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors">Restart Exam</button>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Data and State
+        let concepts = [];
+        let categorizedConcepts = {};
+        let questions = [];
+        let examQuestions = [];
+        let currentQuestionIndex = 0;
+        let examDuration = 30; // minutes
+        let numQuestions = 20; // total questions in exam
+        let timeRemaining = 0; // seconds
+        let timerInterval;
+        let violationCount = 0;
+        let isExamActive = false;
+        
+        // UI Elements
+        const setupView = document.getElementById('setup-view');
+        const examView = document.getElementById('exam-view');
+        const resultsView = document.getElementById('results-view');
+        const conceptInput = document.getElementById('concept-input');
+        const examDurationInput = document.getElementById('exam-duration');
+        const numQuestionsInput = document.getElementById('num-questions');
+        const startExamButton = document.getElementById('start-exam-button');
+        const questionContainer = document.getElementById('question-container');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const submitButton = document.getElementById('submit-button');
+        const questionNavButtons = document.getElementById('question-nav-buttons');
+        const progressBar = document.getElementById('progress-bar');
+        const timerDisplay = document.getElementById('timer');
+        const violationCountDisplay = document.getElementById('violation-count');
+        const antiFraudWarning = document.getElementById('anti-fraud-warning');
+        
+        // Modal UI
+        const modal = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+
+        function showModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modal.style.display = "flex";
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // Anti-Fraud System
+        function showAntiFraudWarning(message) {
+            antiFraudWarning.classList.add('show');
+            antiFraudWarning.querySelector('#warning-message').textContent = message;
+            setTimeout(() => {
+                antiFraudWarning.classList.remove('show');
+            }, 3000);
+        }
+
+        function handleViolation(type) {
+            violationCount++;
+            violationCountDisplay.textContent = violationCount;
+            showAntiFraudWarning(`Security Violation Detected: ${type}.`);
+        }
+        
+        // Anti-fraud event listeners
+        document.addEventListener('visibilitychange', () => {
+            if (isExamActive && document.hidden) {
+                handleViolation('Tab Switch/Window Focus Lost');
+            }
+        });
+
+        document.addEventListener('contextmenu', e => {
+            if (isExamActive) {
+                e.preventDefault();
+                handleViolation('Right-Click Blocked');
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (isExamActive) {
+                const forbiddenKeys = ['F12', 'I', 'J', 'C', 'u'];
+                if ((e.ctrlKey && e.shiftKey && forbiddenKeys.includes(e.key)) || (e.ctrlKey && e.key === 'u')) {
+                    e.preventDefault();
+                    handleViolation('Keyboard Shortcut Blocked');
+                }
+            }
+        });
+        
+        document.addEventListener('copy', e => {
+            if (isExamActive) {
+                e.preventDefault();
+                handleViolation('Clipboard Access Blocked');
+            }
+        });
+
+        document.addEventListener('mouseleave', () => {
+            if (isExamActive) {
+                handleViolation('Mouse Left Window');
+            }
+        });
+
+        // Concept Categorization
+        const conceptCategories = {
+            'Network Hardware': ['Hub', 'Switch', 'Router', 'Bridge', 'NIC'],
+            'Network Concepts': ['LAN', 'WAN', 'Internet', 'Intranet', 'Extranet'],
+            'IP Addressing': ['IPv4', 'IPv6', 'MAC Address'],
+            'Security': ['Hackers', 'Social Engineering', 'Strong Password', 'Firewall', 'Antivirus'],
+            'Software/Legal': ['Copyright', 'Piracy', 'License Agreements', 'Dongle'],
+            'Compression': ['Lossless Compression', 'Lossy Compression'],
+            'Communication': ['Video-conferencing', 'Web-conferencing', 'Email'],
+            'Health/Ergonomics': ['RSI', 'Carpal Tunnel Syndrome'],
+            'Default': [] // A fallback category for uncategorized concepts
+        };
+
+        function getConceptCategory(conceptName) {
+            for (const category in conceptCategories) {
+                if (conceptCategories[category].includes(conceptName)) {
+                    return category;
+                }
+            }
+            return 'Default';
+        }
+
+        function getRelatedDistractors(concept, allConcepts) {
+            const conceptCategory = getConceptCategory(concept.name);
+            const relatedConcepts = conceptCategories[conceptCategory].filter(c => c !== concept.name);
+            
+            // Fallback to random concepts if no related ones exist
+            if (relatedConcepts.length < 3) {
+                return shuffleArray(allConcepts.filter(c => c.name !== concept.name)).slice(0, 3).map(c => c.name);
+            }
+            
+            return shuffleArray(relatedConcepts).slice(0, 3);
+        }
+
+        // Question Generation Logic
+        function generateDefinitionQuestions(concept, allConcepts) {
+            const questionSet = [];
+            const relatedDistractorNames = getRelatedDistractors(concept, allConcepts);
+            const distractors = relatedDistractorNames.map(name => allConcepts.find(c => c.name === name) || { description: `${name} is a different concept.` });
+
+            // Question 1: Best defines
+            questionSet.push({
+                type: 'multiple-choice',
+                concept: concept.name,
+                question: `Which of the following best defines ${concept.name}?`,
+                options: shuffleArray([
+                    { text: concept.description, isCorrect: true },
+                    { text: distractors[0]?.description || 'A false statement.', isCorrect: false },
+                    { text: distractors[1]?.description || 'A misleading statement.', isCorrect: false },
+                    { text: distractors[2]?.description || 'An unrelated definition.', isCorrect: false }
+                ]),
+                userAnswer: null
+            });
+            
+            // Variation: Negative form
+            const incorrectDistractors = shuffleArray(distractors.slice(0, 3));
+            questionSet.push({
+                type: 'multiple-choice',
+                concept: concept.name,
+                question: `Which of the following is NOT a correct definition for ${concept.name}?`,
+                options: shuffleArray([
+                    { text: incorrectDistractors[0]?.description || 'A misleading statement.', isCorrect: true },
+                    { text: concept.description, isCorrect: false },
+                    { text: incorrectDistractors[1]?.description || 'An unrelated definition.', isCorrect: false },
+                    { text: incorrectDistractors[2]?.description || 'A false statement.', isCorrect: false }
+                ]),
+                userAnswer: null
+            });
+            
+            return questionSet;
+        }
+
+        function generateApplicationQuestions(concept, allConcepts) {
+            const questionSet = [];
+            const relatedDistractorNames = getRelatedDistractors(concept, allConcepts);
+            const distractors = relatedDistractorNames.map(name => allConcepts.find(c => c.name === name) || { name: name });
+            
+            const category = getConceptCategory(concept.name);
+            
+            let question = '';
+            let correctOption = '';
+            let incorrectOptions = [];
+            
+            switch (category) {
+                case 'Network Hardware':
+                    question = `A large office is setting up a new network. They need a device to connect multiple computers within a single subnet and broadcast data to all connected devices. Which device would they use?`;
+                    correctOption = concept.name;
+                    incorrectOptions = [distractors[0]?.name, distractors[1]?.name, 'Ethernet cable'];
+                    break;
+                case 'Security':
+                    question = `An IT manager wants to protect company data from malicious software that could steal sensitive information. They need a tool that scans and removes threats. Which security concept is most relevant here?`;
+                    correctOption = concept.name;
+                    incorrectOptions = [distractors[0]?.name, distractors[1]?.name, 'Firewall'];
+                    break;
+                case 'Software/Legal':
+                    question = `A student wants to use an expensive statistical analysis program for a class project, but can't afford the full license. They find a website offering a "cracked" version of the software. What is the key legal concept at risk if the student installs the cracked version?`;
+                    correctOption = concept.name;
+                    incorrectOptions = [distractors[0]?.name, distractors[1]?.name, 'Fair Use'];
+                    break;
+                default:
+                    question = `In a practical application setting, how is ${concept.name} typically used?`;
+                    correctOption = concept.description;
+                    incorrectOptions = distractors.map(d => d.description);
+                    break;
+            }
+            
+            questionSet.push({
+                type: 'multiple-choice',
+                concept: concept.name,
+                question: question,
+                options: shuffleArray([
+                    { text: correctOption, isCorrect: true },
+                    ...incorrectOptions.map(text => ({ text, isCorrect: false }))
+                ]),
+                userAnswer: null
+            });
+            
+            return questionSet;
+        }
+
+        function generateComparisonQuestions(concept, allConcepts) {
+            const questionSet = [];
+            const relatedDistractors = shuffleArray(allConcepts.filter(c => c.name !== concept.name && getConceptCategory(c.name) === getConceptCategory(concept.name)));
+            if (relatedDistractors.length < 2) return questionSet;
+
+            const otherConcept1 = relatedDistractors[0];
+            const otherConcept2 = relatedDistractors[1];
+
+            // Question 1: Distinguishing X from Y
+            questionSet.push({
+                type: 'multiple-choice',
+                concept: concept.name,
+                question: `Which of the following statements best distinguishes ${concept.name} from ${otherConcept1.name}?`,
+                options: shuffleArray([
+                    { text: `The primary function of ${concept.name} is ${concept.description.toLowerCase()}, whereas ${otherConcept1.name} is ${otherConcept1.description.toLowerCase()}.`, isCorrect: true },
+                    { text: `They are both used for the same purpose.`, isCorrect: false },
+                    { text: `The key difference is purely aesthetic.`, isCorrect: false },
+                    { text: `One is physical hardware, while the other is a legal term.`, isCorrect: false }
+                ]),
+                userAnswer: null
+            });
+            
+            // Variation: Compare 3 concepts
+            questionSet.push({
+                type: 'multiple-choice',
+                concept: concept.name,
+                question: `Which of these statements correctly identifies a key difference between ${concept.name}, ${otherConcept1.name}, and ${otherConcept2.name}?`,
+                options: shuffleArray([
+                    { text: `Unlike ${otherConcept1.name} and ${otherConcept2.name}, ${concept.name} is used to ${concept.description.toLowerCase()}.`, isCorrect: true },
+                    { text: `${concept.name} is a type of ${otherConcept1.name}.`, isCorrect: false },
+                    { text: `They are all distinct concepts but serve the exact same function.`, isCorrect: false },
+                    { text: `${otherConcept1.name} and ${otherConcept2.name} are types of ${concept.name}.`, isCorrect: false }
+                ]),
+                userAnswer: null
+            });
+            
+            return questionSet;
+        }
+
+        function generateMatchingQuestions(concepts) {
+            const questionSet = [];
+            if (concepts.length >= 4) {
+                const conceptsForMatching = shuffleArray(concepts).slice(0, 4);
+                
+                questionSet.push({
+                    type: 'matching',
+                    concept: 'Matching Concepts',
+                    question: 'Match the concept to its correct description.',
+                    pairs: shuffleArray(conceptsForMatching.map(c => ({ term: c.name, definition: c.description }))),
+                    userAnswer: new Array(conceptsForMatching.length).fill(null)
+                });
+            }
+            return questionSet;
+        }
+
+        function generateTrueFalseQuestions(concept, allConcepts) {
+            const questions = [];
+            const distractors = allConcepts.filter(c => c.name !== concept.name);
+            
+            // True statement
+            questions.push({
+                type: 'true-false',
+                concept: concept.name,
+                question: `True or False: ${concept.name} is ${concept.description}.`,
+                correctAnswer: 'True',
+                userAnswer: null
+            });
+
+            // False statement
+            const falseStatements = {
+                'Lossless Compression': 'Lossless compression is a method that permanently removes unnecessary data from a file to reduce its size.',
+                'Dongle': 'A dongle is a large peripheral device that provides additional power to a computer.',
+                'IP Addresses': 'An IP address is a physical identifier that is permanently burned into a network interface card at the time of manufacture.',
+                'Network Types': 'A personal area network (PAN) is used to connect devices across a large geographic region like a city or country.',
+                'default': distractors[0]?.description || 'This statement is completely false and unrelated to the concept.'
+            };
+            
+            questions.push({
+                type: 'true-false',
+                concept: concept.name,
+                question: `True or False: ${concept.name} is ${falseStatements[concept.name] || falseStatements['default']}.`,
+                correctAnswer: 'False',
+                userAnswer: null
+            });
+
+            return questions;
+        }
+        
+        function expandQuestionBank(initialQuestions, concepts, targetSize) {
+            let expandedQuestions = [...initialQuestions];
+            let usedConcepts = concepts.slice();
+            
+            let attempts = 0;
+            const maxAttempts = 500; // Failsafe to prevent infinite loops
+
+            while (expandedQuestions.length < targetSize && attempts < maxAttempts) {
+                // Select a random concept to generate more questions from
+                const conceptToExpand = usedConcepts[Math.floor(Math.random() * usedConcepts.length)];
+
+                if (conceptToExpand) {
+                    // Paraphrasing & Rephrasing
+                    expandedQuestions.push(...generateParaphrasedQuestions(conceptToExpand, concepts));
+                    
+                    // Question Type Variations
+                    expandedQuestions.push(...generateQuestionTypeVariations(conceptToExpand, concepts));
+                    
+                    // Context Switching
+                    expandedQuestions.push(...generateContextSwitchingQuestions(conceptToExpand, concepts));
+                    
+                    // Adding more True/False questions for multiplication
+                    expandedQuestions.push(...generateTrueFalseQuestions(conceptToExpand, concepts));
+                }
+
+                // Shuffle the expanded questions to avoid clusters of similar questions
+                expandedQuestions = shuffleArray(expandedQuestions);
+                attempts++;
+            }
+            
+            // Ensure no duplicate questions
+            const uniqueQuestions = expandedQuestions.reduce((acc, current) => {
+                const x = acc.find(item => JSON.stringify(item) === JSON.stringify(current));
+                if (!x) {
+                    return acc.concat([current]);
+                } else {
+                    return acc;
+                }
+            }, []);
+            
+            return uniqueQuestions;
+        }
+
+        function generateParaphrasedQuestions(concept, allConcepts) {
+            const questionSet = [];
+            const rephrasedDescription = `The core purpose of ${concept.name} is to accomplish the following: ${concept.description}.`;
+            
+            // Rephrased Definition Question
+            questionSet.push({
+                type: 'multiple-choice',
+                concept: concept.name,
+                question: `Which of the following statements best describes the purpose of ${concept.name}?`,
+                options: shuffleArray([
+                    { text: rephrasedDescription, isCorrect: true },
+                    { text: `It is an abstract concept with no real-world application.`, isCorrect: false },
+                    { text: `It is a physical device used to store data.`, isCorrect: false },
+                    { text: `It is a software program used for web development.`, isCorrect: false }
+                ]),
+                userAnswer: null
+            });
+            
+            return questionSet;
+        }
+
+        function generateQuestionTypeVariations(concept, allConcepts) {
+            const questionSet = [];
+            const distractors = shuffleArray(allConcepts.filter(c => c.name !== concept.name));
+            
+            // Multiple Choice to True/False
+            questionSet.push({
+                type: 'true-false',
+                concept: concept.name,
+                question: `Is it true that ${concept.name} can be defined as "${distractors[0]?.description || 'a false statement'}"?`,
+                correctAnswer: 'False',
+                userAnswer: null
+            });
+            
+            // Best Describes vs Correctly Identifies
+            questionSet.push({
+                type: 'multiple-choice',
+                concept: concept.name,
+                question: `Which statement most correctly identifies the purpose of ${concept.name}?`,
+                options: shuffleArray([
+                    { text: concept.description, isCorrect: true },
+                    { text: distractors[0]?.description || 'A false statement.', isCorrect: false },
+                    { text: distractors[1]?.description || 'A misleading statement.', isCorrect: false },
+                    { text: distractors[2]?.description || 'An unrelated definition.', isCorrect: false }
+                ]),
+                userAnswer: null
+            });
+            
+            return questionSet;
+        }
+        
+        function generateContextSwitchingQuestions(concept, allConcepts) {
+            const questionSet = [];
+            
+            // Theoretical vs Practical
+            questionSet.push({
+                type: 'multiple-choice',
+                concept: concept.name,
+                question: `In a practical application setting, how is ${concept.name} used?`,
+                options: shuffleArray([
+                    { text: `It is implemented to ${concept.description.toLowerCase().split(' ').slice(4).join(' ')}.`, isCorrect: true },
+                    { text: `It is a theoretical concept not used in practice.`, isCorrect: false },
+                    { text: `It is only used in a lab environment.`, isCorrect: false },
+                    { text: `It is a term for documentation.`, isCorrect: false }
+                ]),
+                userAnswer: null
+            });
+            
+            return questionSet;
+        }
+
+        function generateQualityQuestions(concepts) {
+            const questionBank = [];
+            
+            concepts.forEach(concept => {
+                questionBank.push(
+                    ...generateDefinitionQuestions(concept, concepts),
+                    ...generateApplicationQuestions(concept, concepts),
+                    ...generateComparisonQuestions(concept, concepts),
+                    ...generateTrueFalseQuestions(concept, concepts)
+                );
+            });
+            
+            questionBank.push(...generateMatchingQuestions(concepts));
+            
+            return questionBank;
+        }
+
+
+        // Exam Flow Logic
+        function startExam() {
+            const rawConcepts = conceptInput.value.trim();
+            if (rawConcepts.length < 4) {
+                showModal("Input Error", "Please provide at least four concepts to generate a complete exam.");
+                return;
+            }
+
+            concepts = rawConcepts.split('\n').filter(line => line.trim() !== '').map(line => {
+                const parts = line.split(' - ');
+                return { name: parts[0].trim(), description: parts.slice(1).join(' - ').trim() };
+            });
+
+            questions = generateQualityQuestions(concepts);
+            
+            // Check if multiplication is needed
+            if (questions.length < 60) {
+                questions = expandQuestionBank(questions, concepts, 60);
+            }
+
+            examDuration = parseInt(examDurationInput.value) || 30;
+            numQuestions = parseInt(numQuestionsInput.value) || 20;
+            
+            examQuestions = shuffleArray(questions).slice(0, numQuestions);
+
+            showModal('Confirm Start', `You are about to start a ${examDuration}-minute exam with ${numQuestions} questions. Any suspicious activity will be tracked. Do you want to proceed?`);
+            document.querySelector('#custom-modal .modal-content button').onclick = () => {
+                closeModal();
+                isExamActive = true;
+                timeRemaining = examDuration * 60;
+                
+                setupView.classList.add('hidden');
+                examView.classList.remove('hidden');
+                
+                renderQuestion();
+                updateProgressBar();
+                startTimer();
+                updateQuestionNavigationButtons();
+            };
+        }
+
+        function renderQuestion() {
+            const question = examQuestions[currentQuestionIndex];
+            questionContainer.innerHTML = '';
+            
+            const questionElement = document.createElement('div');
+            questionElement.classList.add('p-4', 'border', 'border-gray-200', 'rounded-lg', 'bg-gray-50');
+
+            // Replace ** with <strong> for proper bold formatting
+            const formattedQuestion = question.question.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            let questionHTML = `<h3 class="font-bold mb-4 text-lg">${currentQuestionIndex + 1}. ${formattedQuestion}</h3>`;
+
+            if (question.type === 'multiple-choice' || question.type === 'fill-in-the-blank') {
+                questionHTML += `<div class="space-y-2">`;
+                question.options.forEach((option, index) => {
+                    const optionId = `q${currentQuestionIndex}-opt${index}`;
+                    const formattedOptionText = option.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    questionHTML += `
+                        <label for="${optionId}" class="block p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors">
+                            <input type="radio" id="${optionId}" name="q${currentQuestionIndex}" value="${option.text}" class="mr-2" data-correct="${option.isCorrect}" ${question.userAnswer === option.text ? 'checked' : ''}>
+                            ${formattedOptionText}
+                        </label>
+                    `;
+                });
+                questionHTML += `</div>`;
+            } else if (question.type === 'true-false') {
+                questionHTML += `<div class="space-y-2">`;
+                ['True', 'False'].forEach(option => {
+                    const optionId = `q${currentQuestionIndex}-opt-${option}`;
+                    questionHTML += `
+                        <label for="${optionId}" class="block p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors">
+                            <input type="radio" id="${optionId}" name="q${currentQuestionIndex}" value="${option}" class="mr-2" ${question.userAnswer === option ? 'checked' : ''}>
+                            ${option}
+                        </label>
+                    `;
+                });
+                questionHTML += `</div>`;
+            } else if (question.type === 'matching') {
+                questionHTML += `<div id="matching-container" class="space-y-4">
+                                <div class="flex justify-between items-center font-semibold text-gray-700">
+                                    <div class="w-1/2 p-2">Terms</div>
+                                    <div class="w-1/2 p-2">Definitions</div>
+                                </div>`;
+                const definitions = shuffleArray(question.pairs.map(p => p.definition));
+                question.pairs.forEach((pair, index) => {
+                    const formattedTerm = pair.term.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    questionHTML += `
+                        <div class="flex items-center gap-4">
+                            <div class="w-1/2 p-3 bg-gray-100 rounded-lg border border-gray-200">${formattedTerm}</div>
+                            <div class="w-1/2">
+                                <select class="w-full p-3 border border-gray-300 rounded-lg" data-term="${pair.term}">
+                                    <option value="">Select a definition</option>
+                                    ${definitions.map(def => `<option value="${def}" ${question.userAnswer && question.userAnswer[index] === def ? 'selected' : ''}>${def}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                });
+                questionHTML += `</div>`;
+            }
+            
+            questionElement.innerHTML = questionHTML;
+            questionContainer.appendChild(questionElement);
+
+            document.getElementById('current-question-number').textContent = currentQuestionIndex + 1;
+            document.getElementById('total-questions').textContent = numQuestions;
+
+            // Add change listeners to update user answer
+            if (question.type === 'multiple-choice' || question.type === 'true-false' || question.type === 'fill-in-the-blank') {
+                document.querySelectorAll(`input[name="q${currentQuestionIndex}"]`).forEach(input => {
+                    input.addEventListener('change', (e) => {
+                        examQuestions[currentQuestionIndex].userAnswer = e.target.value;
+                        updateQuestionNavigationButtons();
+                        updateProgressBar();
+                    });
+                });
+            } else if (question.type === 'matching') {
+                document.querySelectorAll('#matching-container select').forEach((select, index) => {
+                    select.addEventListener('change', (e) => {
+                        if (!examQuestions[currentQuestionIndex].userAnswer) {
+                            examQuestions[currentQuestionIndex].userAnswer = new Array(question.pairs.length).fill(null);
+                        }
+                        examQuestions[currentQuestionIndex].userAnswer[index] = e.target.value;
+                        updateQuestionNavigationButtons();
+                        updateProgressBar();
+                    });
+                });
+            }
+
+            // Update navigation button states
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.disabled = currentQuestionIndex === examQuestions.length - 1;
+        }
+
+        function updateQuestionNavigationButtons() {
+            questionNavButtons.innerHTML = '';
+            examQuestions.forEach((q, index) => {
+                const button = document.createElement('button');
+                button.classList.add('question-navigation-button');
+                const hasAnswer = Array.isArray(q.userAnswer) ? q.userAnswer.every(ans => ans !== null && ans !== '') : q.userAnswer !== null;
+                if (hasAnswer) {
+                    button.classList.add('answered');
+                }
+                if (index === currentQuestionIndex) {
+                    button.classList.add('current');
+                }
+                button.textContent = index + 1;
+                button.addEventListener('click', () => {
+                    currentQuestionIndex = index;
+                    renderQuestion();
+                    updateQuestionNavigationButtons();
+                });
+                questionNavButtons.appendChild(button);
+            });
+        }
+
+
+        function updateProgressBar() {
+            const answeredCount = examQuestions.filter(q => {
+                if (q.type === 'matching') {
+                    return q.userAnswer && q.userAnswer.every(ans => ans !== null && ans !== '');
+                }
+                return q.userAnswer !== null;
+            }).length;
+            const progress = (answeredCount / examQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    showModal('Time Expired', 'Your time has run out. The exam will be submitted automatically.');
+                    document.querySelector('#custom-modal .modal-content button').onclick = () => {
+                        closeModal();
+                        submitExam(true);
+                    };
+                }
+            }, 1000);
+        }
+
+        function submitExam(timeExpired = false) {
+            // Use custom modal instead of window.confirm
+            if (!timeExpired) {
+                showModal('Confirm Submission', 'Are you sure you want to submit the exam? You will not be able to make changes.');
+                document.querySelector('#custom-modal .modal-content button').onclick = () => {
+                    closeModal();
+                    // Proceed with submission logic
+                    performSubmission();
+                };
+            } else {
+                performSubmission();
+            }
+        }
+        
+        function performSubmission() {
+            clearInterval(timerInterval);
+            isExamActive = false;
+            
+            let correctAnswers = 0;
+            
+            examQuestions.forEach(q => {
+                if (q.type === 'multiple-choice' || q.type === 'fill-in-the-blank') {
+                    const correctOption = q.options.find(opt => opt.isCorrect);
+                    if (q.userAnswer === correctOption.text) {
+                        correctAnswers++;
+                    }
+                } else if (q.type === 'true-false') {
+                    if (q.userAnswer === q.correctAnswer) {
+                        correctAnswers++;
+                    }
+                } else if (q.type === 'matching') {
+                    if (q.userAnswer) {
+                        let isCorrect = true;
+                        q.userAnswer.forEach((userDef, index) => {
+                            const correctTerm = q.pairs.find(p => p.definition === userDef)?.term;
+                            if (q.pairs[index].term !== correctTerm) {
+                                isCorrect = false;
+                            }
+                        });
+                        if (isCorrect) {
+                            correctAnswers++;
+                        }
+                    }
+                }
+            });
+
+            const totalQuestions = examQuestions.length;
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            const finalGrade = convertToGrade(percentage);
+
+            examView.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+            document.getElementById('final-score').textContent = `${correctAnswers} / ${totalQuestions} marks`;
+            document.getElementById('final-percentage').textContent = `${percentage.toFixed(2)}%`;
+            document.getElementById('final-grade').textContent = finalGrade;
+            
+            // Clear saved state after exam is submitted
+            localStorage.removeItem('examState');
+        }
+
+        function convertToGrade(percentage) {
+            if (percentage >= 95) return '4.0';
+            if (percentage >= 90) return '3.7';
+            if (percentage >= 85) return '3.3';
+            if (percentage >= 80) return '3.0';
+            if (percentage >= 75) return '2.3';
+            if (percentage >= 70) return '2.0';
+            if (percentage >= 65) return '1.7';
+            if (percentage >= 60) return '1.3';
+            return '1.0';
+        }
+
+        function restartExam() {
+            window.location.reload();
+        }
+
+        // Utility function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        // Event Listeners
+        startExamButton.addEventListener('click', startExam);
+        prevButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+                updateQuestionNavigationButtons();
+            }
+        });
+        nextButton.addEventListener('click', () => {
+            if (currentQuestionIndex < examQuestions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+                updateQuestionNavigationButtons();
+            }
+        });
+        submitButton.addEventListener('click', () => submitExam(false));
+        document.getElementById('restart-button').addEventListener('click', restartExam);
+
+    </script>
+</body>
+</html>

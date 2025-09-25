@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE Computer Science: Practical Paper Study Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .study-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .toggle-btn {
+            background-color: #e5e7eb;
+            color: #4b5563;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.2s ease-in-out;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .toggle-btn:hover {
+            background-color: #d1d5db;
+        }
+        .interactive-btn {
+            background-color: #6366f1;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .interactive-btn:hover {
+            background-color: #4f46e5;
+        }
+        .section-content, .interactive-content {
+            display: none;
+            transition: max-height 0.3s ease-out;
+        }
+        .answer-content {
+            background-color: #f9fafb;
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        h2 {
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        ul.list-disc, ol.list-decimal {
+            margin-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+        .image-container {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .flex-container .toggle-btn {
+            white-space: nowrap;
+        }
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .styled-table th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+        .styled-table tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .pseudocode-container {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .trace-table-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+        .feedback {
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        .correct {
+            color: #10b981;
+        }
+        .incorrect {
+            color: #ef4444;
+        }
+        .solution-box {
+            background-color: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .info-box {
+            background-color: #e0f2fe;
+            border-left: 4px solid #0ea5e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-2">IGCSE Computer Science: Practical Paper Study Plan</h1>
+            <p class="text-lg text-gray-600">Your ultimate guide to mastering Paper 2, with new content and interactive exercises.</p>
+        </header>
+
+        <!-- Section 0: Fundamentals -->
+        <section class="study-card">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-800">Fundamentals: Flowcharts and Pseudocode</h2>
+            <p class="mb-4 text-gray-700">
+                <strong class="font-bold">Essential Skills:</strong> Before diving into algorithms, you must master these two fundamental ways of representing solutions.
+            </p>
+            <h3 class="text-xl font-semibold mt-6 mb-2">What is a Flowchart?</h3>
+            <p class="text-gray-700 mb-4">A flowchart is a diagram that shows the steps in an algorithm using standard symbols connected by arrows to show the flow of control.</p>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Standard Flowchart Symbols</h4>
+            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Name</th>
+                            <th>Purpose</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="w-16 h-8 bg-green-200 rounded-full flex items-center justify-center text-xs">START</div></td>
+                            <td>Terminator</td>
+                            <td>Shows start and end points</td>
+                            <td>START, STOP</td>
+                        </tr>
+                        <tr>
+                            <td><div class="w-16 h-8 bg-blue-200 flex items-center justify-center text-xs">Process</div></td>
+                            <td>Process</td>
+                            <td>Shows calculations or assignments</td>
+                            <td>Total ← Total + 1</td>
+                        </tr>
+                        <tr>
+                            <td><div class="w-16 h-8 bg-yellow-200 transform -skew-x-12 flex items-center justify-center text-xs">INPUT</div></td>
+                            <td>Input/Output</td>
+                            <td>Shows data entry or display</td>
+                            <td>INPUT Name, OUTPUT Result</td>
+                        </tr>
+                        <tr>
+                            <td><div class="w-16 h-8 bg-red-200 transform rotate-45 flex items-center justify-center text-xs" style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);">Decision</div></td>
+                            <td>Decision</td>
+                            <td>Shows yes/no questions or conditions</td>
+                            <td>Age > 18?, Count = 10?</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h4 class="text-lg font-semibold mt-4 mb-2">Simple Flowchart Example</h4>
+            <div class="bg-white p-4 border rounded-lg mb-4">
+                <p class="text-gray-700 mb-2"><strong>Problem:</strong> Input a number and check if it's positive, negative, or zero.</p>
+                <div class="text-center space-y-2">
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">INPUT Number</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-red-200 rounded-lg px-4 py-2">Number > 0?</div>
+                    <div class="flex justify-center space-x-8">
+                        <div class="text-center">
+                            <div class="text-lg text-left">Yes ↓</div>
+                            <div class="bg-yellow-200 px-2 py-1 transform -skew-x-6">OUTPUT "Positive"</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg text-left">No ↓</div>
+                            <div class="bg-red-200 rounded-lg px-2 py-1">Number < 0?</div>
+                            <div class="flex space-x-4">
+                                <div class="text-left">
+                                    <div class="text-lg">Yes ↓</div>
+                                    <div class="bg-yellow-200 px-2 py-1 transform -skew-x-6">"Negative"</div>
+                                </div>
+                                <div class="text-left">
+                                    <div class="text-lg">No ↓</div>
+                                    <div class="bg-yellow-200 px-2 py-1 transform -skew-x-6">"Zero"</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2 mt-4">STOP</div>
+                </div>
+            </div>
+            <h3 class="text-xl font-semibold mt-6 mb-2">What is Pseudocode?</h3><p class="text-gray-700 mb-4">Pseudocode uses English-like statements to describe algorithm steps. It's more detailed than flowcharts but easier to read than actual programming code.</p>
+            <h4 class="text-lg font-semibold mt-4 mb-2">Key Pseudocode Keywords</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h5 class="font-semibold text-green-700">Variables & Input/Output</h5>
+                    <ul class="text-sm space-y-1">
+                        <li><code>DECLARE variable : INTEGER</code></li>
+                        <li><code>INPUT variable</code></li>
+                        <li><code>OUTPUT "message", variable</code></li>
+                        <li><code>variable ← value</code> (assignment)</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h5 class="font-semibold text-blue-700">Selection</h5>
+                    <ul class="text-sm space-y-1">
+                        <li><code>IF condition THEN</code></li>
+                        <li><code>ELSE</code></li>
+                        <li><code>ENDIF</code></li>
+                        <li><code>CASE OF variable</code></li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h5 class="font-semibold text-purple-700">Iteration</h5>
+                    <ul class="text-sm space-y-1">
+                        <li><code>FOR counter ← 1 TO 10</code></li>
+                        <li><code>WHILE condition DO</code></li>
+                        <li><code>REPEAT...UNTIL condition</code></li>
+                        <li><code>NEXT counter</code></li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h5 class="font-semibold text-red-700">Operators</h5>
+                    <ul class="text-sm space-y-1">
+                        <li><code>=, >, <, >=, <=, <></code></li>
+                        <li><code>AND, OR, NOT</code></li>
+                        <li><code>+, -, *, /, MOD, DIV</code></li>
+                    </ul>
+                </div>
+            </div>
+            <h4 class="text-lg font-semibold mt-4 mb-2">Same Example in Pseudocode</h4>
+            <pre class="bg-gray-100 p-4 rounded text-sm"><code>DECLARE Number : INTEGER
+INPUT Number
+IF Number > 0
+THEN
+    OUTPUT "Positive"
+ELSE
+    IF Number < 0
+    THEN
+        OUTPUT "Negative"
+    ELSE
+        OUTPUT "Zero"
+    ENDIF
+ENDIF</code></pre>
+
+            <h3 class="text-xl font-semibold mt-8 mb-2">Practice: Convert Between Flowcharts and Pseudocode</h3>
+            <ol class="list-decimal list-inside pl-4 mt-2 text-gray-700">
+                <li><strong>Easy:</strong> Draw a flowchart for: "Input age, if over 18 output 'Adult', otherwise output 'Child'"</li>
+                <li><strong>Medium:</strong> Write pseudocode for a flowchart that finds the average of 5 numbers</li>
+                <li><strong>Hard:</strong> Create both flowchart and pseudocode for counting positive numbers in a list until -1 is entered</li>
+            </ol>
+            <div class="mt-4 flex-container">
+                <button class="toggle-btn" onclick="toggleSection('fundamentals-answers')">Show/Hide Answers</button>
+            </div>
+            <div id="fundamentals-answers" class="section-content">
+                <div class="answer-content">
+                    <h4 class="font-bold text-green-700">Answers</h4>
+                    <ol class="list-decimal list-inside pl-4 mt-2 text-gray-800">
+                        <li><strong>Easy Answer (Flowchart):</strong>
+                            <div class="text-center space-y-2 mt-4">
+                                <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                                <div class="text-3xl leading-none">↓</div>
+                                <div class="inline-block bg-yellow-200 px-4 py-2">INPUT Age</div>
+                                <div class="text-3xl leading-none">↓</div>
+                                <div class="inline-block bg-red-200 rounded-lg px-4 py-2">Age > 18?</div>
+                                <div class="flex justify-center space-x-12">
+                                    <div class="text-left">
+                                        <div class="text-lg">Yes ↓</div>
+                                        <div class="bg-yellow-200 px-4 py-2">OUTPUT "Adult"</div>
+                                    </div>
+                                    <div class="text-left">
+                                        <div class="text-lg">No ↓</div>
+                                        <div class="bg-yellow-200 px-4 py-2">OUTPUT "Child"</div>
+                                    </div>
+                                </div>
+                                <div class="text-3xl leading-none">↓</div>
+                                <div class="inline-block bg-green-200 rounded-full px-4 py-2 mt-4">STOP</div>
+                            </div>
+                        </li>
+                        <li><strong>Medium Answer (Pseudocode):</strong>
+                            <pre class="bg-white p-3 rounded my-2 text-sm"><code>DECLARE total, average : REAL
+DECLARE count, number : INTEGER
+total ← 0
+FOR count ← 1 TO 5
+    INPUT number
+    total ← total + number
+NEXT count
+average ← total / 5
+OUTPUT "The average is:", average</code></pre>
+                        </li>
+                        <li><strong>Hard Answer (Pseudocode & Flowchart):</strong>
+                            <div class="mt-4">
+                                <p><strong>Pseudocode:</strong></p>
+                                <pre class="bg-white p-3 rounded my-2 text-sm"><code>DECLARE number, positiveCount : INTEGER
+positiveCount ← 0
+REPEAT
+    INPUT number
+    IF number > 0 THEN
+        positiveCount ← positiveCount + 1
+    ENDIF
+UNTIL number = -1
+OUTPUT "Positive count:", positiveCount</code></pre>
+                            </div>
+                            <div class="mt-4">
+                                <p><strong>Flowchart:</strong></p>
+                                <div class="text-center space-y-2 mt-4">
+                                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                                    <div class="text-3xl leading-none">↓</div>
+                                    <div class="inline-block bg-blue-200 px-4 py-2">positiveCount ← 0</div>
+                                    <div class="text-3xl leading-none">↓</div>
+                                    <div class="inline-block bg-yellow-200 px-4 py-2">INPUT number</div>
+                                    <div class="text-3xl leading-none">↓</div>
+                                    <div class="inline-block bg-red-200 rounded-lg px-4 py-2">number > 0?</div>
+                                    <div class="flex justify-center space-x-12">
+                                        <div class="text-left">
+                                            <div class="text-lg">Yes ↓</div>
+                                            <div class="bg-blue-200 px-4 py-2">positiveCount ← positiveCount + 1</div>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class="text-lg">No ↓</div>
+                                            <div class="bg-gray-100 w-full h-8"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-3xl leading-none">↓</div>
+                                    <div class="inline-block bg-red-200 rounded-lg px-4 py-2">number = -1?</div>
+                                    <div class="flex justify-center space-x-12">
+                                        <div class="text-left">
+                                            <div class="text-lg">Yes ↓</div>
+                                            <div class="bg-yellow-200 px-4 py-2">OUTPUT positiveCount</div>
+                                        </div>
+                                        <div class="text-left">
+                                            <div class="text-lg">No ↓</div>
+                                            <div class="bg-gray-100 w-full h-8"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-3xl leading-none">↓</div>
+                                    <div class="inline-block bg-green-200 rounded-full px-4 py-2 mt-4">STOP</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Day 1 -->
+        <section class="study-card">
+            <h2 class="text-2xl sm:text-3xl font-bold text-blue-800">Day 1: Algorithms and Problem-Solving</h2>
+            <p class="mb-4 text-gray-700">
+                <strong class="font-bold">Topics Covered:</strong>
+                <ul class="list-disc list-inside">
+                    <li>Program development life cycle stages: analysis, design, coding, testing, maintenance.</li>
+                    <li>Decomposition of problems.</li>
+                    <li>Designing algorithms using pseudocode and flowcharts.</li>
+                    <li>Standard methods of solution: totalling, counting, finding maximum, minimum, and average.</li>
+                    <li>Understanding and using test data (normal, abnormal, boundary, extreme).</li>
+                    <li>Tracing algorithms with a trace table.</li>
+                    <li>Enhanced search and sort algorithms: Linear Search, <strong>Binary Search</strong>, and <strong>Bubble Sort</strong>.</li>
+                    <li><strong>Check Digits</strong> and their application.</li>
+                </ul>
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">Enhanced Concepts and Examples</h3>
+            <!-- Bubble Sort -->
+            <div class="info-box">
+                <h4 class="font-bold text-blue-800">Bubble Sort</h4>
+                <p class="mt-2 text-gray-700">This algorithm repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted. It is a simple but inefficient sorting algorithm.</p>
+                <div class="pseudocode-container">
+                    <pre class="bg-white p-3 rounded my-2 text-sm"><code>// Bubble Sort Pseudocode
+PROCEDURE bubbleSort(list)
+    DECLARE listSize : INTEGER
+    DECLARE swapped : BOOLEAN
+    listSize ← LENGTH(list)
+    
+    REPEAT
+        swapped ← FALSE
+        FOR i ← 0 TO listSize - 2
+            IF list[i] > list[i+1] THEN
+                temp ← list[i]
+                list[i] ← list[i+1]
+                list[i+1] ← temp
+                swapped ← TRUE
+            ENDIF
+        NEXT i
+    UNTIL NOT swapped
+ENDPROCEDURE</code></pre>
+                </div>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Bubble Sort Flowchart</h4>
+                <div class="bg-white p-4 border rounded-lg mb-4">
+                    <div class="text-center space-y-2">
+                        <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-blue-200 px-4 py-2">Repeat</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-blue-200 px-4 py-2">swapped ← FALSE</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-blue-200 px-4 py-2">FOR i ← 0 TO listSize - 2</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-red-200 rounded-lg px-4 py-2">list[i] > list[i+1]?</div>
+                        <div class="flex justify-center space-x-12">
+                            <div class="text-left">
+                                <div class="text-lg">Yes ↓</div>
+                                <div class="bg-blue-200 px-4 py-2">Swap elements & set swapped ← TRUE</div>
+                            </div>
+                            <div class="text-left">
+                                <div class="text-lg">No ↓</div>
+                                <div class="bg-gray-100 w-full h-8"></div>
+                            </div>
+                        </div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-blue-200 px-4 py-2">NEXT i</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-red-200 rounded-lg px-4 py-2">swapped = FALSE?</div>
+                        <div class="flex justify-center space-x-12">
+                            <div class="text-left">
+                                <div class="text-lg">Yes ↓</div>
+                                <div class="bg-yellow-200 px-4 py-2">ENDIF</div>
+                            </div>
+                            <div class="text-left">
+                                <div class="text-lg">No ↓</div>
+                                <div class="bg-gray-100 w-full h-8"></div>
+                            </div>
+                        </div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Binary Search -->
+            <div class="info-box mt-4">
+                <h4 class="font-bold text-blue-800">Binary Search</h4>
+                <p class="mt-2 text-gray-700">A much more efficient search algorithm than linear search, but it requires the data to be sorted first. It works by repeatedly dividing the search interval in half. It's perfect for searching large, sorted datasets.</p>
+                <div class="pseudocode-container">
+                    <pre class="bg-white p-3 rounded my-2 text-sm"><code>// Binary Search Pseudocode
+FUNCTION binarySearch(list, item) RETURNS INTEGER
+    DECLARE low, high, mid : INTEGER
+    DECLARE found : BOOLEAN
+    low ← 0
+    high ← LENGTH(list) - 1
+    found ← FALSE
+    
+    WHILE low <= high AND found = FALSE DO
+        mid ← (low + high) DIV 2
+        IF list[mid] = item THEN
+            found ← TRUE
+            RETURN mid
+        ELSE IF list[mid] < item THEN
+            low ← mid + 1
+        ELSE
+            high ← mid - 1
+        ENDIF
+    ENDWHILE
+    
+    RETURN -1 // Not found
+ENDFUNCTION</code></pre>
+                </div>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Linear Search Flowchart</h4>
+                <div class="bg-white p-4 border rounded-lg mb-4">
+                    <p class="text-sm text-gray-600">Flowchart showing step-by-step linear search process</p>
+                    <div class="text-center space-y-2 mt-4">
+                        <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-yellow-200 px-4 py-2">INPUT MyNumber</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-blue-200 px-4 py-2">FOR Counter ← 1 TO 50</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-red-200 rounded-lg px-4 py-2">Values[Counter] = MyNumber?</div>
+                        <div class="flex justify-center space-x-12">
+                            <div class="text-left">
+                                <div class="text-lg">Yes ↓</div>
+                                <div class="bg-yellow-200 px-4 py-2">OUTPUT Counter</div>
+                                <div class="text-3xl leading-none">↓</div>
+                                <div class="bg-blue-200 px-4 py-2">STOP</div>
+                            </div>
+                            <div class="text-left">
+                                <div class="text-lg">No ↓</div>
+                                <div class="bg-blue-200 px-4 py-2">NEXT Counter</div>
+                                <div class="text-3xl leading-none">↓</div>
+                                <div class="bg-yellow-200 px-4 py-2">OUTPUT "Not found"</div>
+                            </div>
+                        </div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-semibold mt-4 mb-2">Input Validation Flowchart</h4>
+                <div class="bg-white p-4 border rounded-lg mb-4">
+                    <p class="text-sm text-gray-600">Shows how to repeatedly ask for input until valid data is entered</p>
+                    <div class="text-center space-y-2 mt-4">
+                        <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-blue-200 px-4 py-2">REPEAT</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-yellow-200 px-4 py-2">INPUT Data</div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-red-200 rounded-lg px-4 py-2">Data is Valid?</div>
+                        <div class="flex justify-center space-x-12">
+                            <div class="text-left">
+                                <div class="text-lg">Yes ↓</div>
+                                <div class="bg-blue-200 px-4 py-2">UNTIL True</div>
+                            </div>
+                            <div class="text-left">
+                                <div class="text-lg">No ↓</div>
+                                <div class="bg-blue-200 px-4 py-2">Continue Loop</div>
+                            </div>
+                        </div>
+                        <div class="text-3xl leading-none">↓</div>
+                        <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Check Digits -->
+            <div class="info-box mt-4">
+                <h4 class="font-bold text-blue-800">Check Digits</h4>
+                <p class="mt-2 text-gray-700">A check digit is a form of validation that is calculated from the other digits in a number. It is used to detect errors, such as typing a number incorrectly. A common method is the Modulo 11 algorithm.</p>
+                <p class="mt-2 text-gray-700">To validate, you re-calculate the check digit from the main number and compare it to the given check digit. If they match, the number is considered valid. Example: ISBN numbers use a check digit.</p>
+            </div>
+            
+            <h3 class="text-xl font-semibold mt-8 mb-2">Practice Set A: Program Development & Validation</h3>
+            <ol class="list-decimal list-inside pl-4 mt-2 text-gray-700">
+                <li><strong class="font-bold">Student ID Validation:</strong> A program needs to validate a student ID in format "AB1234" (2 letters, 4 digits).
+                    <ul class="list-none mt-2">
+                        <li>a) Name the type of validation check required.</li>
+                        <li>b) Give examples of normal, abnormal, and boundary test data.</li>
+                        <li>c) Write pseudocode for the validation.</li>
+                    </ul>
+                </li>
+                <li><strong class="font-bold">Bubble Sort Trace Table:</strong> Complete this trace table for bubble sort with data: [5, 2, 8, 1].</li>
+                <button class="interactive-btn" onclick="showInteractive('bubble-sort-interactive')">Open Bubble Sort Simulator</button>
+                <div id="bubble-sort-interactive" class="interactive-content mt-4">
+                    <p class="mb-2">Enter the values for each step of the bubble sort algorithm to see if you're correct. The list is <strong>[5, 2, 8, 1]</strong>.</p>
+                    <table class="styled-table text-center">
+                        <thead>
+                            <tr>
+                                <th>Pass</th>
+                                <th>List State</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Initial</td>
+                                <td id="initial-list">[5, 2, 8, 1]</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td><input type="text" id="pass1" class="trace-table-input" placeholder="e.g., 2, 5, 1, 8"></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><input type="text" id="pass2" class="trace-table-input" placeholder="e.g., 2, 1, 5, 8"></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><input type="text" id="pass3" class="trace-table-input" placeholder="e.g., 1, 2, 5, 8"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="interactive-btn mt-4" onclick="checkBubbleSort()">Check My Answers</button>
+                    <div id="bubble-sort-feedback" class="feedback"></div>
+                </div>
+                <li><strong class="font-bold">Binary Search Pseudocode:</strong> Write pseudocode for binary search to find a name in an array of 20 names.</li>
+            </ol>
+            <div class="mt-4 flex-container">
+                <p>&nbsp;</p>
+                <button class="toggle-btn" onclick="toggleSection('day1-answers')">Show/Hide Answers</button>
+            </div>
+            <div id="day1-answers" class="section-content">
+                <div class="answer-content">
+                    <h4 class="font-bold text-green-700">Answers</h4>
+                    <ol class="list-decimal list-inside pl-4 mt-2 text-gray-800">
+                        <li><strong>Student ID Validation:</strong>
+                            <ul class="list-disc list-inside text-gray-800">
+                                <li>a) <strong>Format check</strong>.</li>
+                                <li>b) <strong>Normal:</strong> `AB1234`. <strong>Abnormal:</strong> `A12345` (incorrect format), `AB123` (wrong length). <strong>Boundary:</strong> `AA0000` (min), `ZZ9999` (max).</li>
+                                <li>c)
+                                    <pre class="bg-white p-3 rounded my-2 text-sm"><code>INPUT studentID
+IF LENGTH(studentID) = 6 THEN
+    firstChar ← SUBSTRING(studentID, 1, 1)
+    secondChar ← SUBSTRING(studentID, 2, 1)
+    // Check if first two chars are letters
+    IF (UCASE(firstChar) >= "A" AND UCASE(firstChar) <= "Z") AND (UCASE(secondChar) >= "A" AND UCASE(secondChar) <= "Z") THEN
+        // Check if last four chars are digits
+        isValid ← TRUE
+        FOR i ← 3 TO 6
+            char ← SUBSTRING(studentID, i, 1)
+            IF NOT (char >= "0" AND char <= "9") THEN
+                isValid ← FALSE
+            ENDIF
+        NEXT i
+        IF isValid THEN
+            OUTPUT "ID is valid."
+        ELSE
+            OUTPUT "ID is not valid: digits incorrect."
+        ENDIF
+    ELSE
+        OUTPUT "ID is not valid: letters incorrect."
+    ENDIF
+ELSE
+    OUTPUT "ID is not valid: length incorrect."
+ENDIF</code></pre>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Bubble Sort Trace Table:</strong>
+                            <table class="styled-table text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Pass</th>
+                                        <th>List State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Initial</td>
+                                        <td>[5, 2, 8, 1]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>[2, 5, 1, 8]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>[2, 1, 5, 8]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>[1, 2, 5, 8]</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li><strong>Binary Search:</strong>
+                            <pre class="bg-white p-3 rounded my-2 text-sm"><code>// Assume array 'names' of size 20 is already sorted
+DECLARE names: ARRAY[1:20] OF STRING
+DECLARE searchName : STRING
+DECLARE low, high, mid : INTEGER
+DECLARE found : BOOLEAN
+DECLARE index : INTEGER
+
+// Initialize variables
+low ← 1
+high ← 20
+found ← FALSE
+index ← -1
+
+INPUT searchName
+
+WHILE low <= high AND NOT found DO
+    mid ← (low + high) DIV 2
+    IF UCASE(names[mid]) = UCASE(searchName) THEN
+        found ← TRUE
+        index ← mid
+    ELSE IF UCASE(names[mid]) < UCASE(searchName) THEN
+        low ← mid + 1
+    ELSE
+        high ← mid - 1
+    ENDIF
+ENDWHILE
+
+IF found THEN
+    OUTPUT searchName, "found at position", index
+ELSE
+    OUTPUT searchName, "not found"
+ENDIF</code></pre>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 2 -->
+        <section class="study-card">
+            <h2 class="text-2xl sm:text-3xl font-bold text-purple-800">Day 2: Foundational Programming Concepts</h2>
+            <p class="mb-4 text-gray-700">
+                <strong class="font-bold">Topics Covered:</strong>
+                <ul class="list-disc list-inside">
+                    <li>Programming concepts: variables, constants, data types.</li>
+                    <li>Input and output statements.</li>
+                    <li>Control structures: sequence, selection, and iteration.</li>
+                    <li>Nesting of conditional and loop statements.</li>
+                    <li><strong>Procedures vs. Functions</strong>, with parameter passing.</li>
+                    <li><strong>Local vs. Global Variables</strong> and their scope.</li>
+                </ul>
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">New Concepts and Examples</h3>
+            <!-- Procedures vs Functions -->
+            <div class="info-box">
+                <h4 class="font-bold text-purple-800">Procedures vs. Functions</h4>
+                <p class="mt-2 text-gray-700">The key difference is that a <strong>function</strong> must always return a value, while a <strong>procedure</strong> does not. Functions are used for calculations or retrieving data, while procedures are used to perform a set of actions, such as printing a report or updating a record.</p>
+                <div class="pseudocode-container mt-2">
+                    <pre class="bg-white p-3 rounded my-2 text-sm"><code>// Example of a FUNCTION
+FUNCTION calculateVAT(price : REAL) RETURNS REAL
+    // Calculates VAT at 20%
+    RETURN price * 0.2
+ENDFUNCTION
+
+// Example of a PROCEDURE
+PROCEDURE printReport(name : STRING)
+    OUTPUT "Report for:", name
+ENDPROCEDURE</code></pre>
+                </div>
+            </div>
+
+            <!-- Local vs Global Variables -->
+            <div class="info-box mt-4">
+                <h4 class="font-bold text-purple-800">Local vs. Global Variables</h4>
+                <p class="mt-2 text-gray-700">
+                    A <strong>global</strong> variable is declared at the start of the program and can be accessed and modified from anywhere. A <strong>local</strong> variable is declared inside a procedure or function and can only be used within that specific block of code.                 </p>
+                <p class="mt-2 text-gray-700">
+                    <strong>Examiner Tip:</strong> Using global variables can make code difficult to debug, as their value can change unexpectedly. It is best practice to use local variables and pass data using parameters.
+                </p>
+                <div class="pseudocode-container mt-2">
+                    <pre class="bg-white p-3 rounded my-2 text-sm"><code>DECLARE globalVariable : INTEGER
+globalVariable ← 10
+
+PROCEDURE showScope()
+    DECLARE localVariable : INTEGER
+    localVariable ← 5
+    OUTPUT globalVariable // This works
+    OUTPUT localVariable // This works
+ENDPROCEDURE
+
+// OUTPUT localVariable will cause an error here</code></pre>
+                </div>
+            </div>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Flowcharts for Loop Structures</h4>
+            <div class="bg-white p-4 border rounded-lg mb-4">
+                <h5 class="font-semibold text-purple-700">FOR Loop</h5>
+                <div class="text-center space-y-2">
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">FOR count ← 1 TO 10</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">OUTPUT count</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">NEXT count</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                </div>
+
+                <h5 class="font-semibold text-purple-700 mt-4">WHILE Loop (Pre-condition)</h5>
+                <div class="text-center space-y-2">
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">Total ← 0</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-red-200 rounded-lg px-4 py-2">Total < 100?</div>
+                    <div class="flex justify-center space-x-12">
+                        <div class="text-left">
+                            <div class="text-lg">No ↓</div>
+                            <div class="bg-yellow-200 px-4 py-2">OUTPUT "Loop Done"</div>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-lg">Yes ↓</div>
+                            <div class="bg-blue-200 px-4 py-2">Total ← Total + 10</div>
+                        </div>
+                    </div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                </div>
+
+                <h5 class="font-semibold text-purple-700 mt-4">IF-THEN-ELSE Structure</h5>
+                <div class="text-center space-y-2">
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">INPUT Age</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-red-200 rounded-lg px-4 py-2">Age > 18?</div>
+                    <div class="flex justify-center space-x-12">
+                        <div class="text-left">
+                            <div class="text-lg">Yes ↓</div>
+                            <div class="bg-yellow-200 px-4 py-2">OUTPUT "Adult"</div>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-lg">No ↓</div>
+                            <div class="bg-yellow-200 px-4 py-2">OUTPUT "Child"</div>
+                        </div>
+                    </div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold mt-8 mb-2">Practice Set B: Programming Constructs</h3>
+            <ol class="list-decimal list-inside pl-4 mt-2 text-gray-700">
+                <li><strong class="font-bold">Error Detective:</strong> Identify four errors in this pseudocode and correct them.
+                    <pre class="bg-gray-100 p-3 rounded my-2 text-sm"><code>01 DECLARE Total : INTEGER
+02 Total = 0
+03 REPEAT
+04     INPUT MyNumber
+05     IF MyNumber > 10 THEN
+06         Total ← Total + MyNumber
+07     ELSE
+08         OUTPUT "Too low"
+09 ENDIF
+10 UNTIL MyNumber < 0
+11 OUTPUT Total</code></pre>
+                <button class="interactive-btn" onclick="showInteractive('error-detective-interactive')">Open Code Error Detective</button>
+                <div id="error-detective-interactive" class="interactive-content mt-4">
+                    <p class="mb-2">Enter the line number and your correction for each of the four errors you find.</p>
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="mb-3">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="error1-line">Error 1:</label>
+                            <input type="number" id="error1-line" placeholder="Line number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+                            <input type="text" id="error1-correction" placeholder="Correction" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="error2-line">Error 2:</label>
+                            <input type="number" id="error2-line" placeholder="Line number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+                            <input type="text" id="error2-correction" placeholder="Correction" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="error3-line">Error 3:</label>
+                            <input type="number" id="error3-line" placeholder="Line number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+                            <input type="text" id="error3-correction" placeholder="Correction" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="error4-line">Error 4:</label>
+                            <input type="number" id="error4-line" placeholder="Line number" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+                            <input type="text" id="error4-correction" placeholder="Correction" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                    </div>
+                    <button class="interactive-btn mt-4" onclick="checkCodeErrors()">Check My Answers</button>
+                    <div id="error-detective-feedback" class="feedback"></div>
+                </div>
+
+                <li><strong class="font-bold">Function:</strong> Write a function that takes two parameters and returns the larger value. Include the function call in your answer.</li>
+                <li><strong class="font-bold">Loops:</strong> Explain the difference between pre-condition and post-condition loops. Give an example of when each should be used.</li>
+            </ol>
+            <div class="mt-4 flex-container">
+                <p>&nbsp;</p>
+                <button class="toggle-btn" onclick="toggleSection('day2-answers')">Show/Hide Answers</button>
+            </div>
+            <div id="day2-answers" class="section-content">
+                <div class="answer-content">
+                    <h4 class="font-bold text-green-700">Answers</h4>
+                    <ol class="list-decimal list-inside pl-4 mt-2 text-gray-800">
+                        <li><strong>Error Detective:</strong>
+                            <ul class="list-disc list-inside text-gray-800">
+                                <li>Line 2: The assignment operator should be `←`.</li>
+                                <li>Line 5: The prompt asks for positive numbers to be totalled, but the pseudocode checks for a number > 10. The condition should be IF Number > 0. Correction: `IF Number > 0 THEN`</li>
+                                <li>Line 10: The `UNTIL` condition should stop the loop when the number is 0. Correction: `UNTIL MyNumber = 0`</li>
+                                <li>Line 11: The `OUTPUT` statement should output the `Total`, not `MyNumber`. Correction: `OUTPUT Total`</li>
+                            </ul>
+                        </li>
+                        <li><strong>Function:</strong>
+                            <pre class="bg-white p-3 rounded my-2 text-sm"><code>// FUNCTION to return the larger value
+FUNCTION findLargest(num1 : REAL, num2 : REAL) RETURNS REAL
+    IF num1 > num2 THEN
+        RETURN num1
+    ELSE
+        RETURN num2
+    ENDIF
+ENDFUNCTION
+
+// Example of a function call
+DECLARE result : REAL
+result ← findLargest(55.2, 89.1)
+OUTPUT result</code></pre>
+                        </li>
+                        <li><strong>Loops:</strong>
+                            <ul class="list-disc list-inside text-gray-800">
+                                <li><strong>Pre-condition loop:</strong> The condition is checked <strong>before</strong> the loop body is executed. This means the loop might not run at all if the condition is initially false. Example: `WHILE...DO...ENDWHILE` or `FOR...TO...NEXT`. <strong>Use case:</strong> Input validation where you need to check if the user's input is valid before processing it.</li>
+                                <li><strong>Post-condition loop:</strong> The condition is checked <strong>after</strong> the loop body is executed. This means the loop will always run at least once, regardless of the condition. Example: `REPEAT...UNTIL`. <strong>Use case:</strong> A login screen where you must get the user's input at least once before checking if it is correct.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 3 -->
+        <section class="study-card">
+            <h2 class="text-2xl sm:text-3xl font-bold text-green-800">Day 3: Advanced Programming and Data Structures</h2>
+            <p class="mb-4 text-gray-700">
+                <strong class="font-bold">Topics Covered:</strong>
+                <ul class="list-disc list-inside">
+                    <li>Comprehensive <strong>String Manipulation</strong> functions and operations.</li>
+                    <li>Library Routines: <strong>MOD, DIV, ROUND, RANDOM</strong> with worked examples.</li>
+                    <li>Arrays (one- and two-dimensional) and how to populate and access them.</li>
+                    <li><strong>File Handling</strong>: OPENFILE, READFILE, WRITEFILE, CLOSEFILE.</li>
+                    <li><strong>Error Handling</strong>: try-catch concepts.</li>
+                    <li>Principles of creating a maintainable program.</li>
+                </ul>
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">New Concepts and Examples</h3>
+            <!-- String Manipulation -->
+            <div class="info-box">
+                <h4 class="font-bold text-green-800">String Manipulation</h4>
+                <p class="mt-2 text-gray-700">These functions are essential for working with text data.</p>
+                <div class="pseudocode-container mt-2">
+                    <pre class="bg-white p-3 rounded my-2 text-sm"><code>DECLARE myString : STRING
+DECLARE newString : STRING
+myString ← "Computer Science"
+
+// Length: returns the number of characters in a string
+OUTPUT LENGTH(myString) // Outputs 16
+
+// Substring: extracts a part of a string (start index, number of characters)
+newString ← SUBSTRING(myString, 1, 8) // Extracts "Computer"
+OUTPUT newString
+
+// Case conversion
+newString ← UCASE(myString) // "COMPUTER SCIENCE"
+newString ← LCASE(myString) // "computer science"
+
+// Concatenation: joining two strings
+newString ← "Hello" & " World" // "Hello World"
+
+// Comparison: using relational operators
+IF "Apple" < "Banana" THEN
+    OUTPUT "True"
+ENDIF</code></pre>
+                </div>
+            </div>
+
+            <!-- Library Routines -->
+            <div class="info-box mt-4">
+                <h4 class="font-bold text-green-800">Library Routines</h4>
+                <p class="mt-2 text-gray-700">These are built-in functions that perform common tasks.</p>
+                <ul class="list-disc list-inside mt-2 text-gray-700">
+                    <li><strong>MOD</strong> (Modulo): Returns the remainder of a division. Example: `10 MOD 3` returns `1`.</li>
+                    <li><strong>DIV</strong> (Integer Division): Returns the whole number part of a division. Example: `10 DIV 3` returns `3`.</li>
+                    <li><strong>ROUND</strong>: Rounds a real number to the nearest integer. Example: `ROUND(3.7)` returns `4`.</li>
+                    <li><strong>RANDOM</strong>: Generates a random number. Example: `RANDOM(1, 10)` generates a random integer between 1 and 10 inclusive.</li>
+                </ul>
+            </div>
+            
+            <!-- File Handling -->
+            <div class="info-box mt-4">
+                <h4 class="font-bold text-green-800">File Handling Operations</h4>
+                <p class="mt-2 text-gray-700">These operations are used to read from and write to text files for permanent data storage.</p>
+                <ul class="list-disc list-inside mt-2 text-gray-700">
+                    <li><strong>OPENFILE("filename", mode)</strong>: Opens a file. `mode` can be `READ`, `WRITE`, or `APPEND`.</li>
+                    <li><strong>READFILE("filename")</strong>: Reads a single line from the file.</li>
+                    <li><strong>WRITEFILE("filename", data)</strong>: Writes data to the file.</li>
+                    <li><strong>CLOSEFILE("filename")</strong>: Closes the file, saving any changes.</li>
+                </ul>
+            </div>
+            <h4 class="text-lg font-semibold mt-4 mb-2">Bubble Sort Algorithm Flowchart</h4>
+            <div class="bg-white p-4 border rounded-lg mb-4">
+                            </div>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Finding Maximum Value Flowchart</h4>
+            <div class="bg-white p-4 border rounded-lg mb-4">
+                <div class="text-center space-y-2">
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">Max ← 0</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">FOR i ← 1 TO N</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">INPUT number</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-red-200 rounded-lg px-4 py-2">number > Max?</div>
+                    <div class="flex justify-center space-x-12">
+                        <div class="text-left">
+                            <div class="text-lg">Yes ↓</div>
+                            <div class="bg-blue-200 px-4 py-2">Max ← number</div>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-lg">No ↓</div>
+                            <div class="bg-gray-100 w-full h-8"></div>
+                        </div>
+                    </div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">NEXT i</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">OUTPUT Max</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                </div>
+            </div>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Array Processing Flowchart</h4>
+            <div class="bg-white p-4 border rounded-lg mb-4">
+                <div class="text-center space-y-2">
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">DECLARE Scores[1:50]</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">FOR i ← 1 TO 50</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">INPUT Scores[i]</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">NEXT i</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-semibold mt-8 mb-2">Practice Set C: Complex Programming</h3>
+            <ol class="list-decimal list-inside pl-4 mt-2 text-gray-700">
+                <li><strong class="font-bold">Library Management System:</strong> A library system needs to store book details for 100 books: Title, Author, ISBN, Available (Yes/No). Write pseudocode to:
+                    <ul class="list-none mt-2">
+                        <li>a) Search for a book by ISBN.</li>
+                        <li>b) List all available books by a specific author.</li>
+                        <li>c) Count total available books.</li>
+                    </ul>
+                </li>
+                <li><strong class="font-bold">File Processing:</strong> Write pseudocode to read student names and marks from a file, calculate the class average, and write the results to another file.</li>
+            </ol>
+            <div class="mt-4 flex-container">
+                <p>&nbsp;</p>
+                <button class="toggle-btn" onclick="toggleSection('day3-answers')">Show/Hide Answers</button>
+            </div>
+            <div id="day3-answers" class="section-content">
+                <div class="answer-content">
+                    <h4 class="font-bold text-green-700">Answers</h4>
+                    <ol class="list-decimal list-inside pl-4 mt-2 text-gray-800">
+                        <li><strong>Library Management System:</strong>
+                            <pre class="bg-white p-3 rounded my-2 text-sm"><code>// Assume a 2D array: books[1:100, 1:4]
+// Column 1: Title, 2: Author, 3: ISBN, 4: Available (BOOLEAN)
+DECLARE books : ARRAY[1:100, 1:4] OF STRING
+
+// a) Search for a book by ISBN
+INPUT searchISBN
+found ← FALSE
+FOR i ← 1 TO 100
+    IF books[i, 3] = searchISBN THEN
+        OUTPUT "Book found:"
+        OUTPUT "Title:", books[i, 1]
+        OUTPUT "Author:", books[i, 2]
+        found ← TRUE
+    ENDIF
+NEXT i
+IF NOT found THEN
+    OUTPUT "Book not found."
+ENDIF
+
+// b) List all available books by a specific author
+INPUT searchAuthor
+found ← FALSE
+FOR i ← 1 TO 100
+    IF books[i, 2] = searchAuthor AND books[i, 4] = "Yes" THEN
+        OUTPUT books[i, 1] // Outputs the title
+        found ← TRUE
+    ENDIF
+NEXT i
+IF NOT found THEN
+    OUTPUT "No available books found by this author."
+ENDIF
+
+// c) Count total available books
+DECLARE availableCount : INTEGER
+availableCount ← 0
+FOR i ← 1 TO 100
+    IF books[i, 4] = "Yes" THEN
+        availableCount ← availableCount + 1
+    ENDIF
+NEXT i
+OUTPUT "Total available books:", availableCount</code></pre>
+                        </li>
+                        <li><strong>File Processing:</strong>
+                            <pre class="bg-white p-3 rounded my-2 text-sm"><code>DECLARE totalMarks, studentCount : INTEGER
+DECLARE studentName, studentMark : STRING
+DECLARE averageMark : REAL
+
+totalMarks ← 0
+studentCount ← 0
+
+OPENFILE("students.txt", "READ")
+
+WHILE NOT EOF("students.txt") DO
+    studentName ← READFILE("students.txt")
+    studentMark ← READFILE("students.txt")
+    totalMarks ← totalMarks + studentMark
+    studentCount ← studentCount + 1
+ENDWHILE
+
+CLOSEFILE("students.txt")
+
+IF studentCount > 0 THEN
+    averageMark ← totalMarks / studentCount
+    OUTPUT "Class average is:", averageMark
+    OPENFILE("results.txt", "WRITE")
+    WRITEFILE("results.txt", "Class Average: " & averageMark)
+    CLOSEFILE("results.txt")
+ELSE
+    OUTPUT "No student data found."
+ENDIF</code></pre>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Day 4 -->
+        <section class="study-card">
+            <h2 class="text-2xl sm:text-3xl font-bold text-red-800">Day 4: Databases and Boolean Logic</h2>
+            <p class="mb-4 text-gray-700">
+                <strong class="font-bold">Topics Covered:</strong>
+                <ul class="list-disc list-inside">
+                    <li>Database concepts: fields, records, tables, primary keys.</li>
+                    <li>Database data types.</li>
+                    <li>Structured Query Language (SQL) commands.</li>
+                    <li>Logic gates: NOT, AND, OR, NAND, NOR, XOR.</li>
+                    <li>Boolean expressions, truth tables, and logic circuits.</li>
+                </ul>
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">Concept Definitions</h3>
+            <ul class="list-disc list-inside text-gray-700">
+                <li><strong>Database:</strong> A structured collection of data that allows for the retrieval of information.</li>
+                <li><strong>Field:</strong> A column in a database table that stores a single piece of data for each record, like "StudentName" or "Age".</li>
+                <li><strong>Record:</strong> A row in a database table containing all the information about a single entity, such as a student or a product.</li>
+                <li><strong>Primary Key:</strong> A field in a database table that uniquely identifies each record.</li>
+                <li><strong>SQL (Structured Query Language):</strong> The standard language for querying a database to retrieve or manipulate data.</li>
+                <li><strong>Logic Gate:</strong> An electronic circuit that takes one or more binary inputs and produces a single binary output.</li>
+                <li><strong>Truth Table:</strong> A table that lists all possible combinations of binary inputs to a logic circuit and the resulting output.</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">Examples</h3>
+            <p class="text-gray-700"><strong>Database Table Structure:</strong></p>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>StudentID</th>
+                        <th>StudentName</th>
+                        <th>Age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1234</td>
+                        <td>Jane Doe</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>5678</td>
+                        <td>John Smith</td>
+                        <td>16</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="mt-2 text-gray-700">In this table, `StudentID` is the <strong>primary key</strong>, `StudentName` and `Age` are <strong>fields</strong>, and each row is a <strong>record</strong>.</p>
+            
+            <p class="text-gray-700 mt-4"><strong>SQL Query:</strong></p>
+            <pre class="bg-gray-100 p-3 rounded my-2 text-sm"><code>SELECT PlantName, PlantPrice
+FROM PlantSale
+WHERE PlantHeight > 1.8;</code></pre>
+            
+            <p class="text-gray-700 mt-4"><strong>AND gate symbol and truth table:</strong> </p>
+            <div class="image-container">
+                            </div>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Database Query Process Flowchart</h4>
+            <div class="bg-white p-4 border rounded-lg mb-4">
+                <div class="text-center space-y-2">
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">User enters query</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">Process query (SELECT, FROM, WHERE)</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">Retrieve data from table</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">Filter records based on WHERE clause</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">OUTPUT filtered data</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                </div>
+            </div>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Logic Gate Circuit Evaluation Flowchart</h4>
+            <div class="bg-white p-4 border rounded-lg mb-4">
+                <div class="text-center space-y-2">
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">START</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">Evaluate inputs (A, B, C)</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">Evaluate inner gates (A AND B), (NOT B AND C)</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-blue-200 px-4 py-2">Evaluate main gate ((A AND B) OR (NOT B AND C))</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-yellow-200 px-4 py-2">OUTPUT X</div>
+                    <div class="text-3xl leading-none">↓</div>
+                    <div class="inline-block bg-green-200 rounded-full px-4 py-2">STOP</div>
+                </div>
+            </div>
+            
+
+            <h3 class="text-xl font-semibold mt-8 mb-2">Exercises</h3>
+            <p class="mt-4 text-gray-700"><strong>Real Exam Questions: Databases and Boolean Logic</strong></p>
+            <ol class="list-decimal list-inside pl-4 mt-2 text-gray-700">
+                <li><strong>Boolean Logic:</strong>
+                    <ul class="list-none mt-2">
+                        <li>(a) Consider the logic expression `X = (A XOR B) AND (NOT B AND C)`. Draw a logic circuit for this expression. Each logic gate must have a maximum of two inputs. Do not simplify this logic expression. </li>
+                        <li>(b) Complete the truth table from the given logic expression.
+                            <table class="styled-table mt-2">
+                                <thead>
+                                    <tr><th>A</th><th>B</th><th>C</th><th>X</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                                    <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                                    <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                                    <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                                    <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                                    <tr><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+                                    <tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                                    <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                                </tbody>
+                            </table>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Database Concepts:</strong>
+                    <ul class="list-disc list-inside mt-2">
+                        <li>A storage unit rental company wants to set up a new database table called `StorageUnits` to store details of the storage units. The table needs to store details such as `SizeMetres`, `Position`, `Hoist`, `PriceMonth`, and `StorageID`. Give the name of the field that would be used for the primary key and state the reason.</li>
+                        <li>Complete the table to identify the most appropriate data type for the fields in the table `StorageUnits`.
+                            <table class="styled-table mt-2">
+                                <thead><tr><th>Field</th><th>Data type</th></tr></thead>
+                                <tbody>
+                                    <tr><td>SizeMetres</td><td>Real</td></tr>
+                                    <tr><td>Position</td><td>Text</td></tr>
+                                    <tr><td>Hoist</td><td>Boolean</td></tr>
+                                    <tr><td>StorageID</td><td>Text</td></tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>Complete this Structured Query Language (SQL) statement to display only the storage code, price, and size in square metres of all the storage units where there is a hoist available.</li>
+                        <pre class="bg-gray-100 p-3 rounded my-2 text-sm"><code>SELECT StorageID, PriceMonth, SizeMetres
+FROM StorageUnits
+WHERE Hoist = TRUE</code></pre>
+                    </ul>
+                </li>
+            </ol>
+            <div class="mt-4 flex-container">
+                <p>&nbsp;</p>
+                <button class="toggle-btn" onclick="toggleSection('day4-answers')">Show/Hide Answers</button>
+            </div>
+            <div id="day4-answers" class="section-content">
+                <div class="answer-content">
+                    <h4 class="font-bold text-green-700">Answers</h4>
+                    <ol class="list-decimal list-inside pl-4 mt-2 text-gray-800">
+                        <li><strong>Boolean Logic:</strong>
+                            <p class="mb-2">The logic circuit for `X = (A XOR B) AND (NOT B AND C)` looks like this:</p>
+                            <div class="image-container">
+                                <img src="https://placehold.co/400x200/A0A0A0/FFFFFF?text=Logic+Circuit+for+X+=+(A+XOR+B)+AND+(NOT+B+AND+C)">
+                            </div>
+                            <table class="styled-table mt-2">
+                                <thead>
+                                    <tr><th>A</th><th>B</th><th>C</th><th>X</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                                    <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                                    <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                                    <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                                    <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                                    <tr><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+                                    <tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+                                    <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li><strong>Database Concepts:</strong>
+                            <ul class="list-disc list-inside text-gray-800">
+                                <li>The primary key is <strong>StorageID</strong> because it is a unique code that identifies each storage unit, ensuring no two records are the same.</li>
+                                <li>
+                                    <table class="styled-table mt-2">
+                                        <thead><tr><th>Field</th><th>Data type</th></tr></thead>
+                                        <tbody>
+                                            <tr><td>SizeMetres</td><td>Real</td></tr>
+                                            <tr><td>Position</td><td>Text</td></tr>
+                                            <tr><td>Hoist</td><td>Boolean</td></tr>
+                                            <tr><td>StorageID</td><td>Text</td></tr>
+                                        </tbody>
+                                    </table>
+                                </li>
+                                <li>
+                                    <pre class="bg-white p-3 rounded my-2 text-sm"><code>SELECT StorageID, PriceMonth, SizeMetres
+FROM StorageUnits
+WHERE Hoist = TRUE</code></pre>
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section class="study-card">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-700">Extra Exercises</h2>
+            <p class="text-gray-700">This section contains additional questions from past papers to help you prepare for your exam.</p>
+            <div id="extra-exercises-content">
+                <!-- Set 1 -->
+                <h3 class="text-xl font-semibold mt-8 mb-2">Set 1: Algorithms and Data Types (from 0478/21/M/J/23)</h3>
+                <ol class="list-decimal list-inside pl-4 mt-2 text-gray-700">
+                    <li><strong>Data Types:</strong> Tick one box to show the name of the data structure used to store a collection of data of the same data type.
+                        <ul class="list-none mt-2">
+                            <li><input type="radio" name="ext1q1"> A. Array</li>
+                            <li><input type="radio" name="ext1q1"> B. Constant</li>
+                            <li><input type="radio" name="ext1q1"> C. Function</li>
+                            <li><input type="radio" name="ext1q1"> D. Variable</li>
+                        </ul>
+                    </li>
+                    <li><strong>Validation:</strong> A validation check is used to make sure that any value that is input is an integer between 30 and 200 inclusive. Give one example of each type of test data to check that the validation check is working as intended. Each example of test data must be different. Give a reason for each of your choices.
+                        <ul class="list-disc list-inside mt-2">
+                            <li>Normal test data</li>
+                            <li>Abnormal test data</li>
+                            <li>Extreme test data</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pseudocode Errors:</strong> An algorithm has been written to allow some numbers to be input. All the positive numbers that are input are totalled and this total is output at the end. An input of 0 stops the algorithm. Identify the four errors in the pseudocode and suggest a correction for each error.
+                        <pre class="bg-gray-100 p-3 rounded my-2 text-sm"><code>01 Exit ← 1
+02 WHILE Exit < > 0 DO
+03     INPUT Number
+04     IF Number < 0
+05     THEN
+06         Total ← Total + Number
+07     ELSE
+08         IF Number = 0
+09         THEN
+10             Exit ← 1
+11         ENDIF
+12     ENDIF
+13 ENDIF
+14 OUTPUT "The total value of your numbers is", Number</code></pre>
+                    </li>
+                </ol>
+                <div class="mt-4 flex-container">
+                    <p>&nbsp;</p>
+                    <button class="toggle-btn" onclick="toggleSection('extra-answers-set1')">Show/Hide Answers</button>
+                </div>
+                <div id="extra-answers-set1" class="section-content">
+                    <div class="answer-content">
+                        <h4 class="font-bold text-green-700">Answers - Set 1</h4>
+                        <ol class="list-decimal list-inside pl-4 mt-2 text-gray-800">
+                            <li><strong>Data Types:</strong> A. Array</li>
+                            <li><strong>Validation:</strong>
+                                <ul class="list-disc list-inside text-gray-800">
+                                    <li><strong>Normal test data:</strong> `100`. Reason: It is a value within the acceptable range.</li>
+                                    <li><strong>Abnormal test data:</strong> `25`. Reason: It is a value outside the acceptable range.</li>
+                                    <li><strong>Extreme test data:</strong> `30` or `200`. Reason: It is the lowest or highest value within the acceptable range.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Pseudocode Errors:</strong>
+                                <ul class="list-disc list-inside text-gray-800">
+                                    <li><strong>Error 1:</strong> The `Total` variable is not initialized. <strong>Correction:</strong> `Total ← 0` before the loop.</li>
+                                    <li><strong>Error 2:</strong> Line 6 should add positive numbers. <strong>Correction:</strong> `Total ← Total + Number` should be in the `ELSE` block of line 4.</li>
+                                    <li><strong>Error 3:</strong> Line 10 should terminate the loop, but it is not. <strong>Correction:</strong> `Exit ← 0` to match the loop condition.</li>
+                                    <li><strong>Error 4:</strong> Line 14 outputs the last number, not the total. <strong>Correction:</strong> `OUTPUT "The total value of your numbers is", Total`.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Set 2 -->
+                <h3 class="text-xl font-semibold mt-8 mb-2">Set 2: Arrays and Logic (from 0478/21/O/N/22)</h3>
+                <ol class="list-decimal list-inside pl-4 mt-2 text-gray-700">
+                    <li><strong>Data Types:</strong> Tick one box in each row to identify the most appropriate data type for each description. Only one tick per column.
+                        <table class="styled-table">
+                            <thead>
+                                <tr><th>Description</th><th>Boolean</th><th>Char</th><th>Integer</th><th>Real</th><th>String</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>a single character from the keyboard</td><td></td><td></td><td></td><td></td><td></td></tr>
+                                <tr><td>multiple characters from the keyboard</td><td></td><td></td><td></td><td></td><td></td></tr>
+                                <tr><td>only one of two possible values</td><td></td><td></td><td></td><td></td><td></td></tr>
+                                <tr><td>only whole numbers</td><td></td><td></td><td>✅</td><td></td><td></td></tr>
+                                <tr><td>any number</td><td></td><td></td><td></td><td>✅</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </li>
+                    <li><strong>Flowchart:</strong> The flowchart shows an algorithm that should allow 60 test results to be entered. Complete the flowchart to allow 60 test results to be entered into the variable `Score`. Each test result is checked to see if it is 50 or more. If it is, the test result is assigned to the `Pass` array. Otherwise, it is assigned to the `Fail` array. </li>
+                    <li><strong>Database:</strong> A computer game shop records its stock levels in a database table called `GAMES`. Complete the query-by-example grid to output all the games that have no stock and that are on order with the supplier. Display only the `GameID`, `GameName` and `GamePrice` fields in alphabetical order of the name of the game.
+                        <table class="styled-table">
+                            <thead>
+                                <tr><th>Field:</th><th>GameID</th><th>GameName</th><th>GamePrice</th><th>NumberStock</th><th>OnOrder</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Table:</td><td>GAMES</td><td>GAMES</td><td>GAMES</td><td>GAMES</td><td>GAMES</td></tr>
+                                <tr><td>Sort:</td><td></td><td>Ascending</td><td></td><td></td><td></td></tr>
+                                <tr><td>Show:</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+                                <tr><td>Criteria:</td><td></td><td></td><td></td><td>0</td><td>TRUE</td></tr>
+                                <tr><td>or:</td><td></td><td></td><td></td><td></td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </li>
+                </ol>
+                <div class="mt-4 flex-container">
+                    <p>&nbsp;</p>
+                    <button class="toggle-btn" onclick="toggleSection('extra-answers-set2')">Show/Hide Answers</button>
+                </div>
+                <div id="extra-answers-set2" class="section-content">
+                    <div class="answer-content">
+                        <h4 class="font-bold text-green-700">Answers - Set 2</h4>
+                        <ol class="list-decimal list-inside pl-4 mt-2 text-gray-800">
+                            <li><strong>Data Types:</strong>
+                                <table class="styled-table">
+                                    <thead>
+                                        <tr><th>Description</th><th>Boolean</th><th>Char</th><th>Integer</th><th>Real</th><th>String</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>a single character from the keyboard</td><td></td><td>✅</td><td></td><td></td><td></td></tr>
+                                        <tr><td>multiple characters from the keyboard</td><td></td><td></td><td></td><td></td><td>✅</td></tr>
+                                        <tr><td>only one of two possible values</td><td>✅</td><td></td><td></td><td></td><td></td></tr>
+                                        <tr><td>only whole numbers</td><td></td><td></td><td>✅</td><td></td><td></td></tr>
+                                        <tr><td>any number</td><td></td><td></td><td></td><td>✅</td><td></td></tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li><strong>Flowchart:</strong>
+                                <p>The flowchart should be completed as follows:</p>
+                                <div class="image-container">
+                                    <img src="https://placehold.co/400x300/A0A0A0/FFFFFF?text=Completed+Flowchart+for+Test+Results">
+                                </div>
+                            </li>
+                            <li><strong>Database:</strong>
+                                <table class="styled-table">
+                                    <thead>
+                                        <tr><th>Field:</th><th>GameID</th><th>GameName</th><th>GamePrice</th><th>NumberStock</th><th>OnOrder</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Table:</td><td>GAMES</td><td>GAMES</td><td>GAMES</td><td>GAMES</td><td>GAMES</td></tr>
+                                        <tr><td>Sort:</td><td></td><td>Ascending</td><td></td><td></td><td></td></tr>
+                                        <tr><td>Show:</td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox" checked></td><td><input type="checkbox"></td><td><input type="checkbox"></td></tr>
+                                        <tr><td>Criteria:</td><td></td><td></td><td></td><td>0</td><td>TRUE</td></tr>
+                                        <tr><td>or:</td><td></td><td></td><td></td><td></td><td></td></tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            if (section.style.display === "none" || section.style.display === "") {
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
+        }
+
+        function showInteractive(id) {
+            const interactiveContent = document.getElementById(id);
+            const isVisible = interactiveContent.style.display === "block";
+            interactiveContent.style.display = isVisible ? "none" : "block";
+        }
+
+        function normalizeString(str) {
+            return str.replace(/\s/g, '').toLowerCase();
+        }
+
+        function checkBubbleSort() {
+            const feedbackElement = document.getElementById('bubble-sort-feedback');
+            const pass1 = document.getElementById('pass1').value.trim();
+            const pass2 = document.getElementById('pass2').value.trim();
+            const pass3 = document.getElementById('pass3').value.trim();
+
+            const correctPass1 = "2, 5, 1, 8";
+            const correctPass2 = "2, 1, 5, 8";
+            const correctPass3 = "1, 2, 5, 8";
+
+            let correctCount = 0;
+            if (normalizeString(pass1) === normalizeString(correctPass1)) {
+                correctCount++;
+            }
+            if (normalizeString(pass2) === normalizeString(correctPass2)) {
+                correctCount++;
+            }
+            if (normalizeString(pass3) === normalizeString(correctPass3)) {
+                correctCount++;
+            }
+
+            if (correctCount === 3) {
+                feedbackElement.textContent = "Correct! You've traced the Bubble Sort algorithm perfectly.";
+                feedbackElement.className = "feedback correct";
+            } else {
+                feedbackElement.textContent = `Incorrect. You got ${correctCount} out of 3 steps correct. The correct answers are: Pass 1: ${correctPass1}, Pass 2: ${correctPass2}, Pass 3: ${correctPass3}.`;
+                feedbackElement.className = "feedback incorrect";
+            }
+        }
+
+        function checkCodeErrors() {
+            const feedbackElement = document.getElementById('error-detective-feedback');
+            const errors = [
+                { line: 2, correction: "Total ← 0" },
+                { line: 5, correction: "IF Number > 0 THEN" },
+                { line: 10, correction: "UNTIL Number = 0" },
+                { line: 11, correction: "OUTPUT Total" }
+            ];
+
+            let correctCount = 0;
+            const userAnswers = [
+                { line: document.getElementById('error1-line').value, correction: document.getElementById('error1-correction').value.trim() },
+                { line: document.getElementById('error2-line').value, correction: document.getElementById('error2-correction').value.trim() },
+                { line: document.getElementById('error3-line').value, correction: document.getElementById('error3-correction').value.trim() },
+                { line: document.getElementById('error4-line').value, correction: document.getElementById('error4-correction').value.trim() }
+            ];
+
+            const foundErrors = {};
+
+            userAnswers.forEach(userAnswer => {
+                const userLine = parseInt(userAnswer.line);
+                const userCorrection = normalizeString(userAnswer.correction);
+
+                errors.forEach(correctError => {
+                    if (userLine === correctError.line && userCorrection === normalizeString(correctError.correction)) {
+                        if (!foundErrors[userLine]) {
+                            correctCount++;
+                            foundErrors[userLine] = true;
+                        }
+                    }
+                });
+            });
+
+            if (correctCount === errors.length) {
+                feedbackElement.textContent = "Excellent! You found all the errors and corrected them perfectly.";
+                feedbackElement.className = "feedback correct";
+            } else {
+                feedbackElement.textContent = `You got ${correctCount} out of ${errors.length} corrections correct. Keep practicing!`;
+                feedbackElement.className = "feedback incorrect";
+            }
+        }
+    </script>
+</body>
+</html>
