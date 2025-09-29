@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 7: Bridge Assessment & Analysis</title>
+    <style>
+        /* CSS Reset and Global Styles */
+        :root {
+            --primary: #3b82f6; /* Blue 500 */
+            --primary-dark: #1e40af; /* Blue 800 */
+            --background-light: #f9fafb; /* Gray 50 */
+            --text-light: #1f2937; /* Gray 800 */
+            --surface-light: #ffffff;
+            --surface-dark: #1f2937;
+            --background-dark: #0f172a; /* Slate 900 */
+            --text-dark: #f3f4f6; /* Gray 100 */
+            --success: #10b981; /* Emerald 500 */
+            --error: #ef4444; /* Red 500 */
+            --interact: #fbbf24; /* Amber 400 */
+        }
+
+        /* Light Mode (Default) */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-light);
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 64px; /* Space for fixed header */
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+        body.dark-mode .card, body.dark-mode header, body.dark-mode nav a, body.dark-mode .accordion-title, body.dark-mode .modal-content, body.dark-mode .vocab-sidebar {
+            background-color: var(--surface-dark);
+            color: var(--text-dark);
+            border-color: #374151; /* Gray 700 */
+        }
+        body.dark-mode input, body.dark-mode textarea {
+            background-color: #374151;
+            color: var(--text-dark);
+            border-color: #4b5563;
+        }
+        body.dark-mode .progress-bar-fill {
+            background-color: var(--primary);
+        }
+        body.dark-mode .btn-primary {
+            background-color: var(--primary);
+            color: var(--surface-dark);
+        }
+        body.dark-mode .btn-secondary {
+            background-color: #4b5563;
+            color: var(--text-dark);
+        }
+
+        /* Utility Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .card {
+            background-color: var(--surface-light);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e5e7eb;
+        }
+        h2 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: var(--text-light);
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .badge-time { background-color: var(--interact); color: var(--text-light); }
+        .badge-success { background-color: var(--success); color: white; }
+        .badge-error { background-color: var(--error); color: white; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .grid { display: grid; }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        @media (max-width: 768px) {
+            .grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        }
+
+        /* Header and Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--surface-light);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        nav h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        nav ul {
+            display: none; /* Hide full nav on small screens */
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        @media (min-width: 768px) {
+            nav ul {
+                display: flex;
+                gap: 1rem;
+            }
+        }
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        nav a:hover {
+            background-color: #e5e7eb;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            height: 4px;
+            width: 100%;
+            background-color: #d1d5db;
+        }
+        #progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--success);
+            transition: width 0.3s ease;
+        }
+
+        /* Accordion Style */
+        .accordion-item {
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+        .accordion-title {
+            padding: 1rem;
+            background-color: #f3f4f6;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-content {
+            padding: 0 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        .accordion-content.open {
+            padding: 1rem;
+            max-height: 1000px; /* Large enough for content */
+        }
+        .accordion-icon {
+            transition: transform 0.3s;
+        }
+        .accordion-icon.rotate {
+            transform: rotate(90deg);
+        }
+
+        /* Differentiated Content Tabs */
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            cursor: pointer;
+            background-color: #f3f4f6;
+        }
+        .tab-btn.active {
+            background-color: var(--surface-light);
+            border-bottom: 1px solid var(--surface-light);
+            font-weight: 600;
+        }
+        .tab-content {
+            border: 1px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        /* Interactive Quiz Styles */
+        .quiz-option {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            border: 1px solid #d1d5db;
+            transition: background-color 0.15s;
+        }
+        .quiz-option:hover {
+            background-color: #f3f4f6;
+        }
+        .quiz-option.correct {
+            background-color: #d1fae5; /* Green 100 */
+            border-color: var(--success);
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2; /* Red 100 */
+            border-color: var(--error);
+        }
+        .feedback {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        .feedback.success {
+            background-color: #d1fae5;
+            color: var(--success);
+        }
+        .feedback.error {
+            background-color: #fee2e2;
+            color: var(--error);
+        }
+
+        /* Vocabulary Sidebar */
+        .vocab-sidebar {
+            position: fixed;
+            right: 0;
+            top: 64px;
+            width: 300px;
+            height: calc(100% - 64px);
+            background-color: var(--surface-light);
+            box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 999;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .vocab-sidebar.open {
+            transform: translateX(0);
+        }
+        #vocab-toggle-btn {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) translateX(100%);
+            z-index: 1001;
+            padding: 0.75rem 0.5rem;
+            border-radius: 0.5rem 0 0 0.5rem;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: white;
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+        }
+        .vocab-list {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .vocab-item {
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px dotted #d1d5db;
+        }
+        .vocab-term {
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        .vocab-definition {
+            font-size: 0.875rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Responsive adjustments for sidebar */
+        @media (max-width: 768px) {
+            .vocab-sidebar {
+                width: 100%;
+                top: 0;
+                height: 100%;
+                padding-top: 4rem;
+            }
+            #vocab-toggle-btn {
+                top: 64px;
+                right: -20px;
+                transform: rotate(90deg) translateX(50%);
+                writing-mode: horizontal-tb;
+            }
+        }
+
+        /* Simple CSS Animations/Graphics for Failure Modes */
+        .failure-box {
+            border: 2px solid var(--text-light);
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        .failure-line {
+            position: absolute;
+            height: 10px;
+            width: 80%;
+            background-color: var(--primary);
+            border-radius: 5px;
+        }
+        .buckling .failure-line {
+            /* Animation for buckling/compression failure */
+            animation: buckle 2s infinite alternate;
+        }
+        @keyframes buckle {
+            0% { transform: scaleX(1); }
+            50% { transform: scaleX(0.8) translateY(10px); }
+            100% { transform: scaleX(1); }
+        }
+        .shear .failure-line {
+            /* Representation of joint shear */
+            background-color: var(--error);
+            width: 10%;
+            height: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .shear .failure-line:before, .shear .failure-line:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #fbbf24;
+            top: 0;
+            animation: shear-split 1.5s infinite alternate;
+        }
+        .shear .failure-line:before { left: -100%; }
+        .shear .failure-line:after { right: -100%; }
+        @keyframes shear-split {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(10px); }
+        }
+        .tension .failure-line {
+            /* Animation for tension failure (stretching/snapping) */
+            background-color: var(--success);
+            width: 90%;
+            animation: tension-stretch 1.5s infinite alternate;
+        }
+        @keyframes tension-stretch {
+            0% { width: 90%; }
+            50% { width: 95%; background-color: var(--success); }
+            51% { width: 10%; background-color: var(--error); opacity: 0; }
+            52% { opacity: 1; }
+            100% { width: 90%; background-color: var(--success); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header and Navigation -->
+    <header>
+        <nav>
+            <h1 class="font-extrabold">Bridge Assessment & Analysis</h1>
+            <div class="flex items-center gap-3">
+                <button id="dark-mode-toggle" class="btn btn-secondary">☀️ / 🌙</button>
+                <a href="#objectives" class="hidden md:block">Goals</a>
+                <a href="#concepts" class="hidden md:block">Concepts</a>
+                <a href="#activities" class="hidden md:block">Activities</a>
+                <a href="#synthesis" class="hidden md:block">Assessment</a>
+            </div>
+        </nav>
+        <div id="progress-bar"><div id="progress-bar-fill"></div></div>
+    </header>
+
+    <div class="container">
+
+        <!-- Section 1: Objectives and Motivation (5 min) -->
+        <section id="objectives" class="card">
+            <h2>1. Objectives: From Prototype to Portfolio</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <h3 class="text-lg">Cognitive Objectives</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Calculate <strong>Percent Error</strong> between predicted and actual failure loads.</li>
+                        <li>Identify and categorize common structural <strong>Failure Modes</strong>.</li>
+                        <li>Apply theoretical concepts (force analysis, structural principles) in a <strong>Summative Quiz</strong>.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg">Social-Emotional Objectives</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Practice <strong>Systematic Load Testing</strong> with precision and coordination.</li>
+                        <li>Engage in <strong>Critical Thinking</strong> by analyzing discrepancies in results.</li>
+                        <li>Demonstrate <strong>Self-Regulation</strong> by maintaining focus during individual assessment (Quiz).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="mt-4">Connection to Prior Knowledge</h3>
+            <p>We're moving from *theory* (Design Report, Predicted Load) to *reality* (Construction, <strong>Actual Failure Load</strong>). Before we begin the final QC checks, what's the <strong>most critical</strong> factor for maximizing strength that you implemented in your joints?</p>
+            <input type="text" id="prior-knowledge-input" class="w-full p-2 border rounded mt-2" placeholder="e.g., Adhesive coverage, alignment, member redundancy">
+            <button class="btn btn-primary mt-2" onclick="showMotivationFeedback()">Submit & Start</button>
+            <div id="motivation-feedback" class="feedback success hidden mt-2"></div>
+        </section>
+
+        <!-- Section 2: Concept Exploration (15 min) -->
+        <section id="concepts" class="card">
+            <h2>2. Quality Control & Failure Modes</h2>
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="basic">Basic: QC Log</button>
+                <button class="tab-btn" data-tab="intermediate">Intermediate: Failure Modes</button>
+                <button class="tab-btn" data-tab="advanced">Advanced: Material Science</button>
+            </div>
+
+            <!-- Basic Content: Construction Quality Log (5% Value) -->
+            <div id="tab-basic" class="tab-content">
+                <h3>Construction Quality Log (5%)</h3>
+                <p>The <strong>Construction Quality Log</strong> documents your adherence to precision, earning 5% of your Portfolio grade.</p>
+                <ul class="list-disc list-inside ml-4 space-y-2">
+                    <li><strong>Measurement Accuracy:</strong> All members must be within $\pm 2$mm of the blueprint dimensions. Check your finished bridge now!</li>
+                    <li><strong>Joint Strength:</strong> Did you implement the <strong>optimal joint methods</strong>? Ensure consistent and full adhesive application at all critical connection points.</li>
+                    <li><strong>Alignment:</strong> Verify that all joints are *square* and load-bearing members are *straight* to prevent premature local failure.</li>
+                </ul>
+            </div>
+
+            <!-- Intermediate Content: Failure Modes (Key Concept) -->
+            <div id="tab-intermediate" class="tab-content hidden">
+                <h3>Understanding Failure Modes</h3>
+                <p>Observing the <strong>Failure Mode</strong> is the most critical part of <strong>Systematic Load Testing</strong>. This analysis is worth 10% of your Portfolio grade.</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="failure-box buckling">
+                            <div class="failure-line"></div>
+                        </div>
+                        <strong>Buckling (Compression Failure):</strong> Typically occurs in long, slender top chords. The member curves and gives way under compressive force.
+                    </div>
+                    <div>
+                        <div class="failure-box shear">
+                            <div class="failure-line"></div>
+                        </div>
+                        <strong>Joint Shear Failure:</strong> The adhesive bond fails (shears) between two connecting members, usually due to poor application or an over-reliance on the glue's strength.
+                    </div>
+                    <div>
+                        <div class="failure-box tension">
+                            <div class="failure-line"></div>
+                        </div>
+                        <strong>Material Tension Failure:</strong> The spaghetti strand itself snaps due to being pulled apart (under tensile force). This indicates maximum utilization of the material's strength.
+                    </div>
+                    <div>
+                        <p class="mt-4 p-4 border rounded"><strong>Action:</strong> During testing, identify which mode occurred *first*. This is the <strong>weak link</strong> in your design.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Content: Structural Principles -->
+            <div id="tab-advanced" class="tab-content hidden">
+                <h3>Advanced Structural Principles</h3>
+                <p>The Quiz (25%) will test your knowledge of underlying principles.</p>
+                <div class="accordion-item">
+                    <div class="accordion-title">Force Analysis & Load Distribution <span class="accordion-icon">></span></div>
+                    <div class="accordion-content">
+                        <p>A stable structure distributes external loads across multiple members. The Design Report required the <strong>calculation of forces on critical members</strong>. If the actual failure load is much lower than predicted, your load distribution model was likely flawed, or construction quality was low.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-title">Stress vs. Strain <span class="accordion-icon">></span></div>
+                    <div class="accordion-content">
+                        <p><strong>Stress</strong> is the force per unit area. <strong>Strain</strong> is the material deformation resulting from that stress. Spaghetti is brittle and performs poorly in high-strain situations (flexing). The goal is to design a rigid structure where load is borne via pure compression and tension.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Applied Examples (10 min) -->
+        <section id="applied-examples" class="card">
+            <h2>3. Applied Example: Percent Error</h2>
+            <p>The Portfolio requires you to calculate the <strong>Percent Error</strong> between your <strong>Predicted Load</strong> (from your Design Report) and the <strong>Actual Failure Load</strong> (from testing).</p>
+
+            $$ \text{Percent Error} = \frac{|\text{Actual Failure Load} - \text{Predicted Load}|}{\text{Predicted Load}} \times 100\% $$
+
+            <h3>Interactive Calculator (Testing Data & Analysis - 10% Value)</h3>
+            <div class="grid grid-cols-2 gap-4 mt-4">
+                <input type="number" id="predicted-load" class="p-2 border rounded" placeholder="Predicted Load (kg)">
+                <input type="number" id="actual-load" class="p-2 border rounded" placeholder="Actual Failure Load (kg)">
+            </div>
+            <button class="btn btn-primary mt-3 w-full" onclick="calculatePercentError()">Calculate Percent Error</button>
+            <div id="error-result" class="mt-3 p-3 border rounded">
+                <p><strong>Result:</strong> <span id="error-value">--</span></p>
+                <p class="text-sm mt-1" id="error-analysis">Enter values above to analyze your result.</p>
+            </div>
+        </section>
+
+        <!-- Section 4: Interactive Activities (20 min) -->
+        <section id="activities" class="card">
+            <h2>4. Activity: Summative Quiz Prep</h2>
+            <p class="text-sm">This short quiz helps prepare you for the theoretical section of the <strong>Summative Quiz (25%)</strong>.</p>
+
+            <div id="quiz-container" class="mt-4">
+                <!-- Quiz Question 1 -->
+                <div class="quiz-question mb-6" data-level="basic">
+                    <p class="font-semibold">Q1 (Basic): Which criterion MUST be met for the Construction Quality Log (5% value)?</p>
+                    <div class="quiz-options mt-2" data-answer="1">
+                        <div class="quiz-option" data-option="1" onclick="checkQuizAnswer(this, 1)">Measurement Accuracy ($\pm 2$mm)</div>
+                        <div class="quiz-option" data-option="2" onclick="checkQuizAnswer(this, 1)">Predicted Load is within 10% of Actual Load</div>
+                        <div class="quiz-option" data-option="3" onclick="checkQuizAnswer(this, 1)">The use of hot glue only</div>
+                    </div>
+                    <div class="feedback hidden" data-feedback="1"></div>
+                </div>
+
+                <!-- Quiz Question 2 -->
+                <div class="quiz-question mb-6" data-level="intermediate">
+                    <p class="font-semibold">Q2 (Intermediate): What term best describes the failure when a top chord curves and yields under force?</p>
+                    <div class="quiz-options mt-2" data-answer="2">
+                        <div class="quiz-option" data-option="1" onclick="checkQuizAnswer(this, 2)">Material Tension Failure</div>
+                        <div class="quiz-option" data-option="2" onclick="checkQuizAnswer(this, 2)">Buckling</div>
+                        <div class="quiz-option" data-option="3" onclick="checkQuizAnswer(this, 2)">Joint Shear Failure</div>
+                    </div>
+                    <div class="feedback hidden" data-feedback="2"></div>
+                </div>
+            </div>
+            <p class="text-right text-sm">Score: <span id="quiz-score">0</span> / 2</p>
+        </section>
+
+        <!-- Section 5: Synthesis and Assessment (10 min) -->
+        <section id="synthesis" class="card">
+            <h2>5. Synthesis & Portfolio Reflection</h2>
+            <p>The <strong>Reflective Essay (5% value)</strong> requires critical thinking. Use these prompts to draft your final thoughts.</p>
+
+            <h3 class="text-lg">Guided Reflection Prompts</h3>
+            <div class="accordion-item">
+                <div class="accordion-title">Analyze Results (Comparison) <span class="accordion-icon">></span></div>
+                <div class="accordion-content">
+                    <p>Compare your <strong>Actual Failure Load</strong> to your <strong>Predicted Load</strong>. Was the actual load higher or lower? Why? (Hint: Does your Percent Error calculation support your initial design assumptions?)</p>
+                    <textarea class="w-full p-2 border rounded mt-2" rows="3" placeholder="Draft your analysis here..."></textarea>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-title">Failure Mode Analysis (Cause) <span class="accordion-icon">></span></div>
+                <div class="accordion-content">
+                    <p>What was the primary <strong>Failure Mode</strong> (Buckling, Joint Shear, or Material Tension)? Based on this, where was the structural 'weak link' in your finished prototype?</p>
+                    <textarea class="w-full p-2 border rounded mt-2" rows="3" placeholder="Draft your analysis here..."></textarea>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-title">Future Improvements (Actionable Changes) <span class="accordion-icon">></span></div>
+                <div class="accordion-content">
+                    <p>Based on your failure analysis, outline <strong>two specific, actionable design changes</strong> for a future iteration. (e.g., "Change the top chord from single member to a bundled member to prevent buckling.")</p>
+                    <textarea class="w-full p-2 border rounded mt-2" rows="3" placeholder="Draft your analysis here..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Wrap-up and Next Steps (5 min) -->
+        <section id="wrap-up" class="card">
+            <h2>6. Wrap-up & Final Submission Checklist</h2>
+            <h3 class="text-lg">Goal Achievement Tracker</h3>
+            <p>Check off the tasks you have successfully completed in this session:</p>
+            <ul class="list-none space-y-2 mt-2">
+                <li><input type="checkbox" id="goal-calc" class="mr-2"> Calculated Percent Error.</li>
+                <li><input type="checkbox" id="goal-mode" class="mr-2"> Identified the bridge's Failure Mode.</li>
+                <li><input type="checkbox" id="goal-qc" class="mr-2"> Verified Construction Quality (Accuracy & Joint Strength).</li>
+                <li><input type="checkbox" id="goal-reflect" class="mr-2"> Drafted the Reflective Essay.</li>
+            </ul>
+            <p class="mt-4"><strong>Next Steps:</strong> Complete the <strong>Summative Quiz (25%)</strong> independently, then submit your finalized <strong>Bridge Design and Performance Portfolio (30%)</strong>.</p>
+        </section>
+
+        <!-- Section 7: Extension and Assignments -->
+        <section id="extension" class="card">
+            <h2>7. Extension & Differentiation</h2>
+            <div class="accordion-item">
+                <div class="accordion-title">Assignment Options (Product Differentiation) <span class="accordion-icon">></span></div>
+                <div class="accordion-content">
+                    <p>Choose ONE option for your final assignment submission:</p>
+                    <ol class="list-decimal list-inside ml-4 space-y-2">
+                        <li><strong>Standard (Report):</strong> Submit the complete written Portfolio (Design Report, QC Log, Data, Reflection).</li>
+                        <li><strong>Visual (Presentation):</strong> Create a 5-minute video presentation synthesizing the Portfolio components, focusing on the cause of failure and future design improvements.</li>
+                        <li><strong>Advanced (FEA Simulation):</strong> Use open-source structural analysis software to model your bridge and simulate the failure, comparing the digital results to your physical test data.</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-title">Advanced Reading (Extension Content) <span class="accordion-icon">></span></div>
+                <div class="accordion-content">
+                    <p>Explore concepts of <strong>Strain Energy</strong> and <strong>Elastic Modulus</strong> as they relate to brittle materials like spaghetti. Research how these factors affect the ultimate failure point in tension vs. compression.</p>
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- End Container -->
+
+    <!-- Vocabulary Sidebar -->
+    <button id="vocab-toggle-btn">Key Vocabulary</button>
+    <div id="vocab-sidebar" class="vocab-sidebar">
+        <h3>Key Terms</h3>
+        <input type="text" id="vocab-search" class="p-2 border rounded mb-3" placeholder="Search terms...">
+        <div class="vocab-list" id="vocab-list">
+            <!-- Vocabulary items will be generated here -->
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // --- Global Variables and Constants ---
+        const DURATION_MINUTES = 90;
+        const VOCABULARY = [
+            { term: "Prototype", definition: "An original or first model of something from which other forms are copied or developed." },
+            { term: "Construction", definition: "The process of assembling the designed structure from raw materials." },
+            { term: "Quality Control (QC)", definition: "A system of maintaining standards in constructed products by testing a sample against a specification (e.g., ±2mm accuracy)." },
+            { term: "Joint Application", definition: "The method and quality of adhesive use at connection points, crucial for strength transfer." },
+            { term: "Systematic Load Testing", definition: "Testing a structure using incremental, measured increases in force (e.g., 0.5 kg increments) to accurately observe behavior." },
+            { term: "Failure Load", definition: "The final weight (in kg) at which the structure can no longer support the load and undergoes complete structural failure." },
+            { term: "Failure Mode", definition: "The specific way a component or structure fails (e.g., buckling, joint shear, tension)." },
+            { term: "Predicted Load", definition: "The maximum load the design report calculations estimate the bridge can support." },
+            { term: "Actual Failure Load", definition: "The true maximum load recorded during physical testing." },
+            { term: "Percent Error", definition: "A measure of the difference between a calculated/predicted value and a measured/actual value, expressed as a percentage." },
+            { term: "Buckling", definition: "A failure mode where a slender compression member suddenly bends or collapses laterally." },
+            { term: "Joint Shear", definition: "A failure mode where the adhesive bond breaks due to sliding forces parallel to the joint's surface." },
+            { term: "Material Tension Failure", definition: "A failure mode where the material (spaghetti) is pulled apart, snapping under tensile forces." },
+            { term: "Reflective Essay", definition: "A required portfolio component that synthesizes results, analyzes the cause of failure, and proposes future improvements." },
+        ];
+        const QUIZ_ANSWERS = {
+            1: { correct: 1, explanation: "Measurement Accuracy (within ±2mm) is the defining practical skill required for the QC Log." },
+            2: { correct: 2, explanation: "Buckling is the specific term for compression failure where the member bends or yields." },
+        };
+
+        // --- Utility Functions ---
+
+        /**
+         * Toggles the open/close state of an accordion item.
+         * @param {HTMLElement} titleElement - The clicked title element.
+         */
+        function toggleAccordion(titleElement) {
+            const content = titleElement.nextElementSibling;
+            const icon = titleElement.querySelector('.accordion-icon');
+
+            // Close all other accordions
+            document.querySelectorAll('.accordion-content.open').forEach(item => {
+                if (item !== content) {
+                    item.classList.remove('open');
+                    item.style.maxHeight = 0;
+                    item.previousElementSibling.querySelector('.accordion-icon').classList.remove('rotate');
+                }
+            });
+
+            // Toggle the clicked accordion
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                content.style.maxHeight = 0;
+                icon.classList.remove('rotate');
+            } else {
+                content.classList.add('open');
+                content.style.maxHeight = content.scrollHeight + "px"; // Set max-height dynamically
+                icon.classList.add('rotate');
+            }
+        }
+
+        /**
+         * Handles the tab switching for differentiated content.
+         * @param {string} tabId - The ID of the tab content to show.
+         * @param {HTMLElement} clickedButton - The button element that was clicked.
+         */
+        function switchTab(tabId, clickedButton) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            clickedButton.classList.add('active');
+        }
+
+        /**
+         * Calculates and displays the Percent Error.
+         */
+        function calculatePercentError() {
+            const predictedLoad = parseFloat(document.getElementById('predicted-load').value);
+            const actualLoad = parseFloat(document.getElementById('actual-load').value);
+            const resultElement = document.getElementById('error-value');
+            const analysisElement = document.getElementById('error-analysis');
+
+            if (isNaN(predictedLoad) || predictedLoad <= 0 || isNaN(actualLoad)) {
+                resultElement.textContent = "--";
+                analysisElement.textContent = "Please enter valid, positive loads for both Predicted and Actual fields.";
+                return;
+            }
+
+            const percentError = (Math.abs(actualLoad - predictedLoad) / predictedLoad) * 100;
+            const errorAnalysis = `Your Percent Error is ${percentError.toFixed(2)}%.`;
+
+            let analysisText = '';
+            if (percentError < 10) {
+                analysisText = 'This is an excellent result! Your design calculations and construction quality were highly accurate.';
+            } else if (percentError < 30) {
+                analysisText = 'A solid result. There may have been minor flaws in calculation or construction, but the prediction was reasonable.';
+            } else if (actualLoad < predictedLoad) {
+                analysisText = 'The Actual Load was significantly lower than Predicted. This suggests a critical failure in Construction Quality (e.g., poor joints, low accuracy) or a major flaw in your force analysis.';
+            } else {
+                analysisText = 'The Actual Load was significantly higher than Predicted. Your calculations were too conservative, or you had unexpected redundancies in your design.';
+            }
+
+            resultElement.textContent = `${percentError.toFixed(2)}%`;
+            analysisElement.textContent = analysisText;
+
+            // Save for persistence (optional)
+            localStorage.setItem('predictedLoad', predictedLoad);
+            localStorage.setItem('actualLoad', actualLoad);
+        }
+
+        /**
+         * Toggles between light and dark mode.
+         */
+        function toggleDarkMode() {
+            const isDarkMode = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+            document.getElementById('dark-mode-toggle').textContent = isDarkMode ? '🌙 / ☀️' : '☀️ / 🌙';
+        }
+
+        /**
+         * Initializes dark mode based on localStorage or system preference.
+         */
+        function initializeDarkMode() {
+            const savedMode = localStorage.getItem('darkMode');
+            if (savedMode === 'enabled' || (savedMode === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dark-mode-toggle').textContent = '🌙 / ☀️';
+            }
+        }
+
+        /**
+         * Handles multiple choice quiz logic.
+         * @param {HTMLElement} selectedOption - The option element clicked.
+         * @param {number} questionId - The ID of the question.
+         */
+        function checkQuizAnswer(selectedOption, questionId) {
+            const optionsContainer = selectedOption.parentElement;
+            const correctAnswer = QUIZ_ANSWERS[questionId].correct;
+            const selectedAnswer = parseInt(selectedOption.dataset.option);
+            const feedbackElement = document.querySelector(`[data-feedback="${questionId}"]`);
+            const scoreElement = document.getElementById('quiz-score');
+
+            // Disable all options for this question after first try
+            Array.from(optionsContainer.children).forEach(option => {
+                option.style.pointerEvents = 'none';
+                option.classList.remove('quiz-option:hover');
+            });
+
+            let score = parseInt(scoreElement.textContent);
+            let isCorrect = false;
+
+            if (selectedAnswer === correctAnswer) {
+                selectedOption.classList.add('correct');
+                feedbackElement.classList.remove('error', 'hidden');
+                feedbackElement.classList.add('success');
+                feedbackElement.textContent = `Correct! ${QUIZ_ANSWERS[questionId].explanation}`;
+                isCorrect = true;
+                score += 1;
+            } else {
+                selectedOption.classList.add('incorrect');
+                optionsContainer.querySelector(`[data-option="${correctAnswer}"]`).classList.add('correct');
+                feedbackElement.classList.remove('success', 'hidden');
+                feedbackElement.classList.add('error');
+                feedbackElement.textContent = `Incorrect. The correct answer is option ${correctAnswer}. Reason: ${QUIZ_ANSWERS[questionId].explanation}`;
+            }
+
+            scoreElement.textContent = score;
+            localStorage.setItem(`quiz-${questionId}-status`, isCorrect ? 'correct' : 'incorrect');
+            localStorage.setItem('quiz-score', score);
+        }
+
+        /**
+         * Generates the vocabulary list HTML.
+         */
+        function generateVocabularyList(filter = '') {
+            const vocabListElement = document.getElementById('vocab-list');
+            vocabListElement.innerHTML = '';
+            const normalizedFilter = filter.toLowerCase();
+
+            VOCABULARY
+                .filter(item => item.term.toLowerCase().includes(normalizedFilter) || item.definition.toLowerCase().includes(normalizedFilter))
+                .forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('vocab-item');
+
+                const termSpan = document.createElement('span');
+                termSpan.classList.add('vocab-term');
+                termSpan.textContent = item.term;
+                termSpan.onclick = () => speakText(item.term); // Add TTS functionality
+
+                const definitionP = document.createElement('p');
+                definitionP.classList.add('vocab-definition');
+                definitionP.textContent = item.definition;
+
+                itemDiv.appendChild(termSpan);
+                itemDiv.appendChild(definitionP);
+                vocabListElement.appendChild(itemDiv);
+            });
+        }
+
+        /**
+         * Uses the Web Speech API to read the text.
+         * @param {string} text - The text to be spoken.
+         */
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = window.speechSynthesis.getVoices().find(v => v.lang === 'en-US' || v.lang === 'en-GB') || window.speechSynthesis.getVoices()[0];
+                window.speechSynthesis.speak(utterance);
+            } else {
+                console.warn("Web Speech API not supported in this browser.");
+            }
+        }
+
+        /**
+         * Handles the initial motivation input.
+         */
+        function showMotivationFeedback() {
+            const input = document.getElementById('prior-knowledge-input').value.trim();
+            const feedback = document.getElementById('motivation-feedback');
+            feedback.classList.remove('hidden', 'error');
+            feedback.classList.add('success');
+
+            if (input.toLowerCase().includes('joint') || input.toLowerCase().includes('adhesive') || input.toLowerCase().includes('alignment')) {
+                feedback.textContent = `Excellent! ${input} is correct. Joint Quality and Alignment are crucial for immediate strength transfer and preventing premature failure. Let's begin the final checks.`;
+            } else if (input) {
+                 feedback.textContent = `Good start! The most critical factor is the <strong>Joint Application</strong> (adhesive, optimal methods, and alignment) as this is where force is transferred. Let's proceed to QC.`;
+            } else {
+                 feedback.textContent = `Don't skip it! The most critical factor is <strong>Joint Application</strong>. Let's proceed to the QC log.`;
+            }
+        }
+
+
+        // --- Progress Tracking and Initialization ---
+
+        /**
+         * Updates the progress bar based on scroll position.
+         */
+        function updateProgressBar() {
+            const scroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (scroll / height) * 100;
+            document.getElementById('progress-bar-fill').style.width = scrolled + '%';
+        }
+
+        /**
+         * Initializes all interactive components and state.
+         */
+        function initialize() {
+            // 1. Dark Mode
+            initializeDarkMode();
+            document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
+
+            // 2. Accordions
+            document.querySelectorAll('.accordion-title').forEach(title => {
+                title.addEventListener('click', () => toggleAccordion(title));
+            });
+
+            // 3. Differentiated Tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchTab(btn.dataset.tab, btn));
+            });
+
+            // 4. Progress Bar
+            window.addEventListener('scroll', updateProgressBar);
+            updateProgressBar(); // Set initial state
+
+            // 5. Vocabulary Sidebar
+            generateVocabularyList();
+            document.getElementById('vocab-toggle-btn').addEventListener('click', () => {
+                document.getElementById('vocab-sidebar').classList.toggle('open');
+            });
+            document.getElementById('vocab-search').addEventListener('input', (e) => {
+                generateVocabularyList(e.target.value);
+            });
+
+            // 6. Persistence (Load saved data)
+            const savedScore = localStorage.getItem('quiz-score') || '0';
+            document.getElementById('quiz-score').textContent = savedScore;
+            document.getElementById('predicted-load').value = localStorage.getItem('predictedLoad') || '';
+            document.getElementById('actual-load').value = localStorage.getItem('actualLoad') || '';
+            if (localStorage.getItem('predictedLoad')) {
+                calculatePercentError(); // Recalculate if values exist
+            }
+        }
+
+        // Run initialization when the page is fully loaded
+        window.onload = initialize;
+    </script>
+</body>
+</html>
