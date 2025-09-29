@@ -121,6 +121,7 @@
 </head>
 <body class="p-4 sm:p-8">
 
+    <!-- Custom Modal UI -->
     <div id="custom-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -134,6 +135,7 @@
         </div>
     </div>
 
+    <!-- Anti-Fraud Warning -->
     <div id="anti-fraud-warning" class="anti-fraud-warning">
         <span id="warning-message">Warning! Detected suspicious activity.</span>
     </div>
@@ -144,11 +146,14 @@
             <p class="mt-2 text-lg text-gray-600" id="header-subtitle">25 Questions | 30 Minutes | High-Security Protocol</p>
         </header>
 
+        <!-- Main Content Area -->
         <main id="app-container" class="space-y-8">
             
+            <!-- Agreement Phase -->
             <div id="agreement-view" class="card p-8 shadow-xl">
                 <h2 class="text-3xl font-extrabold text-red-600 mb-6 border-b pb-3">Pre-Exam Agreement: Security & Rubric</h2>
                 
+                <!-- Grading Rubric -->
                 <div class="bg-blue-50 p-5 rounded-lg mb-6 border border-blue-200">
                     <h3 class="text-xl font-bold text-blue-700 mb-3">Grading Rubric</h3>
                     <ul class="list-disc list-inside text-gray-700 space-y-1">
@@ -165,6 +170,7 @@
                     </ul>
                 </div>
 
+                <!-- Security Policies -->
                 <div class="bg-red-50 p-5 rounded-lg mb-8 border border-red-200">
                     <h3 class="text-xl font-bold text-red-700 mb-3">Security Policies and Penalties (STRICTLY PROHIBITED)</h3>
                     <p class="font-semibold mb-2">Penalties are cumulative and based on violation type:</p>
@@ -196,12 +202,14 @@
                 </button>
             </div>
 
+            <!-- Exam Interface View -->
             <div id="exam-view" class="card p-8 hidden">
                 <div class="flex justify-between items-center mb-6 border-b pb-4">
                     <div class="text-xl font-bold text-gray-800">Question <span id="current-question-number">1</span> of <span id="total-questions">25</span></div>
                     <div class="text-xl font-bold text-red-600" id="timer">30:00</div>
                 </div>
                 
+                <!-- Anti-fraud violation counter -->
                 <div class="text-center mb-4 p-2 bg-yellow-50 rounded-lg border border-yellow-200">
                     <span class="font-semibold text-gray-700">Security Violations:</span> <span id="violation-count" class="font-extrabold text-red-600 mr-4">0</span>
                     <span class="font-semibold text-gray-700">Max Score:</span> <span id="max-score-penalty-display" class="font-extrabold text-green-600">100%</span>
@@ -209,6 +217,7 @@
 
                 <div id="question-container" class="min-h-[200px]"></div>
 
+                <!-- Navigation and Progress -->
                 <div class="flex items-center justify-between mt-8">
                     <button id="prev-button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors font-bold">&lt; Previous</button>
                     <div class="flex-1 mx-2 sm:mx-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
@@ -224,6 +233,7 @@
                 <button id="submit-button" class="w-full px-6 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors mt-6 shadow-lg hover:shadow-xl">Submit Exam</button>
             </div>
 
+            <!-- Results View -->
             <div id="results-view" class="card p-8 hidden text-center">
                 <h2 class="text-4xl font-extrabold text-indigo-700 mb-6 border-b pb-4">Final Assessment Report</h2>
                 <div class="space-y-4 text-left max-w-md mx-auto">
@@ -277,83 +287,6 @@
         const modalTitle = document.getElementById('modal-title');
         const modalMessage = document.getElementById('modal-message');
         const modalOkButton = document.getElementById('modal-ok-button'); // Reference the OK button
-
-        // State persistence for browser refresh protection
-        const examState = {
-            save: function() {
-                if (!isExamActive) return;
-
-                const state = {
-                    examQuestions: examQuestions,
-                    currentQuestionIndex: currentQuestionIndex,
-                    timeRemaining: timeRemaining,
-                    violationCount: violationCount,
-                    isExamActive: isExamActive,
-                    inactivityAccumulator: inactivityAccumulator,
-                    timestamp: Date.now()
-                };
-
-                // Store in window object for memory persistence
-                window.examStateData = JSON.stringify(state);
-
-                // Also try sessionStorage as backup
-                try {
-                    sessionStorage.setItem('examState', JSON.stringify(state));
-                } catch(e) {
-                    // Silently fail if not available
-                    console.log('SessionStorage not available, using memory storage');
-                }
-            },
-
-            load: function() {
-                let stateStr = null;
-
-                // Try sessionStorage first, then memory storage
-                try {
-                    stateStr = sessionStorage.getItem('examState');
-                } catch(e) {
-                    // Fallback to memory
-                }
-
-                if (!stateStr && window.examStateData) {
-                    stateStr = window.examStateData;
-                }
-
-                if (!stateStr) return false;
-
-                let state;
-                try {
-                    state = JSON.parse(stateStr);
-                } catch(e) {
-                    return false;
-                }
-
-                // Check if state is recent (within 4 hours)
-                const hoursSinceState = (Date.now() - state.timestamp) / (1000 * 60 * 60);
-                if (hoursSinceState > 4) {
-                    this.clear();
-                    return false;
-                }
-
-                // Restore state
-                examQuestions = state.examQuestions || [];
-                currentQuestionIndex = state.currentQuestionIndex || 0;
-                timeRemaining = state.timeRemaining || EXAM_DURATION;
-                violationCount = state.violationCount || 0;
-                isExamActive = state.isExamActive || false;
-                inactivityAccumulator = state.inactivityAccumulator || 0;
-
-                return isExamActive;
-            },
-
-            clear: function() {
-                try {
-                    sessionStorage.removeItem('examState');
-                } catch(e) {}
-                delete window.examStateData;
-            }
-        };
-
 
         // --- UTILITY FUNCTIONS ---
 
@@ -445,7 +378,6 @@
             violationCountDisplay.textContent = violationCount;
             maxScorePenaltyDisplay.textContent = `${newMaxScore.toFixed(0)}%`;
             showAntiFraudWarning(warningMsg);
-            examState.save(); // Save state after violation
         }
 
         // --- INACTIVITY TRACKING ---
@@ -471,7 +403,6 @@
                 } else if (!document.hidden) {
                     inactivityAccumulator = 0; // Reset if focus returns
                 }
-                examState.save(); // Save state during inactivity tracking
             }, 1000);
         }
 
@@ -502,7 +433,6 @@
             startTimer();
             updateQuestionNavigationButtons();
             startInactivityTimer(); // Start monitoring for inactivity
-            examState.save(); // Save initial state
         }
 
         function renderQuestion() {
@@ -546,7 +476,6 @@
                     examQuestions[currentQuestionIndex].userAnswer = e.target.value;
                     updateQuestionNavigationButtons();
                     updateProgressBar();
-                    examState.save(); // Save state on answer change
                 });
             });
 
@@ -577,7 +506,6 @@
                     currentQuestionIndex = index;
                     renderQuestion();
                     updateQuestionNavigationButtons();
-                    examState.save(); // Save state on navigation
                 });
                 questionNavButtons.appendChild(button);
             });
@@ -598,8 +526,6 @@
                 const seconds = timeRemaining % 60;
                 timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 
-                examState.save(); // Save state every second
-
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
                     // FIX: Ensure the modal callback is correct for time expiration
@@ -622,7 +548,6 @@
             clearInterval(timerInterval);
             clearInterval(inactivityTimer);
             isExamActive = false;
-            examState.clear(); // Clear saved state after submission
             
             let rawCorrectAnswers = 0;
             
@@ -668,35 +593,6 @@
         function restartExam() {
             window.location.reload();
         }
-
-        // Check for existing exam state on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            if (examState.load()) {
-                // Resume exam - student tried to refresh
-                agreementView.classList.add('hidden');
-                examView.classList.remove('hidden');
-
-                // Update UI elements
-                violationCountDisplay.textContent = violationCount;
-                maxScorePenaltyDisplay.textContent = `${calculateFinalMaxScore(violationCount).toFixed(0)}%`;
-
-                renderQuestion();
-                updateProgressBar();
-                startTimer();
-                updateQuestionNavigationButtons();
-                startInactivityTimer();
-
-                // Add violation for refresh attempt
-                handleViolation('Page Refresh/Reload Attempt');
-            }
-        });
-
-        // Save state periodically
-        setInterval(function() {
-            if (isExamActive) {
-                examState.save();
-            }
-        }, 5000); // Save every 5 seconds
 
 
         // --- ANTI-FRAUD EVENT LISTENERS (Copied & Modified) ---
@@ -772,7 +668,6 @@
                 currentQuestionIndex--;
                 renderQuestion();
                 updateQuestionNavigationButtons();
-                examState.save(); // Save state on navigation
             }
         });
         nextButton.addEventListener('click', () => {
@@ -780,7 +675,6 @@
                 currentQuestionIndex++;
                 renderQuestion();
                 updateQuestionNavigationButtons();
-                examState.save(); // Save state on navigation
             }
         });
         submitButton.addEventListener('click', submitExam);

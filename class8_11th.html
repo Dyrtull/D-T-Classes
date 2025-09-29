@@ -45,7 +45,8 @@
         header {
             background-color: var(--card-bg-light);
             border-bottom: 2px solid var(--secondary-color-light);
-            padding: 1rem 1.5rem;
+            /* --- MODIFICATION: Reduced vertical padding from 1rem to 0.5rem --- */
+            padding: 0.5rem 1.5rem; 
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -82,7 +83,8 @@
             height: 8px;
             background-color: var(--secondary-color-light);
             border-radius: 4px;
-            margin-top: 1rem;
+            /* --- MODIFICATION: Reduced margin-top from 1rem to 0.25rem for a tighter fit --- */
+            margin-top: 0.25rem; 
         }
         
         .progress-bar {
@@ -312,6 +314,7 @@
 </head>
 <body data-theme="light">
     <header>
+        <!-- The 'container' class limits the width of the content, which is correct here -->
         <div class="container header-content">
             <h1 class="title">Document Production Mastery</h1>
             <button class="toggle-btn" id="theme-toggle">
@@ -320,6 +323,7 @@
                 </svg>
             </button>
         </div>
+        <!-- The progress bar is designed to be full-width, which is correct -->
         <div class="progress-bar-container">
             <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
         </div>
@@ -585,6 +589,7 @@
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const progressBar = document.getElementById('progressBar');
+        // Fallback for localStorage just in case, though standard practice is to use it.
         let score = parseInt(localStorage.getItem('classScore')) || 0;
         let progress = parseFloat(localStorage.getItem('classProgress')) || 0;
 
@@ -598,6 +603,8 @@
                 const content = card.querySelector('.card-content');
                 title.addEventListener('click', () => {
                     content.classList.toggle('active');
+                    // Optional: Toggle the icon's rotation
+                    title.querySelector('.accordion-icon').style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
                 });
             });
 
@@ -618,6 +625,7 @@
             dropContainer.addEventListener('drop', (e) => {
                 e.preventDefault();
                 const dropTarget = e.target.closest('.drop-target');
+                // Ensure drop target exists and it doesn't already contain a drag item
                 if (dropTarget && !dropTarget.querySelector('.drag-item')) {
                     dropTarget.appendChild(draggedItem);
                 }
@@ -631,30 +639,92 @@
             localStorage.setItem('theme', newTheme);
         });
 
-        function updateProgressBar() {
-            const totalSections = 6; // Excluding vocabulary
-            const currentSection = document.querySelector('section:hover, section:focus-within');
-            let sectionIndex = 0;
-            if (currentSection) {
-                const allSections = document.querySelectorAll('section');
-                allSections.forEach((sec, index) => {
-                    if (sec.id === currentSection.id) {
-                        sectionIndex = index;
-                    }
-                });
+        // Simple scroll observer to update progress bar based on section visibility
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    updateProgressBar(entry.target.id);
+                }
+            });
+        }, {
+            root: null, // viewport
+            rootMargin: '0px 0px -50% 0px', // When section is halfway visible
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('section[id]').forEach(section => {
+            observer.observe(section);
+        });
+
+
+        function updateProgressBar(currentSectionId) {
+            const sections = ['objectives', 'concepts', 'applied', 'activities', 'practice', 'synthesis'];
+            const totalSections = sections.length;
+            let sectionIndex = sections.findIndex(id => id === currentSectionId);
+            
+            // If the section is found, update progress. Use a default if not found (e.g., 0%)
+            if (sectionIndex !== -1) {
+                // Base progress on the index (0-indexed)
+                progress = ((sectionIndex + 1) / totalSections) * 100;
+            } else if (window.scrollY === 0) {
+                 progress = 0; // Reset to 0 at the very top
             }
-            progress = (sectionIndex / totalSections) * 100;
-            progressBar.style.width = `${progress}%`;
-            localStorage.setItem('classProgress', progress);
+
+            // Ensure progress is not calculated multiple times for the same scroll position
+            if (progressBar.style.width !== `${progress}%`) {
+                progressBar.style.width = `${progress}%`;
+                localStorage.setItem('classProgress', progress);
+            }
         }
+
+        // Add scroll event listener as a fallback or for more immediate updates
+        window.addEventListener('scroll', () => {
+             // Find the section closest to the top of the viewport
+            const sections = document.querySelectorAll('main > section');
+            let topSection = sections[0];
+            let minDistance = Infinity;
+
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const distance = Math.abs(rect.top);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    topSection = section;
+                }
+            });
+
+            if (topSection) {
+                 updateProgressBar(topSection.id);
+            }
+        });
+
 
         function speakText(text) {
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(text);
+                // Setting voice properties for better quality, if available
+                utterance.lang = 'en-US'; 
                 speechSynthesis.speak(utterance);
             } else {
-                alert("Speech Synthesis not supported in this browser.");
+                // Using a simple message box instead of alert()
+                const container = document.body.querySelector('.container');
+                const msgBox = document.createElement('div');
+                msgBox.className = 'feedback incorrect';
+                msgBox.style.position = 'fixed';
+                msgBox.style.bottom = '20px';
+                msgBox.style.right = '20px';
+                msgBox.style.zIndex = '2000';
+                msgBox.textContent = "Speech Synthesis not supported in this browser.";
+                document.body.appendChild(msgBox);
+                setTimeout(() => msgBox.remove(), 3000);
             }
+        }
+
+        function addScore(points) {
+            score += points;
+            localStorage.setItem('classScore', score);
+            document.getElementById('score-display').textContent = `Score: ${score}`;
         }
 
         function checkDragAndDrop() {
@@ -664,13 +734,17 @@
             
             dropTargets.forEach(target => {
                 const draggedItem = target.querySelector('.drag-item');
+                // Check if an item is dropped AND if its data-name matches the target's data-answer
                 if (draggedItem && draggedItem.dataset.name === target.dataset.answer) {
                     target.classList.remove('incorrect');
                     target.classList.add('correct');
                     correctCount++;
                 } else {
                     target.classList.remove('correct');
-                    target.classList.add('incorrect');
+                    // Only mark as incorrect if a wrong item is dropped, or if empty and should not be.
+                    if (draggedItem) { 
+                       target.classList.add('incorrect');
+                    }
                 }
             });
 
@@ -690,7 +764,8 @@
             const answer = answerInput.value.trim().toLowerCase();
             const correctAnswer = 'section';
             
-            if (answer === correctAnswer) {
+            // Check if the input contains the word 'section'
+            if (answer.includes(correctAnswer)) {
                 feedback.textContent = "Correct! Section breaks are essential for changing page formatting within a single document. You've earned 5 points!";
                 feedback.className = 'feedback correct';
                 addScore(5);
@@ -701,25 +776,36 @@
         }
 
         function checkMultipleChoice(element, correctness) {
+            // Prevent re-checking
+            if (document.getElementById('mc-feedback').classList.contains('correct') || document.getElementById('mc-feedback').classList.contains('incorrect')) {
+                return;
+            }
+
             const feedback = document.getElementById('mc-feedback');
+
+            // Visually highlight all options based on correctness
+            document.querySelectorAll('.multiple-choice-option').forEach(option => {
+                option.style.pointerEvents = 'none'; // Disable all options
+                if (option.textContent.trim() === 'Match case') {
+                    option.style.backgroundColor = 'var(--accent-color-light)';
+                    option.style.color = 'white';
+                }
+            });
+
             if (correctness === 'correct') {
-                feedback.textContent = "Precisely! 'Match case' is the key to differentiating between 'computer' and 'Computer'. You've earned 5 points!";
+                feedback.textContent = "Precisely! 'Match case' is the key to differentiating between 'computer' (lower case) and 'Computer' (capitalized). You've earned 5 points!";
                 feedback.className = 'feedback correct';
                 addScore(5);
             } else {
-                feedback.textContent = "Not quite. 'Find whole words only' would prevent changing 'computation' but wouldn't differentiate capitalization.";
+                element.style.backgroundColor = '#fecaca'; // Highlight incorrect choice
+                feedback.textContent = "Not quite. 'Match case' is the correct choice to differentiate capitalization.";
                 feedback.className = 'feedback incorrect';
             }
-            // Disable other options after a choice is made
-            document.querySelectorAll('.multiple-choice-option').forEach(option => {
-                option.style.pointerEvents = 'none';
-            });
         }
-        
-        function addScore(points) {
-            score += points;
-            localStorage.setItem('classScore', score);
-            document.getElementById('score-display').textContent = `Score: ${score}`;
+
+        // Initialize progress bar width on load
+        if (progress > 0) {
+            progressBar.style.width = `${progress}%`;
         }
     </script>
 </body>
