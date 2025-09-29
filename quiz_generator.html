@@ -121,6 +121,7 @@
 </head>
 <body class="p-4 sm:p-8">
 
+    <!-- Custom Modal UI -->
     <div id="custom-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -134,6 +135,7 @@
         </div>
     </div>
 
+    <!-- Anti-Fraud Warning -->
     <div id="anti-fraud-warning" class="anti-fraud-warning">
         <span id="warning-message">Warning! Detected suspicious activity.</span>
     </div>
@@ -144,11 +146,14 @@
             <p class="mt-2 text-lg text-gray-600" id="header-subtitle">25 Questions | 30 Minutes | High-Security Protocol</p>
         </header>
 
+        <!-- Main Content Area -->
         <main id="app-container" class="space-y-8">
             
+            <!-- Agreement Phase -->
             <div id="agreement-view" class="card p-8 shadow-xl">
                 <h2 class="text-3xl font-extrabold text-red-600 mb-6 border-b pb-3">Pre-Exam Agreement: Security & Rubric</h2>
                 
+                <!-- Grading Rubric -->
                 <div class="bg-blue-50 p-5 rounded-lg mb-6 border border-blue-200">
                     <h3 class="text-xl font-bold text-blue-700 mb-3">Grading Rubric</h3>
                     <ul class="list-disc list-inside text-gray-700 space-y-1">
@@ -165,6 +170,7 @@
                     </ul>
                 </div>
 
+                <!-- Security Policies -->
                 <div class="bg-red-50 p-5 rounded-lg mb-8 border border-red-200">
                     <h3 class="text-xl font-bold text-red-700 mb-3">Security Policies and Penalties (STRICTLY PROHIBITED)</h3>
                     <p class="font-semibold mb-2">Penalties are cumulative and based on violation type:</p>
@@ -196,12 +202,14 @@
                 </button>
             </div>
 
+            <!-- Exam Interface View -->
             <div id="exam-view" class="card p-8 hidden">
                 <div class="flex justify-between items-center mb-6 border-b pb-4">
                     <div class="text-xl font-bold text-gray-800">Question <span id="current-question-number">1</span> of <span id="total-questions">25</span></div>
                     <div class="text-xl font-bold text-red-600" id="timer">30:00</div>
                 </div>
                 
+                <!-- Anti-fraud violation counter -->
                 <div class="text-center mb-4 p-2 bg-yellow-50 rounded-lg border border-yellow-200">
                     <span class="font-semibold text-gray-700">Security Violations:</span> <span id="violation-count" class="font-extrabold text-red-600 mr-4">0</span>
                     <span class="font-semibold text-gray-700">Max Score:</span> <span id="max-score-penalty-display" class="font-extrabold text-green-600">100%</span>
@@ -209,6 +217,7 @@
 
                 <div id="question-container" class="min-h-[200px]"></div>
 
+                <!-- Navigation and Progress -->
                 <div class="flex items-center justify-between mt-8">
                     <button id="prev-button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors font-bold">&lt; Previous</button>
                     <div class="flex-1 mx-2 sm:mx-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
@@ -224,6 +233,7 @@
                 <button id="submit-button" class="w-full px-6 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors mt-6 shadow-lg hover:shadow-xl">Submit Exam</button>
             </div>
 
+            <!-- Results View -->
             <div id="results-view" class="card p-8 hidden text-center">
                 <h2 class="text-4xl font-extrabold text-indigo-700 mb-6 border-b pb-4">Final Assessment Report</h2>
                 <div class="space-y-4 text-left max-w-md mx-auto">
@@ -234,7 +244,17 @@
                     <p class="text-xl text-gray-800"><span class="font-bold">Final Penalized Percentage:</span> <span id="final-percentage" class="font-extrabold text-green-700"></span></p>
                     <p class="text-4xl font-extrabold pt-4">Final Grade Point: <span id="final-grade" class="text-indigo-600"></span></p>
                 </div>
-                <button id="restart-button" class="mt-8 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">Restart Exam</button>
+
+                <div class="mt-8 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button id="review-button" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors shadow-lg">Review Exam Feedback</button>
+                    <button id="restart-button" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">Restart Exam</button>
+                </div>
+                
+                <!-- New Feedback Container -->
+                <div id="feedback-container" class="mt-10 pt-4 border-t border-gray-300 hidden text-left">
+                    <h3 class="text-3xl font-extrabold text-gray-800 mb-6">Detailed Question Review</h3>
+                    <!-- Review content will be dynamically inserted here -->
+                </div>
             </div>
 
         </main>
@@ -272,88 +292,15 @@
         const maxScorePenaltyDisplay = document.getElementById('max-score-penalty-display');
         const antiFraudWarning = document.getElementById('anti-fraud-warning');
         
+        // NEW UI Elements for Feedback
+        const reviewButton = document.getElementById('review-button');
+        const feedbackContainer = document.getElementById('feedback-container');
+
         // Modal UI
         const modal = document.getElementById('custom-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalMessage = document.getElementById('modal-message');
         const modalOkButton = document.getElementById('modal-ok-button'); // Reference the OK button
-
-        // State persistence for browser refresh protection
-        const examState = {
-            save: function() {
-                if (!isExamActive) return;
-
-                const state = {
-                    examQuestions: examQuestions,
-                    currentQuestionIndex: currentQuestionIndex,
-                    timeRemaining: timeRemaining,
-                    violationCount: violationCount,
-                    isExamActive: isExamActive,
-                    inactivityAccumulator: inactivityAccumulator,
-                    timestamp: Date.now()
-                };
-
-                // Store in window object for memory persistence
-                window.examStateData = JSON.stringify(state);
-
-                // Also try sessionStorage as backup
-                try {
-                    sessionStorage.setItem('examState', JSON.stringify(state));
-                } catch(e) {
-                    // Silently fail if not available
-                    console.log('SessionStorage not available, using memory storage');
-                }
-            },
-
-            load: function() {
-                let stateStr = null;
-
-                // Try sessionStorage first, then memory storage
-                try {
-                    stateStr = sessionStorage.getItem('examState');
-                } catch(e) {
-                    // Fallback to memory
-                }
-
-                if (!stateStr && window.examStateData) {
-                    stateStr = window.examStateData;
-                }
-
-                if (!stateStr) return false;
-
-                let state;
-                try {
-                    state = JSON.parse(stateStr);
-                } catch(e) {
-                    return false;
-                }
-
-                // Check if state is recent (within 4 hours)
-                const hoursSinceState = (Date.now() - state.timestamp) / (1000 * 60 * 60);
-                if (hoursSinceState > 4) {
-                    this.clear();
-                    return false;
-                }
-
-                // Restore state
-                examQuestions = state.examQuestions || [];
-                currentQuestionIndex = state.currentQuestionIndex || 0;
-                timeRemaining = state.timeRemaining || EXAM_DURATION;
-                violationCount = state.violationCount || 0;
-                isExamActive = state.isExamActive || false;
-                inactivityAccumulator = state.inactivityAccumulator || 0;
-
-                return isExamActive;
-            },
-
-            clear: function() {
-                try {
-                    sessionStorage.removeItem('examState');
-                } catch(e) {}
-                delete window.examStateData;
-            }
-        };
-
 
         // --- UTILITY FUNCTIONS ---
 
@@ -418,7 +365,6 @@
             if (violationCount >= 7) {
                 violationCount++;
                 // Policy 8th violation: Auto-submit with 50% max score
-                // FIX: Ensure the modal callback is correct for termination
                 showModal(
                     'EXAM TERMINATED', 
                     `SEVERE: This is the 8th violation (${type}). Your exam has been automatically submitted with a maximum possible score of 50% as per policy.`, 
@@ -445,7 +391,6 @@
             violationCountDisplay.textContent = violationCount;
             maxScorePenaltyDisplay.textContent = `${newMaxScore.toFixed(0)}%`;
             showAntiFraudWarning(warningMsg);
-            examState.save(); // Save state after violation
         }
 
         // --- INACTIVITY TRACKING ---
@@ -458,7 +403,6 @@
                     inactivityAccumulator++;
                     if (inactivityAccumulator >= MAX_INACTIVITY_SECONDS) {
                         clearInterval(inactivityTimer);
-                        // FIX: Ensure the modal callback is correct for inactivity termination
                         showModal(
                             'INACTIVITY TERMINATION', 
                             `You have been inactive outside the exam window for over ${MAX_INACTIVITY_SECONDS} seconds (2 minutes). The exam will be automatically submitted with all accumulated penalties.`, 
@@ -471,7 +415,6 @@
                 } else if (!document.hidden) {
                     inactivityAccumulator = 0; // Reset if focus returns
                 }
-                examState.save(); // Save state during inactivity tracking
             }, 1000);
         }
 
@@ -485,6 +428,13 @@
                 const newQ = { ...q };
                 newQ.options = shuffleArray(newQ.options);
                 newQ.userAnswer = null; // Initialize user answer
+
+                // Ensure all questions have a rationale, even if default
+                if (!newQ.rationale) {
+                    const correctText = newQ.options.find(opt => opt.isCorrect)?.text || newQ.isCorrect;
+                    newQ.rationale = `The correct answer is: **${correctText}**. A detailed rationale is pending and will be provided in a future update.`;
+                }
+
                 return newQ;
             });
 
@@ -502,7 +452,6 @@
             startTimer();
             updateQuestionNavigationButtons();
             startInactivityTimer(); // Start monitoring for inactivity
-            examState.save(); // Save initial state
         }
 
         function renderQuestion() {
@@ -546,7 +495,6 @@
                     examQuestions[currentQuestionIndex].userAnswer = e.target.value;
                     updateQuestionNavigationButtons();
                     updateProgressBar();
-                    examState.save(); // Save state on answer change
                 });
             });
 
@@ -577,7 +525,6 @@
                     currentQuestionIndex = index;
                     renderQuestion();
                     updateQuestionNavigationButtons();
-                    examState.save(); // Save state on navigation
                 });
                 questionNavButtons.appendChild(button);
             });
@@ -598,11 +545,8 @@
                 const seconds = timeRemaining % 60;
                 timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 
-                examState.save(); // Save state every second
-
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
-                    // FIX: Ensure the modal callback is correct for time expiration
                     showModal('Time Expired', 'Your time has run out. The exam will be submitted automatically.', () => {
                         performSubmission();
                         closeModal();
@@ -622,7 +566,6 @@
             clearInterval(timerInterval);
             clearInterval(inactivityTimer);
             isExamActive = false;
-            examState.clear(); // Clear saved state after submission
             
             let rawCorrectAnswers = 0;
             
@@ -669,35 +612,50 @@
             window.location.reload();
         }
 
-        // Check for existing exam state on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            if (examState.load()) {
-                // Resume exam - student tried to refresh
-                agreementView.classList.add('hidden');
-                examView.classList.remove('hidden');
+        // --- NEW FEEDBACK FUNCTIONALITY ---
 
-                // Update UI elements
-                violationCountDisplay.textContent = violationCount;
-                maxScorePenaltyDisplay.textContent = `${calculateFinalMaxScore(violationCount).toFixed(0)}%`;
+        function showReview() {
+            // Remove the hidden class to display the review section
+            feedbackContainer.classList.remove('hidden');
+            
+            let feedbackHTML = `<div class="space-y-12">`;
 
-                renderQuestion();
-                updateProgressBar();
-                startTimer();
-                updateQuestionNavigationButtons();
-                startInactivityTimer();
+            examQuestions.forEach((q, index) => {
+                const correctOption = q.options.find(opt => opt.isCorrect);
+                const isUserCorrect = q.userAnswer === correctOption.text;
+                const statusColor = isUserCorrect ? 'bg-green-100 border-green-400' : 'bg-red-100 border-red-400';
+                const statusIcon = isUserCorrect ? '✅ Correct' : '❌ Incorrect';
+                const userStatusClass = isUserCorrect ? 'text-green-700' : 'text-red-700';
 
-                // Add violation for refresh attempt
-                handleViolation('Page Refresh/Reload Attempt');
-            }
-        });
+                // Find the user's selected option text for display
+                const userAnswerText = q.userAnswer || "No answer selected";
 
-        // Save state periodically
-        setInterval(function() {
-            if (isExamActive) {
-                examState.save();
-            }
-        }, 5000); // Save every 5 seconds
+                feedbackHTML += `
+                    <div class="p-6 rounded-xl border-2 ${statusColor} shadow-md">
+                        <h4 class="text-xl font-bold mb-4">Question ${index + 1}: <span class="float-right ${userStatusClass} text-lg">${statusIcon}</span></h4>
+                        <p class="mb-4 text-gray-800">${q.question.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                        
+                        <div class="space-y-2 text-sm">
+                            <p class="font-semibold text-gray-700">Your Answer: <span class="${isUserCorrect ? 'text-green-700' : 'text-red-700'}">${userAnswerText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</span></p>
+                            <p class="font-semibold text-gray-700">Correct Answer: <span class="text-green-700">${correctOption.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</span></p>
+                            <p class="font-extrabold text-indigo-700 mt-3 border-t pt-3 border-indigo-200">Rationale:</p>
+                            <p class="text-gray-600">${q.rationale.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                        </div>
+                    </div>
+                `;
+            });
 
+            feedbackHTML += `</div>`;
+            feedbackContainer.innerHTML += feedbackHTML; // Append the detailed review
+            
+            // Disable and grey out the review button after it's been clicked
+            reviewButton.disabled = true;
+            reviewButton.classList.remove('bg-green-600', 'hover:bg-green-700', 'shadow-lg');
+            reviewButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+
+            // Scroll down to the feedback section
+            feedbackContainer.scrollIntoView({ behavior: 'smooth' });
+        }
 
         // --- ANTI-FRAUD EVENT LISTENERS (Copied & Modified) ---
         
@@ -772,7 +730,6 @@
                 currentQuestionIndex--;
                 renderQuestion();
                 updateQuestionNavigationButtons();
-                examState.save(); // Save state on navigation
             }
         });
         nextButton.addEventListener('click', () => {
@@ -780,16 +737,17 @@
                 currentQuestionIndex++;
                 renderQuestion();
                 updateQuestionNavigationButtons();
-                examState.save(); // Save state on navigation
             }
         });
         submitButton.addEventListener('click', submitExam);
         document.getElementById('restart-button').addEventListener('click', restartExam);
+        // NEW: Event listener for the Review Button
+        reviewButton.addEventListener('click', showReview);
 
         // Initial setup
         document.getElementById('total-questions').textContent = EXAM_QUESTION_COUNT;
         
-        // --- HARDCODED QUESTION BANK (60 Challenging Questions) ---
+        // --- HARDCODED QUESTION BANK (60 Challenging Questions with RATIONALES) ---
         const questionBank = [
             // 1. Networking/Layering (MAC vs IP, Switch vs Hub)
             {
@@ -800,7 +758,8 @@
                     { text: "Port Number / Application Layer Filtering", isCorrect: false },
                     { text: "Domain Name System (DNS) / Proxy Server", isCorrect: false }
                 ],
-                isCorrect: "MAC Address / Layer 2 Switching"
+                isCorrect: "MAC Address / Layer 2 Switching",
+                rationale: "Layer 2 Switches use the **MAC Address** (physical address) to learn which device is on which port, allowing them to forward frames directly to the intended recipient and reduce network collisions/traffic, which is a key difference from a Layer 1 Hub."
             },
             // 2. Networking/WAN (Large Scale Connectivity)
             {
@@ -811,7 +770,8 @@
                     { text: "Metropolitan Area Network (MAN)", isCorrect: false },
                     { text: "Storage Area Network (SAN)", isCorrect: false }
                 ],
-                isCorrect: "Wide Area Network (WAN)"
+                isCorrect: "Wide Area Network (WAN)",
+                rationale: "A **WAN** connects networks that are geographically separated (cities, countries). It is necessary to link multiple LANs of a multinational corporation."
             },
             // 3. Addressing/IPv4 vs IPv6
             {
@@ -822,7 +782,8 @@
                     { text: "Inability to support wireless communication.", isCorrect: false },
                     { text: "Inefficient packet header processing by routers.", isCorrect: false }
                 ],
-                isCorrect: "Address space exhaustion and the scarcity of unique public IP addresses."
+                isCorrect: "Address space exhaustion and the scarcity of unique public IP addresses.",
+                rationale: "The 32-bit IPv4 system only allows for about 4.3 billion unique addresses, which are globally exhausted. The 128-bit IPv6 solves this by providing a virtually limitless number of unique addresses."
             },
             // 4. Addressing/MAC (Collision)
             {
@@ -833,7 +794,8 @@
                     { text: "Loss of internet connectivity for the entire subnet.", isCorrect: false },
                     { text: "Increased network latency due to DNS resolution conflicts.", isCorrect: false }
                 ],
-                isCorrect: "Frequent and disruptive network collisions, leading to complete instability."
+                isCorrect: "Frequent and disruptive network collisions, leading to complete instability.",
+                rationale: "The MAC address is supposed to be globally unique for physical devices. If two devices share the same MAC, the Switch/Bridge cannot correctly map the destination port, leading to frame duplication, network loops, and severe collision problems."
             },
             // 5. Security/Protocol (FTP vs SFTP/HTTPS)
             {
@@ -844,7 +806,8 @@
                     { text: "FTP operates on a non-standard port that is blocked by most firewalls.", isCorrect: false },
                     { text: "FTP lacks support for modern compression algorithms.", isCorrect: false }
                 ],
-                isCorrect: "FTP transmits user credentials and data packets in unencrypted, plain text."
+                isCorrect: "FTP transmits user credentials and data packets in unencrypted, plain text.",
+                rationale: "FTP is an unencrypted protocol, meaning passwords and data are sent as plain text, making them trivial to intercept via packet sniffing. SFTP and HTTPS use SSL/TLS encryption to secure transmissions."
             },
             // 6. Security/Phishing (Social Engineering Tactic)
             {
