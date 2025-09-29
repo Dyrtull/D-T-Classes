@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE ICT Paper 3: Spreadsheet Task Revision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            color: #1f2937;
+        }
+        .section-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            border-left: 5px solid #06B6D4; /* Cyan 500 */
+        }
+        .section-title {
+            color: #0E7490; /* Cyan 700 */
+            border-bottom: 2px solid #E0F7FA; /* Lightest Cyan */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .key-concept {
+            background-color: #ECFEFF; /* Cyan 50 */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid #A7F3D0; /* Emerald 300 for soft distinction */
+        }
+        .tip {
+            background-color: #FEF3C7; /* Amber 100 */
+            color: #92400E; /* Amber 800 */
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            font-weight: 600;
+        }
+        .exercise-box {
+            background-color: #F0F9FF; /* Blue 50 */
+            border: 2px solid #90CDF4; /* Blue 300 */
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .answer {
+            background-color: #D1FAE5; /* Emerald 100 */
+            border: 1px solid #34D399; /* Emerald 500 */
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+    <script>
+        function toggleAnswer(id) {
+            const answer = document.getElementById(id);
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                answer.previousElementSibling.querySelector('span').textContent = 'Hide Answer';
+            } else {
+                answer.classList.add('hidden');
+                answer.previousElementSibling.querySelector('span').textContent = 'Show Answer';
+            }
+        }
+    </script>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Header -->
+    <header class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-cyan-700 mb-2">
+            IGCSE ICT Paper 3: Spreadsheet Task Revision
+        </h1>
+        <p class="text-xl text-gray-600 font-medium">Essential Revision Checklist</p>
+    </header>
+
+    <!-- Main Content Grid -->
+    <div class="max-w-4xl mx-auto">
+
+        <!-- 1. Create & Edit a Spreadsheet -->
+        <div class="section-card">
+            <h2 class="text-2xl font-bold section-title">1. Spreadsheet Basics & Structure</h2>
+            <div class="space-y-3 text-gray-700">
+                <p>A spreadsheet is software used to analyse, visualise, and manipulate data (a <strong>data model</strong>).</p>
+                
+                <div class="key-concept">
+                    <span class="font-semibold text-cyan-600">Terminology:</span>
+                    <ul>
+                        <li><span class="font-mono">Cell</span>: Single box (e.g., A1).</li>
+                        <li><span class="font-mono">Row</span>: Goes <strong>across</strong> (referenced by number).</li>
+                        <li><span class="font-mono">Column</span>: Goes <strong>down</strong> (referenced by letter).</li>
+                    </ul>
+                </div>
+
+                <p><strong>Editing Structure:</strong> Know how to insert/delete cells, rows, and columns to manage data effectively.</p>
+                <p><strong>Merging Cells:</strong> Combine multiple cells for creating clear headers or titles across columns.</p>
+            </div>
+        </div>
+
+        <!-- 2. Formulae & Functions -->
+        <div class="section-card">
+            <h2 class="text-2xl font-bold section-title">2. Formulae & Functions</h2>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Formulae (Simple Calculations)</h3>
+            <p class="text-gray-700">Formulas start with an <span class="font-mono">=</span> sign and use arithmetic operators to perform calculations on numbers or referenced cells (e.g., <span class="font-mono">=A1*B2</span>).</p>
+            <div class="key-concept">
+                <span class="font-semibold text-cyan-600">Arithmetic Operators (BIDMAS):</span>
+                <ul class="list-disc ml-5">
+                    <li><span class="font-mono">+</span> (Addition)</li>
+                    <li><span class="font-mono">-</span> (Subtraction)</li>
+                    <li><span class="font-mono">*</span> (Multiplication)</li>
+                    <li><span class="font-mono">/</span> (Division)</li>
+                    <li><span class="font-mono">^</span> (Indices/Power of)</li>
+                </ul>
+                <p class="mt-2 text-sm">Remember to use brackets <span class="font-mono">()</span> to control the <strong>Order of Operations</strong>.</p>
+            </div>
+            
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Functions (Pre-defined Formulae)</h3>
+            <p class="text-gray-700">Functions simplify complex calculations. Know the purpose and syntax for the following:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-700">
+                <div class="key-concept">
+                    <span class="font-mono font-semibold">SUM</span>: Adds all numbers in a range. <br><span class="text-xs italic">Example: <span class="font-mono">=SUM(A1:A10)</span></span>
+                </div>
+                <div class="key-concept">
+                    <span class="font-mono font-semibold">AVERAGE</span>: Calculates the mean of a range. <br><span class="text-xs italic">Example: <span class="font-mono">=AVERAGE(A1:A10)</span></span>
+                </div>
+                <div class="key-concept">
+                    <span class="font-mono font-semibold">MAX / MIN</span>: Finds the largest/smallest number. <br><span class="text-xs italic">Example: <span class="font-mono">=MAX(A1:A10)</span></span>
+                </div>
+                <div class="key-concept">
+                    <span class="font-mono font-semibold">COUNT / COUNTA</span>: Counts cells with <strong>numbers</strong> / cells with <strong>anything</strong>. <br><span class="text-xs italic">Example: <span class="font-mono">=COUNT(A1:A10)</span></span>
+                </div>
+                <div class="key-concept col-span-1 md:col-span-2">
+                    <span class="font-mono font-semibold">IF</span>: Returns one value if a condition is true, another if false. <br><span class="text-xs italic">Syntax: <span class="font-mono">=IF(condition, true_value, false_value)</span></span>
+                </div>
+                <div class="key-concept col-span-1 md:col-span-2">
+                    <span class="font-mono font-semibold">VLOOKUP / HLOOKUP / XLOOKUP</span>: Performs vertical/horizontal/either lookup to find data in a table.
+                </div>
+                <div class="key-concept col-span-1 md:col-span-2">
+                    <span class="font-mono font-semibold">COUNTIF / SUMIF / AVERAGEIF</span>: Performs the function only if a certain criterion is met. <br><span class="text-xs italic">Example: <span class="font-mono">=AVERAGEIF(B2:B50, "=Mix 1", C2:C50)</span> (Often used in past papers like 0417/32/M/J/25).</span>
+                </div>
+            </div>
+
+            <div class="key-concept bg-yellow-100 border-yellow-300">
+                <span class="font-semibold text-yellow-800">Nesting Functions:</span> This means using one function inside another, e.g., <span class="font-mono">=ROUND(AVERAGE(A1:A10), 2)</span>.
+            </div>
+
+            <!-- EXERCISE 1: IF, COUNTIF, SUM -->
+            <div class="exercise-box">
+                <h4 class="font-semibold text-lg text-blue-800 mb-2">Exercise 1: Calculating Performance Metrics</h4>
+                <p class="text-sm">Imagine a column of lap times (D2:D50) and an adjacent column indicating if the supercharger was used (E2:E50, containing "On" or "Off").</p>
+                <ol class="list-decimal ml-5 mt-2 space-y-2 text-sm">
+                    <li><p>Write the formula for cell A1 to display the <strong>fastest</strong> lap time from the range D2:D50.</p>
+                        <button class="text-blue-600 hover:text-blue-800 text-xs mt-1" onclick="toggleAnswer('e1a')"><span>Show Answer</span></button>
+                        <div id="e1a" class="answer hidden"><span class="font-mono">=MIN(D2:D50)</span></div>
+                    </li>
+                    <li><p>Write the formula for cell A2 to count the number of laps where the supercharger was "On". (Referenced from 0417/31/M/J/25).</p>
+                        <button class="text-blue-600 hover:text-blue-800 text-xs mt-1" onclick="toggleAnswer('e1b')"><span>Show Answer</span></button>
+                        <div id="e1b" class="answer hidden"><span class="font-mono">=COUNTIF(E2:E50, "On")</span></div>
+                    </li>
+                    <li><p>Write the formula for cell A3 to display "SUCCESS" if the average lap time when the supercharger was "On" (cell B8) is <strong>faster</strong> (i.e., smaller) than the average lap time when it was "Off" (cell B9), or "FAILED" if not. (Referenced from 0417/31/M/J/25).</p>
+                        <button class="text-blue-600 hover:text-blue-800 text-xs mt-1" onclick="toggleAnswer('e1c')"><span>Show Answer</span></button>
+                        <div id="e1c" class="answer hidden"><span class="font-mono">=IF(B8 < B9, "SUCCESS", "FAILED")</span></div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 3. Cell Referencing & Named Ranges -->
+        <div class="section-card">
+            <h2 class="text-2xl font-bold section-title">3. Cell Referencing & Lookups</h2>
+            
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Relative Reference (Default)</h3>
+            <p class="text-gray-700">The cell reference <strong>changes</strong> when the formula is copied or dragged. E.g., copying <span class="font-mono">=A1+B1</span> from C1 to C2 changes it to <span class="font-mono">=A2+B2</span>.</p>
+            
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Absolute Reference (Fixed)</h3>
+            <p class="text-gray-700">The cell reference <strong>does not change</strong>. Use the dollar sign (<span class="font-mono">$</span>) to fix the row, column, or both. This is crucial for fixing values like a tax rate or exchange rate.</p>
+            <div class="key-concept">
+                <span class="font-semibold text-cyan-600">Fix Both:</span> <span class="font-mono">=$A$1</span> (The reference will <strong>always</strong> be A1).
+                <br><span class="font-semibold text-cyan-600">Fix Column:</span> <span class="font-mono">=$A1</span> (Column A is fixed, row changes).
+                <br><span class="font-semibold text-cyan-600">Fix Row:</span> <span class="font-mono">=A$1</span> (Row 1 is fixed, column changes).
+            </div>
+            
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Named Cells / Ranges</h3>
+            <p class="text-gray-700">Assigning a name (e.g., <span class="font-mono">Tax_Rate</span>) to a single cell or a range of cells (e.g., <span class="font-mono">A3:C6</span>). This simplifies complex formulas and automatically acts like an absolute reference.</p>
+
+            <!-- EXERCISE 2: LOOKUP & EXTERNAL DATA -->
+            <div class="exercise-box">
+                <h4 class="font-semibold text-lg text-blue-800 mb-2">Exercise 2: VLOOKUP (External File)</h4>
+                <p class="text-sm">A company needs to look up the name and distance of a lodge using a code.</p>
+                <p class="text-sm font-semibold mt-2">Data Setup (Similar to <a href="https://drive.google.com/drive/u/3/folders/1FPU_v6-3JxWhX8qWcmF0ITGsK-TkBRO0" target="_blank" class="text-blue-600 hover:text-blue-800">0417/31/F/M/24</a>):</p>
+                <ul class="list-disc ml-5 text-sm">
+                    <li>Cell B4 contains the <span class="font-mono">Lodge/Camp code</span> (e.g., <span class="font-mono">LC17</span>).</li>
+                    <li><span class="font-mono">Lookup_Table</span> is an external file with data in three columns: Code (Col 1), Name (Col 2), Distance (Col 3).</li>
+                </ul>
+                <ol class="list-decimal ml-5 mt-2 space-y-2 text-sm">
+                    <li><p>Write the formula for cell B6 to look up the <strong>Name</strong> of the lodge using the code in B4 and the external lookup table.</p>
+                        <button class="text-blue-600 hover:text-blue-800 text-xs mt-1" onclick="toggleAnswer('e2a')"><span>Show Answer</span></button>
+                        <div id="e2a" class="answer hidden"><span class="font-mono">=VLOOKUP(B4, 'Lookup_Table'!A:C, 2, FALSE)</span></div>
+                    </li>
+                    <li><p>Write the formula for cell B7 to look up the <strong>Distance</strong> (column 3).</p>
+                        <button class="text-blue-600 hover:text-blue-800 text-xs mt-1" onclick="toggleAnswer('e2b')"><span>Show Answer</span></button>
+                        <div id="e2b" class="answer hidden"><span class="font-mono">=VLOOKUP(B4, 'Lookup_Table'!A:C, 3, FALSE)</span></div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 4. Present Data (Formatting) -->
+        <div class="section-card">
+            <h2 class="text-2xl font-bold section-title">4. Presenting and Formatting Data</h2>
+            
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Display Features</h3>
+            <ul class="list-disc ml-5 text-gray-700">
+                <li>Displaying <strong>formulas</strong> vs. <strong>values</strong>.</li>
+                <li>Adjusting row height and column width.</li>
+                <li><strong>Wrapping text</strong> for long headers.</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Formatting</h3>
+            <ul class="list-disc ml-5 text-gray-700">
+                <li><strong>Enhancing Look:</strong> Text/cell colour, <strong>bold</strong>, italic, underline.</li>
+                <li><strong>Numeric Data:</strong> Adjusting decimal places, applying currency symbols (e.g., £, $), and dealing with percentages.</li>
+            </ul>
+            
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Conditional Formatting (CRITICAL EXAM SKILL)</h3>
+            <p class="text-gray-700">Dynamically changing the format (e.g., cell colour) of a cell based on its content.</p>
+
+            <!-- EXERCISE 3: CONDITIONAL FORMATTING -->
+            <div class="exercise-box">
+                <h4 class="font-semibold text-lg text-blue-800 mb-2">Exercise 3: Conditional Formatting</h4>
+                <p class="text-sm">You have calculated the monthly Balance for three projects (Elephant, Monkey, Tiger) in the range C23:N25. (Referenced from <a href="https://drive.google.com/drive/u/3/folders/12cFZcIHZg82uMnvO0oo4wQE3gh8ZPwHD" target="_blank" class="text-blue-600 hover:text-blue-800">0417/32/M/J/23</a>).</p>
+                <p class="text-sm">Set up <strong>two</strong> conditional formatting rules for the entire range C23:N25:</p>
+                <ol class="list-decimal ml-5 mt-2 space-y-2 text-sm">
+                    <li><p>If the cell contains a value <strong>greater than or equal to 0</strong>, the cell must have a **light-green background** with **dark-blue text**.</p></li>
+                    <li><p>If the cell contains a value <strong>less than 0</strong> (a loss), the cell must have **red text** on a **white background**.</p></li>
+                </ol>
+                <div class="key-concept bg-green-100 border-green-300">
+                    <span class="font-semibold text-green-800">Rule 1 Condition:</span> Cell Value Is &gt;= 0
+                    <br><span class="font-semibold text-green-800">Rule 2 Condition:</span> Cell Value Is &lt; 0
+                </div>
+                <div class="tip bg-yellow-100 text-yellow-800">
+                    <p><strong>IMPORTANT:</strong> Always ensure you apply the rule to the <strong>correct range</strong> (e.g., <span class="font-mono">C23:N25</span>) and check that the **less than** rule is applied correctly for losses.</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Page Layout</h3>
+            <p class="text-gray-700">Know how to set the <strong>page orientation</strong> (Portrait/Landscape) and control the <strong>print layout</strong> (setting print areas, scaling, showing/hiding gridlines/row/column headings).</p>
+            <div class="key-concept">
+                <span class="font-semibold text-cyan-600">Print Checks:</span> Always confirm:
+                <ul class="list-disc ml-5 text-sm">
+                    <li>Page orientation (Landscape/Portrait)</li>
+                    <li>Row and column headings (Visible/Hidden)</li>
+                    <li>Contents of all cells are <strong>fully visible</strong> (adjust column width if necessary)</li>
+                    <li>Printout fits on a **single page** (adjust scaling or print area)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 5. Search & Select Data -->
+        <div class="section-card">
+            <h2 class="text-2xl font-bold section-title">5. Search, Select, and Sort Data</h2>
+            
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Searching / Filtering (Data Selection)</h3>
+            <p class="text-gray-700">Allows you to focus on a subset of data using criteria and <strong>logical/comparison operators</strong>:</p>
+            <div class="key-concept">
+                <span class="font-mono font-semibold">Operators:</span> >, <, =, >=, <=, <>, AND, OR, NOT.
+                <br><span class="font-mono font-semibold">Wildcards:</span> <span class="font-mono">*</span> (any number of characters), <span class="font-mono">?</span> (a single character).
+            </div>
+            
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Sorting</h3>
+            <p class="text-gray-700">Arranging data based on specific criteria (ascending or descending order). You must be able to sort using a <strong>single criterion</strong> or <strong>multiple criteria</strong> (e.g., by Grade, then by Name).</p>
+
+            <div class="tip">
+                <p><strong>Examiner Tip:</strong> When sorting by multiple criteria, <strong>ALWAYS</strong> select all relevant columns/the entire data range to ensure the data stays aligned!</p>
+            </div>
+        </div>
+        
+         <!-- 6. Exam-Specific Task: Time Conversion -->
+        <div class="section-card">
+            <h2 class="text-2xl font-bold section-title">6. Exam-Specific Task: Time Conversion</h2>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2 text-cyan-600">Converting Minutes and Seconds to Total Seconds</h3>
+            <p class="text-gray-700">A very common task is converting time data (Minutes, Seconds, Thousandths) into a single Total Seconds value, typically to 3 decimal places.</p>
+            
+            <!-- EXERCISE 4: TIME CONVERSION -->
+            <div class="exercise-box">
+                <h4 class="font-semibold text-lg text-blue-800 mb-2">Exercise 4: Time Conversion</h4>
+                <p class="text-sm">You have data in cells C14 (Minutes), D14 (Seconds), and E14 (Thousandths of a second). You need a replicable formula in F14 to calculate the time in total seconds. (Referenced from 0417/31/M/J/25).</p>
+                <p class="text-sm font-semibold mt-2">Conversion Rule: 1 minute = 60 seconds. Thousandths must be converted to seconds (e.g., 484 thousandths = 0.484 seconds).</p>
+                <ol class="list-decimal ml-5 mt-2 space-y-2 text-sm">
+                    <li><p>Write the replicable formula for cell F14 to calculate the total time in seconds.</p>
+                        <button class="text-blue-600 hover:text-blue-800 text-xs mt-1" onclick="toggleAnswer('e4a')"><span>Show Answer</span></button>
+                        <div id="e4a" class="answer hidden"><span class="font-mono">=(C14 * 60) + D14 + (E14 / 1000)</span></div>
+                    </li>
+                </ol>
+                <div class="tip bg-green-100 text-green-800">
+                    <p><strong>REPLICABLE:</strong> Since this formula will be copied down, **all references (C14, D14, E14) must be relative** (no <span class="font-mono">$</span> signs), which they are in the answer above!</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <!-- Footer -->
+    <footer class="text-center mt-8 p-4 text-gray-500 text-sm">
+        Good luck with your IGCSE ICT Paper 3 exam! You've got this.
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE ICT 0417 P3 V32 Tutorial Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .content-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        .tab-button {
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        /* Mock CSS for the centered table with border thickness 0 */
+        .racing-table {
+            border-collapse: separate;
+            border-spacing: 0; 
+            width: 85%; /* Required Width */
+            border: 0px solid transparent; /* Required Border Thickness 0 */
+            /* CSS modification for centering (Step 25) */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .racing-table td {
+            /* Visual aid for structure since border=0 */
+            border: 1px dashed #d1d5db; 
+            padding: 15px;
+            vertical-align: top;
+        }
+        /* CSS class for right alignment (Step 26) */
+        .right {
+            text-align: right;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            const showTab = (tabId) => {
+                contents.forEach(content => content.classList.add('hidden'));
+                tabs.forEach(tab => tab.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700'));
+                tabs.forEach(tab => tab.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300'));
+
+                document.getElementById(tabId + '-content').classList.remove('hidden');
+                document.getElementById(tabId).classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+                document.getElementById(tabId).classList.remove('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
+            };
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    showTab(tab.id);
+                });
+            });
+
+            // Default to showing the Web Page Result
+            showTab('webpage');
+        });
+    </script>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-800">Step-by-Step Tutorial: IGCSE ICT 0417 Paper 3 Variant 32 Solution</h1>
+        <p class="text-lg text-gray-600 mt-2">Focusing on Expression Web 4 GUI and Advanced Excel Analysis (70 Marks)</p>
+        <!-- Link to files -->
+        <p class="text-md text-red-600 font-semibold mt-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 align-text-bottom" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L10 11.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z" clip-rule="evenodd" />
+              <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v7a1 1 0 11-2 0V3a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            <a href="https://drive.google.com/drive/u/3/folders/1QJGnTa0qt7HVPxvbxQEg_reE6VzxDtXr" target="_blank" class="hover:underline">Click here to access necessary source files (Google Drive Link)</a>
+        </p>
+    </header>
+
+    <div class="max-w-6xl mx-auto">
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-4 mb-8">
+            <button id="webpage" class="tab-button bg-blue-600 text-white hover:bg-blue-700">Task 4: Web Page Result (Preview)</button>
+            <button id="html-source" class="tab-button bg-gray-200 text-gray-700 hover:bg-gray-300">Task 4: Web Creation Steps</button>
+            <button id="spreadsheet" class="tab-button bg-gray-200 text-gray-700 hover:bg-gray-300">Task 2: Spreadsheet Formulas</button>
+        </div>
+
+        <!-- Web Page Result (Task 4) -->
+        <div id="webpage-content" class="tab-content content-card">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-800">Task 4: Tawara Racing Web Page (`j25racing.htm`) Result</h2>
+            <p class="mb-4 text-gray-700">This is the visual output of the complex web page (Steps 19-27). Note the four rows and the right-aligned text in the final credit cell.</p>
+
+            <div class="p-4 border-2 border-dashed border-gray-300 rounded-lg">
+                <h3 class="text-xl font-bold mb-4 text-center">Tawara Racing (Page Title)</h3>
+                
+                <table class="racing-table bg-gray-50">
+                    <!-- Row 1: Merged (A) - Banner Image -->
+                    <tr>
+                        <td colspan="2" class="text-center bg-gray-100 p-2">
+                            <!-- Image j25banner.jpg -->
+                            <img src="https://placehold.co/800x120/1f2937/ffffff?text=j25banner.jpg+Placeholder" 
+                                 alt="Tawara Racing Banner" 
+                                 class="w-full h-auto rounded-md shadow-lg"
+                                 onerror="this.src='https://placehold.co/800x120/1f2937/ffffff?text=Image+Load+Failed';">
+                        </td>
+                    </tr>
+                    
+                    <!-- Row 2: Separate Cells (B and C) - Text and Video -->
+                    <tr>
+                        <td class="w-1/2 p-2">
+                            <!-- Cell B: Text Content (h3) -->
+                            <h4 class="text-sm font-medium mb-2">Cell B: Text Content (Style: Heading 3)</h4>
+                            <h3 class="text-base font-semibold text-gray-800">
+                                As an independent team, Tawara Racing design and build our own fuel-efficient engines. We are completely independent of any motor vehicle manufacturer. We are currently working on enhancing our petrol engines with electric supercharging, a technology conceived within our own research and development team. We also construct our own chassis and vehicle bodies. We use other manufacturers' parts in our vehicles from time to time, but usually only as a 'stop-gap' whilst in the development phase of a project. These are frequently redesigned and developed to match the high-stress environment that pervades all vehicles involved in high level motor racing.
+                            </h3>
+                        </td>
+                        <td class="w-1/2 p-2 text-center" style="width:480px; height:480px; min-width: 250px; min-height: 250px;">
+                            <!-- Cell C: Video (j25racing.mp4) - Inline Style Applied -->
+                            <h4 class="text-sm font-medium mb-2">Cell C: Video Element (Fixed Dimensions)</h4>
+                            <div class="bg-black flex items-center justify-center rounded-lg" style="width: 100%; height: 100%; max-width: 480px; max-height: 480px;">
+                                <p class="text-white p-4">
+                                    &lt;video controls loop&gt;<br>
+                                    &lt;source src="j25racing.mp4" type="video/mp4"&gt;<br>
+                                    Your browser does not support this video type.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Row 3: Separate Cells (D and E) - Navigation Links -->
+                    <tr>
+                        <td class="w-1/2 bg-gray-100 p-4">
+                            <!-- Cell D: Navigation Link 1 (h2) -->
+                            <h4 class="text-sm font-medium mb-2">Cell D: Link to Tech</h4>
+                            <h2 class="text-xl font-bold text-gray-700">
+                                <a href="j25tech.htm" class="text-red-600 hover:underline">New technologies</a>
+                            </h2>
+                        </td>
+                        <td class="w-1/2 bg-gray-100 p-4">
+                            <!-- Cell E: Email Link (h2) -->
+                            <h4 class="text-sm font-medium mb-2">Cell E: Contact Link</h4>
+                            <h2 class="text-xl font-bold text-gray-700">
+                                <a href="mailto:Tawara.Racing@cambridge.org?subject=Tell me more!" class="text-red-600 hover:underline">Contact us</a>
+                            </h2>
+                        </td>
+                    </tr>
+
+                    <!-- Row 4: Separate Cells (F and G) - Credits -->
+                    <tr>
+                        <td class="w-1/2 bg-gray-200 p-4">
+                            <!-- Cell F: Text with Class "right" (h2) -->
+                            <h4 class="text-sm font-medium mb-2">Cell F: Text (Right Aligned)</h4>
+                            <h2 class="text-xl font-bold text-gray-700 right">
+                                Designed by:
+                            </h2>
+                        </td>
+                        <td class="w-1/2 bg-gray-200 p-4">
+                            <!-- Cell G: Candidate Details (h2) -->
+                            <h4 class="text-sm font-medium mb-2">Cell G: Candidate Details</h4>
+                            <h2 class="text-xl font-bold text-gray-700">
+                                [Your Name] [Centre Number] [Candidate Number]
+                            </h2>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Task 4: Step-by-Step Web Creation Guide -->
+        <div id="html-source-content" class="tab-content content-card hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-800">Task 4: Step-by-Step Web Page Creation Guide (Expression Web 4 GUI)</h2>
+            <p class="mb-4 text-gray-700">These steps guide you through creating the <code>j25racing.htm</code> file. Pay close attention to the video embedding (Step 21), which <strong>requires a manual switch to Code View</strong>.</p>
+
+            <div class="space-y-6">
+                
+                <h3 class="text-xl font-semibold text-gray-700 border-b pb-2">Web Page Setup &amp; Table Structure (Steps 19-20)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-2 text-gray-600">
+                    <li><strong>Create &amp; Save:</strong> Go to <strong>File &gt; New &gt; Page</strong>, choose HTML, and save immediately as <code>j25racing.htm</code> in the <code>TR</code> folder.</li>
+                    <li><strong>Insert Table (Step 19):</strong> Go to <strong>Table &gt; Insert Table</strong>. Set <strong>Rows: 4</strong>, <strong>Columns: 2</strong>, <strong>Width: 85 percent</strong>, <strong>Border thickness: 0</strong>, and <strong>Alignment: Center</strong>.</li>
+                    <li><strong>Merge Cells (Step 19):</strong> Select the <strong>first row</strong> (both cells) and <strong>Right-click &gt; Merge Cells</strong> (Cell A). Leave the other three rows separate.</li>
+                    <li><strong>Set Cell C Dimensions (Step 20):</strong> <strong>Right-click cell C</strong> (right side of Row 2) &gt; <strong>Tag Properties</strong>. In the <strong>Style</strong> field, type: <code>width:480px; height:480px;</code></li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-gray-700 border-b pb-2">Video and Content Insertion (Steps 21-23)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-2 text-gray-600">
+                    <li><strong>Insert Video (Step 21 - CRITICAL):</strong>
+                        <ol class="list-decimal list-inside ml-6 space-y-1">
+                            <li>Click in cell C. Go to <strong>View &gt; Code view</strong>.</li>
+                            <li>Locate the <code>&lt;td&gt;</code> tag for cell C.</li>
+                            <li><strong>Type this exact code between the tags:</strong> 
+                                <pre class="bg-gray-200 p-2 rounded text-sm overflow-x-auto"><code>&lt;video controls loop&gt;
+    &lt;source src="j25racing.mp4" type="video/mp4"&gt;
+    Your browser does not support this video type.
+&lt;/video&gt;</code></pre>
+                            </li>
+                            <li>Return to <strong>Design View</strong>.</li>
+                        </ol>
+                    </li>
+                    <li><strong>Insert Text (Cell B - Step 22):</strong> Paste the text from <code>j25text.txt</code>. Select all text and set its <strong>Style dropdown</strong> to <strong>Heading 3 (h3)</strong>.</li>
+                    <li><strong>Add Navigation &amp; Credits (Steps 23):</strong> Type "New technologies" (D), "Contact us" (E), "Designed by:" (F), and your details (G). Select all text in cells D, E, F, and G and set the <strong>Style</strong> to <strong>Heading 2 (h2)</strong>.</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold text-gray-700 border-b pb-2">Linking &amp; Styling (Steps 24-26)</h3>
+                <ul class="list-disc list-inside ml-4 space-y-2 text-gray-600">
+                    <li><strong>Create Links (Step 24):</strong>
+                        <ul class="list-circle list-inside ml-6 space-y-1">
+                            <li>Select "New technologies" (D): <strong>Insert &gt; Hyperlink</strong>. Set <strong>Link to:</strong> <code>j25tech.htm</code>.</li>
+                            <li>Select "Contact us" (E): <strong>Insert &gt; Hyperlink</strong>. Set <strong>Link to:</strong> <code>mailto:Tawara.Racing@cambridge.org?subject=Tell me more!</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Attach &amp; Modify Stylesheet (Step 25):</strong> Go to <strong>Format &gt; CSS Styles</strong>. Attach <code>j25racing.css</code>. Then, <strong>double-click</strong> the CSS file and <strong>add</strong> <code>margin-left: auto; margin-right: auto;</code> to the <code>table</code> style rule to center it. <strong>Save</strong> the CSS file.</li>
+                    <li><strong>Apply Class (Step 26):</strong> <strong>Right-click text in cell F</strong> ("Designed by:") &gt; <strong>Tag Properties</strong>. Set the <strong>class</strong> attribute value to: <code>right</code>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Spreadsheet Analysis (Task 2) -->
+        <div id="spreadsheet-content" class="tab-content content-card hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-800">Task 2: Detailed Spreadsheet Analysis (Excel Formulas)</h2>
+            <p class="mb-6 text-gray-700">These are the key formulas required for the Excel analysis section of the task, referencing the test times in the <strong>TTime</strong> named range (D18:D77).</p>
+
+            <div class="space-y-6">
+                
+                <!-- Steps 4-9: All Tests Analysis -->
+                <div class="p-4 bg-green-100 border border-green-300 rounded-lg">
+                    <h3 class="text-xl font-semibold text-green-800 mb-2">General Analysis Formulas (Cells B4 - B9)</h3>
+                    <ul class="space-y-2 font-mono text-sm">
+                        <li><strong>Fastest Test (B4):</strong> <code class="bg-white p-1 rounded">=MIN(TTime)</code></li>
+                        <li><strong>Slowest Test (B5):</strong> <code class="bg-white p-1 rounded">=MAX(TTime)</code></li>
+                        <li><strong>Average Test (B6):</strong> <code class="bg-white p-1 rounded">=AVERAGE(TTime)</code></li>
+                        <li class="pt-2"><strong>Avg Mix 1 (B7):</strong> <code class="bg-white p-1 rounded">=AVERAGEIF(B18:B77,1,TTime)</code></li>
+                        <li><strong>Avg Mix 2 (B8):</strong> <code class="bg-white p-1 rounded">=AVERAGEIF(B18:B77,2,TTime)</code></li>
+                        <li><strong>Avg Mix 3 (B9):</strong> <code class="bg-white p-1 rounded">=AVERAGEIF(B18:B77,3,TTime)</code></li>
+                    </ul>
+                </div>
+
+                <!-- Step 10: Wind Acceptability Check -->
+                <div class="p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
+                    <h3 class="text-xl font-semibold text-yellow-800 mb-2">Step 10: Wind Acceptability Check (Cell F18)</h3>
+                    <p class="text-sm mb-2">This determines if the wind adjustment (Column E) is less than +2. Replicate from F18 to F77.</p>
+                    <code class="block bg-white p-3 rounded font-mono text-base">=IF(E18&lt;2,"Yes","No")</code>
+                </div>
+                
+                <!-- Steps 11-14: Wind Adjusted Analysis -->
+                <div class="p-4 bg-blue-100 border border-blue-300 rounded-lg">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-2">Wind-Adjusted Analysis (Cells B12 - B15)</h3>
+                    <p class="text-sm mb-2">These calculate averages only for tests where wind is "Yes" (acceptable).</p>
+                    <ul class="space-y-2 font-mono text-sm">
+                        <li><strong>Avg Mix 1 Adj (B12):</strong> <code class="bg-white p-1 rounded">=AVERAGEIF(F18:F37,"Yes",D18:D37)</code></li>
+                        <li><strong>Avg Mix 2 Adj (B13):</strong> <code class="bg-white p-1 rounded">=AVERAGEIF(F38:F57,"Yes",D38:D57)</code></li>
+                        <li><strong>Avg Mix 3 Adj (B14):</strong> <code class="bg-white p-1 rounded">=AVERAGEIF(F58:F77,"Yes",D58:D77)</code></li>
+                        <li class="font-bold pt-2"><strong>Best Mix (B15):</strong> <code class="bg-white p-1 rounded">=IF(MIN(B12:B14)=B12,3.2%,IF(MIN(B12:B14)=B13,3.4%,3.6%))</code></li>
+                    </ul>
+                    <p class="text-xs mt-2"><strong>Note:</strong> Best Mix formula uses a <strong>nested IF</strong> to return the mix percentage (3.2%, 3.4%, or 3.6%) corresponding to the minimum average time.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remaining Tasks Summary -->
+        <div class="content-card">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Task 1 &amp; 3: Setup and Documentation Summary</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Task 1: Evidence Document Setup</h3>
+                    <ul class="list-disc list-inside space-y-1 text-gray-600">
+                        <li>Create a new <strong>Word document</strong>.</li>
+                        <li>Insert your <strong>Name, Centre Number, Candidate Number</strong> into the <strong>header/footer</strong>.</li>
+                        <li>Save the file as `p32evidence_[CentreNumber]_[CandidateNumber]`.</li>
+                        <li>Keep the file open for pasting screenshots and code.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Task 3: File Management</h3>
+                    <ul class="list-disc list-inside space-y-1 text-gray-600">
+                        <li>Create a folder named <strong>`TR`</strong>.</li>
+                        <li>Copy all five specified files (`j25banner.jpg`, `j25racing.css`, `j25racing.mp4`, `j25tech.htm`, `j25text.txt`) into the `TR` folder.</li>
+                        <li>In File Explorer's `View &gt; Details` view, display <strong>Name, Type, Size, Dimensions, and Frame height/width</strong>.</li>
+                        <li><strong>Take a screenshot</strong> of the file details and <strong>paste it into the Evidence Document</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Data Models: Spreadsheets & Functions (IGCSE ICT)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS Variables for Theme (Light/Dark Mode) --- */
+        :root {
+            --color-bg: #ffffff;
+            --color-text: #1f2937;
+            --color-primary: #3b82f6; /* Blue 500 */
+            --color-accent: #10b981; /* Emerald 500 */
+            --color-card-bg: #f3f4f6;
+            --color-border: #d1d5db;
+            --color-shadow: rgba(0, 0, 0, 0.05);
+            --color-progress-bg: #e5e7eb;
+        }
+        .dark-mode {
+            --color-bg: #1f2937;
+            --color-text: #f3f4f6;
+            --color-primary: #60a5fa; /* Blue 400 */
+            --color-accent: #6ee7b7; /* Emerald 300 */
+            --color-card-bg: #374151;
+            --color-border: #4b5563;
+            --color-shadow: rgba(255, 255, 255, 0.1);
+            --color-progress-bg: #4b5563;
+        }
+
+        /* --- Base & Utilities --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding-top: 60px; /* Space for fixed header */
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        section {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        h1, h2, h3 { color: var(--color-primary); margin-top: 0; }
+        h2 { font-size: 1.875rem; border-bottom: 2px solid var(--color-accent); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+        .card {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px var(--color-shadow);
+        }
+        .btn {
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            font-weight: 600;
+        }
+        .btn:hover { background-color: var(--color-accent); }
+        .btn:active { transform: scale(0.98); }
+        .feedback-box {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        .feedback-success { background-color: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .dark-mode .feedback-success { background-color: #065f46; color: #d1fae5; border: 1px solid #6ee7b7; }
+        .feedback-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+        .dark-mode .feedback-error { background-color: #991b1b; color: #fee2e2; border: 1px solid #f87171; }
+
+        /* --- Header & Navigation --- */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--color-bg);
+            border-bottom: 2px solid var(--color-primary);
+            z-index: 1000;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 4px var(--color-shadow);
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: var(--color-progress-bg);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: var(--color-accent);
+            transition: width 0.5s ease;
+        }
+        .nav-menu {
+            display: none; /* Hidden by default for mobile */
+            flex-direction: column;
+            width: 100%;
+            background-color: var(--color-bg);
+            position: absolute;
+            left: 0;
+            top: 59px; /* Below the main header */
+            border-top: 1px solid var(--color-border);
+            padding: 0.5rem 0;
+        }
+        .nav-menu.open { display: flex; }
+        .nav-menu a {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: var(--color-text);
+            border-radius: 0.25rem;
+        }
+        .nav-menu a:hover { background-color: var(--color-card-bg); }
+        .menu-toggle, .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+
+        /* Desktop Navigation */
+        @media (min-width: 768px) {
+            .menu-toggle { display: none; }
+            .nav-menu {
+                display: flex;
+                flex-direction: row;
+                position: static;
+                width: auto;
+                border: none;
+                padding: 0;
+            }
+            .nav-menu a { padding: 0.5rem 0.75rem; }
+        }
+
+        /* --- Accordion/Expandable Card Styling --- */
+        .accordion-item {
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+        }
+        .accordion-header {
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        .accordion-content {
+            padding: 1rem 1.5rem;
+            background-color: var(--color-card-bg);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        .accordion-header .icon {
+            transform: rotate(0deg);
+            transition: transform 0.3s ease;
+        }
+        .accordion-header.active .icon {
+            transform: rotate(90deg);
+        }
+
+        /* --- Drag and Drop Styling --- */
+        .dd-container { display: flex; flex-direction: column; gap: 1rem; }
+        @media (min-width: 600px) {
+            .dd-container { flex-direction: row; }
+        }
+        .dd-source, .dd-target {
+            flex: 1;
+            padding: 1rem;
+            border: 2px dashed var(--color-border);
+            border-radius: 0.5rem;
+            min-height: 150px;
+        }
+        .dd-item {
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            cursor: grab;
+            transition: opacity 0.3s, transform 0.1s;
+        }
+        .dd-item.dragging { opacity: 0.6; transform: scale(1.05); }
+        .dd-target.drag-over { border-color: var(--color-accent); background-color: rgba(var(--color-accent-rgb, 16, 185, 129), 0.1); }
+        .correct-drop { border: 2px solid var(--color-accent); }
+        .dd-item.correct { background-color: var(--color-accent); }
+
+        /* --- Custom Table Styling --- */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid var(--color-border);
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            font-weight: 600;
+        }
+        .data-table tr:nth-child(even) { background-color: var(--color-card-bg); }
+        .data-table tr:hover { background-color: var(--color-border); }
+
+        /* --- Code/Formula Display --- */
+        .formula-code {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-size: 1.1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .dark-mode .formula-code {
+            background-color: #111827;
+            border-color: #374151;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header and Navigation -->
+    <header class="header">
+        <div class="nav-content">
+            <h1 style="font-size: 1.25rem; color: var(--color-primary); margin: 0;">Spreadsheets & Functions</h1>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <nav class="nav-menu" id="nav-menu">
+                    <a href="#objectives" onclick="toggleMenu()">Goals</a>
+                    <a href="#concepts" onclick="toggleMenu()">Explore</a>
+                    <a href="#activities" onclick="toggleMenu()">Practice</a>
+                    <a href="#vocabulary" onclick="toggleMenu()">Vocab</a>
+                </nav>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">🌙</button>
+                <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" onclick="toggleMenu()">☰</button>
+            </div>
+        </div>
+        <div class="progress-bar-container" title="Estimated Lesson Progress">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- 1. Objectives Section (5-10 min) -->
+        <section id="objectives">
+            <h2>1. Learning Objectives</h2>
+            <div class="card">
+                <h3>Cognitive Goals: *What you'll know*</h3>
+                <ul>
+                    <li><span class="step" data-step="1">Define fundamental spreadsheet terms</span>: <strong>cell</strong>, <strong>row</strong>, <strong>column</strong>, <strong>cell reference</strong>, <strong>merging</strong>.</li>
+                    <li><span class="step" data-step="2">Apply arithmetic operators and BIDMAS</span> to create functional <strong>formulae</strong>.</li>
+                    <li>Differentiate and correctly use <strong>relative</strong> (A1) and <strong>absolute</strong> ($\$$A$\$$1) cell references.</li>
+                    <li>Utilize essential built-in <strong>functions</strong> (SUM, AVERAGE, IF, COUNT, LOOKUP).</li>
+                    <li>Implement <strong>conditional formatting</strong> and <strong>data sorting</strong> to present data effectively.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Social-Emotional Goals: *How you'll grow*</h3>
+                <ul>
+                    <li><strong>Critical Thinking:</strong> Analyze complex problems to break them down into simple formulae.</li>
+                    <li><strong>Self-Regulation:</strong> Use hints and feedback effectively to correct errors and self-assess.</li>
+                    <li><strong>Empathy & Collaboration:</strong> Work with peers to debug formulae and share best practices.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Motivation: Prior Knowledge Check</h3>
+                <p><strong>Question:</strong> What is the primary purpose of using a spreadsheet instead of a traditional paper ledger?</p>
+                <input type="text" id="motivation-answer" placeholder="Type your idea here..." style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid var(--color-border); margin-bottom: 0.5rem;">
+                <button class="btn" onclick="checkMotivation()">Submit & Connect</button>
+                <div id="motivation-feedback" class="feedback-box" style="display: none;"></div>
+            </div>
+        </section>
+
+        <!-- 2. Concept Exploration (20-25 min) -->
+        <section id="concepts">
+            <h2>2. Concept Exploration: The Spreadsheet Core</h2>
+
+            <div class="accordion-item">
+                <div class="accordion-header active" onclick="toggleAccordion(this)">
+                    A. The Basics: Cells, Rows, Columns, and Merging <span class="icon">></span>
+                </div>
+                <div class="accordion-content" style="max-height: 300px;">
+                    <p>A <strong>spreadsheet</strong> is software used to <strong>analyse, visualise, and manipulate data</strong>. It's built on a grid:</p>
+                    <ul>
+                        <li>A <strong>Cell</strong> is one box, referenced by its <strong>cell reference</strong> (e.g., <strong>A1</strong>).</li>
+                        <li>A <strong>Row</strong> goes <strong>across</strong>, referenced by the number (1, 2, 3...).</li>
+                        <li>A <strong>Column</strong> goes <strong>down</strong>, referenced by the letter (A, B, C...).</li>
+                        <li><strong>Merging Cells</strong> combines two or more cells into one larger cell, typically for <strong>headers</strong> or <strong>titles</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Content Differentiation: Levels of Formulae</h3>
+            <!-- Intermediate: Referencing and BIDMAS -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    B. Intermediate: Formulae, BIDMAS, and Referencing <span class="icon">></span>
+                </div>
+                <div class="accordion-content">
+                    <p>A formula starts with <strong>=</strong> and can use <strong>arithmetic operators</strong> (+, -, \*, /, ^). The <strong>Order of Operations (BIDMAS)</strong> ensures correct calculation sequence:</p>
+                    <table class="data-table">
+                        <thead><tr><th>Operation</th><th>Rule</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>B</strong>rackets</td><td>First</td></tr>
+                            <tr><td><strong>I</strong>ndices</td><td>Power of (^)</td></tr>
+                            <tr><td><strong>DM</strong></td><td>Division and Multiplication (Left to Right)</td></tr>
+                            <tr><td><strong>AS</strong></td><td>Addition and Subtraction (Left to Right)</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Cell Referencing: Relative vs. Absolute</h4>
+                    <p>Referencing makes formulae dynamic. Use the toggle below to understand the difference when copying a formula:</p>
+                    <div id="reference-info" style="margin-top: 1rem; padding: 1rem; border: 1px dashed var(--color-primary); border-radius: 0.5rem;">
+                        <button class="btn" onclick="toggleReference('relative')">Relative Reference (A1)</button>
+                        <button class="btn" onclick="toggleReference('absolute')">Absolute Reference ($A$1)</button>
+                        <div id="ref-output" style="margin-top: 1rem;">
+                            <p><strong>Default (Relative A1):</strong> When copied, the cell reference <strong>changes relative</strong> to the new cell position. E.g., copying <code>=A1+B1</code> from C1 to C2 becomes <code>=A2+B2</code>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced: Functions and Lookups -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    C. Advanced: Built-in Functions and Nesting <span class="icon">></span>
+                </div>
+                <div class="accordion-content">
+                    <p>A <strong>function</strong> is a pre-defined formula. Examples:</p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <div class="card" style="flex: 1; min-width: 45%;">
+                            <strong>SUM(range)</strong>: Adds numbers. <code>=SUM(A1:A10)</code>
+                            <br><strong>AVERAGE(range)</strong>: Calculates the mean. <code>=AVERAGE(A1:A10)</code>
+                            <br><strong>MAX(range)</strong>: Finds the largest number.
+                        </div>
+                        <div class="card" style="flex: 1; min-width: 45%;">
+                            <strong>IF(condition, true, false)</strong>: Returns one value if a condition is true, another if false.
+                            <br><strong>VLOOKUP/HLOOKUP</strong>: Performs a vertical/horizontal lookup of data.
+                            <br><strong>INT/ROUND</strong>: For rounding numbers.
+                        </div>
+                    </div>
+                    <p><strong>Nesting Functions:</strong> Using one function inside another (e.g., <code>=IF(A1>B1, MAX(A1:B1), MIN(A1:B1))</code>).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Applied Examples (15-20 min) -->
+        <section id="examples">
+            <h2>3. Applied Examples (Tax Calculation Case)</h2>
+
+            <p><strong>Scenario:</strong> Tawara School Shop calculates total tax for items based on a <strong>20% rate</strong> (in cell H1) applied to the Selling Price (Column D) and Amount Sold (Column G). Tax is only paid if column F has 'Y'.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr><th>Item</th><th>Cost (C)</th><th>Selling (D)</th><th>Profit (E)</th><th>Tax (F)</th><th>Amount Sold (G)</th><th>Formula Result (I)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>School Tie</td><td>\$7.00</td><td>\$9.99</td><td>\$2.99</td><td>Y</td><td>139</td><td>?</td></tr>
+                    <tr><td>Pen Set</td><td>\$10.00</td><td>\$12.50</td><td>\$2.50</td><td>N</td><td>100</td><td>?</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Challenge: Write the formula for Total Tax (I4)</h3>
+            <p>The formula to calculate total tax in <strong>I4</strong> for the School Tie is:</p>
+            <div class="formula-code">
+                =IF(F4="Y", ($H$1 * D4 * G4), "")
+            </div>
+            <button class="btn" onclick="toggleSolution(this, 'solution-1')">Explain Formula Step-by-Step</button>
+            <div id="solution-1" class="card" style="display: none; margin-top: 1rem;">
+                <p><strong>Explanation (Nesting IF and Absolute Reference):</strong></p>
+                <ol>
+                    <li><code>IF(F4="Y", ... , "")</code>: Checks if the Tax column (<strong>F4</strong>) is 'Y'. If it is, run the next calculation. If not, return blank (<strong>""</strong>).</li>
+                    <li><code>($H$1 * D4 * G4)</code>: This is the calculation for the tax amount.
+                        <ul>
+                            <li><strong>$H$1</strong>: <strong>Absolute Reference</strong> to the <strong>20% Tax Rate</strong> (in H1). This stays fixed when copied.</li>
+                            <li><strong>D4</strong>: <strong>Relative Reference</strong> to the <strong>Selling Price</strong> (for the current item).</li>
+                            <li><strong>G4</strong>: <strong>Relative Reference</strong> to the <strong>Amount Sold</strong> (for the current item).</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- 4. Interactive Activities (25-35 min) -->
+        <section id="activities">
+            <h2>4. Interactive Activities & Gamification</h2>
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center; background-color: var(--color-accent); color: var(--color-bg);">
+                <div>Your Score: <span id="current-score">0</span> pts | Achievements: <span id="achievements">None</span></div>
+                <button class="btn" onclick="updateProgress(1, 'activities')">Complete Activity Checkpoint</button>
+            </div>
+
+            <h3>Activity 4.1: BIDMAS & Formula Evaluation (Individual)</h3>
+            <p><strong>Question:</strong> What is the final value of the following spreadsheet calculation? (Assume C1=10, D1=5)</p>
+            <div class="formula-code">= (C1 + 5) * (D1 / 5) - 2</div>
+            <div class="card">
+                <input type="number" id="bidmas-answer" placeholder="Enter numerical result" style="padding: 0.5rem; border-radius: 0.5rem; border: 1px solid var(--color-border); margin-right: 0.5rem;">
+                <button class="btn" onclick="checkBIDMAS()">Check Answer</button>
+                <div id="bidmas-feedback"></div>
+                <div id="bidmas-hint" class="feedback-error" style="display: none; margin-top: 0.5rem;">
+                    <strong>Hint (B-I-DM-AS):</strong> Remember to solve the content within the <strong>Brackets</strong> first! (10+5) and (5/5).
+                </div>
+            </div>
+
+
+            <h3>Activity 4.2: Function Matching (Collaborative/Self-Directed)</h3>
+            <p><strong>Process Differentiation:</strong> Drag the function name to the correct operation description.</p>
+            <div class="dd-container">
+                <div class="dd-source" id="dd-source" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <div class="dd-item" draggable="true" id="dd-if" data-match="IF" ondragstart="drag(event)">IF</div>
+                    <div class="dd-item" draggable="true" id="dd-count" data-match="COUNT" ondragstart="drag(event)">COUNT</div>
+                    <div class="dd-item" draggable="true" id="dd-average" data-match="AVERAGE" ondragstart="drag(event)">AVERAGE</div>
+                </div>
+                <div class="dd-target" id="dd-target-IF" data-accept="IF" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <p>Returns one value if true, another if false.</p>
+                </div>
+                <div class="dd-target" id="dd-target-AVERAGE" data-accept="AVERAGE" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <p>Calculates the mean of a range of cells.</p>
+                </div>
+                <div class="dd-target" id="dd-target-COUNT" data-accept="COUNT" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <p>Counts cells in a range that contain numbers.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Practice Exercises (15-20 min) -->
+        <section id="practice">
+            <h2>5. Practice Exercises: Absolute Referencing</h2>
+            <p><strong>Exercise:</strong> A spreadsheet tracks sales. The sales commission rate (10%) is in cell <strong>A1</strong>. Write the formula for cell <strong>B5</strong> to calculate the commission for the sales value in <strong>A5</strong>, ensuring the formula can be copied down to B6, B7, etc., without error.</p>
+
+            <table class="data-table">
+                <thead><tr><th>Cell</th><th>A (Sales Value)</th><th>B (Commission)</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>10% <em>(Commission Rate)</em></td><td></td></tr>
+                    <tr><td>4</td><td><strong>Sales</strong></td><td><strong>Commission</strong></td></tr>
+                    <tr><td>5</td><td>\$500</td><td>? <em>(Formula goes here)</em></td></tr>
+                    <tr><td>6</td><td>\$800</td><td></td></tr>
+                </tbody>
+            </table>
+
+            <input type="text" id="practice-formula-answer" placeholder="Enter formula for B5 (e.g., =A1*A2)" style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid var(--color-border); margin-top: 0.5rem;">
+            <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                <button class="btn" onclick="checkPracticeFormula()">Check Formula</button>
+                <button class="btn" onclick="getHint('practice-hint')">Hint</button>
+            </div>
+            <div id="practice-feedback"></div>
+            <div id="practice-hint" class="feedback-box" style="display: none; margin-top: 0.5rem;">
+                <strong>Graduated Help:</strong><br>
+                <p><strong>Level 1:</strong> The commission rate must be locked (Absolute Reference) when copying. The sales value must change (Relative Reference).</p>
+                <p><strong>Level 2:</strong> To lock cell A1, use the $\$$ symbol on both the column and row.</p>
+                <p><strong>Level 3 (Solution):</strong> The structure should be <code>=$A$1 * A5</code>.</p>
+            </div>
+            <button class="btn" style="margin-top: 1rem;" onclick="updateProgress(1, 'practice')">Complete Practice Checkpoint</button>
+        </section>
+
+        <!-- 6. Synthesis and Assessment (10-15 min) -->
+        <section id="synthesis">
+            <h2>6. Synthesis and Assessment</h2>
+
+            <h3>Concept Review Quiz (Adaptive)</h3>
+            <div class="card">
+                <p><strong>Q1 (BIDMAS):</strong> If A1=5 and B1=2, what is the result of <code>=A1*B1+1</code>?</p>
+                <label><input type="radio" name="quiz1" value="11" onclick="checkQuiz(1, this.value)"> 11</label><br>
+                <label><input type="radio" name="quiz1" value="12" onclick="checkQuiz(1, this.value)"> 12</label>
+                <div id="quiz1-feedback"></div>
+            </div>
+            <div class="card">
+                <p><strong>Q2 (Referencing):</strong> Which reference type is <code>B1</code>?</p>
+                <label><input type="radio" name="quiz2" value="Absolute" onclick="checkQuiz(2, this.value)"> Absolute</label><br>
+                <label><input type="radio" name="quiz2" value="Relative" onclick="checkQuiz(2, this.value)"> Relative</label>
+                <div id="quiz2-feedback"></div>
+            </div>
+            <div class="card">
+                <p><strong>Q3 (Function):</strong> Which function is best for finding the lowest score in a range?</p>
+                <label><input type="radio" name="quiz3" value="MAX" onclick="checkQuiz(3, this.value)"> MAX</label><br>
+                <label><input type="radio" name="quiz3" value="MIN" onclick="checkQuiz(3, this.value)"> MIN</label>
+                <div id="quiz3-feedback"></div>
+            </div>
+            <button class="btn" style="margin-top: 1rem;" onclick="updateProgress(1, 'synthesis')">Complete Synthesis Checkpoint</button>
+
+            <h3 style="margin-top: 2rem;">Product Differentiation: Demonstrate Understanding</h3>
+            <p><strong>Option A (Process):</strong> Create a small spreadsheet model (2 columns, 5 rows) that uses one <strong>Absolute</strong> reference and one <strong>IF</strong> function.</p>
+            <p><strong>Option B (Product):</strong> Write a one-paragraph explanation of how <strong>Conditional Formatting</strong> helps visualize data (15-20 min).</p>
+        </section>
+
+        <!-- 7. Wrap-up and Objective Confirmation (5-10 min) -->
+        <section id="wrapup">
+            <h2>7. Wrap-up and Reflection</h2>
+            <div class="card">
+                <h3>Goal Achievement Tracker</h3>
+                <p>Check the box once you feel confident in the objective:</p>
+                <label><input type="checkbox" data-goal="BIDMAS"> Applied BIDMAS correctly.</label><br>
+                <label><input type="checkbox" data-goal="REF"> Correctly used Relative and Absolute references.</label><br>
+                <label><input type="checkbox" data-goal="FUNC"> Used functions (SUM, AVG, IF) effectively.</label><br>
+                <label><input type="checkbox" data-goal="CRIT"> Used critical thinking to solve the Practice Exercise.</label>
+            </div>
+
+            <div class="card">
+                <h3>Guided Reflection</h3>
+                <p><strong>1. Most Challenging Concept:</strong> What spreadsheet feature required the most time for you to grasp?</p>
+                <textarea rows="2" style="width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); padding: 0.5rem; margin-bottom: 0.5rem;"></textarea>
+                <p><strong>2. Strategy Check:</strong> What strategy helped you solve the Absolute Referencing problem?</p>
+                <textarea rows="2" style="width: 100%; border-radius: 0.5rem; border: 1px solid var(--color-border); padding: 0.5rem;"></textarea>
+            </div>
+            <button class="btn" style="margin-top: 1rem;" onclick="updateProgress(1, 'wrapup')">Complete Wrap-up Checkpoint</button>
+        </section>
+
+        <!-- 8. Extension and Assignments -->
+        <section id="extension">
+            <h2>8. Extension and Assignments</h2>
+
+            <h3>Extension Activities (For Advanced Students)</h3>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    Advanced Lookup Functions and External Data <span class="icon">></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Research the syntax and use of <strong>XLOOKUP</strong>. How is it superior to VLOOKUP and HLOOKUP? Also, explore how to use <strong>external data sources</strong> (other worksheets/workbooks) within a formula.</p>
+                </div>
+            </div>
+
+            <h3>Differentiated Assignments</h3>
+            <div class="card">
+                <p><strong>Assignment: Budget Model</strong> (Choose one format)</p>
+                <p><strong>Option A (Standard Report):</strong> Create a personal budget spreadsheet using data for <strong>Income</strong> and <strong>Expenses</strong>. The model must include <strong>SUM</strong>, <strong>AVERAGE</strong>, and a formula that uses <strong>Conditional Formatting</strong> to highlight if <strong>Total Expenses > Total Income</strong>.</p>
+                <p><strong>Option B (Presentation):</strong> Create a 5-slide presentation explaining to a new user: 1) What a <strong>Cell Reference</strong> is, 2) The difference between <strong>Relative</strong> and <strong>Absolute</strong> references, and 3) Why <strong>BIDMAS</strong> is important.</p>
+            </div>
+        </section>
+
+        <!-- 9. Vocabulary Section (Interactive) -->
+        <section id="vocabulary">
+            <h2>9. Interactive Vocabulary Toolkit</h2>
+            <div class="card">
+                <input type="text" id="vocab-search" onkeyup="filterVocab()" placeholder="Search terms (e.g., BIDMAS or Cell)" style="width: 100%; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid var(--color-border); margin-bottom: 1rem;">
+                <div id="vocab-list" style="max-height: 400px; overflow-y: auto;">
+                    <!-- Content populated by JavaScript -->
+                </div>
+            </div>
+            <button class="btn" style="margin-top: 1rem;" onclick="updateProgress(1, 'vocabulary')">Complete Vocabulary Checkpoint</button>
+        </section>
+
+    </div>
+
+    <script>
+        // --- Global State and Initialization ---
+        let state = {
+            score: parseInt(localStorage.getItem('spreadsheetScore') || '0'),
+            progress: parseInt(localStorage.getItem('spreadsheetProgress') || '0'),
+            totalSteps: 8, // Manually set checkpoints for progress bar
+            vocab: [
+                { term: "Spreadsheet", definition: "Software used to analyse, visualise, and manipulate data.", difficulty: "Basic", context: "Concept Exploration" },
+                { term: "Cell Reference", definition: "The unique identifier of a cell, combining column letter and row number (e.g., A1).", difficulty: "Basic", context: "Concept Exploration" },
+                { term: "Merging Cells", definition: "Combining two or more adjacent cells into a single, larger cell, often for headers.", difficulty: "Basic", context: "Concept Exploration" },
+                { term: "Formula", definition: "A statement, starting with '=', that performs a simple calculation.", difficulty: "Intermediate", context: "Formulae & Examples" },
+                { term: "Function", definition: "A pre-defined, built-in formula that carries out more complex calculations (e.g., SUM, AVERAGE).", difficulty: "Intermediate", context: "Concept Exploration" },
+                { term: "BIDMAS", definition: "The mathematical order of operations: Brackets, Indices, Division/Multiplication, Addition/Subtraction.", difficulty: "Intermediate", context: "Concept Exploration" },
+                { term: "Absolute Reference", definition: "A cell reference (e.g., $A$1) that remains constant when copied or dragged to other cells.", difficulty: "Intermediate", context: "Applied Examples" },
+                { term: "Relative Reference", definition: "The default cell reference (e.g., A1) that changes relative to the new cell's position when copied.", difficulty: "Intermediate", context: "Practice Exercises" },
+                { term: "Conditional Formatting", definition: "Dynamically changing the format (look) of a cell based on its contents or a condition.", difficulty: "Advanced", context: "Synthesis" },
+                { term: "Wildcard", definition: "Special characters (* or ?) used when searching data to represent unknown or any number of characters.", difficulty: "Advanced", context: "Extension" },
+                { term: "Nesting Functions", definition: "Using one function as an argument within another function (e.g., IF(MAX(...))).", difficulty: "Advanced", context: "Concept Exploration" }
+            ]
+        };
+
+        // --- Utility Functions ---
+        const getEl = id => document.getElementById(id);
+
+        function saveState() {
+            localStorage.setItem('spreadsheetScore', state.score);
+            localStorage.setItem('spreadsheetProgress', state.progress);
+            updateUI();
+        }
+
+        function updateUI() {
+            // 1. Score and Achievements
+            getEl('current-score').textContent = state.score;
+            if (state.score >= 50) getEl('achievements').textContent = 'Formula Apprentice';
+            if (state.score >= 150) getEl('achievements').textContent = 'Data Modeler!';
+
+            // 2. Progress Bar
+            const progressPercent = Math.min(100, Math.round((state.progress / state.totalSteps) * 100));
+            const progressBar = getEl('progress-bar');
+            progressBar.style.width = `${progressPercent}%`;
+            progressBar.title = `Progress: ${progressPercent}% (${state.progress}/${state.totalSteps} steps)`;
+        }
+
+        // --- Header and Navigation ---
+        function toggleMenu() {
+            getEl('nav-menu').classList.toggle('open');
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.classList.toggle('dark-mode', savedTheme === 'dark');
+            getEl('theme-toggle').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        getEl('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            getEl('theme-toggle').textContent = isDark ? '☀️' : '🌙';
+        });
+
+        // --- Section 1: Objectives ---
+        function checkMotivation() {
+            const answer = getEl('motivation-answer').value.toLowerCase();
+            const feedback = getEl('motivation-feedback');
+            feedback.style.display = 'block';
+
+            if (answer.includes('calculate') || answer.includes('recalculate') || answer.includes('model') || answer.includes('analyse')) {
+                feedback.className = 'feedback-box feedback-success';
+                feedback.innerHTML = '<strong>Excellent!</strong> Spreadsheets allow for instant, automatic recalculation and powerful data analysis/modeling. That flexibility is key.';
+                updateProgress(1, 'objectives');
+            } else {
+                feedback.className = 'feedback-box feedback-error';
+                feedback.innerHTML = 'Good thought. The core advantage is the ability to <strong>automatically recalculate</strong> data when one cell changes, which is impossible with paper.';
+            }
+        }
+
+        // --- Section 2: Concept Exploration ---
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.icon');
+            const isActive = header.classList.toggle('active');
+
+            if (isActive) {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else {
+                content.style.maxHeight = '0';
+            }
+        }
+
+        function toggleSolution(button, id) {
+            const solution = getEl(id);
+            const isVisible = solution.style.display === 'block';
+            solution.style.display = isVisible ? 'none' : 'block';
+            button.textContent = isVisible ? 'Explain Formula Step-by-Step' : 'Hide Explanation';
+        }
+
+        function toggleReference(type) {
+            const output = getEl('ref-output');
+            if (type === 'relative') {
+                output.innerHTML = '<p><strong>Default (Relative A1):</strong> When copied, the cell reference <strong>changes relative</strong> to the new cell position. E.g., copying <code>=A1*B1</code> from C1 to C2 becomes <code>=A2*B2</code>.</p>';
+            } else {
+                output.innerHTML = '<p><strong>Fixed ($A$1):</strong> When copied, the cell reference <strong>stays locked</strong> (fixed) on the original cell. E.g., copying <code>=$A$1*B1</code> from C1 to C2 becomes <code>=$A$1*B2</code>. Ideal for fixed rates like Tax or Discounts!</p>';
+            }
+        }
+
+        // --- Section 4: Interactive Activities (Quiz & Drag/Drop) ---
+
+        // BIDMAS Check
+        function checkBIDMAS() {
+            const answer = parseInt(getEl('bidmas-answer').value);
+            const feedback = getEl('bidmas-feedback');
+            // Calculation: (10 + 5) * (5 / 5) - 2 => 15 * 1 - 2 => 15 - 2 = 13
+            if (answer === 13) {
+                feedback.className = 'feedback-box feedback-success';
+                feedback.innerHTML = '<strong>Correct! (15 pts)</strong>. You correctly followed BIDMAS: (15) * (1) - 2 = 13.';
+                getEl('bidmas-hint').style.display = 'none';
+                state.score += 15;
+            } else {
+                feedback.className = 'feedback-box feedback-error';
+                feedback.innerHTML = '<strong>Incorrect.</strong> Review BIDMAS and check your steps.';
+                getEl('bidmas-hint').style.display = 'block';
+            }
+            saveState();
+        }
+
+        // Drag and Drop Logic
+        let draggedItem = null;
+
+        function drag(ev) {
+            draggedItem = ev.target;
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+            if (ev.target.classList.contains('dd-target')) {
+                ev.target.classList.add('drag-over');
+            }
+        }
+
+        document.addEventListener('dragenter', (ev) => {
+            if (ev.target.classList.contains('dd-target')) {
+                ev.target.classList.add('drag-over');
+            }
+        });
+
+        document.addEventListener('dragleave', (ev) => {
+            if (ev.target.classList.contains('dd-target')) {
+                ev.target.classList.remove('drag-over');
+            }
+        });
+
+        function drop(ev) {
+            ev.preventDefault();
+            ev.target.classList.remove('drag-over');
+            const data = ev.dataTransfer.getData("text");
+            const item = getEl(data);
+            let target = ev.target;
+
+            // Ensure the drop target is the container itself, not the <p> inside
+            while (target && !target.classList.contains('dd-target')) {
+                target = target.parentElement;
+            }
+
+            if (target) {
+                const requiredMatch = target.getAttribute('data-accept');
+                const itemMatch = item.getAttribute('data-match');
+
+                if (requiredMatch === itemMatch) {
+                    // Correct drop
+                    target.innerHTML = ''; // Clear previous text
+                    target.appendChild(item);
+                    item.classList.add('correct');
+                    item.draggable = false;
+                    target.classList.add('correct-drop');
+                    state.score += 10;
+                    checkAllDropped();
+                } else {
+                    // Incorrect drop - snap back (optional: add visual shake)
+                    item.parentElement.appendChild(item);
+                }
+            }
+            saveState();
+        }
+
+        function checkAllDropped() {
+            const allTargets = document.querySelectorAll('.dd-target');
+            let allCorrect = true;
+            allTargets.forEach(target => {
+                if (!target.classList.contains('correct-drop')) {
+                    allCorrect = false;
+                }
+            });
+            if (allCorrect) {
+                // All correct, add bonus points
+                state.score += 25;
+                saveState();
+            }
+        }
+
+
+        // --- Section 5: Practice Exercises ---
+        let hintLevel = 0;
+
+        function getHint(id) {
+            hintLevel++;
+            const hintBox = getEl(id);
+            hintBox.style.display = 'block';
+            let hintContent = '';
+
+            if (hintLevel === 1) {
+                hintContent = '<strong>Level 1:</strong> The commission rate must be locked (Absolute Reference) when copying. The sales value must change (Relative Reference).';
+            } else if (hintLevel === 2) {
+                hintContent = '<strong>Level 2:</strong> To lock cell A1, use the $\$$ symbol on both the column and row (i.e., $\$$A$\$$1). The sales value is in A5.';
+            } else if (hintLevel >= 3) {
+                hintContent = '<strong>Level 3 (Solution):</strong> The structure should be <code>=$A$1 * A5</code>. You used a hint, so fewer points are available.';
+                state.score = Math.max(0, state.score - 5); // Penalty for using max hint
+            }
+
+            hintBox.innerHTML = '<strong>Graduated Help:</strong><br>' + hintContent;
+            saveState();
+        }
+
+        function checkPracticeFormula() {
+            const answer = getEl('practice-formula-answer').value.trim().toUpperCase().replace(/\s/g, '');
+            const feedback = getEl('practice-feedback');
+            const correctFormula = '=$A$1*A5';
+            const correctFormulaAlt = '=A5*$A$1';
+
+            if (answer === correctFormula || answer === correctFormulaAlt) {
+                let points = 50;
+                if (hintLevel > 0) points = 15; // Reduced points if hints were used
+                feedback.className = 'feedback-box feedback-success';
+                feedback.innerHTML = `<strong>Correct! (${points} pts)</strong>. The absolute reference $\$$A$\$$1 ensures the rate is fixed.`;
+                state.score += points;
+            } else {
+                feedback.className = 'feedback-box feedback-error';
+                feedback.innerHTML = '<strong>Incorrect.</strong> Make sure to use <strong>=</strong>, lock the fixed rate, and keep the sales value relative.';
+            }
+            hintLevel = 0; // Reset hint level
+            getEl('practice-hint').style.display = 'none';
+            saveState();
+        }
+
+        // --- Section 6: Synthesis and Assessment ---
+        const quizAnswers = {
+            1: '11', // (5*2) + 1 = 11
+            2: 'Relative',
+            3: 'MIN'
+        };
+
+        function checkQuiz(qNum, value) {
+            const feedbackEl = getEl(`quiz${qNum}-feedback`);
+            if (value === quizAnswers[qNum]) {
+                feedbackEl.className = 'feedback-box feedback-success';
+                feedbackEl.innerHTML = 'Correct!';
+                state.score += 5;
+            } else {
+                feedbackEl.className = 'feedback-box feedback-error';
+                feedbackEl.innerHTML = 'Try again. Review the concepts!';
+            }
+            saveState();
+        }
+
+        // --- Progress Tracking (All Sections) ---
+        function updateProgress(stepCount, sectionId) {
+            state.progress = Math.min(state.totalSteps, state.progress + stepCount);
+            saveState();
+            
+            // Scroll to the next section or top of the next section
+            const sections = ['objectives', 'concepts', 'examples', 'activities', 'practice', 'synthesis', 'wrapup', 'extension', 'vocabulary'];
+            const currentIndex = sections.indexOf(sectionId);
+            const nextIndex = currentIndex + 1;
+
+            if (nextIndex < sections.length) {
+                const nextSection = getEl(sections[nextIndex]);
+                if (nextSection) {
+                    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+
+
+        // --- Section 9: Vocabulary ---
+        function renderVocab() {
+            const listEl = getEl('vocab-list');
+            listEl.innerHTML = ''; // Clear current list
+
+            state.vocab.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'accordion-item';
+                itemDiv.innerHTML = `
+                    <div class="accordion-header" data-index="${index}" onclick="toggleAccordion(this)">
+                        ${item.term} <span style="font-size: 0.75rem; background-color: var(--color-bg); color: var(--color-primary); padding: 0.25rem 0.5rem; border-radius: 0.5rem;">${item.difficulty}</span> <span class="icon">></span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Definition:</strong> ${item.definition}</p>
+                        <p><strong>Context:</strong> Used in the <em>${item.context}</em> section.</p>
+                        <button class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="speakVocab('${item.term}')">🔊 Pronounce</button>
+                    </div>
+                `;
+                listEl.appendChild(itemDiv);
+            });
+        }
+
+        function filterVocab() {
+            const searchTerm = getEl('vocab-search').value.toLowerCase();
+            const items = getEl('vocab-list').querySelectorAll('.accordion-item');
+
+            items.forEach(item => {
+                const term = item.querySelector('.accordion-header').textContent.toLowerCase();
+                if (term.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function speakVocab(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                // Note: Tone control is managed via prompt text, but using default voice here
+                // to ensure broadest compatibility across browsers.
+                window.speechSynthesis.speak(utterance);
+            } else {
+                console.error("Web Speech API is not supported in this browser.");
+            }
+        }
+
+        // --- Initialization on Load ---
+        window.onload = function() {
+            initTheme();
+            updateUI();
+            renderVocab();
+        };
+
+    </script>
+</body>
+</html>
