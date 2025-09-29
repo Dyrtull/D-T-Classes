@@ -104,6 +104,30 @@
             animation: slideUp 0.3s ease-out;
         }
 
+        /* NEW STYLES for the Modal Header/Close Button */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem; /* Add some space below the title */
+        }
+
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1; /* Ensures the 'x' is centered vertically */
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+            text-decoration: none;
+        }
+        /* END NEW STYLES */
+
         @keyframes slideUp {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
@@ -121,7 +145,6 @@
 </head>
 <body class="p-4 sm:p-8">
 
-    <!-- Custom Modal UI -->
     <div id="custom-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -135,7 +158,6 @@
         </div>
     </div>
 
-    <!-- Anti-Fraud Warning -->
     <div id="anti-fraud-warning" class="anti-fraud-warning">
         <span id="warning-message">Warning! Detected suspicious activity.</span>
     </div>
@@ -146,14 +168,11 @@
             <p class="mt-2 text-lg text-gray-600" id="header-subtitle">25 Questions | 30 Minutes | High-Security Protocol</p>
         </header>
 
-        <!-- Main Content Area -->
         <main id="app-container" class="space-y-8">
             
-            <!-- Agreement Phase -->
             <div id="agreement-view" class="card p-8 shadow-xl">
                 <h2 class="text-3xl font-extrabold text-red-600 mb-6 border-b pb-3">Pre-Exam Agreement: Security & Rubric</h2>
                 
-                <!-- Grading Rubric -->
                 <div class="bg-blue-50 p-5 rounded-lg mb-6 border border-blue-200">
                     <h3 class="text-xl font-bold text-blue-700 mb-3">Grading Rubric</h3>
                     <ul class="list-disc list-inside text-gray-700 space-y-1">
@@ -170,7 +189,6 @@
                     </ul>
                 </div>
 
-                <!-- Security Policies -->
                 <div class="bg-red-50 p-5 rounded-lg mb-8 border border-red-200">
                     <h3 class="text-xl font-bold text-red-700 mb-3">Security Policies and Penalties (STRICTLY PROHIBITED)</h3>
                     <p class="font-semibold mb-2">Penalties are cumulative and based on violation type:</p>
@@ -202,14 +220,12 @@
                 </button>
             </div>
 
-            <!-- Exam Interface View -->
             <div id="exam-view" class="card p-8 hidden">
                 <div class="flex justify-between items-center mb-6 border-b pb-4">
                     <div class="text-xl font-bold text-gray-800">Question <span id="current-question-number">1</span> of <span id="total-questions">25</span></div>
                     <div class="text-xl font-bold text-red-600" id="timer">30:00</div>
                 </div>
                 
-                <!-- Anti-fraud violation counter -->
                 <div class="text-center mb-4 p-2 bg-yellow-50 rounded-lg border border-yellow-200">
                     <span class="font-semibold text-gray-700">Security Violations:</span> <span id="violation-count" class="font-extrabold text-red-600 mr-4">0</span>
                     <span class="font-semibold text-gray-700">Max Score:</span> <span id="max-score-penalty-display" class="font-extrabold text-green-600">100%</span>
@@ -217,7 +233,6 @@
 
                 <div id="question-container" class="min-h-[200px]"></div>
 
-                <!-- Navigation and Progress -->
                 <div class="flex items-center justify-between mt-8">
                     <button id="prev-button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors font-bold">&lt; Previous</button>
                     <div class="flex-1 mx-2 sm:mx-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
@@ -233,7 +248,6 @@
                 <button id="submit-button" class="w-full px-6 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors mt-6 shadow-lg hover:shadow-xl">Submit Exam</button>
             </div>
 
-            <!-- Results View -->
             <div id="results-view" class="card p-8 hidden text-center">
                 <h2 class="text-4xl font-extrabold text-indigo-700 mb-6 border-b pb-4">Final Assessment Report</h2>
                 <div class="space-y-4 text-left max-w-md mx-auto">
@@ -244,16 +258,9 @@
                     <p class="text-xl text-gray-800"><span class="font-bold">Final Penalized Percentage:</span> <span id="final-percentage" class="font-extrabold text-green-700"></span></p>
                     <p class="text-4xl font-extrabold pt-4">Final Grade Point: <span id="final-grade" class="text-indigo-600"></span></p>
                 </div>
-
-                <div class="mt-8 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <button id="review-button" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors shadow-lg">Review Exam Feedback</button>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
                     <button id="restart-button" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg">Restart Exam</button>
-                </div>
-                
-                <!-- New Feedback Container -->
-                <div id="feedback-container" class="mt-10 pt-4 border-t border-gray-300 hidden text-left">
-                    <h3 class="text-3xl font-extrabold text-gray-800 mb-6">Detailed Question Review</h3>
-                    <!-- Review content will be dynamically inserted here -->
+                    <button id="feedback-button" class="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg hover:bg-gray-600 transition-colors shadow-lg">Give Feedback</button>
                 </div>
             </div>
 
@@ -292,15 +299,88 @@
         const maxScorePenaltyDisplay = document.getElementById('max-score-penalty-display');
         const antiFraudWarning = document.getElementById('anti-fraud-warning');
         
-        // NEW UI Elements for Feedback
-        const reviewButton = document.getElementById('review-button');
-        const feedbackContainer = document.getElementById('feedback-container');
-
         // Modal UI
         const modal = document.getElementById('custom-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalMessage = document.getElementById('modal-message');
         const modalOkButton = document.getElementById('modal-ok-button'); // Reference the OK button
+
+        // State persistence for browser refresh protection
+        const examState = {
+            save: function() {
+                if (!isExamActive) return;
+
+                const state = {
+                    examQuestions: examQuestions,
+                    currentQuestionIndex: currentQuestionIndex,
+                    timeRemaining: timeRemaining,
+                    violationCount: violationCount,
+                    isExamActive: isExamActive,
+                    inactivityAccumulator: inactivityAccumulator,
+                    timestamp: Date.now()
+                };
+
+                // Store in window object for memory persistence
+                window.examStateData = JSON.stringify(state);
+
+                // Also try sessionStorage as backup
+                try {
+                    sessionStorage.setItem('examState', JSON.stringify(state));
+                } catch(e) {
+                    // Silently fail if not available
+                    console.log('SessionStorage not available, using memory storage');
+                }
+            },
+
+            load: function() {
+                let stateStr = null;
+
+                // Try sessionStorage first, then memory storage
+                try {
+                    stateStr = sessionStorage.getItem('examState');
+                } catch(e) {
+                    // Fallback to memory
+                }
+
+                if (!stateStr && window.examStateData) {
+                    stateStr = window.examStateData;
+                }
+
+                if (!stateStr) return false;
+
+                let state;
+                try {
+                    state = JSON.parse(stateStr);
+                } catch(e) {
+                    return false;
+                }
+
+                // Check if state is recent (within 4 hours)
+                const hoursSinceState = (Date.now() - state.timestamp) / (1000 * 60 * 60);
+                if (hoursSinceState > 4) {
+                    this.clear();
+                    return false;
+                }
+
+                // Restore state
+                examQuestions = state.examQuestions || [];
+                currentQuestionIndex = state.currentQuestionIndex || 0;
+                timeRemaining = state.timeRemaining || EXAM_DURATION;
+                violationCount = state.violationCount || 0;
+                isExamActive = state.isExamActive || false;
+                inactivityAccumulator = state.inactivityAccumulator || 0;
+
+                return isExamActive;
+            },
+
+            clear: function() {
+                try {
+                    sessionStorage.removeItem('examState');
+                } catch(e) {}
+                delete window.examStateData;
+            }
+        };
+
 
         // --- UTILITY FUNCTIONS ---
 
@@ -365,6 +445,7 @@
             if (violationCount >= 7) {
                 violationCount++;
                 // Policy 8th violation: Auto-submit with 50% max score
+                // FIX: Ensure the modal callback is correct for termination
                 showModal(
                     'EXAM TERMINATED', 
                     `SEVERE: This is the 8th violation (${type}). Your exam has been automatically submitted with a maximum possible score of 50% as per policy.`, 
@@ -391,6 +472,7 @@
             violationCountDisplay.textContent = violationCount;
             maxScorePenaltyDisplay.textContent = `${newMaxScore.toFixed(0)}%`;
             showAntiFraudWarning(warningMsg);
+            examState.save(); // Save state after violation
         }
 
         // --- INACTIVITY TRACKING ---
@@ -403,6 +485,7 @@
                     inactivityAccumulator++;
                     if (inactivityAccumulator >= MAX_INACTIVITY_SECONDS) {
                         clearInterval(inactivityTimer);
+                        // FIX: Ensure the modal callback is correct for inactivity termination
                         showModal(
                             'INACTIVITY TERMINATION', 
                             `You have been inactive outside the exam window for over ${MAX_INACTIVITY_SECONDS} seconds (2 minutes). The exam will be automatically submitted with all accumulated penalties.`, 
@@ -415,6 +498,7 @@
                 } else if (!document.hidden) {
                     inactivityAccumulator = 0; // Reset if focus returns
                 }
+                examState.save(); // Save state during inactivity tracking
             }, 1000);
         }
 
@@ -428,13 +512,6 @@
                 const newQ = { ...q };
                 newQ.options = shuffleArray(newQ.options);
                 newQ.userAnswer = null; // Initialize user answer
-
-                // Ensure all questions have a rationale, even if default
-                if (!newQ.rationale) {
-                    const correctText = newQ.options.find(opt => opt.isCorrect)?.text || newQ.isCorrect;
-                    newQ.rationale = `The correct answer is: **${correctText}**. A detailed rationale is pending and will be provided in a future update.`;
-                }
-
                 return newQ;
             });
 
@@ -452,6 +529,7 @@
             startTimer();
             updateQuestionNavigationButtons();
             startInactivityTimer(); // Start monitoring for inactivity
+            examState.save(); // Save initial state
         }
 
         function renderQuestion() {
@@ -495,6 +573,7 @@
                     examQuestions[currentQuestionIndex].userAnswer = e.target.value;
                     updateQuestionNavigationButtons();
                     updateProgressBar();
+                    examState.save(); // Save state on answer change
                 });
             });
 
@@ -525,6 +604,7 @@
                     currentQuestionIndex = index;
                     renderQuestion();
                     updateQuestionNavigationButtons();
+                    examState.save(); // Save state on navigation
                 });
                 questionNavButtons.appendChild(button);
             });
@@ -545,8 +625,11 @@
                 const seconds = timeRemaining % 60;
                 timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 
+                examState.save(); // Save state every second
+
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
+                    // FIX: Ensure the modal callback is correct for time expiration
                     showModal('Time Expired', 'Your time has run out. The exam will be submitted automatically.', () => {
                         performSubmission();
                         closeModal();
@@ -566,12 +649,15 @@
             clearInterval(timerInterval);
             clearInterval(inactivityTimer);
             isExamActive = false;
+            examState.clear(); // Clear saved state after submission
             
             let rawCorrectAnswers = 0;
             
             examQuestions.forEach(q => {
+                // Find the correct option text (since the user answer is just the text)
                 const correctOption = q.options.find(opt => opt.isCorrect);
-                if (q.userAnswer === correctOption.text) {
+                // Compare user answer (text) with the correct option's text
+                if (q.userAnswer === (correctOption ? correctOption.text : null)) {
                     rawCorrectAnswers++;
                 }
             });
@@ -612,50 +698,35 @@
             window.location.reload();
         }
 
-        // --- NEW FEEDBACK FUNCTIONALITY ---
+        // Check for existing exam state on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (examState.load()) {
+                // Resume exam - student tried to refresh
+                agreementView.classList.add('hidden');
+                examView.classList.remove('hidden');
 
-        function showReview() {
-            // Remove the hidden class to display the review section
-            feedbackContainer.classList.remove('hidden');
-            
-            let feedbackHTML = `<div class="space-y-12">`;
+                // Update UI elements
+                violationCountDisplay.textContent = violationCount;
+                maxScorePenaltyDisplay.textContent = `${calculateFinalMaxScore(violationCount).toFixed(0)}%`;
 
-            examQuestions.forEach((q, index) => {
-                const correctOption = q.options.find(opt => opt.isCorrect);
-                const isUserCorrect = q.userAnswer === correctOption.text;
-                const statusColor = isUserCorrect ? 'bg-green-100 border-green-400' : 'bg-red-100 border-red-400';
-                const statusIcon = isUserCorrect ? '✅ Correct' : '❌ Incorrect';
-                const userStatusClass = isUserCorrect ? 'text-green-700' : 'text-red-700';
+                renderQuestion();
+                updateProgressBar();
+                startTimer();
+                updateQuestionNavigationButtons();
+                startInactivityTimer();
 
-                // Find the user's selected option text for display
-                const userAnswerText = q.userAnswer || "No answer selected";
+                // Add violation for refresh attempt
+                handleViolation('Page Refresh/Reload Attempt');
+            }
+        });
 
-                feedbackHTML += `
-                    <div class="p-6 rounded-xl border-2 ${statusColor} shadow-md">
-                        <h4 class="text-xl font-bold mb-4">Question ${index + 1}: <span class="float-right ${userStatusClass} text-lg">${statusIcon}</span></h4>
-                        <p class="mb-4 text-gray-800">${q.question.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
-                        
-                        <div class="space-y-2 text-sm">
-                            <p class="font-semibold text-gray-700">Your Answer: <span class="${isUserCorrect ? 'text-green-700' : 'text-red-700'}">${userAnswerText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</span></p>
-                            <p class="font-semibold text-gray-700">Correct Answer: <span class="text-green-700">${correctOption.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</span></p>
-                            <p class="font-extrabold text-indigo-700 mt-3 border-t pt-3 border-indigo-200">Rationale:</p>
-                            <p class="text-gray-600">${q.rationale.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
-                        </div>
-                    </div>
-                `;
-            });
+        // Save state periodically
+        setInterval(function() {
+            if (isExamActive) {
+                examState.save();
+            }
+        }, 5000); // Save every 5 seconds
 
-            feedbackHTML += `</div>`;
-            feedbackContainer.innerHTML += feedbackHTML; // Append the detailed review
-            
-            // Disable and grey out the review button after it's been clicked
-            reviewButton.disabled = true;
-            reviewButton.classList.remove('bg-green-600', 'hover:bg-green-700', 'shadow-lg');
-            reviewButton.classList.add('bg-gray-400', 'cursor-not-allowed');
-
-            // Scroll down to the feedback section
-            feedbackContainer.scrollIntoView({ behavior: 'smooth' });
-        }
 
         // --- ANTI-FRAUD EVENT LISTENERS (Copied & Modified) ---
         
@@ -730,6 +801,7 @@
                 currentQuestionIndex--;
                 renderQuestion();
                 updateQuestionNavigationButtons();
+                examState.save(); // Save state on navigation
             }
         });
         nextButton.addEventListener('click', () => {
@@ -737,17 +809,23 @@
                 currentQuestionIndex++;
                 renderQuestion();
                 updateQuestionNavigationButtons();
+                examState.save(); // Save state on navigation
             }
         });
         submitButton.addEventListener('click', submitExam);
         document.getElementById('restart-button').addEventListener('click', restartExam);
-        // NEW: Event listener for the Review Button
-        reviewButton.addEventListener('click', showReview);
+        document.getElementById('feedback-button').addEventListener('click', () => {
+            showModal(
+                'Feedback Submitted', 
+                'Thank you for your feedback! Your input helps us improve the exam content.', 
+                closeModal
+            );
+        });
 
         // Initial setup
         document.getElementById('total-questions').textContent = EXAM_QUESTION_COUNT;
         
-        // --- HARDCODED QUESTION BANK (60 Challenging Questions with RATIONALES) ---
+        // --- HARDCODED QUESTION BANK (50 Challenging Questions) ---
         const questionBank = [
             // 1. Networking/Layering (MAC vs IP, Switch vs Hub)
             {
@@ -758,8 +836,7 @@
                     { text: "Port Number / Application Layer Filtering", isCorrect: false },
                     { text: "Domain Name System (DNS) / Proxy Server", isCorrect: false }
                 ],
-                isCorrect: "MAC Address / Layer 2 Switching",
-                rationale: "Layer 2 Switches use the **MAC Address** (physical address) to learn which device is on which port, allowing them to forward frames directly to the intended recipient and reduce network collisions/traffic, which is a key difference from a Layer 1 Hub."
+                isCorrect: "MAC Address / Layer 2 Switching"
             },
             // 2. Networking/WAN (Large Scale Connectivity)
             {
@@ -770,8 +847,7 @@
                     { text: "Metropolitan Area Network (MAN)", isCorrect: false },
                     { text: "Storage Area Network (SAN)", isCorrect: false }
                 ],
-                isCorrect: "Wide Area Network (WAN)",
-                rationale: "A **WAN** connects networks that are geographically separated (cities, countries). It is necessary to link multiple LANs of a multinational corporation."
+                isCorrect: "Wide Area Network (WAN)"
             },
             // 3. Addressing/IPv4 vs IPv6
             {
@@ -782,8 +858,7 @@
                     { text: "Inability to support wireless communication.", isCorrect: false },
                     { text: "Inefficient packet header processing by routers.", isCorrect: false }
                 ],
-                isCorrect: "Address space exhaustion and the scarcity of unique public IP addresses.",
-                rationale: "The 32-bit IPv4 system only allows for about 4.3 billion unique addresses, which are globally exhausted. The 128-bit IPv6 solves this by providing a virtually limitless number of unique addresses."
+                isCorrect: "Address space exhaustion and the scarcity of unique public IP addresses."
             },
             // 4. Addressing/MAC (Collision)
             {
@@ -794,22 +869,9 @@
                     { text: "Loss of internet connectivity for the entire subnet.", isCorrect: false },
                     { text: "Increased network latency due to DNS resolution conflicts.", isCorrect: false }
                 ],
-                isCorrect: "Frequent and disruptive network collisions, leading to complete instability.",
-                rationale: "The MAC address is supposed to be globally unique for physical devices. If two devices share the same MAC, the Switch/Bridge cannot correctly map the destination port, leading to frame duplication, network loops, and severe collision problems."
+                isCorrect: "Frequent and disruptive network collisions, leading to complete instability."
             },
-            // 5. Security/Protocol (FTP vs SFTP/HTTPS)
-            {
-                question: "Why is the use of **File Transfer Protocol (FTP)** for transmitting sensitive corporate data considered a severe security vulnerability compared to **SFTP** or **HTTPS**?",
-                options: [
-                    { text: "FTP transmits user credentials and data packets in unencrypted, plain text.", isCorrect: true },
-                    { text: "FTP has a strict file size limit, causing data fragmentation.", isCorrect: false },
-                    { text: "FTP operates on a non-standard port that is blocked by most firewalls.", isCorrect: false },
-                    { text: "FTP lacks support for modern compression algorithms.", isCorrect: false }
-                ],
-                isCorrect: "FTP transmits user credentials and data packets in unencrypted, plain text.",
-                rationale: "FTP is an unencrypted protocol, meaning passwords and data are sent as plain text, making them trivial to intercept via packet sniffing. SFTP and HTTPS use SSL/TLS encryption to secure transmissions."
-            },
-            // 6. Security/Phishing (Social Engineering Tactic)
+            // 5. Security/Phishing (Social Engineering Tactic)
             {
                 question: "An attacker calls a bank employee, pretending to be a senior IT technician, claiming they need the employee’s login credentials 'to fix a critical server issue.' This highly manipulative tactic is known as **pretexting**, a sophisticated form of:",
                 options: [
@@ -820,18 +882,7 @@
                 ],
                 isCorrect: "Social Engineering"
             },
-            // 7. Security/Password (Storage Insecurity)
-            {
-                question: "In the event of a database breach, which method of storing user passwords provides the **least** level of security, making it easily exploitable by an attacker?",
-                options: [
-                    { text: "Storing the password in a reversibly encrypted format.", isCorrect: true },
-                    { text: "Storing a one-way hashed (e.g., SHA-256) version of the password.", isCorrect: false },
-                    { text: "Storing a salted and peppered hash of the password.", isCorrect: false },
-                    { text: "Requiring multi-factor authentication for access.", isCorrect: false }
-                ],
-                isCorrect: "Storing the password in a reversibly encrypted format."
-            },
-            // 8. ICT/Expert System (Inference Engine)
+            // 6. ICT/Expert System (Inference Engine)
             {
                 question: "A medical diagnosis system compares patient symptoms and test results against a vast database of clinical rules to suggest a probable illness. This functionality is characteristic of an **Expert System**. What is the key component that performs this logical rule-based processing?",
                 options: [
@@ -842,18 +893,7 @@
                 ],
                 isCorrect: "The Inference Engine"
             },
-            // 9. ICT/ANPR (Recognition System)
-            {
-                question: "Which recognition system uses optical character recognition (OCR) technology to automatically capture and process textual information from physical images, such as reading vehicle registration details?",
-                options: [
-                    { text: "Automatic Number Plate Recognition (ANPR)", isCorrect: true },
-                    { text: "Geographical Information System (GIS)", isCorrect: false },
-                    { text: "Electronic Funds Transfer (EFT)", isCorrect: false },
-                    { text: "Customer Relationship Management (CRM)", isCorrect: false }
-                ],
-                isCorrect: "Automatic Number Plate Recognition (ANPR)"
-            },
-            // 10. Ergonomics/RSI (Prevention)
+            // 7. Ergonomics/RSI (Prevention)
             {
                 question: "A high-frequency computer user begins experiencing numbness and a burning sensation in their hand and forearm. What is the most likely condition, and what is the critical ergonomic adjustment needed to prevent it?",
                 options: [
@@ -864,7 +904,7 @@
                 ],
                 isCorrect: "Repetitive Strain Injury (RSI); Ensuring a neutral, straight wrist position with wrist support."
             },
-            // 11. Ergonomics/Workstation (Eye Strain)
+            // 8. Ergonomics/Workstation (Eye Strain)
             {
                 question: "Which ergonomic principle is primarily designed to prevent **visual fatigue and eye strain** caused by prolonged focus on a screen?",
                 options: [
@@ -875,7 +915,7 @@
                 ],
                 isCorrect: "Positioning the monitor approximately an arm's length away, with the top edge slightly below eye level."
             },
-            // 12. Digital Literacy/Copyright (Dongle)
+            // 9. Digital Literacy/Copyright (Dongle)
             {
                 question: "A software manufacturer requires a small, physical hardware key to be attached to the computer's USB port for their specialized design software to launch. This anti-piracy measure is officially known as a:",
                 options: [
@@ -886,7 +926,7 @@
                 ],
                 isCorrect: "Dongle"
             },
-            // 13. Digital Literacy/Compression (Lossless)
+            // 10. Digital Literacy/Compression (Lossless)
             {
                 question: "A data scientist needs to compress a proprietary dataset for archival purposes, but it is **critical** that the decompressed file is an **exact, bit-for-bit copy** of the original. Which file format and compression type must they use?",
                 options: [
@@ -897,7 +937,7 @@
                 ],
                 isCorrect: "ZIP Archive / Lossless Compression"
             },
-            // 14. Digital Literacy/Compression (Lossy Rationale)
+            // 11. Digital Literacy/Compression (Lossy Rationale)
             {
                 question: "Explain why **Lossy Compression** is the standard for media formats like MP3 and MP4, but is completely unsuitable for transactional data files (e.g., banking records or code libraries).",
                 options: [
@@ -908,7 +948,7 @@
                 ],
                 isCorrect: "Lossy permanently removes data deemed redundant to human senses, which is unacceptable for data integrity in transactional systems."
             },
-            // 15. Digital Literacy/File Structure
+            // 12. Digital Literacy/File Structure
             {
                 question: "A user creates a new folder named 'Q4_Reports' inside an existing folder named 'FY2025'. In the context of a hierarchical file system, what is the 'Q4_Reports' folder officially known as, and what is the benefit?",
                 options: [
@@ -919,7 +959,7 @@
                 ],
                 isCorrect: "A **Subfolder**; it significantly improves the logical organization and retrieval speed of files."
             },
-            // 16. Networking/Router (L3 vs L2)
+            // 13. Networking/Router (L3 vs L2)
             {
                 question: "While a Switch connects devices within a single network segment using MAC addresses, a **Router** operates at the Network Layer (Layer 3). What is the Router's **core** function that fundamentally distinguishes it from a Switch?",
                 options: [
@@ -930,7 +970,7 @@
                 ],
                 isCorrect: "Routing packets between distinct, different network subnets using IP addresses."
             },
-            // 17. Networking/Cloud (Disadvantage/Control)
+            // 14. Networking/Cloud (Disadvantage/Control)
             {
                 question: "A company decides to migrate all sensitive data and servers to a public cloud provider like Google or Amazon. What is the single biggest *operational disadvantage* that the company must accept?",
                 options: [
@@ -941,18 +981,7 @@
                 ],
                 isCorrect: "A loss of direct physical control over the server hardware and data security implementation."
             },
-            // 18. Security/Social Engineering (Whaling/Spear Phishing)
-            {
-                question: "A cybercriminal performs extensive research to craft a highly personalized and believable phishing email targeting the Chief Executive Officer (CEO) of a large company. This highly targeted attack on a single, high-profile individual is known as:",
-                options: [
-                    { text: "Spear Phishing / Whaling", isCorrect: true },
-                    { text: "Symmetric Encryption", isCorrect: false },
-                    { text: "Distributed Denial of Service (DDoS)", isCorrect: false },
-                    { text: "Packet Sniffing", isCorrect: false }
-                ],
-                isCorrect: "Spear Phishing / Whaling"
-            },
-            // 19. ICT/Audience Appreciation (Tailoring)
+            // 15. ICT/Audience Appreciation (Tailoring)
             {
                 question: "A software company develops an instruction manual for a new accounting application. They must create one version for novice bookkeepers and one for experienced CFOs. The most critical change for the novice version is:",
                 options: [
@@ -963,7 +992,7 @@
                 ],
                 isCorrect: "Replacing technical accounting jargon with simple, task-oriented language and sequential steps."
             },
-            // 20. ICT/Microprocessors (Sociological Impact)
+            // 16. ICT/Microprocessors (Sociological Impact)
             {
                 question: "The introduction of microprocessor-controlled robotics and automation in manufacturing and service industries has significantly increased efficiency. What is the well-documented negative **sociological** consequence of this trend?",
                 options: [
@@ -974,7 +1003,7 @@
                 ],
                 isCorrect: "Increased technological unemployment and job displacement for manual labor roles."
             },
-            // 21. Networking/Addressing (MAC vs IP)
+            // 17. Networking/Addressing (MAC vs IP)
             {
                 question: "Which unique identifier is hardcoded into the hardware of a computer's Network Interface Card (NIC) at the factory and is essential for devices to communicate on the local segment of a LAN?",
                 options: [
@@ -985,7 +1014,7 @@
                 ],
                 isCorrect: "MAC Address"
             },
-            // 22. Security/Protocol (HTTP vs HTTPS)
+            // 18. Security/Protocol (HTTP vs HTTPS)
             {
                 question: "When a user logs into a sensitive website (e.g., online banking), the URL should display **HTTPS** instead of **HTTP**. What specific security protocol is implemented in HTTPS to protect the user's data during transmission?",
                 options: [
@@ -996,7 +1025,7 @@
                 ],
                 isCorrect: "Secure Sockets Layer/Transport Layer Security (SSL/TLS) encryption"
             },
-            // 23. Digital Literacy/Piracy (Legal Risk)
+            // 19. Digital Literacy/Piracy (Legal Risk)
             {
                 question: "An employee bypasses licensing checks to install an unlicensed, cracked version of design software on a company computer. What is the primary legal risk the **corporation** faces due to this act?",
                 options: [
@@ -1007,7 +1036,7 @@
                 ],
                 isCorrect: "Significant fines and criminal prosecution for corporate copyright infringement (software piracy)."
             },
-            // 24. Networking/Bridge (Function)
+            // 20. Networking/Bridge (Function)
             {
                 question: "A network **Bridge** connects two separate LAN segments. Unlike a Hub, it must decide whether to forward a data frame between the two segments or filter it. What criteria does the Bridge use to make this filtering/forwarding decision?",
                 options: [
@@ -1018,7 +1047,7 @@
                 ],
                 isCorrect: "The destination MAC address of the frame."
             },
-            // 25. Ergonomics/Health (Posture)
+            // 21. Ergonomics/Health (Posture)
             {
                 question: "Which specific health issue is best mitigated by ensuring the top of a computer monitor is positioned level with the user's eyes and the chair provides firm back support, forcing an upright sitting posture?",
                 options: [
@@ -1029,18 +1058,7 @@
                 ],
                 isCorrect: "Neck and back strain/postural problems."
             },
-            // 26. ICT/EFT (Benefit)
-            {
-                question: "A retail business accepts a large payment from a customer using **Electronic Funds Transfer (EFT)** rather than a physical check. What is the primary benefit of EFT for the business's cash flow and operations?",
-                options: [
-                    { text: "Immediate or near-immediate settlement of funds and reduced risk of non-sufficient funds.", isCorrect: true },
-                    { text: "EFT completely eliminates all transaction fees for the business.", isCorrect: false },
-                    { text: "EFT requires the use of IPv6 for all transactions, improving speed.", isCorrect: false },
-                    { text: "The data is automatically compressed using lossy methods.", isCorrect: false }
-                ],
-                isCorrect: "Immediate or near-immediate settlement of funds and reduced risk of non-sufficient funds."
-            },
-            // 27. Digital Literacy/Naming (Invalid Characters)
+            // 22. Digital Literacy/Naming (Invalid Characters)
             {
                 question: "A user attempts to save a document named `report*final?.docx` and is blocked by the operating system. Why are characters like `*`, `?`, and `|` prohibited in file names?",
                 options: [
@@ -1051,7 +1069,7 @@
                 ],
                 isCorrect: "They are reserved characters used by the operating system for wildcards, commands, or file stream operations."
             },
-            // 28. Security/Insider Threat
+            // 23. Security/Insider Threat
             {
                 question: "A company's database administrator, a trusted employee, intentionally copies and sells proprietary client data to a rival firm. This type of security breach is explicitly classified as an:",
                 options: [
@@ -1062,18 +1080,7 @@
                 ],
                 isCorrect: "Insider Threat"
             },
-            // 29. Networking/IPv6 (Address Space)
-            {
-                question: "The move from IPv4's 32-bit addresses to IPv6's 128-bit addresses is primarily driven by the need for a drastically expanded address space. What is the estimated total number of unique addresses available under IPv6?",
-                options: [
-                    { text: "Approximately $3.4 \times 10^{38}$ unique addresses (nearly unlimited).", isCorrect: true },
-                    { text: "Approximately 4.3 billion unique addresses.", isCorrect: false },
-                    { text: "Approximately 65,536 unique addresses.", isCorrect: false },
-                    { text: "Approximately $1 \times 10^{12}$ unique addresses.", isCorrect: false }
-                ],
-                isCorrect: "Approximately $3.4 \times 10^{38}$ unique addresses (nearly unlimited)."
-            },
-            // 30. ICT/GPS (Calculation Method)
+            // 24. ICT/GPS (Calculation Method)
             {
                 question: "How does the **Global Positioning System (GPS)**, a critical satellite-based ICT application, determine the precise location of a receiver on Earth's surface?",
                 options: [
@@ -1084,7 +1091,7 @@
                 ],
                 isCorrect: "By measuring the time delay of signals received from a minimum of four orbiting satellites (triangulation)."
             },
-            // 31. Networking/Intranet vs Extranet
+            // 25. Networking/Intranet vs Extranet
             {
                 question: "What is the key functional difference between a company's **Intranet** and its **Extranet**?",
                 options: [
@@ -1095,7 +1102,7 @@
                 ],
                 isCorrect: "Intranet is accessible only to internal employees, while Extranet allows controlled, authorized external access (e.g., partners/clients)."
             },
-            // 32. Security/Authentication (Password Length)
+            // 26. Security/Authentication (Password Length)
             {
                 question: "In the context of brute-force attacks, why is a 14-character password, even if simple, exponentially stronger than an 8-character password using the same complexity (mixed case, numbers, symbols)?",
                 options: [
@@ -1106,7 +1113,7 @@
                 ],
                 isCorrect: "Password strength increases exponentially with length, drastically increasing the time required for a successful crack."
             },
-            // 33. Digital Literacy/Watermark
+            // 27. Digital Literacy/Watermark
             {
                 question: "A photographer embeds invisible metadata into a digital image file that contains their copyright information and licensing details. This non-physical anti-piracy measure is known as a:",
                 options: [
@@ -1117,7 +1124,7 @@
                 ],
                 isCorrect: "Digital Watermark"
             },
-            // 34. ICT/Robotics (Benefit)
+            // 28. ICT/Robotics (Benefit)
             {
                 question: "What is the chief *operational* advantage of replacing human workers with microprocessor-controlled industrial robots for highly repetitive, precise, and potentially dangerous tasks on an assembly line?",
                 options: [
@@ -1128,9 +1135,9 @@
                 ],
                 isCorrect: "Superior consistency, endurance, and precision in repetitive motion for 24/7 operation."
             },
-            // 35. Networking/Device (Router Function)
+            // 29. Networking/Device (Router Function)
             {
-                question: "A device receives an IP packet destined for an address on a different external network. It consults its routing table to determine the most efficient path to the destination and forwards the packet. This function is exclusively performed by a:",
+                question: "A device receives an IP packet destined for an address on an external network. It consults its routing table to determine the most efficient path to the destination and forwards the packet. This function is exclusively performed by a:",
                 options: [
                     { text: "Router", isCorrect: true },
                     { text: "Hub", isCorrect: false },
@@ -1139,7 +1146,7 @@
                 ],
                 isCorrect: "Router"
             },
-            // 36. Security/Spam (Mitigation)
+            // 30. Security/Spam (Mitigation)
             {
                 question: "Which type of software is specifically designed to filter and block unsolicited, often malicious or commercial, bulk electronic messages before they reach a user's primary inbox?",
                 options: [
@@ -1150,7 +1157,7 @@
                 ],
                 isCorrect: "Anti-Spam Software"
             },
-            // 37. Ergonomics/Breaks (RSI)
+            // 31. Ergonomics/Breaks (RSI)
             {
                 question: "In the context of preventing Repetitive Strain Injury (RSI) during long periods of IT work, why are frequent **short breaks** (e.g., 5 minutes every hour) more effective than infrequent long breaks (e.g., 30 minutes every 4 hours)?",
                 options: [
@@ -1161,7 +1168,7 @@
                 ],
                 isCorrect: "Short breaks break the continuous, sustained muscular load that causes micro-trauma and inflammation."
             },
-            // 38. Digital Literacy/Lossy (Irreversibility)
+            // 32. Digital Literacy/Lossy (Irreversibility)
             {
                 question: "The defining characteristic of a lossy compression algorithm is that once it is applied, the original uncompressed file cannot be perfectly reconstructed. What is the reason for this irreversibility?",
                 options: [
@@ -1172,18 +1179,7 @@
                 ],
                 isCorrect: "The algorithm permanently discards data deemed redundant or psycho-visually non-essential."
             },
-            // 39. Networking/WLAN (Signal Attenuation)
-            {
-                question: "A device connected to a Wireless Local Area Network (WLAN) experiences a dramatic drop in throughput and signal quality when moved into a room separated by several thick, reinforced concrete walls. This network failure is primarily caused by:",
-                options: [
-                    { text: "Signal attenuation (absorption) and reflection of radio waves by dense physical structures.", isCorrect: true },
-                    { text: "The router's automatic switch from IPv4 to IPv6.", isCorrect: false },
-                    { text: "An error in the device's MAC address assignment.", isCorrect: false },
-                    { text: "A massive distributed denial of service (DDoS) attack.", isCorrect: false }
-                ],
-                isCorrect: "Signal attenuation (absorption) and reflection of radio waves by dense physical structures."
-            },
-            // 40. Networking/Hub vs Switch (Efficiency)
+            // 33. Networking/Hub vs Switch (Efficiency)
             {
                 question: "In a local network, a **Hub** broadcasts every incoming data frame to every connected device, whereas a **Switch** forwards the frame only to the intended recipient. What is the most significant consequence of using a Hub instead of a Switch?",
                 options: [
@@ -1194,7 +1190,7 @@
                 ],
                 isCorrect: "Increased network congestion, security vulnerability, and unnecessary CPU load on all connected devices."
             },
-            // 41. Digital Literacy/Copyright (License Agreement)
+            // 34. Digital Literacy/Copyright (License Agreement)
             {
                 question: "What is the primary legal function of a **Software License Agreement** (SLA) from the perspective of the software manufacturer?",
                 options: [
@@ -1205,7 +1201,7 @@
                 ],
                 isCorrect: "To define the specific terms, conditions, and limitations under which a user is legally permitted to operate the software."
             },
-            // 42. Security/Firewall (Principle)
+            // 35. Security/Firewall (Principle)
             {
                 question: "A **Firewall** is essential network security hardware/software. What is the fundamental principle by which it protects a local network?",
                 options: [
@@ -1216,7 +1212,7 @@
                 ],
                 isCorrect: "Inspecting and controlling incoming and outgoing network traffic based on predetermined security rules."
             },
-            // 43. ICT/Video vs Web Conferencing
+            // 36. ICT/Video vs Web Conferencing
             {
                 question: "In a corporate environment, **Web Conferencing** (e.g., Zoom, Webex) is generally preferred over simple **Video Conferencing** for large, structured meetings. What unique feature of Web Conferencing drives this preference?",
                 options: [
@@ -1227,7 +1223,7 @@
                 ],
                 isCorrect: "Integrated collaborative tools such as screen sharing, virtual whiteboards, chat, and polling features."
             },
-            // 44. Digital Literacy/Formats (PDF)
+            // 37. Digital Literacy/Formats (PDF)
             {
                 question: "Which document file format is specifically designed to present documents in a manner independent of application software, hardware, and operating system, ensuring the layout remains identical for all recipients?",
                 options: [
@@ -1238,7 +1234,7 @@
                 ],
                 isCorrect: "PDF (Portable Document Format)"
             },
-            // 45. Ergonomics/Prevention (Breaks)
+            // 38. Ergonomics/Prevention (Breaks)
             {
                 question: "Which of the following is the most effective proactive measure an IT worker can take to prevent the onset of Repetitive Strain Injury (RSI) that does not involve buying new equipment?",
                 options: [
@@ -1249,7 +1245,7 @@
                 ],
                 isCorrect: "Adopting the 20-20-20 rule (looking away every 20 minutes) and performing wrist/hand stretches."
             },
-            // 46. Networking/LAN vs WAN
+            // 39. Networking/LAN vs WAN
             {
                 question: "A Local Area Network (LAN) spans a single building, whereas a Wide Area Network (WAN) spans continents. This difference in scope means that LAN hardware is typically **owned** by the organization, but WAN connectivity is typically **leased** from a third party. What key characteristic makes WAN connectivity leased?",
                 options: [
@@ -1260,7 +1256,7 @@
                 ],
                 isCorrect: "WANs rely on public telecommunications infrastructure (e.g., fiber lines) over vast distances."
             },
-            // 47. Security/MFA (Mitigation)
+            // 40. Security/MFA (Mitigation)
             {
                 question: "The implementation of **Multi-Factor Authentication (MFA)** requires a user to provide two or more verification factors (e.g., password *and* phone code) to gain access. What specific type of security threat does MFA primarily mitigate?",
                 options: [
@@ -1271,29 +1267,7 @@
                 ],
                 isCorrect: "Unauthorized access resulting from a compromised or stolen password (credential theft)."
             },
-            // 48. ICT/Audience Appreciation (Board of Directors)
-            {
-                question: "A technical team is presenting a new IT infrastructure project to two audiences: the technical engineering staff and the Board of Directors. For the **Board of Directors**, the presentation should be tailored to emphasize:",
-                options: [
-                    { text: "Financial justification (ROI), strategic alignment, and the risk mitigation strategy.", isCorrect: true },
-                    { text: "Line-by-line breakdown of the code written and detailed network topology diagrams.", isCorrect: false },
-                    { text: "The specific MAC addresses assigned to each new server.", isCorrect: false },
-                    { text: "The exact compression ratios achieved for the archival data.", isCorrect: false }
-                ],
-                isCorrect: "Financial justification (ROI), strategic alignment, and the risk mitigation strategy."
-            },
-            // 49. Networking/Bridge (Broadcast Storms)
-            {
-                question: "A key distinction between a Layer 2 Switch and a Hub is that a Switch creates multiple **collision domains**. What critical network issue is primarily prevented by the Switch's ability to direct traffic and isolate collision domains?",
-                options: [
-                    { text: "Broadcast storms and network congestion resulting from excessive, undirected data traffic.", isCorrect: true },
-                    { text: "Lossy compression of media files.", isCorrect: false },
-                    { text: "Social engineering phishing attempts.", isCorrect: false },
-                    { text: "RSI and other ergonomic health issues.", isCorrect: false }
-                ],
-                isCorrect: "Broadcast storms and network congestion resulting from excessive, undirected data traffic."
-            },
-            // 50. Ergonomics/Posture (Feet)
+            // 41. Ergonomics/Posture (Feet)
             {
                 question: "What is the correct ergonomic principle for foot positioning when sitting at a computer workstation, and what does it aim to prevent?",
                 options: [
@@ -1304,7 +1278,7 @@
                 ],
                 isCorrect: "Feet flat on the floor or a footrest, with thighs parallel to the ground; prevents pressure on the back of the thighs and improves circulation."
             },
-            // 51. Digital Literacy/Hierarchical Structure (Retrieval)
+            // 42. Digital Literacy/Hierarchical Structure (Retrieval)
             {
                 question: "A digital artist maintains a hierarchical directory structure with folders for 'Projects,' 'Clients,' and 'Source Files.' What is the primary benefit of organizing files in this structured, nested manner?",
                 options: [
@@ -1315,7 +1289,7 @@
                 ],
                 isCorrect: "Enables fast, logical retrieval of specific files via predictable file paths and structured browsing."
             },
-            // 52. Networking/Cloud (Scalability)
+            // 43. Networking/Cloud (Scalability)
             {
                 question: "One of the most powerful advantages of **Cloud Computing** for a rapidly growing business is scalability. How does the cloud provide superior scalability compared to maintaining proprietary on-premise servers?",
                 options: [
@@ -1326,7 +1300,7 @@
                 ],
                 isCorrect: "It allows the business to provision or de-provision compute resources (servers, storage) instantly on demand."
             },
-            // 53. ICT/Automation (Smart Thermostat)
+            // 44. ICT/Automation (Smart Thermostat)
             {
                 question: "A 'smart home' thermostat utilizes a microprocessor and specialized software to learn the occupants' daily routines and automatically adjust the temperature throughout the day. What is the main benefit of this microprocessor-controlled automation?",
                 options: [
@@ -1337,18 +1311,7 @@
                 ],
                 isCorrect: "Optimized energy efficiency, cost savings, and customized climate comfort."
             },
-            // 54. Security/Threat (Password Dictionary Attack)
-            {
-                question: "A security analyst observes an attack where a bot attempts to log in to a user's account by rapidly trying every word in a large list of common passwords. What type of brute-force attack is this?",
-                options: [
-                    { text: "Dictionary Attack", isCorrect: true },
-                    { text: "Spear Phishing", isCorrect: false },
-                    { text: "Digital Watermarking", isCorrect: false },
-                    { text: "Lossless Compression", isCorrect: false }
-                ],
-                isCorrect: "Dictionary Attack"
-            },
-            // 55. Digital Literacy/Compression (PNG vs JPG)
+            // 45. Digital Literacy/Compression (PNG vs JPG)
             {
                 question: "A graphic designer needs to save an image that contains sharp lines, transparency, and blocks of solid color (like a logo). They choose PNG over JPEG. This decision prioritizes which compression characteristic?",
                 options: [
@@ -1359,7 +1322,7 @@
                 ],
                 isCorrect: "PNG supports Lossless Compression, preserving sharp details and color integrity without artifacts."
             },
-            // 56. Networking/Internet vs LAN
+            // 46. Networking/Internet vs LAN
             {
                 question: "The **Internet** is often described as the 'network of networks.' What is the most significant **organizational** difference between the Internet and a typical enterprise LAN?",
                 options: [
@@ -1370,7 +1333,7 @@
                 ],
                 isCorrect: "The Internet is a globally public, decentralized network, whereas a LAN is a privately owned, centralized network."
             },
-            // 57. ICT/Benefit (Social)
+            // 47. ICT/Benefit (Social)
             {
                 question: "The widespread adoption of high-speed internet and electronic conferencing (e.g., video/web) has had a major positive **social** effect. What is this effect?",
                 options: [
@@ -1381,7 +1344,7 @@
                 ],
                 isCorrect: "Enabling remote work and study, reducing geographical barriers, and improving accessibility for many users."
             },
-            // 58. Security/Risk (Cloud Data)
+            // 48. Security/Risk (Cloud Data)
             {
                 question: "When storing confidential data on a third-party public cloud server, the primary ongoing security risk is that the data is constantly subject to potential unauthorized access from the cloud provider's internal staff. This falls under the category of:",
                 options: [
@@ -1392,7 +1355,7 @@
                 ],
                 isCorrect: "Insider Threat (Externalized)"
             },
-            // 59. ICT/Microprocessor (Smart Home Security Risk)
+            // 49. ICT/Microprocessor (Smart Home Security Risk)
             {
                 question: "Microprocessor-controlled 'smart home' devices (thermostats, cameras) connect to a home network. What is the key security risk associated with adding numerous, often poorly-secured, smart devices to a home LAN?",
                 options: [
@@ -1403,14 +1366,14 @@
                 ],
                 isCorrect: "Each device represents a new, potential entry point (vulnerability) for a hacker to access the entire network."
             },
-            // 60. Digital Literacy/File Naming (Advanced)
+            // 50. Digital Literacy/File Naming (Advanced)
             {
                 question: "Beyond using reserved characters, what is the *worst* practice in professional file naming, and why is it problematic for long-term data management?",
                 options: [
                     { text: "Using vague, non-descriptive names like `final.docx` or `report_new.pdf`; leads to rapid confusion and makes retrieval nearly impossible.", isCorrect: true },
                     { text: "Using names that are less than 10 characters long.", isCorrect: false },
                     { text: "Using names that contain only numbers, like `1234567.txt`.", isCorrect: false },
-                    { text: "Using names that are too descriptive, such as `The-Report-of-2024.docx`.", isCorrect: false }
+                    { text: "Using names that are too descriptive, suchs as `The-Report-of-2024.docx`.", isCorrect: false }
                 ],
                 isCorrect: "Using vague, non-descriptive names like `final.docx` or `report_new.pdf`; leads to rapid confusion and makes retrieval nearly impossible."
             }
