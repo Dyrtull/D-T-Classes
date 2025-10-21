@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Class 1: Introduction & Setup</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins (Headings) and Inter (Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Prism.js for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-twilight.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+
+    <style>
+        /* Custom Styles & Tailwind Configuration */
+        :root {
+            --color-primary: #3B82F6;
+            --color-secondary: #8B5CF6;
+            --color-bg-light: #F9FAFB;
+            --color-bg-dark: #111827;
+            --color-text-light: #1F2937;
+            --color-text-dark: #E5E7EB;
+        }
+
+        /* Base styles for light mode */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-light);
+            color: var(--color-text-light);
+            line-height: 1.7;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Dark Mode styles */
+        body.dark-mode {
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-dark);
+        }
+        .dark-mode .bg-white { background-color: #1F2937; color: var(--color-text-dark); }
+        .dark-mode .text-gray-900 { color: var(--color-text-dark); }
+        .dark-mode .text-gray-600 { color: #9CA3AF; }
+        .dark-mode .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .dark-mode .border-gray-200 { border-color: #374151; }
+        .dark-mode .bg-gray-50 { background-color: #1F2937; }
+        .dark-mode .text-blue-600 { color: #60A5FA; }
+
+        /* Custom Scrollbar for modern feel */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #A5B4FC; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8B5CF6; }
+        .dark-mode ::-webkit-scrollbar-track { background: #1F2937; }
+        .dark-mode ::-webkit-scrollbar-thumb { background: #4F46E5; }
+        .dark-mode ::-webkit-scrollbar-thumb:hover { background: #6366F1; }
+
+        /* Custom animation classes */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Blink Animation */
+        @keyframes blink-animation {
+            0%, 100% { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+            50% { background-color: #fca5a5; box-shadow: none; }
+        }
+
+        .virtual-led.on {
+            animation: blink-animation 1s infinite step-end;
+        }
+
+        /* Card Flip Effect */
+        .flip-card { perspective: 1000px; }
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+        }
+        .flip-card-back { transform: rotateY(180deg); position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+    </style>
+</head>
+<body class="transition-colors duration-300">
+
+    <!-- Sticky Progress Bar & Header -->
+    <div id="progress-container" class="fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 shadow-xl dark:shadow-2xl">
+        <div id="progress-bar" class="h-1 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 ease-out" style="width: 0%;"></div>
+        <header class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm p-4 border-b border-gray-200 dark:border-gray-800">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <span class="text-xl font-bold text-gray-900 dark:text-white flex items-center">
+                    <i data-lucide="zap" class="w-6 h-6 text-indigo-500 mr-2"></i> ESP32 Class 1
+                </span>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button id="dark-mode-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i id="dark-mode-icon" data-lucide="sun" class="w-6 h-6 text-gray-700 dark:text-gray-300"></i>
+                    </button>
+                    <!-- Mobile Navigation Toggle (Hamburger) -->
+                    <button id="mobile-nav-toggle" class="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <span id="welcome-message" class="text-sm font-medium text-gray-600 dark:text-gray-400 hidden sm:block"></span>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="max-w-7xl mx-auto pt-20 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row">
+        <!-- Sticky Sidebar Navigation (Desktop) -->
+        <nav id="course-nav" class="hidden md:block md:w-64 lg:w-72 md:flex-shrink-0 md:sticky md:top-20 md:h-[calc(100vh-80px)] overflow-y-auto pr-6 space-y-2 mt-8">
+            <h3 class="text-lg font-semibold mb-3 text-indigo-600 dark:text-indigo-400">Class Sections</h3>
+        </nav>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-nav-drawer" class="fixed inset-y-0 left-0 transform -translate-x-full w-64 bg-white dark:bg-gray-800 z-40 p-6 transition-transform duration-300 ease-in-out md:hidden">
+            <div class="flex justify-end mb-4">
+                <button id="close-mobile-nav" class="text-gray-700 dark:text-gray-300">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <h3 class="text-lg font-semibold mb-3 text-indigo-600 dark:text-indigo-400">Class Sections</h3>
+            <div id="mobile-nav-links" class="space-y-2">
+                <!-- Links will be populated by JS -->
+            </div>
+        </div>
+        <div id="mobile-nav-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
+
+        <!-- Scrollable Content Area -->
+        <main class="md:ml-8 mt-4 md:mt-8 w-full">
+
+            <!-- 1. Hero Section -->
+            <section id="hero" class="relative overflow-hidden pt-12 pb-24 rounded-3xl mb-16 shadow-2xl transition-all duration-500 hover:shadow-indigo-500/50" style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);">
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 40px 40px;"></div>
+                <div class="max-w-4xl mx-auto text-center relative z-10 p-6">
+                    <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4 animate-pulse">
+                        ESP32 Class 1: Introduction & Setup
+                    </h1>
+                    <p class="text-xl md:text-2xl font-medium text-indigo-200 mb-8">
+                        Your Journey to Building IoT Projects Starts Here
+                    </p>
+                    <div class="inline-flex items-center bg-white/20 text-white text-sm font-semibold px-4 py-1 rounded-full mb-8 backdrop-blur-sm">
+                        <i data-lucide="clock" class="w-4 h-4 mr-2"></i> ⏱️ Estimated Time: 1h 15min
+                    </div>
+                    <button onclick="scrollToSection('#part-1')" class="start-learning-cta bg-white text-indigo-600 hover:bg-indigo-50 font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center mx-auto w-fit">
+                        <i data-lucide="rocket" class="w-5 h-5 mr-2"></i> Start Learning Now
+                    </button>
+                    <div class="mt-8">
+                        <!-- Animated ESP32 Placeholder -->
+                        <div class="mx-auto w-3/4 max-w-sm h-32 bg-gray-900 rounded-lg border-2 border-green-400 flex items-center justify-center shadow-inner relative overflow-hidden">
+                            <div class="absolute inset-0 bg-green-400 opacity-20 animate-pulse"></div>
+                            <span class="text-white font-mono text-sm opacity-80 z-10">
+                                Virtual ESP32 Board Illustration
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /Hero Section -->
+
+            <!-- Content Sections (Populated by JS for section highlighting) -->
+
+            <!-- 3. Part 1: What is a Microcontroller? -->
+            <section id="part-1" data-section-name="Introduction" data-time="15 min" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="book-open" class="w-6 h-6 mr-3"></i> Part 1: What is a Microcontroller?</h2>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <!-- Concept Card: Microcontroller -->
+                    <div class="flip-card h-64">
+                        <div class="flip-card-inner bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 flex flex-col justify-center text-center">
+                            <div class="flip-card-front">
+                                <i data-lucide="cpu" class="w-10 h-10 mx-auto mb-4 text-indigo-500"></i>
+                                <h3 class="text-xl font-bold">What is a Microcontroller?</h3>
+                                <p class="text-sm mt-2 text-gray-500 dark:text-gray-400">(Click to Flip)</p>
+                            </div>
+                            <div class="flip-card-back bg-indigo-50 dark:bg-gray-900/50 p-6 rounded-xl flex flex-col justify-center">
+                                <p class="text-sm text-gray-900 dark:text-gray-100">
+                                    A <strong>Microcontroller (MCU)</strong> is a small, low-cost, self-contained computer chip designed to govern a specific operation in an embedded system. It contains a processor, memory, and input/output peripherals all on a single integrated circuit.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Concept Card: ESP32 -->
+                    <div class="flip-card h-64">
+                        <div class="flip-card-inner bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 flex flex-col justify-center text-center">
+                            <div class="flip-card-front">
+                                <i data-lucide="wifi" class="w-10 h-10 mx-auto mb-4 text-teal-500"></i>
+                                <h3 class="text-xl font-bold">Meet the ESP32</h3>
+                                <p class="text-sm mt-2 text-gray-500 dark:text-gray-400">(Click to Flip)</p>
+                            </div>
+                            <div class="flip-card-back bg-teal-50 dark:bg-gray-900/50 p-6 rounded-xl flex flex-col justify-center">
+                                <p class="text-sm text-gray-900 dark:text-gray-100">
+                                    The <strong>ESP32</strong> is a popular series of low-cost, low-power microcontrollers developed by Espressif Systems. Its key feature is <strong>built-in Wi-Fi and Bluetooth</strong> connectivity, making it perfect for Internet of Things (IoT) projects.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mt-10 mb-4 text-gray-800 dark:text-gray-200">Real-World Examples</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-center shadow-md">
+                        <i data-lucide="tv" class="w-8 h-8 mx-auto text-yellow-500 mb-2"></i>
+                        <p class="text-sm font-medium">TV Remote</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-center shadow-md">
+                        <i data-lucide="microwave" class="w-8 h-8 mx-auto text-pink-500 mb-2"></i>
+                        <p class="text-sm font-medium">Microwave</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-center shadow-md">
+                        <i data-lucide="gauge" class="w-8 h-8 mx-auto text-red-500 mb-2"></i>
+                        <p class="text-sm font-medium">Car Dashboard</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-center shadow-md">
+                        <i data-lucide="thermometer-sun" class="w-8 h-8 mx-auto text-orange-500 mb-2"></i>
+                        <p class="text-sm font-medium">Smart Thermostat</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-center shadow-md">
+                        <i data-lucide="activity" class="w-8 h-8 mx-auto text-green-500 mb-2"></i>
+                        <p class="text-sm font-medium">Fitness Tracker</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mt-10 mb-4 text-gray-800 dark:text-gray-200">Hands-On: ESP32 Anatomy</h3>
+                <div class="relative bg-gray-100 dark:bg-gray-900 p-6 rounded-xl shadow-inner">
+                    <div class="text-center text-gray-500 dark:text-gray-400">
+                        <img src="https://lastminuteengineers.com/wp-content/uploads/iot/ESP32-Pinout.png" alt="ESP32 Diagram" class="mx-auto w-3/4 max-w-sm">
+                    </div>
+                    <p class="mt-4 text-sm text-center">
+                        <strong>Interactive Diagram Placeholder:</strong> Hover over these points (virtually!) to see the details:
+                        <ul class="list-disc list-inside mt-2 text-left w-fit mx-auto">
+                            <li><strong>USB Port:</strong> Connects to computer for programming and power.</li>
+                            <li><strong>GPIO Pins:</strong> The digital and analog input/output pins (30+ pins to connect sensors).</li>
+                            <li><strong>ESP32 Chip:</strong> The 'brain' running at 240 MHz.</li>
+                            <li><strong>Built-in LED:</strong> Usually connected to <strong>GPIO 2</strong>.</li>
+                            <li><strong>BOOT/FLASH Button:</strong> Hold this if your code upload fails.</li>
+                            <li><strong>RESET (EN) Button:</strong> Restarts your running program.</li>
+                        </ul>
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4. Part 2: Setting Up Arduino IDE -->
+            <section id="part-2" data-section-name="Arduino IDE Setup" data-time="25 min" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="code-square" class="w-6 h-6 mr-3"></i> Part 2: Setting Up Arduino IDE</h2>
+
+                <div class="p-6 bg-indigo-50 dark:bg-gray-800 rounded-xl mb-8 border-l-4 border-indigo-500">
+                    <h3 class="text-xl font-bold mb-2">What is Arduino IDE?</h3>
+                    <p class="text-gray-800 dark:text-gray-200">
+                        The <strong>Arduino Integrated Development Environment (IDE)</strong> is the software you'll use to write code, compile it, and upload it to your ESP32 board. We'll use it because it's simple, cross-platform, and has great community support.
+                    </p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Installation Checklist</h3>
+                <div id="setup-checklist" class="space-y-4">
+
+                    <!-- Step 1 -->
+                    <div class="p-5 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" data-progress-id="setup-1" onchange="saveProgress(this)" class="w-5 h-5 mt-1 mr-3 text-green-500 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Step 1: Download Arduino IDE (Version 2.x Recommended)</h4>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                                    Download the latest official version from the Arduino website. <a href="https://www.arduino.cc/en/software" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Download Link</a>
+                                </p>
+                                <details class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <summary class="cursor-pointer font-medium text-indigo-500">💡 Pro Tip: Why Version 2.x?</summary>
+                                    Version 2.x is faster, has a built-in serial plotter, and better dark mode support, making the development experience much smoother than the classic 1.x version.
+                                </details>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="p-5 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" data-progress-id="setup-2" onchange="saveProgress(this)" class="w-5 h-5 mt-1 mr-3 text-green-500 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Step 2: Add ESP32 Board Manager URL</h4>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                                    Open <strong>File &gt; Preferences</strong> and paste this URL into the <strong>Additional Boards Manager URLs</strong> field:
+                                </p>
+                                <div class="mt-2 flex items-center bg-gray-100 dark:bg-gray-900 rounded-lg p-3 text-sm font-mono break-all border border-gray-300 dark:border-gray-700">
+                                    <code id="board-url">https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code>
+                                    <button onclick="copyCode(this, 'board-url')" class="ml-auto flex-shrink-0 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-medium py-1 px-3 rounded-md transition-colors">
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="p-5 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" data-progress-id="setup-3" onchange="saveProgress(this)" class="w-5 h-5 mt-1 mr-3 text-green-500 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Step 3: Install ESP32 Boards</h4>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                                    Go to <strong>Tools &gt; Board &gt; Boards Manager...</strong>. Search for "esp32" and click <strong>Install</strong> on the "esp32 by Espressif Systems" entry.
+                                </p>
+                                <div id="loading-indicator" class="mt-2 hidden flex items-center text-sm text-yellow-600">
+                                    <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> This may take 2-3 minutes. Hang tight!
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="p-5 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" data-progress-id="setup-4" onchange="saveProgress(this)" class="w-5 h-5 mt-1 mr-3 text-green-500 bg-gray-100 border-gray-300 rounded focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Step 4: Connect Your ESP32 & Select Port</h4>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                                    Plug in your ESP32 with a USB cable. Go to <strong>Tools &gt; Port</strong> and select the new serial port that appeared.
+                                </p>
+                                <details class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <summary class="cursor-pointer font-medium text-red-500">⚠️ Can't find your port?</summary>
+                                    You might need to install a USB-to-Serial driver for your board's chip (e.g., CP210x or CH340). Search for "ESP32 USB driver" for your specific board type.
+                                </details>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mt-10 mb-4 text-gray-800 dark:text-gray-200">Interface Tour: Click the Upload Button!</h3>
+                <div class="p-6 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-inner relative">
+                    <div class="text-center text-gray-500 dark:text-gray-400 mb-4">
+                        [Annotated Screenshot of Arduino IDE]
+                    </div>
+                    <div id="quiz-upload-button" class="flex justify-center">
+                        <button onclick="quizUpload(this)" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md">
+                            Click the Upload Button!
+                        </button>
+                    </div>
+                    <p id="quiz-message" class="text-center mt-3 font-semibold"></p>
+                </div>
+            </section>
+
+            <!-- 5. Part 3: Your First Program - Blink! -->
+            <section id="part-3" data-section-name="First Program: Blink!" data-time="25 min" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="lightbulb" class="w-6 h-6 mr-3"></i> Part 3: Your First Program - Blink!</h2>
+
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Understanding Code Structure</h3>
+                <div class="p-6 bg-yellow-50 dark:bg-gray-800 rounded-xl mb-8 border-l-4 border-yellow-500">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-xl text-yellow-800 dark:text-yellow-300">The Loop Flowchart</h4>
+                        <button onclick="animateFlowchart()" class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded-full"><i data-lucide="play" class="w-4 h-4 inline mr-1"></i> Play</button>
+                    </div>
+                    <div id="flow-visual" class="mt-4 text-center text-sm font-mono text-gray-700 dark:text-gray-300">
+                        [SETUP] ➡️ [LOOP] 🔁 [LOOP] 🔁 ...
+                    </div>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+                        * <strong>`void setup()`</strong>: Runs <strong>ONCE</strong> when the board starts up. Used for initial settings.
+                        * <strong>`void loop()`</strong>: Runs <strong>FOREVER</strong> after `setup()` finishes. This is where your main logic goes.
+                    </p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">The Blink Program</h3>
+                <div class="bg-gray-900 rounded-xl shadow-xl overflow-hidden mb-8">
+                    <div class="flex justify-end p-2">
+                        <button onclick="copyCode(this, 'blink-code')" class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm py-1 px-3 rounded-md transition-colors">
+                            Copy
+                        </button>
+                    </div>
+                    <pre class="language-c" style="margin: 0;">
+<code id="blink-code" class="language-c">
+// Blink the built-in LED
+// The built-in LED is usually on GPIO 2 (D2)
+
+void setup() {
+  // Set the pin 2 (LED) as an OUTPUT
+  pinMode(2, OUTPUT);  // &larr; Click Line 5
+}
+
+void loop() {
+  // Turn the LED ON (HIGH voltage)
+  digitalWrite(2, HIGH); // &larr; Click Line 9
+  // Wait for 1000 milliseconds (1 second)
+  delay(1000);
+  // Turn the LED OFF (LOW voltage)
+  digitalWrite(2, LOW);  // &larr; Click Line 13
+  // Wait for 1000 milliseconds (1 second)
+  delay(1000);
+}
+</code></pre>
+                </div>
+
+                <div id="line-explanation-area" class="space-y-4 mb-8">
+                    <h4 class="text-xl font-semibold text-teal-600 dark:text-teal-400">Line-by-Line Explanation (Click lines in the code block above!)</h4>
+                    <div id="exp-5" class="p-4 bg-teal-50 dark:bg-gray-800 rounded-lg hidden transition-opacity duration-300">
+                        <strong>Line 5: `pinMode(2, OUTPUT);`</strong> - This command tells the ESP32 that pin 2 will be used to <strong>send</strong> electrical signals (an output) to control a device (the LED).
+                    </div>
+                    <div id="exp-9" class="p-4 bg-teal-50 dark:bg-gray-800 rounded-lg hidden transition-opacity duration-300">
+                        <strong>Line 9: `digitalWrite(2, HIGH);`</strong> - This command sets the voltage on pin 2 to <strong>HIGH</strong> (about 3.3V), which turns the connected LED <strong>ON</strong>.
+                    </div>
+                    <div id="exp-13" class="p-4 bg-teal-50 dark:bg-gray-800 rounded-lg hidden transition-opacity duration-300">
+                        <strong>Line 13: `digitalWrite(2, LOW);`</strong> - This command sets the voltage on pin 2 to <strong>LOW</strong> (0V), which turns the connected LED <strong>OFF</strong>.
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Upload Process</h3>
+                <ol class="space-y-3 list-decimal list-inside p-6 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <li class="font-medium text-gray-900 dark:text-white">Click <strong>Verify</strong> (the checkmark) to check for code errors.</li>
+                    <li class="font-medium text-gray-900 dark:text-white">Click <strong>Upload</strong> (the right arrow) to send the compiled program to the ESP32.</li>
+                    <li class="font-medium text-gray-900 dark:text-white">Watch the status bar at the bottom. It should say "Connecting..."</li>
+                    <li class="font-medium text-gray-900 dark:text-white">If it fails, try holding the <strong>BOOT button</strong> on your ESP32 while the "Connecting..." message appears.</li>
+                    <li class="font-medium text-gray-900 dark:text-white">Success message: "Hard resetting via RTS pin..." Your LED should now be blinking!</li>
+                </ol>
+            </section>
+
+            <!-- 6. Part 4: Experimentation Time -->
+            <section id="part-4" data-section-name="Experimentation Time" data-time="10 min" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="flask-conical" class="w-6 h-6 mr-3"></i> Part 4: Experimentation Time</h2>
+                <div id="challenge-cards" class="grid lg:grid-cols-2 gap-6">
+
+                    <!-- Challenge 1: Speed Control -->
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-indigo-200 dark:border-indigo-800">
+                        <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-3 flex items-center"><i data-lucide="zap" class="w-5 h-5 mr-2"></i> Challenge 1: Speed Control</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Can you change the blink rate? Modify the two `delay()` values in the Blink program to make the LED blink faster (e.g., 200ms) or slower (e.g., 3000ms).</p>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <label for="delay-slider" class="block text-sm font-medium mb-2">Adjust Delay (ms): <span id="delay-value">1000</span>ms</label>
+                            <input type="range" id="delay-slider" min="100" max="3000" value="1000" step="100" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer dark:bg-indigo-700">
+                            <div class="mt-3 flex items-center space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-red-500 transition-shadow duration-100" id="virtual-led-1"></div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Live Preview</p>
+                            </div>
+                        </div>
+                        <label class="flex items-center mt-4">
+                            <input type="checkbox" data-progress-id="challenge-1" onchange="saveProgress(this)" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-2 text-sm font-medium">Mark as complete</span>
+                        </label>
+                    </div>
+
+                    <!-- Challenge 2: Asymmetric Blink -->
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-teal-200 dark:border-teal-800">
+                        <h3 class="text-xl font-bold text-teal-600 dark:text-teal-400 mb-3 flex items-center"><i data-lucide="bar-chart-2" class="w-5 h-5 mr-2"></i> Challenge 2: Asymmetric Blink</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-4">Make the LED flash quickly but stay off for a long time (e.g., ON for 100ms, OFF for 5000ms). This requires two different delay values!</p>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm font-mono break-all">
+                            <p>Code Template:</p>
+                            <code class="block mt-1">digitalWrite(2, HIGH);</code>
+                            <code class="block">delay(100); // ON Time</code>
+                            <code class="block">digitalWrite(2, LOW);</code>
+                            <code class="block">delay(5000); // OFF Time</code>
+                        </div>
+                        <details class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                            <summary class="cursor-pointer font-medium text-teal-500">💡 Hint</summary>
+                            You only need to change the numbers inside the parenthesis of the `delay()` function calls. Remember, the numbers are in milliseconds!
+                        </details>
+                        <label class="flex items-center mt-4">
+                            <input type="checkbox" data-progress-id="challenge-2" onchange="saveProgress(this)" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-2 text-sm font-medium">Mark as complete</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. Troubleshooting Guide -->
+            <section id="troubleshooting" data-section-name="Troubleshooting Guide" data-time="" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="wrench" class="w-6 h-6 mr-3"></i> Troubleshooting Guide</h2>
+
+                <div class="relative mb-6">
+                    <input type="text" id="troubleshoot-search" onkeyup="filterTroubleshoot()" placeholder="Search for your problem (e.g., 'Port not found')..." class="w-full p-3 pl-10 border border-gray-300 dark:border-gray-700 rounded-lg dark:bg-gray-900 dark:text-white transition-shadow focus:ring-indigo-500 focus:border-indigo-500">
+                    <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
+                </div>
+
+                <div id="troubleshoot-list" class="space-y-4">
+                    <!-- Problem 1: Port not found -->
+                    <details class="troubleshoot-entry bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700" data-tags="port driver connection">
+                        <summary class="p-4 font-bold text-lg cursor-pointer flex justify-between items-center text-red-600 dark:text-red-400">
+                            ❌ Port not found in Tools &gt; Port
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300"></i>
+                        </summary>
+                        <div class="px-4 pb-4 text-gray-700 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700 pt-4">
+                            <h4 class="font-semibold mb-2">Solution Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li><strong>Check Cable:</strong> Ensure your USB cable is data-capable (some are charge-only).</li>
+                                <li><strong>Install Drivers:</strong> Most ESP32 boards use a CH340 or CP210x chip. Search for and install the latest driver for that chip.</li>
+                                <li><strong>Reset Board:</strong> Sometimes pressing the <strong>RESET</strong> button a couple of times after plugging it in helps the OS detect it.</li>
+                            </ol>
+                        </div>
+                    </details>
+
+                    <!-- Problem 2: Failed to connect -->
+                    <details class="troubleshoot-entry bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700" data-tags="upload fail connecting boot button">
+                        <summary class="p-4 font-bold text-lg cursor-pointer flex justify-between items-center text-red-600 dark:text-red-400">
+                            ❌ A fatal error occurred: Failed to connect to ESP32
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300"></i>
+                        </summary>
+                        <div class="px-4 pb-4 text-gray-700 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700 pt-4">
+                            <h4 class="font-semibold mb-2">Solution Steps:</h4>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li><strong>Press BOOT:</strong> When you see "Connecting...", <strong>hold down the BOOT/FLASH button</strong> on your ESP32 until the upload starts (usually a few seconds), then release.</li>
+                                <li><strong>Check Board Selection:</strong> Ensure you have selected the correct board model under <strong>Tools &gt; Board</strong>.</li>
+                                <li><strong>Reset &amp; Try Again:</strong> Press the RESET button once, wait a second, then immediately hit the Upload button again.</li>
+                            </ol>
+                        </div>
+                    </details>
+
+                </div>
+            </section>
+
+            <!-- 8. Success Criteria Checklist -->
+            <section id="success-criteria" data-section-name="Success Criteria" data-time="" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="check-circle" class="w-6 h-6 mr-3"></i> Success Criteria Checklist</h2>
+
+                <div class="p-6 bg-green-50 dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-green-500">
+                    <p id="completion-message" class="text-xl font-bold text-green-800 dark:text-green-300 mb-4">You've completed 0 of 7 criteria!</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
+                        <div id="criteria-progress-bar" class="bg-green-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <div id="criteria-list" class="space-y-3">
+                        <label class="flex items-center cursor-pointer criteria-item">
+                            <input type="checkbox" data-progress-id="crit-0" onchange="saveProgress(this)" class="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-3 text-gray-900 dark:text-gray-100 font-medium">Explain what a microcontroller is in simple terms</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer criteria-item">
+                            <input type="checkbox" data-progress-id="crit-1" onchange="saveProgress(this)" class="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-3 text-gray-900 dark:text-gray-100 font-medium">Identify major parts of the ESP32 board</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer criteria-item">
+                            <input type="checkbox" data-progress-id="crit-2" onchange="saveProgress(this)" class="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-3 text-gray-900 dark:text-gray-100 font-medium">Open Arduino IDE and select ESP32 board</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer criteria-item">
+                            <input type="checkbox" data-progress-id="crit-3" onchange="saveProgress(this)" class="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-3 text-gray-900 dark:text-gray-100 font-medium">Upload a program successfully</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer criteria-item">
+                            <input type="checkbox" data-progress-id="crit-4" onchange="saveProgress(this)" class="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-3 text-gray-900 dark:text-gray-100 font-medium">Modify delay times and see LED change speed</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer criteria-item">
+                            <input type="checkbox" data-progress-id="crit-5" onchange="saveProgress(this)" class="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-3 text-gray-900 dark:text-gray-100 font-medium">Use Verify and Upload buttons confidently</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer criteria-item">
+                            <input type="checkbox" data-progress-id="crit-6" onchange="saveProgress(this)" class="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500">
+                            <span class="ml-3 text-gray-900 dark:text-gray-100 font-medium">Complete at least one experiment challenge</span>
+                        </label>
+                    </div>
+                    <div id="confetti-container" class="mt-6 text-center hidden">
+                        <i data-lucide="party-popper" class="w-12 h-12 text-yellow-500 mx-auto animate-bounce"></i>
+                        <p class="text-2xl font-extrabold mt-2 text-green-600 dark:text-green-400">CONGRATULATIONS!</p>
+                        <button onclick="alert('Virtual Certificate Generated!')" class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Generate Certificate</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. Homework Assignment -->
+            <section id="homework" data-section-name="Homework Assignment" data-time="" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="clipboard-list" class="w-6 h-6 mr-3"></i> Homework Assignment</h2>
+
+                <h3 class="text-2xl font-semibold mt-6 mb-4 text-gray-800 dark:text-gray-200">Required Tasks</h3>
+                <div id="required-homework-list" class="space-y-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <label class="flex items-center cursor-pointer homework-item">
+                        <input type="checkbox" data-progress-id="hw-0" onchange="saveProgress(this)" class="w-5 h-5 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="ml-3 text-gray-900 dark:text-gray-100">Practice Uploads: Upload the Blink sketch at least 5 times.</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer homework-item">
+                        <input type="checkbox" data-progress-id="hw-1" onchange="saveProgress(this)" class="w-5 h-5 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="ml-3 text-gray-900 dark:text-gray-100">Timing Experiments: Log two different delay values you tried (e.g., 50ms, 4000ms).</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer homework-item">
+                        <input type="checkbox" data-progress-id="hw-2" onchange="saveProgress(this)" class="w-5 h-5 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">
+                        <span class="ml-3 text-gray-900 dark:text-gray-100">Video Learning: Watch at least one video tutorial on the ESP32 setup process (see Resources).</span>
+                    </label>
+                </div>
+
+                <h3 class="text-2xl font-semibold mt-8 mb-4 text-gray-800 dark:text-gray-200">Extra Credit</h3>
+                <div class="space-y-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <label for="ec-notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Questions/Research Project:</label>
+                    <textarea id="ec-notes" oninput="saveUserData('notes', this.value)" rows="4" class="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-900 dark:text-white" placeholder="Write down any questions you have for the next class, or a brief summary of a piece of ESP32 research you did."></textarea>
+                    <button onclick="exportHomework()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition-colors text-sm">
+                        Export Homework (.txt)
+                    </button>
+                </div>
+            </section>
+
+            <!-- 10. Vocabulary Reference -->
+            <section id="vocabulary" data-section-name="Vocabulary Reference" data-time="" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="abc" class="w-6 h-6 mr-3"></i> Vocabulary Reference</h2>
+
+                <div id="vocabulary-list" class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Vocab Card Template -->
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="Microcontroller">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">Microcontroller (MCU)</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">A small computer on a single chip designed to control a specific task.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="GPIO">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">GPIO</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">General-Purpose Input/Output. The pins used to connect devices like LEDs and sensors.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="Arduino IDE">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">Arduino IDE</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">The software environment used to write, compile, and upload code to the board.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="Upload">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">Upload</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">The process of sending the compiled code (binary) from the computer to the microcontroller's memory.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="Compile">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">Compile</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">Converting human-readable code into machine code that the ESP32 chip can actually execute.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="Setup">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">setup()</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">The function in the code that runs only <strong>once</strong> when the microcontroller powers on or resets.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="Loop">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">loop()</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">The function that runs <strong>repeatedly and continuously</strong> after `setup()` finishes.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="pinMode">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">pinMode()</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">A command used in `setup()` to configure a pin as an `INPUT` or an `OUTPUT`.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="digitalWrite">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">digitalWrite()</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">A command that sends a <strong>HIGH</strong> (ON) or <strong>LOW</strong> (OFF) signal to a pin.</p>
+                    </div>
+                    <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700" data-term="delay">
+                        <h4 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">delay()</h4>
+                        <p class="text-sm mt-1 text-gray-700 dark:text-gray-300">A command that pauses the program for a specified number of milliseconds (1000ms = 1 second).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 11. Next Class Preview -->
+            <section id="next-class" data-section-name="Next Class Preview" data-time="" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="zap-circle" class="w-6 h-6 mr-3"></i> Next Class Preview</h2>
+
+                <div class="p-8 rounded-3xl text-white shadow-2xl" style="background: linear-gradient(135deg, #14B8A6 0%, #10B981 100%);">
+                    <h3 class="text-4xl font-extrabold mb-4">🚀 Ready for Class 2?</h3>
+                    <p class="text-xl font-medium mb-6">Class 2 Title: <strong>External LEDs and Circuits</strong></p>
+                    <p class="mb-6">
+                        In the next class, we'll stop blinking the built-in LED and start connecting external components! You'll learn the fundamental concepts of basic circuits, including current and resistance.
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 font-medium">
+                        <li>Learn about <strong>breadboards</strong> and how to use them.</li>
+                        <li>Connect <strong>external LEDs</strong> and make them blink.</li>
+                        <li>Understand <strong>current, voltage, and resistors</strong>.</li>
+                        <li>Build your first simple project: <strong>A traffic light system!</strong></li>
+                    </ul>
+                    <div class="mt-8 p-4 bg-white/20 rounded-xl">
+                        <p class="font-bold">What to bring to Class 2:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm mt-1">
+                            <li>ESP32 Board &amp; USB Cable</li>
+                            <li>Breadboard (Small or Medium)</li>
+                            <li>LEDs (Red, Yellow, Green)</li>
+                            <li>Small pack of Jumper Wires</li>
+                            <li>Resistors (e.g., 220 Ohm or 330 Ohm)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. Resources & Downloads -->
+            <section id="resources" data-section-name="Resources & Downloads" data-time="" class="fade-in-section mb-20">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400 border-b pb-2 border-gray-200 dark:border-gray-700 flex items-center"><i data-lucide="download" class="w-6 h-6 mr-3"></i> Resources & Downloads</h2>
+
+                <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <a href="https://www.arduino.cc/en/software" target="_blank" class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-indigo-300/50 transition-shadow block">
+                        <i data-lucide="hard-drive-download" class="w-8 h-8 text-blue-500 mb-2"></i>
+                        <h4 class="font-bold">Arduino IDE Download</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Official Software for coding and uploading.</p>
+                        <span class="inline-block mt-2 text-xs font-medium text-blue-600 bg-blue-100 dark:bg-blue-900/50 dark:text-blue-300 px-2 py-0.5 rounded-full">Download</span>
+                    </a>
+                    <a href="https://docs.espressif.com/projects/arduino-esp32/en/latest/" target="_blank" class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-teal-300/50 transition-shadow block">
+                        <i data-lucide="book-open-text" class="w-8 h-8 text-teal-500 mb-2"></i>
+                        <h4 class="font-bold">ESP32 Arduino Documentation</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">The official documentation and reference guide.</p>
+                        <span class="inline-block mt-2 text-xs font-medium text-teal-600 bg-teal-100 dark:bg-teal-900/50 dark:text-teal-300 px-2 py-0.5 rounded-full">Article</span>
+                    </a>
+                    <a href="https://www.youtube.com/results?search_query=esp32+setup+tutorial" target="_blank" class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-pink-300/50 transition-shadow block">
+                        <i data-lucide="youtube" class="w-8 h-8 text-pink-500 mb-2"></i>
+                        <h4 class="font-bold">Video Tutorials</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Search results for visual guides on setup and coding.</p>
+                        <span class="inline-block mt-2 text-xs font-medium text-pink-600 bg-pink-100 dark:bg-pink-900/50 dark:text-pink-300 px-2 py-0.5 rounded-full">Video</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Bottom Note/Progress Reset -->
+            <div class="text-center pb-20 pt-10 text-gray-500 dark:text-gray-600">
+                <button onclick="resetAllProgress()" class="text-red-500 hover:text-red-700 text-sm font-medium">
+                    <i data-lucide="trash-2" class="w-4 h-4 inline mr-1"></i> Reset All My Progress
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Global state object for localStorage
+        const STORAGE_KEY = 'esp32_class1_progress';
+        let state = {
+            progress: {}, // Checkbox status
+            settings: { darkMode: false, fontSize: 'medium' },
+            user_data: { notes: '', name: '', bookmarks: [] }
+        };
+
+        // --- Core Utility Functions ---
+
+        /**
+         * Safely load state from localStorage.
+         */
+        function loadState() {
+            try {
+                const storedState = localStorage.getItem(STORAGE_KEY);
+                if (storedState) {
+                    const loadedState = JSON.parse(storedState);
+                    // Merge loaded state over initial default state
+                    state.progress = loadedState.progress || state.progress;
+                    state.settings = loadedState.settings || loadedState.settings;
+                    state.user_data = loadedState.user_data || loadedState.user_data;
+                }
+            } catch (e) {
+                console.error("Error loading state from localStorage:", e);
+            }
+        }
+
+        /**
+         * Safely save the global state object to localStorage.
+         */
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                console.error("Error saving state to localStorage:", e);
+            }
+        }
+
+        /**
+         * Toggles dark mode and saves preference.
+         */
+        function toggleDarkMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            state.settings.darkMode = isDark;
+            saveState();
+            updateDarkModeIcon(isDark);
+        }
+
+        /**
+         * Updates the visual icon for dark mode.
+         */
+        function updateDarkModeIcon(isDark) {
+            const iconElement = document.getElementById('dark-mode-icon');
+            if (iconElement) {
+                if (isDark) {
+                    iconElement.setAttribute('data-lucide', 'moon');
+                } else {
+                    iconElement.setAttribute('data-lucide', 'sun');
+                }
+                lucide.createIcons();
+            }
+        }
+
+        /**
+         * Saves checklist progress and updates UI.
+         * @param {HTMLElement} checkbox - The checkbox element.
+         */
+        function saveProgress(checkbox) {
+            const id = checkbox.getAttribute('data-progress-id');
+            state.progress[id] = checkbox.checked;
+            saveState();
+            updateProgressMetrics();
+        }
+
+        /**
+         * Saves generic user data (e.g., notes, name).
+         * @param {string} key - The key in user_data (e.g., 'notes').
+         * @param {string} value - The value to save.
+         */
+        function saveUserData(key, value) {
+            state.user_data[key] = value;
+            saveState();
+        }
+
+        /**
+         * Exports homework notes and completed items as a downloadable TXT file.
+         */
+        function exportHomework() {
+            const completedItems = Array.from(document.querySelectorAll('.homework-item input:checked'))
+                .map(input => `[x] ${input.nextElementSibling.textContent.trim()}`)
+                .join('\n');
+
+            const notes = state.user_data.notes || 'No notes written.';
+
+            const content = `--- ESP32 Class 1 Homework Export ---\n\n` +
+                            `Completed Required Tasks:\n${completedItems}\n\n` +
+                            `Extra Credit/Questions:\n${notes}\n\n` +
+                            `--- End of Export ---`;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'esp32_class1_homework.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        /**
+         * Resets all user progress and reloads the page state.
+         */
+        function resetAllProgress() {
+            if (confirm("Are you sure you want to reset ALL your progress for Class 1? This cannot be undone.")) {
+                localStorage.removeItem(STORAGE_KEY);
+                window.location.reload();
+            }
+        }
+
+        // --- UI & Lifecycle Functions ---
+
+        /**
+         * Applies the loaded state to the DOM elements.
+         */
+        function applyStateToDOM() {
+            // Apply Dark Mode Setting
+            if (state.settings.darkMode) {
+                document.body.classList.add('dark-mode');
+                updateDarkModeIcon(true);
+            }
+
+            // Apply Checkbox Progress
+            document.querySelectorAll('input[type="checkbox"][data-progress-id]').forEach(checkbox => {
+                const id = checkbox.getAttribute('data-progress-id');
+                if (state.progress[id]) {
+                    checkbox.checked = true;
+                }
+            });
+
+            // Apply User Data (Notes)
+            const notesEl = document.getElementById('ec-notes');
+            if (notesEl && state.user_data.notes) {
+                notesEl.value = state.user_data.notes;
+            }
+
+            // Welcome Message
+            const welcomeEl = document.getElementById('welcome-message');
+            const firstName = (state.user_data.name || 'Learner').split(' ')[0];
+            welcomeEl.textContent = `Welcome, ${firstName}!`;
+
+            updateProgressMetrics();
+        }
+
+        /**
+         * Updates the main progress bar based on scroll.
+         */
+        function updateScrollProgressBar() {
+            const element = document.documentElement;
+            const scrollPercent = (element.scrollTop / (element.scrollHeight - element.clientHeight)) * 100;
+            document.getElementById('progress-bar').style.width = scrollPercent + '%';
+        }
+
+        /**
+         * Updates the Success Criteria progress and main progress bar.
+         */
+        function updateProgressMetrics() {
+            // 1. Success Criteria Progress
+            const criteriaCheckboxes = document.querySelectorAll('#criteria-list input[type="checkbox"]');
+            const totalCriteria = criteriaCheckboxes.length;
+            const completedCriteria = Array.from(criteriaCheckboxes).filter(c => c.checked).length;
+            const progress = (completedCriteria / totalCriteria) * 100;
+
+            document.getElementById('criteria-progress-bar').style.width = progress + '%';
+            document.getElementById('completion-message').textContent = `You've completed ${completedCriteria} of ${totalCriteria} criteria!`;
+
+            const confettiContainer = document.getElementById('confetti-container');
+            if (completedCriteria === totalCriteria) {
+                confettiContainer.classList.remove('hidden');
+            } else {
+                confettiContainer.classList.add('hidden');
+            }
+
+            // 2. Overall Course Progress (Simplified: Based on number of sections seen)
+            // Note: Keeping scroll-based progress bar for the sticky header as originally designed.
+        }
+
+        /**
+         * Smoothly scrolls the window to a target selector.
+         * @param {string} selector - The CSS selector of the target element.
+         */
+        function scrollToSection(selector) {
+            document.querySelector(selector).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /**
+         * Initializes the Intersection Observer for section highlighting and fade-in effects.
+         */
+        function setupIntersectionObserver() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main > section');
+
+            // Observer for section fade-in
+            const fadeInObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px', threshold: 0.1 });
+
+            // Observer for sticky navigation highlighting
+            const highlightObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const link = document.querySelector(`.nav-link[href="#${id}"]`);
+
+                    if (link) {
+                        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                            navLinks.forEach(l => l.classList.remove('active'));
+                            link.classList.add('active');
+                        } else if (entry.boundingClientRect.top > 0 && entry.intersectionRatio < 0.5 && entry.boundingClientRect.top < window.innerHeight / 2) {
+                            // Logic to keep the previous item highlighted when scrolling up out of the top half of the screen
+                            const index = Array.from(sections).findIndex(sec => sec.id === id);
+                            if (index > 0) {
+                                navLinks.forEach(l => l.classList.remove('active'));
+                                document.querySelector(`.nav-link[href="#${sections[index-1].id}"]`).classList.add('active');
+                            }
+                        }
+                    }
+                });
+            }, { rootMargin: '-30% 0px -65% 0px', threshold: 0 }); // A tighter margin for more accurate highlighting
+
+            sections.forEach(section => {
+                fadeInObserver.observe(section);
+                highlightObserver.observe(section);
+            });
+        }
+
+        /**
+         * Populates the sticky navigation and sets up click handlers.
+         */
+        function populateNavigation() {
+            const nav = document.getElementById('course-nav');
+            const mobileNav = document.getElementById('mobile-nav-links');
+            const sections = document.querySelectorAll('main > section');
+
+            sections.forEach(section => {
+                const id = section.id;
+                const name = section.getAttribute('data-section-name');
+                const time = section.getAttribute('data-time');
+
+                if (name) {
+                    const createLink = (isMobile = false) => {
+                        const link = document.createElement('a');
+                        link.href = `#${id}`;
+                        link.classList.add('nav-link', 'block', 'py-2', 'px-3', 'rounded-lg', 'text-gray-600', 'dark:text-gray-400', 'hover:bg-indigo-50', 'dark:hover:bg-gray-700', 'transition-colors', 'text-sm', 'font-medium', 'flex', 'items-center', 'justify-between');
+                        link.innerHTML = `
+                            <span class="truncate">${name}</span>
+                            ${time ? `<span class="text-xs font-normal text-gray-400 dark:text-gray-500">${time}</span>` : ''}
+                        `;
+                        link.onclick = (e) => {
+                            e.preventDefault();
+                            scrollToSection(`#${id}`);
+                            if (isMobile) {
+                                document.getElementById('mobile-nav-toggle').click(); // Close mobile nav after click
+                            }
+                        };
+                        return link;
+                    };
+
+                    nav.appendChild(createLink());
+                    mobileNav.appendChild(createLink(true));
+                }
+            });
+        }
+
+        // --- Interaction Handlers ---
+
+        /**
+         * Copies text from a specified element ID to the clipboard.
+         * @param {HTMLElement} button - The button element that was clicked.
+         * @param {string} elementId - The ID of the element containing the text to copy.
+         */
+        function copyCode(button, elementId) {
+            const textToCopy = document.getElementById(elementId).textContent;
+
+            // Use Clipboard API if available, fallback to execCommand
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    setTimeout(() => button.textContent = originalText, 2000);
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+            } else {
+                // Fallback method
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                textarea.style.position = 'fixed'; // Avoid scrolling to bottom
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    setTimeout(() => button.textContent = originalText, 2000);
+                } catch (err) {
+                    console.error('Fallback: Oops, unable to copy', err);
+                }
+                document.body.removeChild(textarea);
+            }
+        }
+
+        /**
+         * Quiz for the upload button (very simple).
+         * @param {HTMLElement} button - The button that was clicked.
+         */
+        function quizUpload(button) {
+            const messageEl = document.getElementById('quiz-message');
+            // We assume the user clicks the one labeled as the upload button.
+            messageEl.textContent = "Correct! The right arrow is the Upload button. You're ready to go!";
+            messageEl.classList.remove('text-red-500');
+            messageEl.classList.add('text-green-600', 'dark:text-green-400');
+            button.disabled = true;
+        }
+
+        /**
+         * Animates the virtual LED blink rate based on the slider.
+         */
+        function setupDelaySlider() {
+            const slider = document.getElementById('delay-slider');
+            const valueEl = document.getElementById('delay-value');
+            const ledEl = document.getElementById('virtual-led-1');
+
+            let blinkInterval;
+
+            const updateBlink = (delay) => {
+                clearInterval(blinkInterval);
+                blinkInterval = setInterval(() => {
+                    ledEl.classList.toggle('bg-red-500');
+                    ledEl.classList.toggle('shadow-xl', ledEl.classList.contains('bg-red-500'));
+                }, delay);
+            };
+
+            slider.oninput = () => {
+                const delay = parseInt(slider.value, 10);
+                valueEl.textContent = delay;
+                updateBlink(delay);
+            };
+
+            // Initial blink setup
+            updateBlink(1000);
+        }
+
+        /**
+         * Toggles line explanation in Part 3.
+         * @param {Event} e - The click event.
+         */
+        function handleCodeClick(e) {
+            const lineNumber = e.target.textContent.match(/Line (\d+)/)?.[1];
+            if (lineNumber) {
+                const id = `exp-${lineNumber}`;
+                const explanationEl = document.getElementById(id);
+                if (explanationEl) {
+                    document.querySelectorAll('#line-explanation-area > div').forEach(el => {
+                        if (el.id !== id) el.classList.add('hidden');
+                    });
+                    explanationEl.classList.toggle('hidden');
+                }
+            }
+        }
+
+        /**
+         * Basic animation for the code flow section.
+         */
+        function animateFlowchart() {
+            const flowEl = document.getElementById('flow-visual');
+            const steps = ["[SETUP]", "[LOOP]", "[LOOP]"];
+            let stepIndex = 0;
+
+            flowEl.innerHTML = steps.map((s, i) => i === 0 ? `<b>${s}</b>` : s).join(' ➡️ ');
+
+            const interval = setInterval(() => {
+                stepIndex = (stepIndex % 2) + 1; // Cycle between the two LOOPs
+                const updatedSteps = ["SETUP", "LOOP", "LOOP"].map((s, i) => {
+                    if (i === stepIndex) return `<b>[${s}]</b>`;
+                    if (i === 0) return `[${s}]`; // SETUP is always static after initial run
+                    return `[${s}]`;
+                });
+                flowEl.innerHTML = updatedSteps.join(' 🔁 ');
+            }, 1000);
+
+            setTimeout(() => clearInterval(interval), 4100); // Stop after 4 cycles
+        }
+
+        /**
+         * Filters troubleshooting entries based on search input.
+         */
+        function filterTroubleshoot() {
+            const searchInput = document.getElementById('troubleshoot-search');
+            const filter = searchInput.value.toLowerCase();
+            const entries = document.querySelectorAll('.troubleshoot-entry');
+
+            entries.forEach(entry => {
+                const text = entry.textContent.toLowerCase();
+                const tags = entry.getAttribute('data-tags').toLowerCase();
+                if (text.includes(filter) || tags.includes(filter)) {
+                    entry.style.display = 'block';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        }
+
+        /**
+         * Mobile navigation logic.
+         */
+        function setupMobileNav() {
+            const toggle = document.getElementById('mobile-nav-toggle');
+            const drawer = document.getElementById('mobile-nav-drawer');
+            const overlay = document.getElementById('mobile-nav-overlay');
+            const closeBtn = document.getElementById('close-mobile-nav');
+
+            const openDrawer = () => {
+                drawer.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeDrawer = () => {
+                drawer.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            };
+
+            toggle.addEventListener('click', openDrawer);
+            closeBtn.addEventListener('click', closeDrawer);
+            overlay.addEventListener('click', closeDrawer);
+        }
+
+        // --- Initialization ---
+
+        function initApp() {
+            loadState();
+            applyStateToDOM();
+            populateNavigation();
+
+            // Set up event listeners
+            document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
+            window.addEventListener('scroll', updateScrollProgressBar);
+            document.getElementById('delay-slider').addEventListener('click', setupDelaySlider); // Click on load will start the interval
+
+            // Line explanation click listener
+            document.getElementById('blink-code').parentElement.addEventListener('click', handleCodeClick);
+
+            // Set up visual components
+            setupDelaySlider();
+            setupIntersectionObserver();
+            setupMobileNav();
+
+            // Run Lucide icon replacement
+            lucide.createIcons();
+            // Highlight code blocks
+            Prism.highlightAll();
+
+             // Initial scroll progress check
+             updateScrollProgressBar();
+        }
+
+        // Initialize when the DOM is fully loaded
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
