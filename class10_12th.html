@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Project Sketching Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Sage -->
+    <!-- Application Structure Plan: A single-page, vertical-flow application that transforms the static guide into an interactive experience. A sticky top navigation allows quick scrolling to key sections. The core "7 Steps" are presented in an accordion to encourage focused, step-by-step progression. Interactive checklists for goals and deliverables provide a sense of accomplishment. Tabbed sections for resources and best practices condense information efficiently. This structure was chosen because the source material is a procedural guide, and a linear but interactive flow is the most intuitive way for a beginner to follow the instructions without feeling overwhelmed. -->
+    <!-- Visualization & Content Choices: 1. Learning Goals -> Inform -> Interactive Checklist (HTML/JS) -> User can track progress. 2. AI Resources -> Compare -> Tabbed Interface (HTML/JS) -> Cleanly organizes choices. 3. 7 Steps -> Guide -> Accordion (HTML/JS <details> tag) -> Breaks down the process into manageable, non-overwhelming parts. 4. Diagram Examples (Step 4) -> Illustrate -> Styled HTML/CSS divs -> Provides a visual template for the required block diagram and flowchart without using forbidden SVG or images. 5. Submission Requirements -> Organize -> Interactive Checklist (HTML/JS) -> Summarizes deliverables effectively. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #383838;
+        }
+        .sage-green { background-color: #8A9A5B; }
+        .sage-green-light { background-color: #E2E8D4; }
+        .sage-green-text { color: #505a35; }
+        .sage-border { border-color: #8A9A5B; }
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary .arrow-down {
+            transform: rotate(180deg);
+        }
+        .checklist-item.completed label {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+        .checklist-item.completed .custom-checkbox {
+            background-color: #8A9A5B;
+            border-color: #8A9A5B;
+        }
+        .checklist-item.completed .custom-checkbox svg {
+            display: block;
+        }
+        .tab-btn.active {
+            border-bottom-color: #8A9A5B;
+            color: #505a35;
+            font-weight: 600;
+        }
+        .flowchart-node {
+            border: 2px solid #a3b8a3;
+            background-color: #f0f5f0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .flowchart-decision {
+            transform: rotate(45deg);
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #8A9A5B;
+            background-color: #e2e8d4;
+        }
+        .flowchart-decision span {
+            transform: rotate(-45deg);
+            display: block;
+            max-width: 100px;
+            text-align: center;
+        }
+        .flowchart-arrow {
+            position: relative;
+            width: 2px;
+            background-color: #a3b8a3;
+        }
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #a3b8a3;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <header class="sticky top-0 bg-white/80 backdrop-blur-lg shadow-sm z-50">
+        <nav class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <h1 class="text-xl font-bold sage-green-text">Project Planning Guide</h1>
+                <div class="hidden md:flex space-x-6 text-gray-600">
+                    <a href="#goals" class="hover:text-gray-900">Goals</a>
+                    <a href="#resources" class="hover:text-gray-900">AI Tools</a>
+                    <a href="#steps" class="hover:text-gray-900">Planning Steps</a>
+                    <a href="#submission" class="hover:text-gray-900">Submission</a>
+                    <a href="#best-practices" class="hover:text-gray-900">Best Practices</a>
+                    <a href="#concept-check" class="hover:text-gray-900">Final Check</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-8 space-y-16">
+        <section id="intro" class="text-center">
+            <h1 class="4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Electronics Project Planning & Sketching</h1>
+            <p class="mt-6 text-lg leading-8 text-gray-600">Begin the crucial process of planning and sketching your device. This interactive guide will walk you through each step, from initial idea to a concrete build plan.</p>
+        </section>
+
+        <section id="goals" class="bg-white p-6 rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Session Goals</h2>
+            <p class="text-gray-600 mb-6">By the end of this session, you will prepare the foundation for your build. Check off each item as you complete it.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold sage-green-text mb-4">Technical Learning Goals</h3>
+                    <div id="goals-checklist" class="space-y-4">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="goal1" class="hidden">
+                            <label for="goal1" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200">
+                                    <svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                A detailed project sketch (drawing or diagram).
+                            </label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="goal2" class="hidden">
+                            <label for="goal2" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200">
+                                   <svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                A comprehensive list of components required for the build.
+                            </label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="goal3" class="hidden">
+                             <label for="goal3" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200">
+                                   <svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                A fundamental understanding of the project's operational logic.
+                            </label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="goal4" class="hidden">
+                            <label for="goal4" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200">
+                                   <svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                A simple system flowchart outlining device decisions.
+                            </label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="goal5" class="hidden">
+                            <label for="goal5" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200">
+                                   <svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                Initial questions and challenges identified.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold sage-green-text mb-4">SEL (Social-Emotional Learning) Goals</h3>
+                    <div id="sel-goals-checklist" class="space-y-4">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="sel_goal1" class="hidden">
+                            <label for="sel_goal1" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200">
+                                    <svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                <strong class="font-bold">Collaboration:</strong> Practice active listening and clear communication with the AI and peers.
+                            </label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="sel_goal2" class="hidden">
+                            <label for="sel_goal2" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200">
+                                   <svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                <strong class="font-bold">Perseverance:</strong> Demonstrate resilience by asking follow-up questions when confused (Pro Tip: Ask "Explain like I'm 10").
+                            </label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="sel_goal3" class="hidden">
+                             <label for="sel_goal3" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200">
+                                   <svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                <strong class="font-bold">Self-Awareness:</strong> Engage in honest self-assessment by accurately identifying the most challenging parts of the project (Step 6).
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rules" class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg shadow-md mb-16">
+            <div class="flex items-center space-x-4">
+                <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+                <h3 class="text-xl font-bold text-red-800">CLASS REMINDER: NO PHONES RULE</h3>
+            </div>
+            <p class="mt-2 text-red-700">All research and planning must be conducted using the provided computer and approved planning resource (ChatGPT, Gemini, or Claude). <strong>Phones must be put away and silenced</strong> to ensure focus and adherence to the learning environment guidelines.</p>
+        </section>
+        
+        <section id="resources">
+            <h2 class="2xl font-bold text-gray-900 mb-4">Selecting Your Digital Planning Resource</h2>
+            <p class="text-gray-600 mb-6">You may use any of the following tools as your guided learning resource. Pick ONE tool for this session.</p>
+            <div id="tabs-container">
+                <div class="border-b border-gray-200">
+                    <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="chatgpt">ChatGPT</button>
+                        <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="gemini">Google Gemini</button>
+                        <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="claude">Claude</button>
+                    </nav>
+                </div>
+                <div class="py-6">
+                    <div id="chatgpt" class="tab-content">
+                        <p><strong>Best For:</strong> Step-by-step technical explanations and asking detailed "why" questions.</p>
+                        <p><strong>Special Features:</strong> Can generate basic conceptual diagrams.</p>
+                    </div>
+                    <div id="gemini" class="tab-content hidden">
+                        <p><strong>Best For:</strong> Visual and explanatory examples, including referencing existing projects.</p>
+                        <p><strong>Special Features:</strong> Capable of searching the web for real-time reference designs.</p>
+                    </div>
+                    <div id="claude" class="tab-content hidden">
+                        <p><strong>Best For:</strong> Deep technical guidance and breaking down highly complex system concepts.</p>
+                        <p><strong>Special Features:</strong> Excels at creating structured plans and detailed technical guidance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="steps">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Step-by-Step Planning Process</h2>
+            <div class="space-y-4">
+                <details class="group bg-white p-6 rounded-lg shadow-sm">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+                        <span class="text-lg font-semibold text-gray-800">STEP 1: Introduce Your Project (5 min)</span>
+                        <span class="transition-transform duration-300 arrow-down">
+                            <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 prose">
+                        <p>Start a new conversation with your chosen resource. Clearly define your starting point using a format similar to the following template:</p>
+                        <blockquote class="border-l-4 sage-border pl-4 my-4">
+                            <ul>
+                                <li><strong>Role:</strong> I am a student learning electronics and programming for the first time, and I have NO prior experience.</li>
+                                <li><strong>Goal:</strong> I need to design a project.</li>
+                                <li><strong>Project Name:</strong> [WRITE YOUR PROJECT NAME]</li>
+                                <li><strong>Function:</strong> [DESCRIBE WHAT YOU WANT IT TO DO]</li>
+                                <li><strong>Instruction:</strong> I need you to teach me as we proceed, explaining all concepts simply. Can you help me understand what components I will need?</li>
+                            </ul>
+                        </blockquote>
+                    </div>
+                </details>
+
+                <details class="group bg-white p-6 rounded-lg shadow-sm">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+                        <span class="lg font-semibold text-gray-800">STEP 2: Learn About Key Components (15 min)</span>
+                        <span class="transition-transform duration-300 arrow-down">
+                           <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 prose">
+                        <p>Ask these questions sequentially, taking notes on the answers and following up on anything you do not understand.</p>
+                        <ol>
+                            <li>"What <strong>sensors</strong> would I need for this project? Explain each one simply."<br><em>Action: Note what each sensor measures.</em></li>
+                            <li>"What <strong>microcontroller</strong> should I use—Arduino or ESP32? Why?"<br><em>Action: Understand the fundamental difference and note the recommended option.</em></li>
+                            <li>"What <strong>outputs</strong> will I need (LEDs, buzzers, motors, screens, etc.)?"<br><em>Action: List each output device and its function.</em></li>
+                            <li>"Are there any <strong>other components</strong> I'll need?"<br><em>Action: List ancillary items like resistors, wires, and breadboards.</em></li>
+                        </ol>
+                        <p class="font-bold">Deliverable: Write down each component in your notebook with a simple description of its role.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-white p-6 rounded-lg shadow-sm">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+                        <span class="lg font-semibold text-gray-800">STEP 3: Understand the Project Logic (15 min)</span>
+                        <span class="transition-transform duration-300 arrow-down">
+                           <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 prose">
+                        <p>Ask the resource to explain the functional sequence of your project:</p>
+                        <ol>
+                            <li>"Can you explain in simple steps how this project would work? Outline the order: First this happens, then the device does this, and so on."<br><em>Action: Document the resulting <strong>PROJECT LOGIC</strong> sequence in your notebook.</em></li>
+                            <li>"What is a '<strong>threshold</strong>' and how would I decide what specific number to use in the code?"</li>
+                        </ol>
+                        <p>Keep asking "why" and "how" questions until you grasp the basic operational flow.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-white p-6 rounded-lg shadow-sm">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+                        <span class="lg font-semibold text-gray-800">STEP 4: Create Your Visual Sketch (20 min)</span>
+                        <span class="transition-transform duration-300 arrow-down">
+                           <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 prose">
+                        <p>Ask the resource: "What diagrams should I draw to show how the components connect?" Then, draw three required diagrams in your notebook. Here are some visual examples to guide you:</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-8 mt-6">
+                            <div>
+                                <h4 class="font-semibold text-center mb-2">Example Block Diagram</h4>
+                                <div class="p-4 border-2 border-dashed rounded-lg text-sm space-y-2">
+                                    <div class="flowchart-node w-3/4 mx-auto">Sensors</div>
+                                    <div class="text-center">↓</div>
+                                    <div class="flowchart-node w-full mx-auto font-bold sage-green-light">Microcontroller</div>
+                                    <div class="text-center">↓</div>
+                                    <div class="flowchart-node w-3/4 mx-auto">Outputs</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-center mb-2">Example System Flowchart</h4>
+                                <div class="flex flex-col items-center space-y-2 text-sm">
+                                    <div class="flowchart-node">Start</div>
+                                    <div class="flowchart-arrow h-6"></div>
+                                    <div class="flowchart-node">Read Sensor</div>
+                                    <div class="flowchart-arrow h-6"></div>
+                                    <div class="flowchart-decision"><span>Is data > threshold?</span></div>
+                                    <div class="h-16 w-full flex justify-center items-center">
+                                        <div class="w-1/2 h-full flex flex-col items-center">
+                                            <span class="text-xs -mt-2">Yes</span>
+                                            <div class="flowchart-arrow h-full"></div>
+                                        </div>
+                                        <div class="w-1/2 h-full flex flex-col items-center">
+                                            <span class="text-xs -mt-2">No</span>
+                                            <div class="flowchart-arrow h-full"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex w-full justify-around">
+                                        <div class="flowchart-node">Action A</div>
+                                        <div class="flowchart-node">Action B</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </details>
+
+                <details class="group bg-white p-6 rounded-lg shadow-sm">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+                        <span class="lg font-semibold text-gray-800">STEP 5: Ask About Programming (10 min)</span>
+                        <span class="transition-transform duration-300 arrow-down">
+                           <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 prose">
+                        <p>You will not write full code today, but you need to prepare for the programming stage:</p>
+                        <ol>
+                            <li>"What <strong>programming concepts</strong> will I need to learn for this project? Please list and describe them simply."<br><em>Action: List concepts such as variables, if statements, loops, functions, and libraries.</em></li>
+                            <li>"Can you show me what a <strong>tiny piece of the code</strong> might look like? Specifically, the part that reads the sensor."<br><em>Action: Copy this snippet into your notebook.</em></li>
+                        </ol>
+                    </div>
+                </details>
+
+                <details class="group bg-white p-6 rounded-lg shadow-sm">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+                        <span class="lg font-semibold text-gray-800">STEP 6: Identify Challenges (10 min)</span>
+                        <span class="transition-transform duration-300 arrow-down">
+                           <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 prose">
+                        <p>Be honest about your concerns and identify potential difficulties:</p>
+                        <ol>
+                            <li>"What parts of this project might be <strong>challenging for a beginner</strong>? What should I be careful about?"<br><em>Action: Write down challenges (e.g., sensor calibration, secure connections, waterproofing, power management).</em></li>
+                            <li>"How can I make this project <strong>simpler or break it into smaller steps</strong>?"<br><em>Action: Note the simplest viable version of your project.</em></li>
+                        </ol>
+                    </div>
+                </details>
+                
+                <details class="group bg-white p-6 rounded-lg shadow-sm">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+                        <span class="lg font-semibold text-gray-800">STEP 7: Final Component List (5 min)</span>
+                        <span class="transition-transform duration-300 arrow-down">
+                           <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 prose">
+                        <p>Ask the resource: "Can you provide a final shopping list of exactly what components I'll need, with quantities?"</p>
+                        <p class="font-bold">Deliverable: Create a final table in your notebook similar to this example:</p>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Component</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Primary Function</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr><td class="px-6 py-4 whitespace-nowrap">Arduino Uno</td><td class="px-6 py-4 whitespace-nowrap">1</td><td class="px-6 py-4 whitespace-nowrap">The brain of the project</td></tr>
+                                    <tr><td class="px-6 py-4 whitespace-nowrap">Soil Moisture Sensor</td><td class="px-6 py-4 whitespace-nowrap">1</td><td class="px-6 py-4 whitespace-nowrap">Measures how wet the soil is</td></tr>
+                                    <tr><td class="px-6 py-4 whitespace-nowrap">LED</td><td class="px-6 py-4 whitespace-nowrap">2</td><td class="px-6 py-4 whitespace-nowrap">Visual indicators</td></tr>
+                                    <tr><td class="px-6 py-4 whitespace-nowrap text-gray-400">...</td><td class="px-6 py-4 whitespace-nowrap text-gray-400">...</td><td class="px-6 py-4 whitespace-nowrap text-gray-400">...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section id="submission" class="bg-white p-6 rounded-xl shadow-md">
+            <h2 class="2xl font-bold text-gray-900 mb-4">Final Sketch Submission Requirements</h2>
+            <p class="text-gray-600 mb-6">Your final documentation for teacher review should include the following four sections in your notebook. Check them off as you prepare your submission.</p>
+            <div id="submission-checklist" class="space-y-4">
+                <div class="checklist-item">
+                     <input type="checkbox" id="sub1" class="hidden"><label for="sub1" class="flex items-center cursor-pointer"><span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200"><svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span><strong>Project Overview and Vision</strong></label>
+                </div>
+                <div class="checklist-item">
+                     <input type="checkbox" id="sub2" class="hidden"><label for="sub2" class="flex items-center cursor-pointer"><span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200"><svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span><strong>Technical Diagram and Components</strong></label>
+                </div>
+                 <div class="checklist-item">
+                     <input type="checkbox" id="sub3" class="hidden"><label for="sub3" class="flex items-center cursor-pointer"><span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200"><svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span><strong>System Logic and Code Preparation</strong></label>
+                </div>
+                 <div class="checklist-item">
+                     <input type="checkbox" id="sub4" class="hidden"><label for="sub4" class="flex items-center cursor-pointer"><span class="custom-checkbox w-6 h-6 border-2 border-gray-300 rounded-md mr-4 flex items-center justify-center transition-all duration-200"><svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></span><strong>Reflection and Next Steps</strong></label>
+                </div>
+            </div>
+        </section>
+
+        <section id="best-practices">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Best Practices</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg">
+                    <h3 class="text-lg font-semibold text-green-800 mb-4">Best Practices (DO)</h3>
+                    <ul class="list-disc list-inside space-y-2 text-green-700">
+                        <li>Ask "why" and "how" constantly.</li>
+                        <li>Request explanations in simpler terms if confused.</li>
+                        <li>Ask for examples or step-by-step breakdowns.</li>
+                        <li>Tell the resource when you do not understand a concept.</li>
+                        <li>Request it to "explain like I'm a complete beginner."</li>
+                    </ul>
+                </div>
+                <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg">
+                     <h3 class="text-lg font-semibold text-red-800 mb-4">Pitfalls to Avoid (DON'T)</h3>
+                     <ul class="list-disc list-inside space-y-2 text-red-700">
+                        <li>Copy information you do not fully understand.</li>
+                        <li>Pretend you know something when you don't.</li>
+                        <li>Skip over confusing parts or rush through the process.</li>
+                        <li>Be afraid to ask clarifying questions.</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="mt-8 bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                <h3 class="text-lg font-semibold text-blue-800 mb-4">Great Follow-Up Questions</h3>
+                <ul class="list-disc list-inside space-y-2 text-blue-700">
+                    <li>"Can you explain that with a real-world analogy?"</li>
+                    <li>"What does [technical term] mean in simple words?"</li>
+                    <li>"Can you break that into smaller steps?"</li>
+                    <li>"What's the most common beginner mistake with this?"</li>
+                    <li>"What alternatives could I use instead of [component]?"</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="concept-check" class="bg-sage-green-light p-6 rounded-xl shadow-md">
+            <h2 class="2xl font-bold text-gray-900 mb-4">Concept Check: Were the Goals Met?</h2>
+            <p class="text-gray-600 mb-6">Use these simple questions to quickly review the key concepts covered in the planning session. These questions directly relate to the Technical Learning Goals and can be answered briefly.</p>
+            <div class="space-y-6">
+                <div>
+                    <label for="cc1" class="block text-lg font-semibold text-gray-800 mb-2">Q1. Which component is considered the "brain" of your project?</label>
+                    <input type="text" id="cc1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sage-green focus:border-sage-green" placeholder="e.g., Arduino Uno">
+                </div>
+                <div>
+                    <label for="cc2" class="block text-lg font-semibold text-gray-800 mb-2">Q2. Name one sensor and explain its function in two words or less.</label>
+                    <input type="text" id="cc2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sage-green focus:border-sage-green" placeholder="e.g., PIR Sensor: Detects motion">
+                </div>
+                <div>
+                    <label for="cc3" class="block text-lg font-semibold text-gray-800 mb-2">Q3. What is a "threshold" in the context of your project's code?</label>
+                    <input type="text" id="cc3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sage-green focus:border-sage-green" placeholder="e.g., A comparison number">
+                </div>
+                <div>
+                    <label for="cc4" class="block text-lg font-semibold text-gray-800 mb-2">Q4. In a flowchart, what shape represents a <strong>decision</strong> (like an IF statement)?</label>
+                    <input type="text" id="cc4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sage-green focus:border-sage-green" placeholder="e.g., Diamond">
+                </div>
+                <div>
+                    <label for="cc5" class="block text-lg font-semibold text-gray-800 mb-2">Q5. What is one programming concept you identified that you need to learn?</label>
+                    <input type="text" id="cc5" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sage-green focus:border-sage-green" placeholder="e.g., Variables or Functions">
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-100 mt-16">
+        <div class="max-w-4xl mx-auto py-6 px-4 text-center text-gray-500">
+            <p>&copy; 2025 Electronics Project Planner. Happy building!</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checklistContainers = ['#goals-checklist', '#submission-checklist', '#sel-goals-checklist'];
+            checklistContainers.forEach(selector => {
+                const container = document.querySelector(selector);
+                if(container){
+                    container.addEventListener('click', function(e) {
+                        const label = e.target.closest('label');
+                        if (label) {
+                            const checkboxId = label.getAttribute('for');
+                            const checkbox = document.getElementById(checkboxId);
+                            const item = label.closest('.checklist-item');
+
+                            if (checkbox && item) {
+                                checkbox.checked = !checkbox.checked;
+                                item.classList.toggle('completed', checkbox.checked);
+                            }
+                        }
+                    });
+                }
+            });
+
+            const tabsContainer = document.getElementById('tabs-container');
+            if(tabsContainer){
+                const tabButtons = tabsContainer.querySelectorAll('.tab-btn');
+                const tabContents = tabsContainer.querySelectorAll('.tab-content');
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        tabButtons.forEach(btn => {
+                            btn.classList.remove('active');
+                            btn.classList.add('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        });
+                        this.classList.add('active');
+                        this.classList.remove('text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                        
+                        const tabId = this.dataset.tab;
+                        tabContents.forEach(content => {
+                            if (content.id === tabId) {
+                                content.classList.remove('hidden');
+                            } else {
+                                content.classList.add('hidden');
+                            }
+                        });
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
