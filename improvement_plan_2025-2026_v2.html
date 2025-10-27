@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&T Improvement Plan 2025-2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- CRITICAL FIX 1: ADDING MISSING KATEC JAVASCRIPT LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <style>
+        :root {
+            --color-primary: #667eea;
+            --color-secondary: #764ba2;
+            --color-accent-1: #f093fb;
+            --color-accent-2: #4facfe;
+            --color-text-main: #222;
+            --color-text-sub: #444;
+            --color-bg-alt: #fefefe;
+            --color-bg-formula: #eef5ff;
+            --color-border-subtle: #e0e7ff;
+            --space-xs: 8px;
+            --space-sm: 12px;
+            --space-md: 20px;
+            --space-lg: 30px;
+            --space-xl: 40px;
+            --space-xxl: 60px;
+            --font-size-body: 1rem;
+            --font-size-small: 0.875rem;
+            --font-size-med-header: 1.125rem;
+            --font-size-large-header: 1.5rem;
+            --font-size-display: 2.25rem;
+            --line-height-body: 1.9;
+            --time-fast: 0.2s;
+            --time-medium: 0.4s;
+            --time-slow: 0.6s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            min-height: 100vh;
+            padding: var(--space-xl) var(--space-md);
+            color: var(--color-text-main);
+            line-height: var(--line-height-body);
+            background-color: #f4f6fb;
+            background-image: radial-gradient(#d3dff5 1px, transparent 0);
+            background-size: 30px 30px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #main-content {
+            opacity: 0;
+            animation: fadeIn var(--time-slow) ease-out forwards;
+            animation-delay: 0.1s;
+        }
+
+        header {
+            background: white;
+            padding: var(--space-xl) var(--space-xxl);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: var(--space-xl);
+            text-align: center;
+            border-top: 8px solid var(--color-primary);
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: var(--font-size-display);
+            font-weight: 800;
+            margin-bottom: var(--space-sm);
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--color-text-sub);
+            font-size: var(--font-size-med-header);
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: var(--space-lg);
+        }
+
+        .control-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-small);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--time-fast) ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #editModeToggle {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        #editModeToggle.active {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        #exportCSV {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: white;
+        }
+
+        #resetChanges {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Edit Mode Banner */
+        .edit-banner {
+            display: none;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: var(--space-md);
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: var(--space-md);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .edit-banner.active {
+            display: block;
+        }
+
+        /* Unsaved Changes Indicator */
+        .unsaved-indicator {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-size: var(--font-size-small);
+            font-weight: 600;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .unsaved-indicator.active {
+            display: block;
+        }
+
+        /* Restore Banner */
+        .restore-banner {
+            display: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: var(--space-md);
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: var(--space-md);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .restore-banner.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .restore-banner button {
+            padding: 8px 16px;
+            border: 2px solid white;
+            border-radius: 6px;
+            background: transparent;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--time-fast) ease;
+        }
+
+        .restore-banner button:hover {
+            background: white;
+            color: var(--color-primary);
+        }
+
+        /* Editable Styling */
+        [contenteditable="true"] {
+            cursor: text;
+            transition: all var(--time-fast) ease;
+        }
+
+        body.edit-mode [contenteditable="true"] {
+            border: 2px dashed transparent;
+            border-radius: 4px;
+            padding: 4px;
+            min-height: 1.5em;
+        }
+
+        body.edit-mode [contenteditable="true"]:hover {
+            border-color: var(--color-accent-2);
+            background: rgba(79, 172, 254, 0.05);
+        }
+
+        body.edit-mode [contenteditable="true"]:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: rgba(102, 126, 234, 0.05);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .overview {
+            background: var(--color-bg-alt);
+            padding: var(--space-xl);
+            border-radius: 15px;
+            margin-bottom: var(--space-xl);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--color-border-subtle);
+        }
+
+        .overview h2 {
+            color: var(--color-primary);
+            font-size: var(--font-size-large-header);
+            margin-bottom: var(--space-lg);
+            border-bottom: 3px solid var(--color-accent-2);
+            padding-bottom: var(--space-xs);
+            display: inline-block;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-md);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: var(--space-lg);
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform var(--time-fast) ease-in-out;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.02);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: var(--font-size-small);
+            opacity: 0.9;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .initiative {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: var(--space-lg);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform var(--time-fast) ease, box-shadow var(--time-fast) ease;
+        }
+
+        .initiative:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .initiative-header {
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: var(--space-lg) var(--space-xl);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--font-size-large-header);
+            font-weight: 700;
+            transition: background var(--time-fast) ease;
+            outline: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .initiative-header:focus {
+            box-shadow: 0 0 0 4px var(--color-accent-2);
+        }
+
+        .initiative-header h3 {
+            font-size: 1.1em;
+            flex: 1;
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform var(--time-medium) ease;
+            margin-left: var(--space-md);
+        }
+
+        .initiative.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .initiative-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height var(--time-medium) ease-in-out, opacity var(--time-medium) ease-in;
+        }
+
+        .initiative.active .initiative-content {
+            max-height: 4000px;
+            opacity: 1;
+        }
+
+        .content-inner {
+            padding: var(--space-xl);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xxl);
+            padding: var(--space-lg);
+            background: #fcfcfc;
+            border: 1px solid var(--color-border-subtle);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-column {
+            background: #fff;
+            padding: var(--space-lg);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-subtle);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        .summary-column h4 {
+            color: var(--color-secondary);
+            font-size: var(--font-size-small);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: var(--space-sm);
+            font-weight: 800;
+            position: relative;
+            padding-bottom: var(--space-xs);
+        }
+
+        .summary-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 3px;
+            background: var(--color-accent-2);
+            border-radius: 2px;
+        }
+
+        .summary-column p {
+            color: var(--color-text-main);
+            font-size: var(--font-size-body);
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .detail-section {
+            margin-bottom: var(--space-xl);
+            padding: var(--space-md) 0;
+            position: relative;
+        }
+
+        .detail-section:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            width: 90%;
+            height: 1px;
+            background: #eee;
+        }
+
+        .detail-section:nth-child(even) {
+            background: #fafafc;
+            margin: 0 calc(-1 * var(--space-xl));
+            padding: var(--space-xl);
+            border-radius: 10px;
+        }
+
+        .detail-section h4 {
+            color: var(--color-primary);
+            font-size: var(--font-size-med-header);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-xs);
+            border-bottom: 4px solid var(--color-secondary);
+            display: inline-block;
+        }
+
+        .detail-section p,
+        .detail-section ul {
+            color: var(--color-text-sub);
+            line-height: var(--line-height-body);
+            font-size: var(--font-size-body);
+        }
+
+        .detail-section ul {
+            list-style-position: outside;
+            padding-left: var(--space-lg);
+            margin-top: var(--space-sm);
+        }
+
+        .detail-section li {
+            margin-bottom: var(--space-xs);
+        }
+
+        .detail-section li strong {
+            color: var(--color-secondary);
+        }
+
+        .indicator-box {
+            background: var(--color-bg-formula);
+            border: 1px solid var(--color-accent-2);
+            padding: var(--space-md) var(--space-lg);
+            margin: var(--space-md) 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .indicator-box p {
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .indicator-box i {
+            color: var(--color-accent-2);
+            font-size: 1.2em;
+            margin-right: var(--space-sm);
+        }
+
+        .indicator-box strong {
+            color: var(--color-secondary);
+            font-weight: 600;
+            margin-right: var(--space-xs);
+        }
+
+        .formula {
+            background: white;
+            padding: var(--space-sm);
+            border-radius: 4px;
+            border: 1px solid var(--color-border-subtle);
+            margin-left: 5px;
+            display: inline-block;
+        }
+
+        footer {
+            text-align: center;
+            color: #ccc;
+            margin-top: var(--space-xl);
+            padding: var(--space-md);
+            font-size: var(--font-size-small);
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            font-size: 1.2em;
+            font-weight: 600;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        @media (max-width: 1280px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: var(--space-md);
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            header {
+                padding: var(--space-lg);
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+                margin-bottom: var(--space-xl);
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+
+            .initiative-header h3 {
+                font-size: 1.1em;
+            }
+
+            .content-inner {
+                padding: var(--space-lg);
+            }
+
+            .detail-section:nth-child(even) {
+                margin: 0 calc(-1 * var(--space-lg));
+                padding: var(--space-lg);
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .control-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                background-image: none;
+                padding: 0;
+                color: #000;
+            }
+
+            .controls,
+            .edit-banner,
+            .restore-banner,
+            .unsaved-indicator {
+                display: none !important;
+            }
+
+            .container {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            header,
+            footer,
+            .overview {
+                box-shadow: none;
+                border: none;
+            }
+
+            header {
+                margin-bottom: var(--space-md);
+            }
+
+            h1,
+            .overview h2,
+            .detail-section h4 {
+                color: #000 !important;
+                border-bottom: 1px solid #000 !important;
+                padding-bottom: 2px;
+            }
+
+            .stat-card {
+                background: #eee !important;
+                color: #000 !important;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+
+            .initiative {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                margin-bottom: var(--space-md);
+            }
+
+            .initiative-header {
+                background: #ccc !important;
+                color: #000 !important;
+                font-size: 1.1em;
+                padding: var(--space-sm) var(--space-md);
+            }
+
+            .initiative-content {
+                max-height: none !important;
+                opacity: 1 !important;
+            }
+
+            .toggle-icon,
+            .initiative:hover {
+                display: none;
+                transform: none;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(4, 1fr);
+                background: #f0f0f0;
+            }
+
+            .summary-column {
+                border-left: 1px solid #ccc;
+            }
+
+            .indicator-box {
+                border: 1px dashed #777;
+                background: #fafafa;
+                border-left: 4px solid #764ba2;
+            }
+
+            .detail-section:nth-child(even) {
+                background: #f0f0f0;
+                margin: 0;
+                padding: var(--space-md);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="unsaved-indicator" id="unsavedIndicator">
+        <i class="fas fa-exclamation-circle"></i> Unsaved Changes
+    </div>
+
+    <div class="container" id="main-content">
+        <div class="restore-banner" id="restoreBanner">
+            <span><i class="fas fa-history"></i> Previous session detected. Would you like to restore your
+                changes?</span>
+            <button onclick="restoreSession()">Restore</button>
+            <button onclick="startFresh()">Start Fresh</button>
+        </div>
+
+        <!-- CRITICAL FIX 3: INCONSISTENT CHARACTER ENCODING IN BANNER TEXT -->
+        <div class="edit-banner" id="editBanner">
+            ✏️ EDITING MODE ACTIVE - Click any text to edit
+        </div>
+
+        <header>
+            <h1>Design & Technology Improvement Plan</h1>
+            <p class="subtitle">Academic Year 2025-2026</p>
+            <div class="controls">
+                <button id="editModeToggle" class="control-btn" onclick="toggleEditMode()">
+                    <i class="fas fa-edit"></i> <span>Edit Mode: OFF</span>
+                </button>
+                <button id="exportCSV" class="control-btn" onclick="exportToCSV()">
+                    <i class="fas fa-download"></i> Export to CSV
+                </button>
+                <button id="resetChanges" class="control-btn" onclick="resetChanges()">
+                    <i class="fas fa-undo"></i> Reset All Changes
+                </button>
+            </div>
+        </header>
+
+        <div class="overview">
+            <h2>Strategic Overview</h2>
+            <p contenteditable="false" data-section="overview">Comprehensive implementation plan focusing on IGCSE
+                curriculum adoption, facility development, and competitive excellence across Design & Technology and ICT
+                programs.</p>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Major Initiatives</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6-12</div>
+                    <div class="stat-label">Grade Levels</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Terms Duration</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">IGCSE Programs</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Initiative 1 -->
+        <div class="initiative" id="initiative-1" data-initiative="1">
+            <button class="initiative-header" onclick="toggleInitiative(this.parentElement)" tabindex="0" role="button"
+                aria-expanded="true" aria-controls="content-1">
+                <h3>1. IGCSE Design & Technology (0445) Implementation</h3>
+                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <span class="toggle-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="initiative-content" id="content-1" aria-hidden="false">
+                <div class="content-inner">
+                    <div class="summary-grid">
+                        <div class="summary-column">
+                            <h4>What?</h4>
+                            <p contenteditable="false" data-section="what">Implement IGCSE Design & Technology (0445)
+                                curriculum across grades 6-10</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>How?</h4>
+                            <p contenteditable="false" data-section="how">Progressive implementation through updated
+                                lesson plans, project-based learning, and teacher professional development in design
+                                thinking and prototyping</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>When?</h4>
+                            <p contenteditable="false" data-section="when">Three academic terms during the current
+                                school year</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>Responsible</h4>
+                            <p contenteditable="false" data-section="responsible">D&T teachers</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Goal</h4>
+                        <ul contenteditable="false" data-section="goal">
+                            <li>100% of grade-level units aligned with the new IGCSE D&T 0445 syllabus by the end of
+                                Term 3</li>
+                            <li>At least 80% of students achieve meeting level in new D&T assessments</li>
+                            <li>All D&T teachers (MS & HS) complete at least one professional development session
+                                related to the new syllabus</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Indicator</h4>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator" aria-hidden="true"></i>
+                            <p><strong contenteditable="false" data-section="indicator-1-label">Curriculum
+                                    Alignment:</strong> <span class="formula" data-formula="1"></span></p>
+                        </div>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator" aria-hidden="true"></i>
+                            <p><strong contenteditable="false" data-section="indicator-2-label">Student
+                                    Achievement:</strong> <span class="formula" data-formula="2"></span></p>
+                        </div>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator" aria-hidden="true"></i>
+                            <p><strong contenteditable="false" data-section="indicator-3-label">Teacher
+                                    Development:</strong> <span class="formula" data-formula="3"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Evaluation</h4>
+                        <ul contenteditable="false" data-section="evaluation">
+                            <li>Review of unit plans and project rubrics to verify alignment with IGCSE D&T 0445
+                                learning outcomes</li>
+                            <li>Student assessment data and portfolio reviews analyzed at the end of each term</li>
+                            <li>Teacher reflection logs and department meeting minutes used as evidence of progress</li>
+                            <li>Final report summarizing curriculum implementation and outcomes presented to Academic
+                                Coordination</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Initiative 2 -->
+        <div class="initiative" id="initiative-2" data-initiative="2">
+            <button class="initiative-header" onclick="toggleInitiative(this.parentElement)" tabindex="0" role="button"
+                aria-expanded="false" aria-controls="content-2">
+                <h3>2. Component 2 Project Methodology (Grades 8-10)</h3>
+                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <span class="toggle-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="initiative-content" id="content-2" aria-hidden="true">
+                <div class="content-inner">
+                    <div class="summary-grid">
+                        <div class="summary-column">
+                            <h4>What?</h4>
+                            <p contenteditable="false" data-section="what">Implement Component 2 Project methodology
+                                across grades 8-10</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>How?</h4>
+                            <p contenteditable="false" data-section="how">Students complete full design cycle projects:
+                                identify needs, research, design, plan, create functional prototypes, and evaluate
+                                outcomes</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>When?</h4>
+                            <p contenteditable="false" data-section="when">3 terms during the school year</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>Responsible</h4>
+                            <p contenteditable="false" data-section="responsible">D&T teachers</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Goal</h4>
+                        <p contenteditable="false" data-section="goal"><strong>Student Project Completion Rate:</strong>
+                            80% of students across grades 8-10 successfully complete functional prototypes that meet
+                            design specifications by June 2026</p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Indicator</h4>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator" aria-hidden="true"></i>
+                            <!-- CONTINUATION FROM LINE 714 - Complete Initiative 2 Indicator -->
+                            <p><strong contenteditable="false" data-section="indicator-1-label">Completion
+                                    Rate:</strong> <span class="formula" data-formula="4"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Evaluation</h4>
+                        <ul contenteditable="false" data-section="evaluation">
+                            <li><strong>November 2025:</strong> First formative review tracking student progress</li>
+                            <li><strong>March 2026:</strong> Second formative review with interventions for struggling
+                                students</li>
+                            <li><strong>June 2026:</strong> End-of-year summative assessment comparing actual completion
+                                rate against 80% target</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Initiative 3 -->
+        <div class="initiative" id="initiative-3" data-initiative="3">
+            <button class="initiative-header" onclick="toggleInitiative(this.parentElement)">
+                <h3>3. IGCSE ICT (0417) & Computer Science (0478) Programs</h3>
+                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <span class="toggle-icon">▼</span>
+            </button>
+            <div class="initiative-content" id="content-3">
+                <div class="content-inner">
+                    <div class="summary-grid">
+                        <div class="summary-column">
+                            <h4>What?</h4>
+                            <p contenteditable="false" data-section="what">Deliver IGCSE ICT (0417) for Grades 11-12 and
+                                Computer Science (0478) for selected 12th-grade students</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>How?</h4>
+                            <p contenteditable="false" data-section="how">Full syllabus delivery with three mock tests
+                                per grade (one per term) for 0417, and specialized program implementation for 0478</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>When?</h4>
+                            <p contenteditable="false" data-section="when">Grade 11: 3 terms<br>Grade 12: 1 term</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>Responsible</h4>
+                            <!-- CRITICAL FIX 5: INCORRECT CHARACTER IN NAME -->
+                            <p contenteditable="false" data-section="responsible">Andrés Forero</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Goal</h4>
+                        <ul contenteditable="false" data-section="goal">
+                            <li><strong>IGCSE 0417:</strong> Minimum 67% students above C</li>
+                            <li><strong>IGCSE 0478:</strong> Results equal to or above the national average in Colombia
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Indicator</h4>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator"></i>
+                            <p><strong contenteditable="false" data-section="indicator-1-label">IGCSE 0417 Pass
+                                    Rate:</strong> <span class="formula" data-formula="5"></span></p>
+                        </div>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator"></i>
+                            <p><strong contenteditable="false" data-section="indicator-2-label">IGCSE 0478
+                                    Performance:</strong> <span contenteditable="false"
+                                    data-section="indicator-2-text">Average score comparison with national
+                                    benchmarks</span></p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Evaluation</h4>
+                        <p contenteditable="false" data-section="evaluation">IGCSE 0417 and 0478 examination results
+                            (2025) analyzed against targets with detailed performance breakdowns</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Initiative 4 -->
+        <div class="initiative" id="initiative-4" data-initiative="4">
+            <button class="initiative-header" onclick="toggleInitiative(this.parentElement)">
+                <h3>4. Design & Technology Laboratory Establishment</h3>
+                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <span class="toggle-icon">▼</span>
+            </button>
+            <div class="initiative-content" id="content-4">
+                <div class="content-inner">
+                    <div class="summary-grid">
+                        <div class="summary-column">
+                            <h4>What?</h4>
+                            <p contenteditable="false" data-section="what">Establish a D&T laboratory adapting IGCSE
+                                0445 to school infrastructure with cross-curricular projects</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>How?</h4>
+                            <p contenteditable="false" data-section="how">Adapt syllabus to existing facilities, plan
+                                ICT room usage, and develop cross-curricular projects with R&D department</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>When?</h4>
+                            <p contenteditable="false" data-section="when">From 2025 onwards<br>Phase 1: ICT
+                                Room<br>Phase 2: New Building</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>Responsible</h4>
+                            <p contenteditable="false" data-section="responsible">D&T Department - School</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Goal</h4>
+                        <ul contenteditable="false" data-section="goal">
+                            <li><strong>Lab Implementation:</strong> 100% completion by end of Phase 2</li>
+                            <li><strong>Cross-Curricular Projects:</strong> One project per grade per academic year
+                                (100%)</li>
+                            <li><strong>Facility Usage:</strong> 80% of D&T classes utilize lab facilities per term</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Indicator</h4>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator"></i>
+                            <p><strong contenteditable="false" data-section="indicator-1-label">Lab Implementation
+                                    Rate:</strong> <span class="formula" data-formula="6"></span></p>
+                        </div>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator"></i>
+                            <p><strong contenteditable="false" data-section="indicator-2-label">Cross-Curricular
+                                    Rate:</strong> <span class="formula" data-formula="7"></span></p>
+                        </div>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator"></i>
+                            <p><strong contenteditable="false" data-section="indicator-3-label">Facility Usage
+                                    Rate:</strong> <span class="formula" data-formula="8"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Evaluation</h4>
+                        <p contenteditable="false" data-section="evaluation">D&T lab implementation in phases (Phase 1:
+                            ICT Room, Phase 2: New building) with ongoing assessment of completion rates and usage
+                            metrics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Initiative 5 -->
+        <div class="initiative" id="initiative-5" data-initiative="5">
+            <button class="initiative-header" onclick="toggleInitiative(this.parentElement)">
+                <h3>5. Extracurricular Competitions Program</h3>
+                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <span class="toggle-icon">▼</span>
+            </button>
+            <div class="initiative-content" id="content-5">
+                <div class="content-inner">
+                    <div class="summary-grid">
+                        <div class="summary-column">
+                            <h4>What?</h4>
+                            <p contenteditable="false" data-section="what">Establish extracurricular competitions
+                                program in robotics, mechatronics, and programming</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>How?</h4>
+                            <p contenteditable="false" data-section="how">Select competitions, create skills centers,
+                                develop promotional materials, and plan international participation</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>When?</h4>
+                            <p contenteditable="false" data-section="when">2025 and onwards</p>
+                        </div>
+                        <div class="summary-column">
+                            <h4>Responsible</h4>
+                            <p contenteditable="false" data-section="responsible">D&T Department - R&D department</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Goal</h4>
+                        <ul contenteditable="false" data-section="goal">
+                            <li>13% registered extracurricular students increment</li>
+                            <li>Acquire new materials for 2-3 students per kit</li>
+                            <li>33% event participation increment</li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Indicator</h4>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator"></i>
+                            <p><strong contenteditable="false" data-section="indicator-1-label">Retention Rate:</strong>
+                                <span class="formula" data-formula="9"></span></p>
+                        </div>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator"></i>
+                            <p><strong contenteditable="false" data-section="indicator-2-label">Material
+                                    Acquisition:</strong> <span class="formula" data-formula="10"></span></p>
+                        </div>
+                        <div class="indicator-box">
+                            <i class="fas fa-calculator"></i>
+                            <p><strong contenteditable="false" data-section="indicator-3-label">Competition
+                                    Participation:</strong> <span class="formula" data-formula="11"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h4>Evaluation</h4>
+                        <p contenteditable="false" data-section="evaluation">2025-2026 competitions results analyzed for
+                            performance trends, student engagement levels, and program sustainability metrics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Design & Technology Department | Academic Year 2025-2026</p>
+            <p style="opacity: 0.8; margin-top: 10px;">Prepared for Learning Council Review</p>
+        </footer>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i> CSV exported successfully!
+    </div>
+
+    <script>
+        // Formula definitions
+        const formulas = {
+            1: '\\frac{\\text{Actual \\# of units taught per grade}}{\\text{\\# units planned per grade}} \\times 100',
+            2: '\\frac{\\text{\\# of students with grade 2 or higher}}{\\text{total \\# students}} \\times 100',
+            3: '\\text{\\# of related training by the end of the year}',
+            4: '\\frac{\\text{Number of students with completed prototypes}}{\\text{Total students enrolled in D\\&T}} \\times 100',
+            5: '\\frac{\\text{Number of students with grade C or higher}}{\\text{Total enrolled students}} \\times 100',
+            6: '\\frac{\\text{Completed lab areas}}{\\text{Total planned areas}} \\times 100',
+            7: '\\frac{\\text{Grades(courses) with completed projects}}{\\text{Total grades in D\\&T}} \\times 100',
+            8: '\\frac{\\text{Classes using lab}}{\\text{Total scheduled classes}} \\times 100',
+            9: '\\left( \\frac{\\text{\\#Students}_{2025-2026} - \\text{\\#Students}_{2024-2025}}{\\text{\\#Students}_{2024-2025}} \\right) \\times 100',
+            10: '\\frac{\\text{Kits acquired}}{\\text{Target kits}} \\times 100',
+            11: '\\left( \\frac{\\text{\\#Competitions}_{2025-2026} - \\text{\\#Competitions}_{2024-2025}}{\\text{\\#Competitions}_{2024-2025}} \\right) \\times 100'
+        };
+
+        // Store original content for reset
+        const originalContent = {};
+
+        // Render formulas with KaTeX
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.formula').forEach(el => {
+                const formulaNum = el.getAttribute('data-formula');
+                if (formulas[formulaNum]) {
+                    katex.render(formulas[formulaNum], el, {
+                        throwOnError: false,
+                        displayMode: false
+                    });
+                }
+            });
+
+            // Store original content
+            storeOriginalContent();
+
+            // Check for saved session
+            checkForSavedSession();
+
+            // Open first initiative
+            document.querySelector('.initiative').classList.add('active');
+        });
+
+        function storeOriginalContent() {
+            // Updated selector to use data-section for robustness
+            document.querySelectorAll('[data-section]').forEach(el => {
+                const key = generateKey(el);
+                originalContent[key] = el.innerHTML;
+            });
+        }
+
+        function generateKey(element) {
+            const initiative = element.closest('[data-initiative]');
+            const initiativeNum = initiative ? initiative.getAttribute('data-initiative') : 'overview';
+            const section = element.getAttribute('data-section');
+            return `${initiativeNum}-${section}`;
+        }
+
+        let editMode = false;
+        let hasUnsavedChanges = false;
+
+        // --- FIX 1: UPDATED toggleEditMode() FUNCTION ---
+        function toggleEditMode() {
+            editMode = !editMode;
+            const btn = document.getElementById('editModeToggle');
+            const banner = document.getElementById('editBanner');
+
+            document.body.classList.toggle('edit-mode', editMode);
+            btn.classList.toggle('active', editMode);
+            banner.classList.toggle('active', editMode);
+
+            btn.querySelector('span').textContent = editMode ? 'Edit Mode: ON' : 'Edit Mode: OFF';
+
+            // IMPROVED: Using [data-section] selector and setAttribute() for robustness
+            document.querySelectorAll('[data-section]').forEach(el => {
+                if (editMode) {
+                    el.setAttribute('contenteditable', 'true');
+                } else {
+                    el.setAttribute('contenteditable', 'false');
+                }
+            });
+
+            if (!editMode && hasUnsavedChanges) {
+                saveToLocalStorage();
+            }
+
+            // TEMPORARY DEBUG CODE - Remove after fixing
+            debugEditMode();
+        }
+
+        // TEMPORARY DEBUG CODE - Remove after fixing
+        function debugEditMode() {
+            console.log('=== EDIT MODE DEBUG ===');
+            console.log('editMode value:', editMode);
+            console.log('Body has edit-mode class:', document.body.classList.contains('edit-mode'));
+
+            const editableElements = document.querySelectorAll('[data-section]');
+            console.log('Total editable elements found:', editableElements.length);
+
+            editableElements.forEach((el, index) => {
+                console.log(`Element ${index}:`, {
+                    tag: el.tagName,
+                    section: el.getAttribute('data-section'),
+                    contenteditable: el.getAttribute('contenteditable'),
+                    isEditable: el.isContentEditable
+                });
+            });
+        }
+        // --- END FIX 1 ---
+
+
+        function toggleInitiative(element) {
+            const allInitiatives = document.querySelectorAll('.initiative');
+            allInitiatives.forEach(init => {
+                if (init !== element) {
+                    init.classList.remove('active');
+                }
+            });
+            element.classList.toggle('active');
+        }
+
+        document.addEventListener('input', function (e) {
+            if (e.target.hasAttribute('contenteditable')) {
+                hasUnsavedChanges = true;
+                document.getElementById('unsavedIndicator').classList.add('active');
+            }
+        });
+
+        function saveToLocalStorage() {
+            // Updated selector to use data-section for robustness
+            document.querySelectorAll('[data-section]').forEach(el => {
+                const key = generateKey(el);
+                localStorage.setItem(`dt-plan-${key}`, el.innerHTML);
+            });
+            hasUnsavedChanges = false;
+            document.getElementById('unsavedIndicator').classList.remove('active');
+        }
+
+        function checkForSavedSession() {
+            const hasSaved = localStorage.getItem('dt-plan-overview-overview');
+            if (hasSaved) {
+                document.getElementById('restoreBanner').classList.add('active');
+            }
+        }
+
+        function restoreSession() {
+            // Updated selector to use data-section for robustness
+            document.querySelectorAll('[data-section]').forEach(el => {
+                const key = generateKey(el);
+                const saved = localStorage.getItem(`dt-plan-${key}`);
+                if (saved) {
+                    el.innerHTML = saved;
+                }
+            });
+            document.getElementById('restoreBanner').classList.remove('active');
+        }
+
+        function startFresh() {
+            localStorage.clear();
+            document.getElementById('restoreBanner').classList.remove('active');
+        }
+
+        function resetChanges() {
+            // Using a simple message box instead of confirm()
+            const isConfirmed = prompt('Are you sure you want to reset all changes? Type "YES" to confirm.');
+            if (isConfirmed !== 'YES') {
+                return;
+            }
+
+            document.querySelectorAll('[data-section]').forEach(el => {
+                const key = generateKey(el);
+                el.innerHTML = originalContent[key];
+            });
+
+            localStorage.clear();
+            hasUnsavedChanges = false;
+            document.getElementById('unsavedIndicator').classList.remove('active');
+        }
+
+        function exportToCSV() {
+            const initiatives = [];
+
+            for (let i = 1; i <= 5; i++) {
+                const init = document.querySelector(`[data-initiative="${i}"]`);
+
+                const what = init.querySelector('[data-section="what"]').textContent.trim();
+                const how = init.querySelector('[data-section="how"]').textContent.trim();
+                const when = init.querySelector('[data-section="when"]').innerHTML.replace(/<br>/g, '\n').trim();
+                const responsible = init.querySelector('[data-section="responsible"]').textContent.trim();
+
+                const goalEl = init.querySelector('[data-section="goal"]');
+                let goal = '';
+                if (goalEl.tagName === 'UL') {
+                    const items = Array.from(goalEl.querySelectorAll('li')).map(li => li.textContent.trim());
+                    goal = items.join('\n\n');
+                } else {
+                    goal = goalEl.textContent.trim();
+                }
+
+                const indicators = [];
+                init.querySelectorAll('.indicator-box').forEach(box => {
+                    const label = box.querySelector('strong').textContent.trim();
+                    const formulaEl = box.querySelector('.formula');
+                    let formula = '';
+                    if (formulaEl) {
+                        const num = formulaEl.getAttribute('data-formula');
+                        formula = getFormulaText(num);
+                    } else {
+                        const textEl = box.querySelector('[data-section^="indicator"]');
+                        formula = textEl ? textEl.textContent.trim() : '';
+                    }
+                    indicators.push(`${label} ${formula}`);
+                });
+                const indicator = indicators.join('\n\n');
+
+                const evalEl = init.querySelector('[data-section="evaluation"]');
+                let evaluation = '';
+                if (evalEl.tagName === 'UL') {
+                    const items = Array.from(evalEl.querySelectorAll('li')).map(li => li.textContent.trim());
+                    evaluation = items.join('\n\n');
+                } else {
+                    evaluation = evalEl.textContent.trim();
+                }
+
+                initiatives.push({ what, how, when, responsible, goal, indicator, evaluation });
+            }
+
+            let csv = 'Improvement Plan ICT 2025 - 2026;;;;;;;;;;;;;;\n';
+            csv += 'What?;How?;When?;Responsible;Goal;Indicator;Evaluation;;;;;;;;\n';
+
+            initiatives.forEach(init => {
+                csv += formatCSVRow(init);
+            });
+
+            for (let i = 0; i < 1000; i++) {
+                csv += ';;;;;;;;;;;;;;\n';
+            }
+
+            downloadCSV(csv, 'improvement_plan_2025-2026_edited.csv');
+
+            const msg = document.getElementById('successMessage');
+            msg.classList.add('active');
+            setTimeout(() => msg.classList.remove('active'), 3000);
+        }
+
+        // CRITICAL FIX 2: WRONG DIVISION AND MULTIPLICATION SYMBOLS IN CSV EXPORT
+        function getFormulaText(num) {
+            const texts = {
+                1: '(Actual # of units taught per grade ÷ # units planned per grade) × 100',
+                2: '(# of students with grade 2 or higher ÷ total # students) × 100',
+                3: '# of related training by the end of the year',
+                4: '(Number of students with completed prototypes ÷ Total students enrolled in D&T) × 100',
+                5: '(Number of students with grade G or higher ÷ Total enrolled students) × 100',
+                6: '(Completed lab areas ÷ Total planned areas) × 100',
+                7: '(Grades with completed projects ÷ Total grades in D&T) × 100',
+                8: '(Classes using lab ÷ Total scheduled classes) × 100',
+                9: '(Returning students ÷ Total students from previous year) × 100',
+                10: '(Kits acquired ÷ Target kits) × 100',
+                11: '(Competitions participated ÷ Target competitions) × 100'
+            };
+            return texts[num] || '';
+        }
+
+        function formatCSVRow(init) {
+            const escape = (str) => {
+                str = str.replace(/"/g, '""');
+                if (str.includes(';') || str.includes('\n') || str.includes('"')) {
+                    str = '"' + str + '"';
+                }
+                return str;
+            };
+
+            return `${escape(init.what)};${escape(init.how)};${escape(init.when)};${escape(init.responsible)};${escape(init.goal)};${escape(init.indicator)};${escape(init.evaluation)};;;;;;;;;;\n`;
+        }
+
+        function downloadCSV(content, filename) {
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + content], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+    </script>
+</body>
+
+</html>
