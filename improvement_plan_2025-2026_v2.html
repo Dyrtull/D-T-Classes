@@ -8,10 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <!-- CRITICAL FIX 1: ADDING MISSING KATEC JAVASCRIPT LIBRARY -->
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <style>
+        /* --- 7. Typography Scale & 8. Spacing System --- */
         :root {
+            /* Colors */
             --color-primary: #667eea;
             --color-secondary: #764ba2;
             --color-accent-1: #f093fb;
@@ -19,22 +20,33 @@
             --color-text-main: #222;
             --color-text-sub: #444;
             --color-bg-alt: #fefefe;
-            --color-bg-formula: #eef5ff;
+            --color-bg-formula: #e8f1ff;
             --color-border-subtle: #e0e7ff;
+            
+            /* Spacing System (8) - 8px grid */
+            /* REDUCED ALL BASE SPACING */
             --space-xs: 8px;
-            --space-sm: 12px;
-            --space-md: 20px;
-            --space-lg: 30px;
-            --space-xl: 40px;
-            --space-xxl: 60px;
-            --font-size-body: 1rem;
-            --font-size-small: 0.875rem;
-            --font-size-med-header: 1.125rem;
-            --font-size-large-header: 1.5rem;
+            --space-sm: 16px; 
+            --space-md: 24px; 
+            --space-lg: 32px; /* Reduced from 32px/30px (New base XL) */
+            --space-xl: 48px; 
+            --space-xxl: 64px; 
+
+            /* Typography Scale (7) */
+            --font-size-small: 0.8125rem; /* #9: Reduced from 0.875rem */
+            --font-size-body: 0.95rem; /* #9: Reduced from 1rem */
+            --font-size-h4: 1.25rem; 
+            --font-size-detail-header: 1.375rem; 
+            --font-size-h3: 1.5rem; 
+            --font-size-h2: 1.75rem; 
             --font-size-display: 2.25rem;
-            --line-height-body: 1.9;
+            
+            /* Line Heights (7) */
+            --line-height-body: 1.6; /* #8: Reduced from 1.7 */
+            --line-height-headings: 1.25; /* #8: Reduced from 1.3 */
+
             --time-fast: 0.2s;
-            --time-medium: 0.4s;
+            --time-medium: 0.5s; 
             --time-slow: 0.6s;
         }
 
@@ -52,16 +64,16 @@
             font-family: 'Inter', sans-serif;
             background: #fff;
             min-height: 100vh;
-            padding: var(--space-xl) var(--space-md);
+            padding: var(--space-xl) var(--space-md); 
             color: var(--color-text-main);
-            line-height: var(--line-height-body);
+            line-height: var(--line-height-body); 
             background-color: #f4f6fb;
             background-image: radial-gradient(#d3dff5 1px, transparent 0);
             background-size: 30px 30px;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1500px; /* #11: Increased from 1400px */
             margin: 0 auto;
         }
 
@@ -83,12 +95,13 @@
             animation-delay: 0.1s;
         }
 
+        /* --- 1. Header Section --- */
         header {
-            background: white;
-            padding: var(--space-xl) var(--space-xxl);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            margin-bottom: var(--space-xl);
+            background: linear-gradient(180deg, white 90%, #f7f9ff 100%); 
+            padding: var(--space-md) var(--space-xl); 
+            border-radius: 12px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); 
+            margin-bottom: var(--space-lg); /* #7: Reduced from var(--space-xl) (48px) to 32px */
             text-align: center;
             border-top: 8px solid var(--color-primary);
         }
@@ -96,6 +109,7 @@
         h1 {
             color: var(--color-primary);
             font-size: var(--font-size-display);
+            line-height: var(--line-height-headings);
             font-weight: 800;
             margin-bottom: var(--space-sm);
             letter-spacing: -0.5px;
@@ -103,22 +117,24 @@
 
         .subtitle {
             color: var(--color-text-sub);
-            font-size: var(--font-size-med-header);
+            font-size: var(--font-size-h4); 
             font-weight: 500;
-            margin-bottom: var(--space-lg);
+            margin-bottom: var(--space-sm); /* #7: Reduced from var(--space-md) (24px) to 16px */
+            letter-spacing: 0.5px; 
         }
 
-        /* Controls */
+        /* Controls (1) */
         .controls {
             display: flex;
-            gap: var(--space-md);
+            gap: var(--space-sm); /* #7: Reduced from var(--space-md) (24px) to 16px */
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: var(--space-lg);
+            margin-top: var(--space-sm); /* #7: Reduced from var(--space-md) (24px) to 16px */
         }
-
+        
+        /* Control Button Styles (8) */
         .control-btn {
-            padding: 12px 24px;
+            padding: var(--space-sm) var(--space-md); 
             border: none;
             border-radius: 8px;
             font-family: 'Inter', sans-serif;
@@ -129,49 +145,10 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--space-xs);
         }
-
-        #editModeToggle {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-
-        #editModeToggle.active {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-
-        #exportCSV {
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: white;
-        }
-
-        #resetChanges {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
-        }
-
-        .control-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Edit Mode Banner */
-        .edit-banner {
-            display: none;
-            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-            color: white;
-            padding: var(--space-md);
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: var(--space-md);
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .edit-banner.active {
-            display: block;
-        }
+        
+        /* The following block replaces the old, broken CSS for banners, indicators, and buttons */
 
         /* Unsaved Changes Indicator */
         .unsaved-indicator {
@@ -191,18 +168,32 @@
         }
 
         @keyframes pulse {
-
-            0%,
-            100% {
+            0%, 100% {
                 opacity: 1;
             }
-
             50% {
                 opacity: 0.7;
             }
         }
 
         .unsaved-indicator.active {
+            display: block;
+        }
+
+        /* Edit Mode Banner */
+        .edit-banner {
+            display: none;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: var(--space-md);
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: var(--space-md);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .edit-banner.active {
             display: block;
         }
 
@@ -241,296 +232,29 @@
             color: var(--color-primary);
         }
 
-        /* Editable Styling */
-        [contenteditable="true"] {
-            cursor: text;
-            transition: all var(--time-fast) ease;
+        /* Control Buttons */
+        #editModeToggle {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
         }
 
-        body.edit-mode [contenteditable="true"] {
-            border: 2px dashed transparent;
-            border-radius: 4px;
-            padding: 4px;
-            min-height: 1.5em;
+        #editModeToggle.active {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
 
-        body.edit-mode [contenteditable="true"]:hover {
-            border-color: var(--color-accent-2);
-            background: rgba(79, 172, 254, 0.05);
-        }
-
-        body.edit-mode [contenteditable="true"]:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            background: rgba(102, 126, 234, 0.05);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .overview {
-            background: var(--color-bg-alt);
-            padding: var(--space-xl);
-            border-radius: 15px;
-            margin-bottom: var(--space-xl);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--color-border-subtle);
-        }
-
-        .overview h2 {
-            color: var(--color-primary);
-            font-size: var(--font-size-large-header);
-            margin-bottom: var(--space-lg);
-            border-bottom: 3px solid var(--color-accent-2);
-            padding-bottom: var(--space-xs);
-            display: inline-block;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: var(--space-lg);
-            margin-top: var(--space-md);
-        }
-
-        .stat-card {
+        #exportCSV {
             background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
             color: white;
-            padding: var(--space-lg);
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform var(--time-fast) ease-in-out;
         }
 
-        .stat-card:hover {
-            transform: scale(1.02);
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 900;
-            margin-bottom: var(--space-xs);
-        }
-
-        .stat-label {
-            font-size: var(--font-size-small);
-            opacity: 0.9;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .initiative {
-            background: white;
-            border-radius: 15px;
-            margin-bottom: var(--space-lg);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform var(--time-fast) ease, box-shadow var(--time-fast) ease;
-        }
-
-        .initiative:hover {
-            transform: translateY(-5px) scale(1.005);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .initiative-header {
-            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+        #resetChanges {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
             color: white;
-            padding: var(--space-lg) var(--space-xl);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: var(--font-size-large-header);
-            font-weight: 700;
-            transition: background var(--time-fast) ease;
-            outline: none;
-            border: none;
-            width: 100%;
-            text-align: left;
         }
 
-        .initiative-header:focus {
-            box-shadow: 0 0 0 4px var(--color-accent-2);
-        }
-
-        .initiative-header h3 {
-            font-size: 1.1em;
-            flex: 1;
-        }
-
-        .toggle-icon {
-            font-size: 1.2em;
-            transition: transform var(--time-medium) ease;
-            margin-left: var(--space-md);
-        }
-
-        .initiative.active .toggle-icon {
-            transform: rotate(180deg);
-        }
-
-        .initiative-content {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height var(--time-medium) ease-in-out, opacity var(--time-medium) ease-in;
-        }
-
-        .initiative.active .initiative-content {
-            max-height: 4000px;
-            opacity: 1;
-        }
-
-        .content-inner {
-            padding: var(--space-xl);
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-lg);
-            margin-bottom: var(--space-xxl);
-            padding: var(--space-lg);
-            background: #fcfcfc;
-            border: 1px solid var(--color-border-subtle);
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .summary-column {
-            background: #fff;
-            padding: var(--space-lg);
-            border-radius: 8px;
-            border: 1px solid var(--color-border-subtle);
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
-            position: relative;
-        }
-
-        .summary-column h4 {
-            color: var(--color-secondary);
-            font-size: var(--font-size-small);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: var(--space-sm);
-            font-weight: 800;
-            position: relative;
-            padding-bottom: var(--space-xs);
-        }
-
-        .summary-column h4::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 30px;
-            height: 3px;
-            background: var(--color-accent-2);
-            border-radius: 2px;
-        }
-
-        .summary-column p {
-            color: var(--color-text-main);
-            font-size: var(--font-size-body);
-            line-height: 1.5;
-            font-weight: 500;
-        }
-
-        .detail-section {
-            margin-bottom: var(--space-xl);
-            padding: var(--space-md) 0;
-            position: relative;
-        }
-
-        .detail-section:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 5%;
-            width: 90%;
-            height: 1px;
-            background: #eee;
-        }
-
-        .detail-section:nth-child(even) {
-            background: #fafafc;
-            margin: 0 calc(-1 * var(--space-xl));
-            padding: var(--space-xl);
-            border-radius: 10px;
-        }
-
-        .detail-section h4 {
-            color: var(--color-primary);
-            font-size: var(--font-size-med-header);
-            font-weight: 700;
-            margin-bottom: var(--space-md);
-            padding-bottom: var(--space-xs);
-            border-bottom: 4px solid var(--color-secondary);
-            display: inline-block;
-        }
-
-        .detail-section p,
-        .detail-section ul {
-            color: var(--color-text-sub);
-            line-height: var(--line-height-body);
-            font-size: var(--font-size-body);
-        }
-
-        .detail-section ul {
-            list-style-position: outside;
-            padding-left: var(--space-lg);
-            margin-top: var(--space-sm);
-        }
-
-        .detail-section li {
-            margin-bottom: var(--space-xs);
-        }
-
-        .detail-section li strong {
-            color: var(--color-secondary);
-        }
-
-        .indicator-box {
-            background: var(--color-bg-formula);
-            border: 1px solid var(--color-accent-2);
-            padding: var(--space-md) var(--space-lg);
-            margin: var(--space-md) 0;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-        }
-
-        .indicator-box p {
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-
-        .indicator-box i {
-            color: var(--color-accent-2);
-            font-size: 1.2em;
-            margin-right: var(--space-sm);
-        }
-
-        .indicator-box strong {
-            color: var(--color-secondary);
-            font-weight: 600;
-            margin-right: var(--space-xs);
-        }
-
-        .formula {
-            background: white;
-            padding: var(--space-sm);
-            border-radius: 4px;
-            border: 1px solid var(--color-border-subtle);
-            margin-left: 5px;
-            display: inline-block;
-        }
-
-        footer {
-            text-align: center;
-            color: #ccc;
-            margin-top: var(--space-xl);
-            padding: var(--space-md);
-            font-size: var(--font-size-small);
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         /* Success Message */
@@ -554,75 +278,587 @@
         .success-message.active {
             display: block;
         }
+        
+        /* End of replaced block */
 
-        @media (max-width: 1280px) {
+        /* Edit Mode Banner (8) - kept for reference, but styles are above */
+        .edit-banner {
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+        
+        /* Restore Banner (8) - kept for reference, but styles are above */
+        .restore-banner {
+            margin-bottom: var(--space-md);
+        }
+
+        /* --- 9. Edit Mode Visual Feedback --- */
+        [data-section] { 
+            cursor: text;
+        }
+        
+        body.edit-mode [contenteditable="true"] {
+            border: 2px solid transparent; 
+            border-radius: 6px;
+            padding: 4px;
+            min-height: 1.5em;
+            position: relative; 
+        }
+
+        body.edit-mode [contenteditable="true"]:hover {
+            border-color: var(--color-accent-2);
+            background: rgba(79, 172, 254, 0.1); 
+        }
+
+        /* Pencil Icon on Hover (9) */
+        body.edit-mode [contenteditable="true"]:hover::after {
+            content: "\f303"; 
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 14px;
+            color: white;
+            background: var(--color-primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+            z-index: 50;
+        }
+
+        body.edit-mode [contenteditable="true"]:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* --- 11. Overview & 2. Stats Cards --- */
+        .overview {
+            background: var(--color-bg-alt);
+            padding: var(--space-lg); /* #6: Reduced from var(--space-xl) (48px) to 32px */
+            border-radius: 12px; 
+            margin-bottom: var(--space-lg); /* #6: Reduced from var(--space-xl) (48px) to 32px */
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08); 
+            border: none;
+        }
+
+        .overview h2 {
+            color: var(--color-primary);
+            font-size: var(--font-size-h2); 
+            line-height: var(--line-height-headings);
+            margin-bottom: var(--space-md); /* #6: Reduced from var(--space-lg) (32px) to 24px */
+            border-bottom: 3px solid var(--color-accent-2);
+            padding-bottom: var(--space-xs);
+            display: inline-block;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg); /* #6: Reduced from var(--space-xl) (48px) to 32px */
+            margin-top: var(--space-sm); /* #6: Reduced from var(--space-md) (24px) to 16px */
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: var(--space-md); /* #10: Reduced from var(--space-lg) (32px) to 24px */
+            border-radius: 12px; 
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform var(--time-fast) ease-in-out;
+            position: relative;
+            overflow: hidden;
+            border: none; 
+        }
+
+        .stat-card:hover {
+            transform: scale(1.02);
+        }
+
+        /* Subtle Pattern Background (2) */
+        .stat-card::after {
+            content: "\f080"; 
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-10deg);
+            font-size: 8em;
+            color: white;
+            opacity: 0.05; 
+            z-index: 1;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px; 
+            height: 100%;
+            z-index: 2;
+        }
+        
+        /* Different Gradient Borders (2) */
+        .stat-card[data-color="1"]::before { background: var(--color-accent-1); }
+        .stat-card[data-color="2"]::before { background: #00f2fe; }
+        .stat-card[data-color="3"]::before { background: #ff6b6b; }
+        .stat-card[data-color="4"]::before { background: #38ef7d; }
+        
+        .stat-content {
+            position: relative;
+            z-index: 3;
+        }
+        
+        .stat-icon { 
+            font-size: 1.3em; /* #10: Reduced from 1.5em */
+            margin-bottom: 4px; /* #10: Reduced from 8px */
+            display: block;
+        }
+
+        .stat-number {
+            font-size: 1.75em; /* #10: Reduced from 2em */
+            font-weight: 900;
+            margin-bottom: 4px; /* #10: Reduced from 8px */
+            line-height: 1;
+        }
+        
+        /* --- 3. Initiative Cards --- */
+        .initiative {
+            background: white;
+            border-radius: 12px; 
+            margin-bottom: var(--space-lg); /* #5: Reduced from var(--space-xl) (48px) to 32px */
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08); 
+            border: 1px solid var(--color-border-subtle); 
+            overflow: hidden;
+            transition: transform var(--time-fast) ease, box-shadow var(--time-fast) ease;
+        }
+
+        .initiative:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); 
+        }
+
+        .initiative-header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); 
+            color: white;
+            padding: var(--space-sm) var(--space-lg); /* #5: Reduced from 20px/32px to 16px/32px */
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--font-size-h3); 
+            line-height: var(--line-height-headings);
+            font-weight: 700;
+            transition: background var(--time-fast) ease;
+            outline: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .initiative-header h3 {
+            font-size: 1em; 
+            flex: 1;
+            padding-left: var(--space-sm); 
+        }
+
+        /* Preview Text (3) */
+        .initiative-preview {
+            font-size: 0.8rem; /* #5: Reduced from 0.875rem */
+            font-weight: 400;
+            opacity: 0.8;
+            margin-top: 3px; /* #5: Reduced from 5px */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 80%;
+            display: block;
+        }
+
+        .initiative.active .initiative-preview {
+            display: none;
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform var(--time-medium) ease;
+            margin-left: var(--space-md);
+        }
+
+        .initiative.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .initiative-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity var(--time-medium) ease-in; 
+        }
+
+        .initiative.active .initiative-content {
+            max-height: 4000px;
+            opacity: 1;
+        }
+
+        .content-inner {
+            padding: var(--space-lg); /* #3: Reduced from var(--space-xl) (48px) to 32px */
+        }
+
+        /* --- 4. Summary Grid --- */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md); /* #1: Reduced from var(--space-lg) (32px) to 24px */
+            margin-bottom: var(--space-xxl);
+            padding: var(--space-lg); /* #1: Reduced from var(--space-xl) (48px) to 32px */
+            background: none; 
+            border: 1px solid var(--color-border-subtle);
+            border-radius: 12px; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-column {
+            background: #fff;
+            padding: var(--space-md); /* #1: Reduced from 35px to 24px */
+            border-radius: 12px; 
+            border: 1px solid var(--color-border-subtle);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
+            position: relative;
+            min-height: auto; /* #1: Removed 120px min-height */
+        }
+
+        .summary-column h4 {
+            color: var(--color-secondary);
+            font-size: var(--font-size-body); 
+            line-height: var(--line-height-headings);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: var(--space-sm);
+            font-weight: 800;
+            position: relative;
+            padding-bottom: var(--space-xs);
+        }
+
+        .summary-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 3px;
+            background: var(--color-accent-2);
+            border-radius: 2px;
+        }
+
+        .summary-column p {
+            color: var(--color-text-main);
+            font-size: 0.95rem; /* #1: Reduced from 1rem to 0.95rem */
+            line-height: 1.5; /* #8: Keep tighter line height */
+            font-weight: 500;
+        }
+
+        /* --- 5. Goals/Indicators Two-Column Layout --- */
+        .goals-indicators-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* FIX 1: Changed from 3fr 2fr to 1fr 1fr to give indicators more horizontal space */
+            gap: var(--space-md); /* #2: Reduced from var(--space-lg) (32px) to 24px */
+            margin-bottom: var(--space-lg); /* #2: Reduced from var(--space-xl) (48px) to 32px */
+            padding: 0; /* #2: Removed var(--space-md) padding */
+        }
+
+        .goal-column,
+        .indicator-column {
+            background: #fafafc;
+            padding: var(--space-md); /* #2: Reduced from var(--space-lg) (32px) to 24px */
+            border-radius: 12px; 
+        }
+        
+        .indicator-column {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm); /* #2: Reduced from 10px to 16px (var(--space-sm)) for consistency */
+        }
+
+        .goal-item {
+            margin-bottom: var(--space-md); /* #2: Reduced from var(--space-lg) (32px) to 24px */
+            padding: var(--space-sm); /* #2: Reduced from var(--space-md) (24px) to 16px */
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-accent-2);
+        }
+
+        /* #2: Specific fix for last goal item margin */
+        .goal-item:last-child {
+            margin-bottom: 0; 
+        }
+
+        .indicator-item {
+            margin-bottom: 0; 
+        }
+
+        .indicator-box {
+            background: var(--color-bg-formula); 
+            border: 1px solid var(--color-accent-2);
+            padding: var(--space-sm) var(--space-md); /* #2: Reduced from 15px/25px to 16px/24px */
+            margin: 0; 
+            border-radius: 6px; 
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .indicator-box p {
+            line-height: 1.5; /* #8: Keep tighter line height */
+            flex-grow: 1;
+            font-size: var(--font-size-body);
+        }
+
+        .indicator-box i {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: var(--color-accent-2);
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .indicator-box strong {
+            color: var(--color-secondary);
+            font-weight: 600;
+            margin-right: var(--space-xs);
+        }
+
+        .formula {
+            background: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--color-border-subtle);
+            margin-left: 5px;
+            display: inline-block;
+            font-size: 0.9rem; 
+        }
+        
+        /* FIX 1: Allow KaTeX formulas to wrap (display: block) */
+        .formula {
+            /* ... (existing styles) ... */
+            display: block; /* Change from inline-block to block for wrapping */
+            font-size: 0.85rem; /* Slightly smaller font size to fit more complex formulas */
+            padding: 2px 4px; /* Reduced padding slightly */
+            margin-top: 5px;
+            /* Added word-break to allow long, non-KaTeX indicator text to wrap if it's the indicator-2-text item */
+            word-break: break-word; 
+        }
+
+        /* FIX 2: Increase spacing between goal list items for better readability and alignment */
+        .goal-item ul li {
+            margin-bottom: var(--space-md); /* FIX 2: Increased margin from var(--space-sm) (16px) to var(--space-md) (24px) */
+            line-height: 1.4; /* Improved line height for better appearance */
+        }
+
+
+        /* --- 6. Detail Sections --- */
+        .detail-section {
+            margin-bottom: var(--space-lg); /* #4: Reduced from var(--space-xl) (48px) to 32px */
+            padding: var(--space-sm) 0; /* #4: Reduced from var(--space-md) (24px) to 16px */
+            position: relative;
+        }
+        
+        .detail-section:first-child {
+            padding-top: var(--space-sm); /* #4: Reduced from var(--space-md) (24px) to 16px */
+        }
+        
+        .detail-section:not(:last-child)::after {
+            content: none;
+        }
+
+        .detail-section:nth-child(even) {
+            background: none; 
+            margin: 0;
+            padding: var(--space-md) 0;
+            border-radius: 0;
+        }
+
+        .detail-section h4 {
+            color: var(--color-secondary); 
+            font-size: var(--font-size-detail-header); 
+            line-height: var(--line-height-headings);
+            font-weight: 700;
+            margin-bottom: var(--space-sm); /* #4: Reduced from var(--space-md) (24px) to 16px */
+            padding-bottom: var(--space-xs);
+            
+            border-bottom: 3px solid transparent; 
+            border-image: linear-gradient(to right, var(--color-secondary) 0%, rgba(255, 255, 255, 0) 70%); 
+            border-image-slice: 1;
+            display: block; 
+            width: auto; /* #4: Removed 50% width constraint */
+            max-width: 400px; /* #4: Added max-width instead */
+        }
+
+        .detail-section p,
+        .detail-section ul {
+            color: var(--color-text-sub);
+            line-height: var(--line-height-body);
+            font-size: var(--font-size-body); /* #9: Now 0.95rem */
+        }
+
+        .detail-section ul {
+            list-style-position: outside;
+            padding-left: var(--space-lg);
+            margin-top: var(--space-xs); /* #4: Reduced from var(--space-sm) (16px) to 8px */
+        }
+
+        /* Original: .detail-section li { margin-bottom: var(--space-xs); } - Updated below */
+        .detail-section li {
+            margin-bottom: var(--space-xs);
+        }
+
+
+        /* --- 11. Footer --- */
+        footer {
+            text-align: center;
+            color: var(--color-text-sub);
+            margin-top: var(--space-xl);
+            padding: var(--space-md) 0;
+            font-size: var(--font-size-small);
+            border-top: 2px solid rgba(102, 126, 234, 0.2); 
+        }
+
+
+        /* --- 10. Mobile Responsiveness --- */
+
+        /* New Tablet Breakpoint (1024px) (10) */
+        @media (max-width: 1024px) {
+            /* Keep 2x2 grid for Summary, Goals/Indicators, and Stats */
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-md);
+            }
             .summary-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-md);
+            }
+            .goals-indicators-container {
+                grid-template-columns: 1fr 1fr; /* FIX 1: Updated to 1fr 1fr to ensure better formula visibility on tablets */
+                gap: var(--space-md);
             }
         }
 
+
+        /* 768px Breakpoint (Small Tablet/Mobile) (10) */
         @media (max-width: 768px) {
             body {
                 padding: var(--space-md);
             }
 
             h1 {
-                font-size: 2em;
+                font-size: calc(var(--font-size-display) * 0.9); 
             }
 
             header {
                 padding: var(--space-lg);
             }
-
-            .summary-grid {
-                grid-template-columns: 1fr;
-                gap: var(--space-md);
-                margin-bottom: var(--space-xl);
-            }
-
+            
+            /* Stats: 1 column */
             .stats {
                 grid-template-columns: 1fr;
                 gap: var(--space-md);
             }
 
+            /* Summary grid: 1 column */
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+                margin-bottom: var(--space-xl);
+                padding: var(--space-lg);
+            }
+
+            /* Goals/indicators: stack vertically (10) */
+            .goals-indicators-container {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+            
+            .goal-column,
+            .indicator-column {
+                padding: var(--space-md);
+            }
+
+            /* Initiative headers: wrap text, icon below title (10) */
+            .initiative-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: var(--space-md);
+            }
+            
             .initiative-header h3 {
-                font-size: 1.1em;
+                margin-bottom: 5px;
+                padding-left: 0;
+            }
+
+            .toggle-icon {
+                margin-left: 0;
+                align-self: flex-end;
             }
 
             .content-inner {
-                padding: var(--space-lg);
+                padding: var(--space-md); /* #3: Reduced from var(--space-lg) (32px) to 24px on mobile */
             }
-
+            
             .detail-section:nth-child(even) {
-                margin: 0 calc(-1 * var(--space-lg));
-                padding: var(--space-lg);
+                margin: 0;
+                padding: var(--space-md) 0;
             }
-
-            .controls {
-                flex-direction: column;
+        }
+        
+        /* Under 480px Breakpoint (10) */
+        @media (max-width: 480px) {
+            /* #12: Reduced font size */
+            html {
+                font-size: 88%; 
             }
-
-            .control-btn {
-                width: 100%;
-                justify-content: center;
+            /* Reduce padding by 25% (10) - Rescaling variables */
+            :root {
+                --space-xs: 6px;
+                --space-sm: 12px;
+                --space-md: 18px;
+                --space-lg: 24px;
+                --space-xl: 36px;
+                --space-xxl: 48px;
             }
         }
 
+        /* --- 12. Print Styles --- */
         @media print {
+            /* Increase font-size by 10% (12) */
             body {
+                font-size: 1.1em;
                 background: white;
                 background-image: none;
                 padding: 0;
                 color: #000;
             }
-
+            
+            /* Remove unneeded items */
             .controls,
             .edit-banner,
             .restore-banner,
-            .unsaved-indicator {
+            .unsaved-indicator,
+            .stat-card::after, 
+            .toggle-icon,
+            .initiative:hover,
+            .initiative-preview {
                 display: none !important;
             }
-
+            
             .container {
                 max-width: 100%;
                 width: 100%;
@@ -633,71 +869,71 @@
             .overview {
                 box-shadow: none;
                 border: none;
+                background: #fff !important;
             }
-
-            header {
-                margin-bottom: var(--space-md);
+            
+            /* Keep summary grid as 2x2 (12) */
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 20px;
+                padding: 20px;
+                background: #f0f0f0 !important; /* Subtle background (grayscale) (12) */
+                border: 1px solid #ccc;
             }
-
-            h1,
-            .overview h2,
-            .detail-section h4 {
-                color: #000 !important;
-                border-bottom: 1px solid #000 !important;
-                padding-bottom: 2px;
-            }
-
+            
             .stat-card {
-                background: #eee !important;
+                background: #e9e9e9 !important;
                 color: #000 !important;
-                box-shadow: none;
-                border: 1px solid #ccc;
             }
 
+            /* Initiative - Thick border (12) */
             .initiative {
-                page-break-inside: avoid;
+                border: 2px solid #000 !important; 
                 box-shadow: none;
-                border: 1px solid #ccc;
-                margin-bottom: var(--space-md);
+                margin-bottom: 30px;
+                page-break-inside: avoid;
             }
 
             .initiative-header {
-                background: #ccc !important;
+                background: #ddd !important;
                 color: #000 !important;
-                font-size: 1.1em;
-                padding: var(--space-sm) var(--space-md);
+            }
+            
+            /* Detail Sections */
+            .detail-section {
+                /* Add page-break-after: avoid to all .detail-section (12) */
+                page-break-after: avoid; 
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+            
+            .detail-section h4 {
+                color: #000 !important;
+                border-bottom: 3px solid #000 !important;
+                border-image: none !important;
+                width: 100%;
             }
 
-            .initiative-content {
-                max-height: none !important;
-                opacity: 1 !important;
-            }
-
-            .toggle-icon,
-            .initiative:hover {
-                display: none;
-                transform: none;
-            }
-
-            .summary-grid {
-                grid-template-columns: repeat(4, 1fr);
-                background: #f0f0f0;
-            }
-
-            .summary-column {
-                border-left: 1px solid #ccc;
+            /* Goal border-left (12) */
+            .goal-item {
+                border-left: 4px solid #000 !important; /* Maintain border-left (convert to black) (12) */
+                background: #fff;
             }
 
             .indicator-box {
-                border: 1px dashed #777;
-                background: #fafafa;
-                border-left: 4px solid #764ba2;
+                background: #f0f0f0 !important; /* Subtle background (grayscale) (12) */
+                border-left: 4px solid #000 !important; /* Maintain border-left (convert to black) (12) */
+                border: 1px solid #777 !important;
             }
 
-            .detail-section:nth-child(even) {
-                background: #f0f0f0;
-                margin: 0;
-                padding: var(--space-md);
+            .indicator-box i {
+                color: #000 !important;
+            }
+            
+            /* Ensure initiatives show content */
+            .initiative-content {
+                max-height: none !important;
+                opacity: 1 !important;
             }
         }
     </style>
@@ -716,7 +952,7 @@
             <button onclick="startFresh()">Start Fresh</button>
         </div>
 
-        <!-- CRITICAL FIX 3: INCONSISTENT CHARACTER ENCODING IN BANNER TEXT -->
+        <!-- FIX: Updated emoji from 'âœï¸' to '✏️' (Problem 5) -->
         <div class="edit-banner" id="editBanner">
             ✏️ EDITING MODE ACTIVE - Click any text to edit
         </div>
@@ -724,6 +960,7 @@
         <header>
             <h1>Design & Technology Improvement Plan</h1>
             <p class="subtitle">Academic Year 2025-2026</p>
+            <!-- Controls moved inside header (1) -->
             <div class="controls">
                 <button id="editModeToggle" class="control-btn" onclick="toggleEditMode()">
                     <i class="fas fa-edit"></i> <span>Edit Mode: OFF</span>
@@ -744,21 +981,38 @@
                 programs.</p>
 
             <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">Major Initiatives</div>
+                <!-- Stat Cards Updated (2) -->
+                <!-- Color 1: Primary/Accent-1 -->
+                <div class="stat-card" data-color="1">
+                    <div class="stat-content">
+                        <i class="stat-icon fas fa-cogs"></i>
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Major Initiatives</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">6-12</div>
-                    <div class="stat-label">Grade Levels</div>
+                <!-- Color 2: Cyan/Accent-2 -->
+                <div class="stat-card" data-color="2">
+                    <div class="stat-content">
+                        <i class="stat-icon fas fa-graduation-cap"></i>
+                        <div class="stat-number">6-12</div>
+                        <div class="stat-label">Grade Levels</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">Terms Duration</div>
+                <!-- Color 3: Red/Pink -->
+                <div class="stat-card" data-color="3">
+                    <div class="stat-content">
+                        <i class="stat-icon fas fa-calendar-alt"></i>
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Terms Duration</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">IGCSE Programs</div>
+                <!-- Color 4: Green/Mint -->
+                <div class="stat-card" data-color="4">
+                    <div class="stat-content">
+                        <i class="stat-icon fas fa-laptop-code"></i>
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">IGCSE Programs</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -767,8 +1021,11 @@
         <div class="initiative" id="initiative-1" data-initiative="1">
             <button class="initiative-header" onclick="toggleInitiative(this.parentElement)" tabindex="0" role="button"
                 aria-expanded="true" aria-controls="content-1">
-                <h3>1. IGCSE Design & Technology (0445) Implementation</h3>
-                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <div>
+                    <h3>1. IGCSE Design & Technology (0445) Implementation</h3>
+                    <!-- Added Preview Text (3) -->
+                    <span class="initiative-preview">Implement IGCSE Design & Technology (0445) curriculum across grades 6-10</span>
+                </div>
                 <span class="toggle-icon" aria-hidden="true">▼</span>
             </button>
             <div class="initiative-content" id="content-1" aria-hidden="false">
@@ -796,35 +1053,49 @@
                         </div>
                     </div>
 
-                    <div class="detail-section">
-                        <h4>Goal</h4>
-                        <ul contenteditable="false" data-section="goal">
-                            <li>100% of grade-level units aligned with the new IGCSE D&T 0445 syllabus by the end of
-                                Term 3</li>
-                            <li>At least 80% of students achieve meeting level in new D&T assessments</li>
-                            <li>All D&T teachers (MS & HS) complete at least one professional development session
-                                related to the new syllabus</li>
-                        </ul>
-                    </div>
+                    <!-- REFACTORED GOALS AND INDICATORS SECTION FOR TWO-COLUMN LAYOUT -->
+                    <div class="goals-indicators-container">
+                        <!-- Left Column: Goals -->
+                        <div class="goal-column">
+                            <h4>Goals</h4>
+                            <div class="goal-item">
+                                <ul contenteditable="false" data-section="goal">
+                                    <li>100% of grade-level units aligned with the new IGCSE D&T 0445 syllabus by the end of
+                                        Term 3</li>
+                                    <li>At least 80% of students achieve meeting level in new D&T assessments</li>
+                                    <li>All D&T teachers (MS & HS) complete at least one professional development session
+                                        related to the new syllabus</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <div class="detail-section">
-                        <h4>Indicator</h4>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator" aria-hidden="true"></i>
-                            <p><strong contenteditable="false" data-section="indicator-1-label">Curriculum
-                                    Alignment:</strong> <span class="formula" data-formula="1"></span></p>
-                        </div>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator" aria-hidden="true"></i>
-                            <p><strong contenteditable="false" data-section="indicator-2-label">Student
-                                    Achievement:</strong> <span class="formula" data-formula="2"></span></p>
-                        </div>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator" aria-hidden="true"></i>
-                            <p><strong contenteditable="false" data-section="indicator-3-label">Teacher
-                                    Development:</strong> <span class="formula" data-formula="3"></span></p>
+                        <!-- Right Column: Indicators -->
+                        <div class="indicator-column">
+                            <h4>Indicators</h4>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-1-label">Curriculum
+                                            Alignment:</strong> <span class="formula" data-formula="1"></span></p>
+                                    <i class="fas fa-calculator" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-2-label">Student
+                                            Achievement:</strong> <span class="formula" data-formula="2"></span></p>
+                                    <i class="fas fa-calculator" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-3-label">Teacher
+                                            Development:</strong> <span class="formula" data-formula="3"></span></p>
+                                    <i class="fas fa-calculator" aria-hidden="true"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- END REFACTORED SECTION -->
 
                     <div class="detail-section">
                         <h4>Evaluation</h4>
@@ -845,8 +1116,11 @@
         <div class="initiative" id="initiative-2" data-initiative="2">
             <button class="initiative-header" onclick="toggleInitiative(this.parentElement)" tabindex="0" role="button"
                 aria-expanded="false" aria-controls="content-2">
-                <h3>2. Component 2 Project Methodology (Grades 8-10)</h3>
-                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <div>
+                    <h3>2. Component 2 Project Methodology (Grades 8-10)</h3>
+                    <!-- Added Preview Text (3) -->
+                    <span class="initiative-preview">Implement Component 2 Project methodology across grades 8-10</span>
+                </div>
                 <span class="toggle-icon" aria-hidden="true">▼</span>
             </button>
             <div class="initiative-content" id="content-2" aria-hidden="true">
@@ -873,22 +1147,33 @@
                         </div>
                     </div>
 
-                    <div class="detail-section">
-                        <h4>Goal</h4>
-                        <p contenteditable="false" data-section="goal"><strong>Student Project Completion Rate:</strong>
-                            80% of students across grades 8-10 successfully complete functional prototypes that meet
-                            design specifications by June 2026</p>
-                    </div>
+                    <!-- REFACTORED GOALS AND INDICATORS SECTION FOR TWO-COLUMN LAYOUT (Paragraph Goal) -->
+                    <div class="goals-indicators-container">
+                        <!-- Left Column: Goal (Paragraph) -->
+                        <div class="goal-column">
+                            <h4>Goal</h4>
+                            <div class="goal-item">
+                                <p contenteditable="false" data-section="goal">
+                                    <strong>Student Project Completion Rate:</strong>
+                                    80% of students across grades 8-10 successfully complete functional prototypes that meet
+                                    design specifications by June 2026
+                                </p>
+                            </div>
+                        </div>
 
-                    <div class="detail-section">
-                        <h4>Indicator</h4>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator" aria-hidden="true"></i>
-                            <!-- CONTINUATION FROM LINE 714 - Complete Initiative 2 Indicator -->
-                            <p><strong contenteditable="false" data-section="indicator-1-label">Completion
-                                    Rate:</strong> <span class="formula" data-formula="4"></span></p>
+                        <!-- Right Column: Indicator -->
+                        <div class="indicator-column">
+                            <h4>Indicators</h4>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-1-label">Completion
+                                            Rate:</strong> <span class="formula" data-formula="4"></span></p>
+                                    <i class="fas fa-calculator" aria-hidden="true"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- END REFACTORED SECTION -->
 
                     <div class="detail-section">
                         <h4>Evaluation</h4>
@@ -907,8 +1192,11 @@
         <!-- Initiative 3 -->
         <div class="initiative" id="initiative-3" data-initiative="3">
             <button class="initiative-header" onclick="toggleInitiative(this.parentElement)">
-                <h3>3. IGCSE ICT (0417) & Computer Science (0478) Programs</h3>
-                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <div>
+                    <h3>3. IGCSE ICT (0417) & Computer Science (0478) Programs</h3>
+                    <!-- Added Preview Text (3) -->
+                    <span class="initiative-preview">Deliver IGCSE ICT (0417) for Grades 11-12 and Computer Science (0478)</span>
+                </div>
                 <span class="toggle-icon">▼</span>
             </button>
             <div class="initiative-content" id="content-3">
@@ -930,35 +1218,46 @@
                         </div>
                         <div class="summary-column">
                             <h4>Responsible</h4>
-                            <!-- CRITICAL FIX 5: INCORRECT CHARACTER IN NAME -->
                             <p contenteditable="false" data-section="responsible">Andrés Forero</p>
                         </div>
                     </div>
 
-                    <div class="detail-section">
-                        <h4>Goal</h4>
-                        <ul contenteditable="false" data-section="goal">
-                            <li><strong>IGCSE 0417:</strong> Minimum 67% students above C</li>
-                            <li><strong>IGCSE 0478:</strong> Results equal to or above the national average in Colombia
-                            </li>
-                        </ul>
-                    </div>
+                    <!-- REFACTORED GOALS AND INDICATORS SECTION FOR TWO-COLUMN LAYOUT -->
+                    <div class="goals-indicators-container">
+                        <!-- Left Column: Goals -->
+                        <div class="goal-column">
+                            <h4>Goals</h4>
+                            <div class="goal-item">
+                                <ul contenteditable="false" data-section="goal">
+                                    <li><strong>IGCSE 0417:</strong> Minimum 67% students above C</li>
+                                    <li><strong>IGCSE 0478:</strong> Results equal to or above the national average in Colombia
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <div class="detail-section">
-                        <h4>Indicator</h4>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator"></i>
-                            <p><strong contenteditable="false" data-section="indicator-1-label">IGCSE 0417 Pass
-                                    Rate:</strong> <span class="formula" data-formula="5"></span></p>
-                        </div>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator"></i>
-                            <p><strong contenteditable="false" data-section="indicator-2-label">IGCSE 0478
-                                    Performance:</strong> <span contenteditable="false"
-                                    data-section="indicator-2-text">Average score comparison with national
-                                    benchmarks</span></p>
+                        <!-- Right Column: Indicators -->
+                        <div class="indicator-column">
+                            <h4>Indicators</h4>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-1-label">IGCSE 0417 Pass
+                                            Rate:</strong> <span class="formula" data-formula="5"></span></p>
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-2-label">IGCSE 0478
+                                            Performance:</strong> <span contenteditable="false"
+                                            data-section="indicator-2-text">Average score comparison with national
+                                            benchmarks</span></p>
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- END REFACTORED SECTION -->
 
                     <div class="detail-section">
                         <h4>Evaluation</h4>
@@ -972,8 +1271,11 @@
         <!-- Initiative 4 -->
         <div class="initiative" id="initiative-4" data-initiative="4">
             <button class="initiative-header" onclick="toggleInitiative(this.parentElement)">
-                <h3>4. Design & Technology Laboratory Establishment</h3>
-                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <div>
+                    <h3>4. Design & Technology Laboratory Establishment</h3>
+                    <!-- Added Preview Text (3) -->
+                    <span class="initiative-preview">Establish a D&T laboratory adapting IGCSE 0445 to school infrastructure</span>
+                </div>
                 <span class="toggle-icon">▼</span>
             </button>
             <div class="initiative-content" id="content-4">
@@ -1000,34 +1302,48 @@
                         </div>
                     </div>
 
-                    <div class="detail-section">
-                        <h4>Goal</h4>
-                        <ul contenteditable="false" data-section="goal">
-                            <li><strong>Lab Implementation:</strong> 100% completion by end of Phase 2</li>
-                            <li><strong>Cross-Curricular Projects:</strong> One project per grade per academic year
-                                (100%)</li>
-                            <li><strong>Facility Usage:</strong> 80% of D&T classes utilize lab facilities per term</li>
-                        </ul>
-                    </div>
+                    <!-- REFACTORED GOALS AND INDICATORS SECTION FOR TWO-COLUMN LAYOUT -->
+                    <div class="goals-indicators-container">
+                        <!-- Left Column: Goals -->
+                        <div class="goal-column">
+                            <h4>Goals</h4>
+                            <div class="goal-item">
+                                <ul contenteditable="false" data-section="goal">
+                                    <li><strong>Lab Implementation:</strong> 100% completion by end of Phase 2</li>
+                                    <li><strong>Cross-Curricular Projects:</strong> One project per grade per academic year
+                                        (100%)</li>
+                                    <li><strong>Facility Usage:</strong> 80% of D&T classes utilize lab facilities per term</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <div class="detail-section">
-                        <h4>Indicator</h4>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator"></i>
-                            <p><strong contenteditable="false" data-section="indicator-1-label">Lab Implementation
-                                    Rate:</strong> <span class="formula" data-formula="6"></span></p>
-                        </div>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator"></i>
-                            <p><strong contenteditable="false" data-section="indicator-2-label">Cross-Curricular
-                                    Rate:</strong> <span class="formula" data-formula="7"></span></p>
-                        </div>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator"></i>
-                            <p><strong contenteditable="false" data-section="indicator-3-label">Facility Usage
-                                    Rate:</strong> <span class="formula" data-formula="8"></span></p>
+                        <!-- Right Column: Indicators -->
+                        <div class="indicator-column">
+                            <h4>Indicators</h4>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-1-label">Lab Implementation
+                                            Rate:</strong> <span class="formula" data-formula="6"></span></p>
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-2-label">Cross-Curricular
+                                            Rate:</strong> <span class="formula" data-formula="7"></span></p>
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-3-label">Facility Usage
+                                            Rate:</strong> <span class="formula" data-formula="8"></span></p>
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- END REFACTORED SECTION -->
 
                     <div class="detail-section">
                         <h4>Evaluation</h4>
@@ -1042,8 +1358,11 @@
         <!-- Initiative 5 -->
         <div class="initiative" id="initiative-5" data-initiative="5">
             <button class="initiative-header" onclick="toggleInitiative(this.parentElement)">
-                <h3>5. Extracurricular Competitions Program</h3>
-                <!-- CRITICAL FIX 4: ARROW SYMBOL ISSUES IN TOGGLE ICONS -->
+                <div>
+                    <h3>5. Extracurricular Competitions Program</h3>
+                    <!-- Added Preview Text (3) -->
+                    <span class="initiative-preview">Establish extracurricular competitions program in robotics, mechatronics, and programming</span>
+                </div>
                 <span class="toggle-icon">▼</span>
             </button>
             <div class="initiative-content" id="content-5">
@@ -1069,33 +1388,47 @@
                         </div>
                     </div>
 
-                    <div class="detail-section">
-                        <h4>Goal</h4>
-                        <ul contenteditable="false" data-section="goal">
-                            <li>13% registered extracurricular students increment</li>
-                            <li>Acquire new materials for 2-3 students per kit</li>
-                            <li>33% event participation increment</li>
-                        </ul>
-                    </div>
+                    <!-- REFACTORED GOALS AND INDICATORS SECTION FOR TWO-COLUMN LAYOUT -->
+                    <div class="goals-indicators-container">
+                        <!-- Left Column: Goals -->
+                        <div class="goal-column">
+                            <h4>Goals</h4>
+                            <div class="goal-item">
+                                <ul contenteditable="false" data-section="goal">
+                                    <li>13% registered extracurricular students increment</li>
+                                    <li>Acquire new materials for 2-3 students per kit</li>
+                                    <li>33% event participation increment</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                    <div class="detail-section">
-                        <h4>Indicator</h4>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator"></i>
-                            <p><strong contenteditable="false" data-section="indicator-1-label">Retention Rate:</strong>
-                                <span class="formula" data-formula="9"></span></p>
-                        </div>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator"></i>
-                            <p><strong contenteditable="false" data-section="indicator-2-label">Material
-                                    Acquisition:</strong> <span class="formula" data-formula="10"></span></p>
-                        </div>
-                        <div class="indicator-box">
-                            <i class="fas fa-calculator"></i>
-                            <p><strong contenteditable="false" data-section="indicator-3-label">Competition
-                                    Participation:</strong> <span class="formula" data-formula="11"></span></p>
+                        <!-- Right Column: Indicators -->
+                        <div class="indicator-column">
+                            <h4>Indicators</h4>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-1-label">Retention Rate:</strong>
+                                        <span class="formula" data-formula="9"></span></p>
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-2-label">Material
+                                            Acquisition:</strong> <span class="formula" data-formula="10"></span></p>
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                            </div>
+                            <div class="indicator-item">
+                                <div class="indicator-box">
+                                    <p><strong contenteditable="false" data-section="indicator-3-label">Competition
+                                            Participation:</strong> <span class="formula" data-formula="11"></span></p>
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- END REFACTORED SECTION -->
 
                     <div class="detail-section">
                         <h4>Evaluation</h4>
@@ -1153,8 +1486,13 @@
             // Check for saved session
             checkForSavedSession();
 
-            // Open first initiative
-            document.querySelector('.initiative').classList.add('active');
+            // Open first initiative (Keep it active initially for better display)
+            const firstInitiative = document.querySelector('.initiative');
+            if (firstInitiative) {
+                firstInitiative.classList.add('active');
+                firstInitiative.querySelector('.initiative-header').setAttribute('aria-expanded', 'true');
+                firstInitiative.querySelector('.initiative-content').setAttribute('aria-hidden', 'false');
+            }
         });
 
         function storeOriginalContent() {
@@ -1175,7 +1513,6 @@
         let editMode = false;
         let hasUnsavedChanges = false;
 
-        // --- FIX 1: UPDATED toggleEditMode() FUNCTION ---
         function toggleEditMode() {
             editMode = !editMode;
             const btn = document.getElementById('editModeToggle');
@@ -1187,52 +1524,51 @@
 
             btn.querySelector('span').textContent = editMode ? 'Edit Mode: ON' : 'Edit Mode: OFF';
 
-            // IMPROVED: Using [data-section] selector and setAttribute() for robustness
             document.querySelectorAll('[data-section]').forEach(el => {
-                if (editMode) {
-                    el.setAttribute('contenteditable', 'true');
-                } else {
-                    el.setAttribute('contenteditable', 'false');
+                // Only toggle contenteditable if it's not the content inside the indicator-box, 
+                // as that has a read-only text field (data-section="indicator-2-text" in Initiative 3)
+                if (el.getAttribute('data-section') !== 'indicator-2-text') {
+                    if (editMode) {
+                        el.setAttribute('contenteditable', 'true');
+                    } else {
+                        el.setAttribute('contenteditable', 'false');
+                    }
                 }
             });
 
             if (!editMode && hasUnsavedChanges) {
                 saveToLocalStorage();
             }
-
-            // TEMPORARY DEBUG CODE - Remove after fixing
-            debugEditMode();
         }
-
-        // TEMPORARY DEBUG CODE - Remove after fixing
-        function debugEditMode() {
-            console.log('=== EDIT MODE DEBUG ===');
-            console.log('editMode value:', editMode);
-            console.log('Body has edit-mode class:', document.body.classList.contains('edit-mode'));
-
-            const editableElements = document.querySelectorAll('[data-section]');
-            console.log('Total editable elements found:', editableElements.length);
-
-            editableElements.forEach((el, index) => {
-                console.log(`Element ${index}:`, {
-                    tag: el.tagName,
-                    section: el.getAttribute('data-section'),
-                    contenteditable: el.getAttribute('contenteditable'),
-                    isEditable: el.isContentEditable
-                });
-            });
-        }
-        // --- END FIX 1 ---
-
 
         function toggleInitiative(element) {
+            const isActive = element.classList.contains('active');
+            
+            // Only allow collapse if it's not the only one open
+            if (isActive && document.querySelectorAll('.initiative.active').length === 1) {
+                element.classList.remove('active');
+                element.querySelector('.initiative-header').setAttribute('aria-expanded', 'false');
+                element.querySelector('.initiative-content').setAttribute('aria-hidden', 'true');
+                return;
+            }
+
+            // Close all others and open the selected one
             const allInitiatives = document.querySelectorAll('.initiative');
             allInitiatives.forEach(init => {
+                const header = init.querySelector('.initiative-header');
+                const content = init.querySelector('.initiative-content');
+
                 if (init !== element) {
                     init.classList.remove('active');
+                    header.setAttribute('aria-expanded', 'false');
+                    content.setAttribute('aria-hidden', 'true');
                 }
             });
+
+            // Toggle the current element
             element.classList.toggle('active');
+            element.querySelector('.initiative-header').setAttribute('aria-expanded', !isActive ? 'true' : 'false');
+            element.querySelector('.initiative-content').setAttribute('aria-hidden', !isActive ? 'false' : 'true');
         }
 
         document.addEventListener('input', function (e) {
@@ -1243,7 +1579,6 @@
         });
 
         function saveToLocalStorage() {
-            // Updated selector to use data-section for robustness
             document.querySelectorAll('[data-section]').forEach(el => {
                 const key = generateKey(el);
                 localStorage.setItem(`dt-plan-${key}`, el.innerHTML);
@@ -1255,12 +1590,13 @@
         function checkForSavedSession() {
             const hasSaved = localStorage.getItem('dt-plan-overview-overview');
             if (hasSaved) {
+                // By default, the banner is hidden (via CSS display: none). 
+                // We show it here if a session is found.
                 document.getElementById('restoreBanner').classList.add('active');
             }
         }
 
         function restoreSession() {
-            // Updated selector to use data-section for robustness
             document.querySelectorAll('[data-section]').forEach(el => {
                 const key = generateKey(el);
                 const saved = localStorage.getItem(`dt-plan-${key}`);
@@ -1277,7 +1613,6 @@
         }
 
         function resetChanges() {
-            // Using a simple message box instead of confirm()
             const isConfirmed = prompt('Are you sure you want to reset all changes? Type "YES" to confirm.');
             if (isConfirmed !== 'YES') {
                 return;
@@ -1314,7 +1649,7 @@
                 }
 
                 const indicators = [];
-                init.querySelectorAll('.indicator-box').forEach(box => {
+                init.querySelectorAll('.indicator-item .indicator-box').forEach(box => {
                     const label = box.querySelector('strong').textContent.trim();
                     const formulaEl = box.querySelector('.formula');
                     let formula = '';
@@ -1323,7 +1658,8 @@
                         formula = getFormulaText(num);
                     } else {
                         const textEl = box.querySelector('[data-section^="indicator"]');
-                        formula = textEl ? textEl.textContent.trim() : '';
+                        // Use textContent for safety, but check if it's the non-formula text
+                        formula = textEl && textEl.getAttribute('data-section') === 'indicator-2-text' ? textEl.textContent.trim() : '';
                     }
                     indicators.push(`${label} ${formula}`);
                 });
@@ -1366,13 +1702,13 @@
                 2: '(# of students with grade 2 or higher ÷ total # students) × 100',
                 3: '# of related training by the end of the year',
                 4: '(Number of students with completed prototypes ÷ Total students enrolled in D&T) × 100',
-                5: '(Number of students with grade G or higher ÷ Total enrolled students) × 100',
+                5: '(Number of students with grade C or higher ÷ Total enrolled students) × 100',
                 6: '(Completed lab areas ÷ Total planned areas) × 100',
                 7: '(Grades with completed projects ÷ Total grades in D&T) × 100',
                 8: '(Classes using lab ÷ Total scheduled classes) × 100',
-                9: '(Returning students ÷ Total students from previous year) × 100',
+                9: '(% Students Increment = ((#Students_2025-2026 - #Students_2024-2025) / #Students_2024-2025) x 100)',
                 10: '(Kits acquired ÷ Target kits) × 100',
-                11: '(Competitions participated ÷ Target competitions) × 100'
+                11: '(% Competitions Increment = ((#Competitions_2025-2026 - #Competitions_2024-2025) / #Competitions_2024-2025) x 100)'
             };
             return texts[num] || '';
         }
