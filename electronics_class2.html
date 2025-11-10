@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Arduino Control & Button Input (90 Minutes)</title>
+    <!-- Load Tailwind CSS via CDN for rapid, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons for aesthetic UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary-color: #f97316; /* Orange-500 */
+            --bg-light: #f8fafc; /* Slate-50 */
+            --text-light: #1e293b; /* Slate-800 */
+            --bg-dark: #1e293b; /* Slate-800 */
+            --text-dark: #f8fafc; /* Slate-50 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+        .dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        .card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .card {
+            background-color: white;
+        }
+        .dark-mode .card {
+            background-color: #334155; /* Slate-700 */
+        }
+        .nav-link.active {
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .code-input-area {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            background-color: #0f172a; /* Slate-900 */
+            color: #fef3c7; /* Amber-100 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="light-mode" onload="initApp()">
+
+    <!-- Header and Navigation -->
+    <header class="sticky top-0 z-50 shadow-md p-4 transition-colors duration-300 light-mode:bg-white dark-mode:bg-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap">
+            <h1 class="text-2xl font-extrabold text-orange-600 dark:text-orange-400">Week 2: Button Input & If/Else Logic</h1>
+            
+            <!-- Light/Dark Mode Toggle -->
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            </button>
+        </div>
+        
+        <!-- Progress Bar and Time Indicator -->
+        <div class="mt-3 max-w-7xl mx-auto">
+            <div id="progressTime" class="text-sm mb-1 text-gray-500 dark:text-gray-400">0:00 / 90 min: Review & Hook</div>
+            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progressBar" class="h-full bg-orange-600 transition-all duration-500" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Section Navigation -->
+        <nav class="mt-3 max-w-7xl mx-auto overflow-x-auto whitespace-nowrap py-2 border-b dark:border-gray-700">
+            <a href="#part1" class="nav-link px-3 py-1 text-sm font-medium hover:text-orange-600 transition-colors" data-time-end="12">PART 1: Hook (0:00-0:12)</a>
+            <a href="#part2" class="nav-link px-3 py-1 text-sm font-medium hover:text-orange-600 transition-colors" data-time-end="30">PART 2: Button Theory (0:12-0:30)</a>
+            <a href="#part3" class="nav-link px-3 py-1 text-sm font-medium hover:text-orange-600 transition-colors" data-time-end="55">PART 3: Guided Build (0:30-0:55)</a>
+            <a href="#part4" class="nav-link px-3 py-1 text-sm font-medium hover:text-orange-600 transition-colors" data-time-end="80">PART 4: Toggle Code (0:55-1:20)</a>
+            <a href="#part5" class="nav-link px-3 py-1 text-sm font-medium hover:text-orange-600 transition-colors" data-time-end="90">PART 5: Wrap-Up (1:20-1:30)</a>
+            <a href="#vocabulary" class="nav-link px-3 py-1 text-sm font-medium hover:text-orange-600 transition-colors" data-time-end="90">Vocabulary</a>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Mandatory Vocabulary Section -->
+        <section id="vocabulary" class="my-10 pt-4 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-4 text-orange-600 dark:text-orange-400 border-b pb-2">Enhanced Vocabulary</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">digitalRead()</h3>
+                    <p class="text-sm">An Arduino function that reads the value of a digital pin (either <strong>HIGH</strong> or <strong>LOW</strong>). Essential for checking button status.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">INPUT / OUTPUT</h3>
+                    <p class="text-sm">A pin configuration. <strong>OUTPUT</strong> (LED) sends signals. <strong>INPUT</strong> (Button) receives information from the user/environment.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">if/else statement</h3>
+                    <p class="text-sm">A fundamental programming structure used to make decisions. "<strong>IF</strong> the button is pressed, <strong>THEN</strong> turn the LED on, <strong>ELSE</strong> turn it off."</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">INPUT_PULLUP</h3>
+                    <p class="text-sm">A special Arduino mode that internally connects the input pin to 5V. This ensures the pin reads a default of <strong>HIGH</strong> when the button is **not** pressed, preventing "floating" values.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Toggle Switch</h3>
+                    <p class="text-sm">A button behavior where the state flips with each press: press once for ON, press again for OFF. Requires the Arduino to <strong>remember</strong> the current state (using a variable).</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Debouncing</h3>
+                    <p class="text-sm">A software fix (usually a small <code>delay()</code>) needed to compensate for the button's mechanical "bounce," which can cause one physical press to register as multiple presses in the code.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PART 1: REVIEW & HOOK (0:00-0:12) - 12 minutes -->
+        <section id="part1" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="refresh-ccw" class="w-8 h-8 text-orange-600 dark:text-orange-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 1: Review & Hook (0:00-0:12)</h2>
+            </div>
+
+            <!-- Warm-Up Activity: "Fix the Broken Code" (0:00-0:07) - MANDATORY OPENING -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">Warm-Up: Fix the Broken Code</h3>
+                <p class="mb-4"><strong>Prompt:</strong> This code is supposed to make the LED blink, but it just stays **ON**. Find the error and suggest the fix!</p>
+                
+                <div class="code-input-area mb-4">
+                    <pre id="brokenCode" contenteditable="true">
+void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(100);
+  digitalWrite(13, HIGH);  // &larr; ERROR IS HERE
+  delay(100);
+}
+                    </pre>
+                </div>
+                <button onclick="checkCodeFix()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Submit Fix</button>
+                <div id="fixFeedback" class="mt-4 text-sm font-medium hidden p-3 rounded-lg"></div>
+                
+                <p class="mt-4 text-sm text-gray-600 dark:text-gray-400"><strong>Connection:</strong> Reading code carefully is an essential skill. Today we'll write code that's MORE complex—so attention to detail matters even more.</p>
+            </div>
+
+            <!-- Today's Challenge Preview (0:10-0:12) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">Today's Challenge: Interactive Input</h3>
+                <p class="mb-3">We are moving from output (LED blink) to **input** (user control). By the end of class, your circuit will do one of these:</p>
+                <ul class="list-disc list-inside space-y-1 ml-4 text-sm">
+                    <li><strong>Version 1 (Basic):</strong> LED lights up <strong>ONLY</strong> when button is held down.</li>
+                    <li><strong>Version 2 (Ultimate):</strong> LED **toggles** (turns ON/OFF) with a single press, like a real light switch!</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 2: DIRECT INSTRUCTION - How Buttons Work (0:12-0:30) - 18 minutes -->
+        <section id="part2" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="mouse-pointer-2" class="w-8 h-8 text-orange-600 dark:text-orange-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 2: Button Theory & Wiring (0:12-0:30)</h2>
+            </div>
+
+            <!-- Physical Button Exploration (0:12-0:17) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">Button as a Switch</h3>
+                <p class="mb-4">A button is a simple **switch**. When you press it, the circuit path is **closed** (connection made). When you release it, the path is **open** (connection broken).</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+                        <p class="font-bold">Unpressed (Open)</p>
+                        <pre class="font-mono text-xs">
+○  ○
+○  ○
+                        </pre>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">No Connection</p>
+                    </div>
+                    <div class="flex-1 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+                        <p class="font-bold">Pressed (Closed)</p>
+                        <pre class="font-mono text-xs text-green-500 dark:text-green-400">
+○──○
+○──○
+                        </pre>
+                        <p class="text-sm text-green-600 dark:text-green-400">Connection Made!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button Wiring Concept (0:17-0:25) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">The Power of INPUT_PULLUP</h3>
+                <p class="mb-2">If you use a pin as a simple <code>INPUT</code>, it "floats" and gives random readings when the button is not pressed. The fix is <strong>INPUT_PULLUP</strong>:</p>
+                
+                <div class="bg-indigo-100 dark:bg-indigo-900/50 p-4 rounded-lg">
+                    <h4 class="font-bold text-indigo-700 dark:text-indigo-300 mb-2 flex items-center"><i data-lucide="cpu" class="w-5 h-5 mr-2"></i> How INPUT_PULLUP Works (Simplified)</h4>
+                    <p class="text-sm mb-2">The Arduino internally connects the pin to **HIGH (5V)** by default. This creates **backwards logic** in your code:</p>
+                    <ul class="list-disc list-inside text-sm">
+                        <li><strong>Button NOT Pressed:</strong> Pin is HIGH (5V).</li>
+                        <li><strong>Button PRESSED:</strong> The button connects the pin directly to GND, overriding 5V, so the Pin is LOW (0V).</li>
+                    </ul>
+                </div>
+                
+                <h4 class="font-bold mt-4 mb-2">🧑‍🏫 Button Resources (Web Research)</h4>
+                <a href="https://www.arduino.cc/en/Tutorial/BuiltInExamples/Button" target="_blank" class="flex items-center p-3 text-sm bg-orange-100 dark:bg-orange-900 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-700 transition-all mb-2">
+                    <i data-lucide="link" class="w-5 h-5 mr-2"></i> **Arduino Documentation:** Official Button Tutorial and Code Example.
+                </a>
+                <a href="https://www.youtube.com/watch?v=A8vG-L81k-o" target="_blank" class="flex items-center p-3 text-sm bg-orange-100 dark:bg-orange-900 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-700 transition-all">
+                    <i data-lucide="youtube" class="w-5 h-5 mr-2"></i> **Video Explanation:** Pull-Up Resistors and Why You Need Them (2 min segment).
+                </a>
+                
+                <!-- Button Testing Activity (0:25-0:30) -->
+                <div class="mt-6 p-4 border-t pt-4 dark:border-gray-600">
+                    <h4 class="font-bold mb-2 flex items-center"><i data-lucide="layout-grid" class="w-5 h-5 mr-2"></i> Button Leg Rule:</h4>
+                    <p class="text-sm">Out of the 4 legs, you need to use legs that are **ACROSS** from each other (diagonally or in the same row segment). If you use legs next to each other, they are always connected!</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 3: GUIDED PRACTICE - Build Button Circuit (0:30-0:55) - 25 minutes -->
+        <section id="part3" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="hand-metal" class="w-8 h-8 text-orange-600 dark:text-orange-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 3: Guided Build & Basic Response (0:30-0:55)</h2>
+            </div>
+
+            <!-- Activity 1: Basic Button Circuit (0:30-0:45) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">Step-by-Step Build: Button Input</h3>
+                
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <h4 class="font-bold mb-2">Wiring Steps:</h4>
+                        <ol class="list-decimal list-inside text-sm space-y-2 ml-2">
+                            <li><strong>LED:</strong> Keep the LED from Week 1 connected to Pin 13 (with resistor).</li>
+                            <li><strong>Button Insert:</strong> Place the button straddling the **middle gap** of the breadboard.</li>
+                            <li><strong>Input Wire:</strong> Connect one leg of the button (e.g., top left) to **Arduino Pin 2**.</li>
+                            <li><strong>Ground Wire:</strong> Connect the opposite leg of the button (e.g., bottom left) to **Arduino GND**.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">Code: Basic Digital Input</h4>
+                        <div class="bg-gray-800 text-white p-3 rounded-lg text-xs font-mono h-48 overflow-y-auto">
+                            <pre>
+const int buttonPin = 2;
+const int ledPin = 13;
+int buttonState = 0;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP); // INPUT!
+}
+
+void loop() {
+  buttonState = digitalRead(buttonPin);
+  
+  if (buttonState == LOW) { // Button Pressed = LOW
+    digitalWrite(ledPin, HIGH);
+  } else {                  // Button Not Pressed = HIGH
+    digitalWrite(ledPin, LOW);
+  }
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Common Problem Solver -->
+                <details class="mt-4 p-3 bg-red-100 dark:bg-red-900/50 rounded-lg">
+                    <summary class="font-bold cursor-pointer text-red-700 dark:text-red-300">Troubleshooting Flowchart (Click to expand)</summary>
+                    <ul class="text-sm mt-2 list-disc ml-4 space-y-1">
+                        <li><strong>Problem: LED always ON/OFF, doesn't react.</strong> &rarr; *Check:* Are the correct **diagonal** button legs used? Is one wire to Pin 2 and the other to GND?</li>
+                        <li><strong>Problem: LED flickers/behaves strangely.</strong> &rarr; *Check:* Is the connection loose? Wires must be firmly inserted.</li>
+                        <li><strong>Problem: Code won't upload.</strong> &rarr; *Fix:* Check `Tools` > `Port` in the IDE. Unplug/replug USB.</li>
+                    </ul>
+                </details>
+            </div>
+
+            <!-- Activity 2: Modify the Behavior (0:45-0:55) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">Challenge Progression (Modify Logic)</h3>
+                
+                <div class="space-y-4">
+                    <!-- Challenge 1: Reverse It -->
+                    <details class="p-3 border rounded-lg dark:border-gray-600">
+                        <summary class="font-bold cursor-pointer">Challenge 1: Reverse Logic (Easy)</summary>
+                        <p class="text-sm mt-2"><strong>Goal:</strong> LED ON when button NOT pressed, OFF when pressed.</p>
+                        <p class="text-xs mt-1 text-gray-600 dark:text-gray-400"><strong>Hint:</strong> Change the condition in the <code>if</code> statement.</p>
+                        <div class="mt-2 p-2 bg-yellow-50 dark:bg-gray-700 text-xs font-mono rounded">
+                            <code>if (buttonState == <strong>HIGH</strong>) { ... }</code>
+                        </div>
+                    </details>
+                    
+                    <!-- Challenge 2: Add Delay -->
+                    <details class="p-3 border rounded-lg dark:border-gray-600">
+                        <summary class="font-bold cursor-pointer">Challenge 2: Strobe Effect (Medium)</summary>
+                        <p class="text-sm mt-2"><strong>Goal:</strong> When button pressed, make the LED blink rapidly (strobe) instead of staying solid on.</p>
+                        <p class="text-xs mt-1 text-gray-600 dark:text-gray-400"><strong>Hint:</strong> You need to add a sequence of <code>digitalWrite</code> and <code>delay</code> commands **inside** the <code>if (buttonState == LOW)</code> block.</p>
+                        <div class="mt-2 p-2 bg-yellow-50 dark:bg-gray-700 text-xs font-mono rounded">
+                            <pre>
+  if (buttonState == LOW) {
+    digitalWrite(ledPin, HIGH);
+    delay(100);
+    digitalWrite(ledPin, LOW);
+    delay(100);
+  } else { ... }</pre>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 4: INDEPENDENT PRACTICE - Toggle Switch (0:55-1:20) - 25 minutes -->
+        <section id="part4" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="lightbulb" class="w-8 h-8 text-orange-600 dark:text-orange-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 4: Independent Practice - Toggle Switch (0:55-1:20)</h2>
+            </div>
+
+            <!-- The Ultimate Challenge: Toggle LED (0:55-1:05) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">The Ultimate Challenge: Toggle Switch</h3>
+                <p class="mb-4 text-sm">To make the LED flip its state (toggle) with one press, the Arduino must **remember** the current state. This requires using a **variable as memory** and detecting the **change** (HIGH to LOW) rather than just the state (LOW).</p>
+
+                <div class="p-4 bg-purple-100 dark:bg-purple-900/50 rounded-lg mb-4">
+                    <h4 class="font-bold text-purple-700 dark:text-purple-300 flex items-center"><i data-lucide="memory-stick" class="w-4 h-4 mr-2"></i> Key Concept: Variables as Memory</h4>
+                    <p class="text-sm mt-1">We use <code>bool ledIsOn = false;</code> to store the current state. When the button is pressed, we flip the state using the **NOT operator**: <code>ledIsOn = !ledIsOn;</code></p>
+                </div>
+
+                <h4 class="font-bold mb-2">Challenge: Fill in the Toggle Template</h4>
+                <div class="bg-gray-800 text-white p-3 rounded-lg text-xs font-mono h-80 overflow-y-auto">
+                    <pre id="toggleTemplate" contenteditable="true">
+const int buttonPin = 2;
+const int ledPin = 13;
+
+bool ledIsOn = false;           // Track LED state
+int lastButtonState = HIGH;     // Track button state for change detection
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
+  Serial.begin(9600); // For debugging
+}
+
+void loop() {
+  int buttonState = digitalRead(buttonPin);
+  
+  // TODO: Detect when button is pressed (transition from HIGH to LOW)
+  if (buttonState == LOW && lastButtonState == HIGH) {
+    // 1. Flip the ledIsOn state
+    ledIsOn = !ledIsOn; // <--- This line is the magic
+
+    // 2. Update LED based on ledIsOn variable
+    if (ledIsOn) {
+      digitalWrite(ledPin, HIGH);
+    } else {
+      digitalWrite(ledPin, LOW);
+    }
+    
+    delay(200); // Debounce delay
+  }
+  
+  // 3. Update memory for next loop
+  lastButtonState = buttonState;
+  delay(10);
+}
+                    </pre>
+                </div>
+                <button onclick="runCodeSimulation()" class="mt-3 bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition-colors w-full">Simulate Toggle Logic</button>
+            </div>
+
+            <!-- Extension: Two-Button Control (1:15-1:20) -->
+            <div class="card p-6 rounded-xl mb-6 bg-yellow-50 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-yellow-700 dark:text-yellow-300 flex items-center"><i data-lucide="activity" class="w-5 h-5 mr-2"></i> Extension Challenge (Advanced)</h3>
+                <p class="mb-2 text-sm">Challenge: Add a **second button (Pin 3)**. Button 1 turns the LED **ON**, and Button 2 turns the LED **OFF** (separate on/off switches).</p>
+                <details class="text-sm mt-3">
+                    <summary class="font-bold cursor-pointer text-yellow-800 dark:text-yellow-200">View Partial Code Hint</summary>
+                    <pre class="bg-yellow-200 dark:bg-gray-700 p-2 rounded mt-2 text-xs font-mono overflow-auto">
+const int buttonOn = 2;
+const int buttonOff = 3;
+const int ledPin = 13;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  pinMode(buttonOn, INPUT_PULLUP);
+  pinMode(buttonOff, INPUT_PULLUP); // New pin setup
+}
+
+void loop() {
+  if (digitalRead(buttonOn) == LOW) { // Button 1 Pressed
+    digitalWrite(ledPin, HIGH);
+    delay(50); // Debounce
+  }
+  
+  if (digitalRead(buttonOff) == LOW) { // Button 2 Pressed
+    digitalWrite(ledPin, LOW);
+    delay(50); // Debounce
+  }
+}
+                    </pre>
+                </details>
+            </div>
+
+            <!-- Mandatory Practice Exercises with Concept Checking -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">Mandatory Concept Checking Questions</h3>
+                <div id="conceptQuiz" class="space-y-4">
+                    <!-- Q1 (Wh- Question) -->
+                    <div>
+                        <p class="font-semibold">1. Why is the button pin reading <strong>LOW</strong> when the button is pressed (assuming you use **INPUT_PULLUP**)?</p>
+                        <textarea rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Answer here..."></textarea>
+                    </div>
+                    <!-- Q2 (Comparison Question) -->
+                    <div>
+                        <p class="font-semibold">2. Compare the Pin Mode settings: <code>OUTPUT</code> (LED) vs. <code>INPUT_PULLUP</code> (Button).</p>
+                        <textarea rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Answer here..."></textarea>
+                    </div>
+                    <!-- Q3 (Debugging Question) -->
+                    <div>
+                        <p class="font-semibold">3. My button works perfectly, but the LED flashes **twice** every time I press it once. What is the most likely coding issue?</p>
+                        <select class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm">
+                            <option value="">Select one...</option>
+                            <option value="debouncing">Lack of proper debouncing delay in the code.</option>
+                            <option value="pullup">Forgot to set `INPUT_PULLUP` mode.</option>
+                            <option value="wrongpin">Used the wrong pin number.</option>
+                        </select>
+                    </div>
+                    <!-- Q4 (Application Question) -->
+                    <div>
+                        <p class="font-semibold">4. How is using an <code>if/else</code> statement in code similar to operating a button on a microwave?</p>
+                        <textarea rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Answer here..."></textarea>
+                    </div>
+                </div>
+                <button onclick="showConceptFeedback()" class="mt-4 bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Submit & View Explanations</button>
+                <div id="conceptFeedback" class="mt-4 text-sm p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hidden">
+                    <p class="font-bold mb-1">Explanations:</p>
+                    <p>Q1: The pin is internally pulled HIGH (5V). Pressing the button connects the pin directly to GND (0V), forcing it LOW.</p>
+                    <p>Q2: <strong>OUTPUT</strong> tells the pin to send power/signals (like turning an LED on). <strong>INPUT_PULLUP</strong> tells the pin to listen for a signal change (like a button press) and gives it a default HIGH value.</p>
+                    <p>Q3: The likely issue is <strong>Lack of proper debouncing delay</strong>. The button physically bounces when pressed, and the Arduino is fast enough to read those multiple contact closures as separate presses.</p>
+                    <p>Q4: When you press the 'Start' button, the microwave uses IF/ELSE logic: <strong>IF</strong> start button pressed, <strong>THEN</strong> turn on motor/magnetron, <strong>ELSE</strong> remain off.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 5: WRAP-UP & REFLECTION (1:20-1:30) - 10 minutes -->
+        <section id="part5" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="check-check" class="w-8 h-8 text-orange-600 dark:text-orange-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 5: Synthesis & Wrap-Up (1:20-1:30)</h2>
+            </div>
+
+            <!-- Show & Tell (1:20-1:25) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">A. Knowledge Consolidation: Show & Tell Reflection</h3>
+                
+                <p class="text-sm mb-4">Think about the ultimate challenge: the Toggle Switch. What was the hardest conceptual part—detecting the press, or remembering the state?</p>
+                
+                <h4 class="font-bold mb-2 flex items-center"><i data-lucide="message-square" class="w-4 h-4 mr-2"></i> Reflection Prompt:</h4>
+                <label for="showTellReflection" class="block text-sm font-medium mb-1">What was the **hardest part** of writing the toggle code, and how did you finally solve it (or how would you solve it next time)?</label>
+                <textarea id="showTellReflection" rows="3" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="The logic for detecting the change (HIGH to LOW) was confusing. I solved it by using lastButtonState."></textarea>
+            </div>
+
+            <!-- Exit Ticket (1:27-1:29) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">B. Objective Confirmation & Exit Ticket</h3>
+                
+                <div class="space-y-3">
+                    <div>
+                        <p class="font-semibold text-sm">1. **Code Reading:** What does this line do? <code>int buttonState = digitalRead(2);</code></p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Reads the current state (HIGH or LOW) of pin 2 and stores it."></textarea>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">2. **Debugging:** My button circuit doesn't work. List 3 things to check (hardware or code):</p>
+                        <textarea rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="1. Is the button straddling the gap? 2. Is pinMode set to INPUT_PULLUP? 3. Is the logic checking for LOW or HIGH correctly?"></textarea>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">3. **Connection:** How is a button like a light switch in your house?</p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Both are switches that open or close a circuit to control power."></textarea>
+                    </div>
+                </div>
+                
+                <h4 class="font-bold mt-4 mb-2">Self-Assessment:</h4>
+                <select class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm">
+                    <option>Select your confidence level</option>
+                    <option>I can build a button circuit and basic code (Ready for next week)</option>
+                    <option>I need more practice with buttons and if/else logic</option>
+                    <option>I'm ready for sensors next week</option>
+                </select>
+            </div>
+
+            <!-- Preview Week 3 (1:29-1:30) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-orange-700 dark:text-orange-300">C. Bridge to Next Lesson & Homework</h3>
+                <p class="mb-4 text-sm font-medium">Today you mastered <strong>digital input (on/off)</strong>. **Next week:** we move to **analog input**. We'll use a **temperature sensor** that measures actual conditions in the room.</p>
+                
+                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <p class="font-bold text-gray-700 dark:text-gray-300 flex items-center"><i data-lucide="thermometer" class="w-4 h-4 mr-2"></i> Next Week's Teaser:</p>
+                    <p class="text-sm mt-1">We'll build a thermostat that turns a virtual fan on when it's hot! Your **Temperature Blanket** final project uses this exact same logic.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript for Interactivity, Logic, and Persistence -->
+    <script>
+        // --- Global State & Initialization ---
+        const APP_ID = 'Week2ElectronicsClass';
+        let currentState = {
+            theme: 'light',
+            progress: 0,
+        };
+
+        const sectionTimes = {
+            'part1': { start: 0, end: 12, name: 'Review & Hook' },
+            'part2': { start: 12, end: 30, name: 'Button Theory & Wiring' },
+            'part3': { start: 30, end: 55, name: 'Guided Build & Basic Response' },
+            'part4': { start: 55, end: 80, name: 'Independent Practice - Toggle Switch' },
+            'part5': { start: 80, end: 90, name: 'Synthesis & Wrap-Up' }
+        };
+
+        function initApp() {
+            loadState();
+            applyTheme();
+            updateAllIcons();
+            setupEventListeners();
+            updateProgress();
+            setupIntersectionObserver();
+        }
+
+        // --- Persistence (localStorage) ---
+
+        function loadState() {
+            try {
+                const savedState = JSON.parse(localStorage.getItem(APP_ID));
+                if (savedState) {
+                    currentState = { ...currentState, ...savedState };
+                }
+            } catch (e) {
+                console.error("Could not load state from localStorage:", e);
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(APP_ID, JSON.stringify(currentState));
+        }
+
+        // --- Theme & UI ---
+
+        function applyTheme() {
+            document.body.className = currentState.theme === 'dark' ? 'dark-mode' : 'light-mode';
+        }
+
+        function toggleTheme() {
+            currentState.theme = currentState.theme === 'light' ? 'dark' : 'light';
+            applyTheme();
+            saveState();
+        }
+
+        function updateAllIcons() {
+            lucide.createIcons();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        }
+        
+        // --- Progress and Timing ---
+
+        function setupIntersectionObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                        const sectionId = entry.target.id;
+                        updateProgress(sectionId);
+                        
+                        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                        document.querySelector(`a[href="#${sectionId}"]`).classList.add('active');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            Object.keys(sectionTimes).forEach(id => {
+                const section = document.getElementById(id);
+                if (section) {
+                    observer.observe(section);
+                }
+            });
+        }
+
+        function updateProgress(currentSectionId = 'part1') {
+            const currentSection = sectionTimes[currentSectionId];
+            if (!currentSection) return;
+
+            const timeTotal = 90;
+            const progress = (currentSection.end / timeTotal) * 100;
+            
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressTime').textContent = `${currentSection.start}:00-${currentSection.end}:00 / 90 min: ${currentSection.name}`;
+        }
+        
+        // --- Section-Specific Logic ---
+        
+        function checkCodeFix() {
+            const codeContent = document.getElementById('brokenCode').textContent;
+            const feedback = document.getElementById('fixFeedback');
+            
+            // Check if the student replaced the second HIGH with LOW
+            if (codeContent.includes("digitalWrite(13, LOW);") && !codeContent.includes("digitalWrite(13, HIGH);  // &larr; ERROR IS HERE")) {
+                feedback.innerHTML = '<strong>Excellent!</strong> Line 8 must be <code>digitalWrite(13, LOW);</code>. The LED needs a LOW signal to turn OFF!';
+                feedback.classList.remove('bg-red-100', 'dark:bg-red-900/50');
+                feedback.classList.add('bg-green-100', 'dark:bg-green-900/50', 'block');
+                feedback.classList.remove('hidden');
+            } else {
+                feedback.innerHTML = '<strong>Not quite!</strong> The LED never turns off because it is set to HIGH twice. Look for the second <code>digitalWrite(13, HIGH);</code> and change it.';
+                feedback.classList.remove('bg-green-100', 'dark:bg-green-900/50');
+                feedback.classList.add('bg-red-100', 'dark:bg-red-900/50', 'block');
+                feedback.classList.remove('hidden');
+            }
+        }
+
+        function showConceptFeedback() {
+            const feedbackBox = document.getElementById('conceptFeedback');
+            feedbackBox.classList.remove('hidden');
+            showMessageBox('Concept explanations are ready! Review the answers below.');
+        }
+
+        // Simple mock for code simulation - alerts the user about the logic run
+        function runCodeSimulation() {
+             const templateContent = document.getElementById('toggleTemplate').textContent;
+             if (templateContent.includes("ledIsOn = !ledIsOn;") && (templateContent.includes("if (ledIsOn)") || templateContent.includes("if (ledIsOn == true)"))) {
+                 showMessageBox("Success! Your toggle logic is sound: it detects the press and flips the state. Now build it!");
+             } else {
+                 showMessageBox("Simulation Error: Make sure you've added the state-flipping logic (ledIsOn = !ledIsOn;).");
+             }
+        }
+
+
+        // Custom Message Box (replacing forbidden alert())
+        function showMessageBox(message) {
+            let msgBox = document.getElementById('customMessageBox');
+            if (!msgBox) {
+                msgBox = document.createElement('div');
+                msgBox.id = 'customMessageBox';
+                msgBox.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-xl text-white font-semibold z-[100] transition-transform duration-300 transform translate-x-full';
+                document.body.appendChild(msgBox);
+            }
+            
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            msgBox.style.backgroundColor = isDarkMode ? '#f97316' : '#ea580c'; // Orange-500/600
+            msgBox.style.color = 'white';
+
+            msgBox.innerHTML = `<i data-lucide="check" class="w-4 h-4 mr-2 inline-block"></i> ${message}`;
+            lucide.createIcons();
+
+            msgBox.classList.remove('translate-x-full');
+            msgBox.classList.add('translate-x-0');
+
+            setTimeout(() => {
+                msgBox.classList.remove('translate-x-0');
+                msgBox.classList.add('translate-x-full');
+            }, 5000);
+        }
+
+    </script>
+</body>
+</html>

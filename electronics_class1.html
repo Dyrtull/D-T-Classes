@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Electricity Basics & LEDs (90 Minutes)</title>
+    <!-- Load Tailwind CSS via CDN for rapid, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons for aesthetic UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary-color: #2563EB; /* Blue-600 */
+            --bg-light: #f8fafc; /* Slate-50 */
+            --text-light: #1e293b; /* Slate-800 */
+            --bg-dark: #1e293b; /* Slate-800 */
+            --text-dark: #f8fafc; /* Slate-50 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+        .dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        .card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .card {
+            background-color: white;
+        }
+        .dark-mode .card {
+            background-color: #334155; /* Slate-700 */
+        }
+        .nav-link.active {
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .resource-link {
+            transition: transform 0.2s;
+        }
+        .resource-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .checkbox-label {
+            transition: all 0.2s;
+        }
+        .checkbox-label:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+        /* Custom styles for the blinking animation */
+        @keyframes blink-animation {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.1; }
+        }
+        .blinking-led {
+            animation: blink-animation 1s infinite;
+        }
+    </style>
+</head>
+<body class="light-mode" onload="initApp()">
+
+    <!-- Header and Navigation -->
+    <header class="sticky top-0 z-50 shadow-md p-4 transition-colors duration-300 light-mode:bg-white dark-mode:bg-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap">
+            <h1 class="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400">Week 1: Electricity Basics & LEDs</h1>
+            
+            <!-- Light/Dark Mode Toggle -->
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            </button>
+        </div>
+        
+        <!-- Progress Bar and Time Indicator -->
+        <div class="mt-3 max-w-7xl mx-auto">
+            <div id="progressTime" class="text-sm mb-1 text-gray-500 dark:text-gray-400">0:00 / 90 min: Hook & Introduction</div>
+            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progressBar" class="h-full bg-indigo-600 transition-all duration-500" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Section Navigation -->
+        <nav class="mt-3 max-w-7xl mx-auto overflow-x-auto whitespace-nowrap py-2 border-b dark:border-gray-700">
+            <a href="#part1" class="nav-link px-3 py-1 text-sm font-medium hover:text-indigo-600 transition-colors" data-time-end="15">PART 1: Hook (0:00-0:15)</a>
+            <a href="#part2" class="nav-link px-3 py-1 text-sm font-medium hover:text-indigo-600 transition-colors" data-time-end="30">PART 2: VCR Basics (0:15-0:30)</a>
+            <a href="#part3" class="nav-link px-3 py-1 text-sm font-medium hover:text-indigo-600 transition-colors" data-time-end="55">PART 3: Guided Build (0:30-0:55)</a>
+            <a href="#part4" class="nav-link px-3 py-1 text-sm font-medium hover:text-indigo-600 transition-colors" data-time-end="80">PART 4: Arduino Code (0:55-1:20)</a>
+            <a href="#part5" class="nav-link px-3 py-1 text-sm font-medium hover:text-indigo-600 transition-colors" data-time-end="90">PART 5: Wrap-Up (1:20-1:30)</a>
+            <a href="#vocabulary" class="nav-link px-3 py-1 text-sm font-medium hover:text-indigo-600 transition-colors" data-time-end="90">Vocabulary</a>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Mandatory Vocabulary Section -->
+        <section id="vocabulary" class="my-10 pt-4 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-4 text-indigo-600 dark:text-indigo-400 border-b pb-2">Enhanced Vocabulary</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Voltage</h3>
+                    <p class="text-sm">Electrical <strong>Pressure</strong>. Analogous to a water tower's height. Flow is from high (+) to low (-) voltage.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Current (Amps)</h3>
+                    <p class="text-sm">The <strong>Flow</strong> of electricity. Analogous to water flowing through a pipe. Arduino pins have a max of 40mA.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Resistance (Ohms)</h3>
+                    <p class="text-sm"><strong>Opposition to Flow</strong>. Analogous to a kink in a garden hose. Components like resistors intentionally restrict current.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">LED</h3>
+                    <p class="text-sm">Light-Emitting <strong>Diode</strong>. A component that only allows current to flow in <strong>one direction</strong> (requires correct polarity).</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Anode (+) / Cathode (-)</h3>
+                    <p class="text-sm">The positive (<strong>long leg</strong>) and negative (<strong>short leg</strong>) terminals of an LED, defining its required polarity.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Breadboard</h3>
+                    <p class="text-sm">A construction base used to <strong>build temporary circuits</strong> without soldering. Holes in the same row segment are connected.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Complete Circuit</h3>
+                    <p class="text-sm">A path electricity must follow from the positive source (+) to the negative ground (-) <strong>without any breaks</strong>.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Arduino / Microcontroller</h3>
+                    <p class="text-sm">A tiny computer you can <strong>program</strong> to control hardware, like turning an LED on or off.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PART 1: HOOK & INTRODUCTION (0:00-0:15) - 15 minutes -->
+        <section id="part1" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="zap" class="w-8 h-8 text-indigo-600 dark:text-indigo-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 1: Hook & Introduction (0:00-0:15)</h2>
+            </div>
+
+            <!-- 1. Opening Activity: "What's Inside?" (0:00-0:05) - MANDATORY -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Opening Activity: What's Inside?</h3>
+                <p class="mb-4"><strong>Prompt:</strong> In 60 seconds, list as many electronic devices you used <strong>TODAY</strong> that are controlled by microcontrollers.</p>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Visual Hook Simulation -->
+                    <div class="md:w-1/2 flex flex-col justify-center items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-dashed border-gray-300">
+                        <i data-lucide="flashlight" class="w-10 h-10 text-yellow-500"></i>
+                        <p class="text-center mt-2 text-sm text-gray-600 dark:text-gray-400">Box "Before": Flashlight with dead batteries</p>
+                        <i data-lucide="smartphone" class="w-10 h-10 text-indigo-500 mt-4"></i>
+                        <p class="text-center mt-2 text-sm text-gray-600 dark:text-gray-400">Box "After": Smartphone, Smartwatch, LED Strip</p>
+                    </div>
+                    <!-- Interactive Element -->
+                    <div class="md:w-1/2">
+                        <label for="deviceList" class="block text-sm font-medium mb-2">My Devices Today:</label>
+                        <textarea id="deviceList" rows="4" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500" placeholder="e.g., Smartphone, Smartwatch, Car, Smart Speaker..."></textarea>
+                        <button onclick="saveInitialResponse()" class="mt-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Save Response</button>
+                        <p id="initialResponseSaved" class="mt-2 text-sm text-green-600 dark:text-green-400 hidden">Response saved for later reflection!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Big Picture (0:05-0:10) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">The Big Picture: Why Electronics?</h3>
+                <p class="mb-4">By Week 13, you'll build one of these final projects. Today, you master the <strong>single blinking LED</strong> &mdash; the foundation of all of them!</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm font-medium">
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Smart Pill Container</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Temperature Blanket</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Pantry Tracker</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Sun Bracelet</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Iron Man Clock</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">IoT Pet Feeder</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Ambient Color Lamp</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Talking Plant</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Water Bottle</div>
+                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900 rounded-lg">Automatic Door</div>
+                </div>
+            </div>
+
+            <!-- Learning Objectives Section (0:10-0:15) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Learning Objectives & Success Criteria</h3>
+                <p class="text-sm mb-4">Check off each objective as you master it today! <strong>Exit Ticket Preview:</strong> At the end of class, you'll show me a working LED circuit.</p>
+                <div class="space-y-2" id="learningObjectives">
+                    <label class="flex items-center p-3 rounded-lg checkbox-label cursor-pointer">
+                        <input type="checkbox" data-objective="explain_vcr" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                        <span class="ml-3">Explain <strong>voltage, current, and resistance</strong> in simple terms.</span>
+                    </label>
+                    <label class="flex items-center p-3 rounded-lg checkbox-label cursor-pointer">
+                        <input type="checkbox" data-objective="build_led" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                        <span class="ml-3">Build a basic <strong>LED circuit</strong> on a breadboard.</span>
+                    </label>
+                    <label class="flex items-center p-3 rounded-lg checkbox-label cursor-pointer">
+                        <input type="checkbox" data-objective="identify_polarity" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                        <span class="ml-3">Identify LED <strong>polarity</strong> and explain why it matters.</span>
+                    </label>
+                    <label class="flex items-center p-3 rounded-lg checkbox-label cursor-pointer">
+                        <input type="checkbox" data-objective="use_resistor" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                        <span class="ml-3">Use a <strong>resistor</strong> to protect an LED.</span>
+                    </label>
+                    <label class="flex items-center p-3 rounded-lg checkbox-label cursor-pointer">
+                        <input type="checkbox" data-objective="arduino_blink" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                        <span class="ml-3">Make an <strong>Arduino blink an external LED</strong>.</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 2: DIRECT INSTRUCTION - Electricity Basics (0:15-0:30) - 15 minutes -->
+        <section id="part2" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="power" class="w-8 h-8 text-indigo-600 dark:text-indigo-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 2: Electricity Basics & Breadboards (0:15-0:30)</h2>
+            </div>
+
+            <!-- Concept Exploration (0:15-0:25) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">VCR: Voltage, Current, Resistance</h3>
+                
+                <!-- Analogies and Definitions -->
+                <div class="space-y-4">
+                    <div class="bg-blue-50 dark:bg-blue-900/50 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <h4 class="font-bold text-blue-700 dark:text-blue-300 flex items-center"><i data-lucide="gauge" class="w-5 h-5 mr-2"></i> 1. Voltage (V) - Electrical Pressure</h4>
+                        <p class="text-sm mt-1"><strong>Analogy:</strong> The height of a <strong>water tower</strong>. High tower = high pressure = high voltage. Electricity flows from high (+) to low (-).</p>
+                    </div>
+                    <div class="bg-green-50 dark:bg-green-900/50 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                        <h4 class="font-bold text-green-700 dark:text-green-300 flex items-center"><i data-lucide="move" class="w-5 h-5 mr-2"></i> 2. Current (A) - Flow of Electricity</h4>
+                        <p class="text-sm mt-1"><strong>Analogy:</strong> <strong>Water through a pipe</strong>. More water = more current. <em>Arduino pins limit flow to a max of 40mA (a small stream).</em></p>
+                    </div>
+                    <div class="bg-red-50 dark:bg-red-900/50 p-4 rounded-lg border border-red-200 dark:border-red-800">
+                        <h4 class="font-bold text-red-700 dark:text-red-300 flex items-center"><i data-lucide="block-check" class="w-5 h-5 mr-2"></i> 3. Resistance (Ω) - Opposition to Flow</h4>
+                        <p class="text-sm mt-1"><strong>Analogy:</strong> A <strong>kink in a garden hose</strong>. Resistors intentionally restrict current. <strong>Why we need it:</strong> Arduino gives 5V, but an LED only wants ~2V. The resistor drops the extra voltage and limits current, preventing the LED from burning out. [Show burned-out LED - it looks cloudy inside]</p>
+                    </div>
+                </div>
+
+                <!-- Web Research: VCR Resources -->
+                <h4 class="font-bold mt-6 mb-2">🧑‍🏫 Best VCR Resources (Web Research)</h4>
+                <a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html" target="_blank" class="resource-link flex items-center p-3 text-sm bg-indigo-100 dark:bg-indigo-900 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-all mb-2">
+                    <i data-lucide="plug" class="w-5 h-5 mr-2"></i> <strong>Interactive Simulation:</strong> Build a basic circuit and see V, C, R relationships (PhET).
+                </a>
+                <a href="https://youtu.be/AkWyNFPpRE0?si=l_Zdpx_LB-90aiuA" target="_blank" class="resource-link flex items-center p-3 text-sm bg-indigo-100 dark:bg-indigo-900 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-all">
+                    <i data-lucide="youtube" class="w-5 h-5 mr-2"></i> <strong>Explainer Video:</strong> Voltage, Current, Resistance Explained .
+                </a>
+
+                <!-- Check for Understanding (Concept Checking Mandatory) -->
+                <div class="mt-6 p-4 border-t pt-4 dark:border-gray-600">
+                    <h4 class="font-bold mb-2 flex items-center"><i data-lucide="brain-circuit" class="w-5 h-5 mr-2"></i> Concept Check:</h4>
+                    <p class="text-sm mb-3">If you connect the positive terminal of one battery to the positive terminal of another battery, will electricity flow?</p>
+                    <div id="vcrCheck" class="space-y-2">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="vcr_q" value="yes" class="form-radio text-indigo-600">
+                            <span class="ml-2 text-sm">Yes, more flow!</span>
+                        </label>
+                        <label class="inline-flex items-center ml-4">
+                            <input type="radio" name="vcr_q" value="no" class="form-radio text-indigo-600">
+                            <span class="ml-2 text-sm">No, I need a voltage difference.</span>
+                        </label>
+                        <button onclick="checkVCRConcept()" class="ml-4 text-xs font-semibold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-200">Reveal Answer</button>
+                        <p id="vcrFeedback" class="text-sm mt-2 font-medium"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Breadboard Tutorial (0:25-0:30) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Breadboard Tutorial</h3>
+                <p class="mb-4">The breadboard is your temporary construction site. Knowing its internal connections is key!</p>
+                <div class="relative p-4 bg-yellow-50 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                    <h4 class="font-bold text-yellow-700 dark:text-yellow-300 mb-2">Internal Connections Visualizer</h4>
+                    <img src="https://energia.nu/guide/foundations/basic_electronics_components/Sidekick_Breadboard_Internal_Connections.jpg" alt="Diagram showing horizontal power rails and vertical row connections" class="w-full rounded-md shadow-md mb-3">
+                    <ul class="text-sm list-disc pl-5">
+                        <li><strong>Power Rails (Red/Blue lines):</strong> Run <strong>full length</strong> (horizontally). Use these for V+ and GND.</li>
+                        <li><strong>Component Rows (Middle):</strong> Run <strong>short length</strong> (vertically, 5 holes each). Components in the same 5-hole group are connected.</li>
+                        <li><strong>The Gap:</strong> The middle trench <strong>separates</strong> the top and bottom halves.</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-red-100 dark:bg-red-900/50 rounded-lg">
+                        <h5 class="font-bold text-red-700 dark:text-red-300 flex items-center"><i data-lucide="alert-triangle" class="w-4 h-4 mr-2"></i> Common Mistake Demo:</h5>
+                        <p class="text-sm mt-1">If you place the two legs of an LED <strong>straddling the middle gap</strong>, they are <strong>not connected</strong>. Both legs must be on the same side, or connected via wires to separate components.</p>
+                    </div>
+                </div>
+                <!-- Web Research: Breadboard Resources -->
+                <h4 class="font-bold mt-6 mb-2">🧑‍🏫 Breadboard Resources (Web Research)</h4>
+                <a href="https://youtu.be/W6mixXsn-Vc?si=ICMY23xciJOwLQIv" target="_blank" class="resource-link flex items-center p-3 text-sm bg-indigo-100 dark:bg-indigo-900 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-all">
+                    <i data-lucide="film" class="w-5 h-5 mr-2"></i> <strong>Video Tutorial:</strong> Detailed Breadboard Wiring Guide for Beginners (5 min segment).
+                </a>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 3: GUIDED PRACTICE - Build First Circuit (0:30-0:55) - 25 minutes -->
+        <section id="part3" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="hand-metal" class="w-8 h-8 text-indigo-600 dark:text-indigo-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 3: Guided Build - LED Circuit (0:30-0:55)</h2>
+            </div>
+
+            <!-- Challenge 1: Identify the Parts (0:30-0:35) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Challenge 1: Component Identification</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+                        <p class="font-bold mb-1">Resistor (220Ω)</p>
+                        <p class="text-sm">Bands: <strong>Red - Red - Brown - Gold</strong></p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Function: Voltage speed bump, current limiter.</p>
+                    </div>
+                    <div id="ledPolarity" class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-center cursor-pointer hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition-colors" onclick="togglePolarityHint()">
+                        <p class="font-bold mb-1">LED Polarity (Click for Hint)</p>
+                        <i data-lucide="lightbulb" class="w-8 h-8 text-yellow-500 mx-auto"></i>
+                        <p class="text-sm mt-1" id="polarityHint">❓ Which leg is positive?</p>
+                    </div>
+                    <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+                        <p class="font-bold mb-1">Jumper Wires</p>
+                        <p class="text-sm"><strong>Red:</strong> usually Power (+) / <strong>Black:</strong> usually Ground (-)</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Function: Connecting components on the breadboard.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challenge 2: Build the Circuit (0:35-0:45) - Applied Examples -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Challenge 2: Build the Battery-Powered LED Circuit</h3>
+                <p class="mb-4 text-sm font-medium">Goal: Build a <strong>Complete Path</strong> using the 9V battery, 220Ω resistor, and a red LED.</p>
+                
+                <div class="mb-4 p-4 bg-indigo-50 dark:bg-indigo-900/50 rounded-lg">
+                    <h4 class="font-bold mb-2 flex items-center"><i data-lucide="layout-grid" class="w-4 h-4 mr-2"></i> Circuit Diagram (Essential)</h4>
+                    <p class="font-mono text-xs overflow-x-auto p-2 bg-white dark:bg-gray-800 rounded-md shadow-inner">
+                        Battery + &rarr; [Red Wire] &rarr; Row 5 (Breadboard)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[220&Omega; Resistor]<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Row 10<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[LED Long Leg (+)]<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Row 15<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[LED Short Leg (-)]<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+                        Row 15 &larr; [Black Wire] &larr; Battery - (GND)
+                    </p>
+                </div>
+
+                <!-- Web Research: Circuit Simulator -->
+                <h4 class="font-bold mt-6 mb-2">🧑‍🏫 Applied Example Resource (Web Research)</h4>
+                <a href="https://www.tinkercad.com/circuits" target="_blank" class="resource-link flex items-center p-3 text-sm bg-indigo-100 dark:bg-indigo-900 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-all">
+                    <i data-lucide="layers-3d" class="w-5 h-5 mr-2"></i> <strong>Circuit Simulator:</strong> Use Tinkercad Circuits to simulate this exact circuit if components fail.
+                </a>
+            </div>
+
+            <!-- Challenge 3: Troubleshooting Practice (0:45-0:50) - Interactive Activities -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Challenge 3: Troubleshooting Practice</h3>
+                <p class="mb-4 text-sm">Once your circuit works, intentionally break it and observe! Then fix it.</p>
+                <div class="space-y-3">
+                    <div class="p-3 border rounded-lg dark:border-gray-600">
+                        <p class="font-semibold">Break 1: Reverse the LED</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><strong>Observation:</strong> Doesn't light. <strong>Lesson:</strong> <strong>Polarity matters</strong> (LEDs are Diodes!).</p>
+                    </div>
+                    <div class="p-3 border rounded-lg dark:border-gray-600">
+                        <p class="font-semibold">Break 2: Remove the Resistor (Connect wire directly)</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><strong>Observation:</strong> LED is very bright, may burn out. <strong>Lesson:</strong> The <strong>resistor protects</strong> components from too much current!</p>
+                    </div>
+                    <div class="p-3 border rounded-lg dark:border-gray-600">
+                        <p class="font-semibold">Break 3: Disconnect Ground</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400"><strong>Observation:</strong> Nothing happens. <strong>Lesson:</strong> You need a <strong>complete circuit</strong> from + to -!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formative Assessment (0:50-0:55) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Formative Assessment: Circuit Drawing</h3>
+                <p class="mb-4 text-sm"><strong>Individual Task:</strong> Draw your final, working circuit on paper using the correct symbols. Then, self-assess!</p>
+                <div class="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg">
+                    <h4 class="font-bold text-yellow-700 dark:text-yellow-300 mb-2">Component Symbols:</h4>
+                    <p class="font-mono text-xs">Battery: ─||─  Resistor: ─[▯]─ | LED: ─>|—  | Wire: ─────</p>
+                </div>
+                <h4 class="font-bold mb-2">Self-Assessment Rubric:</h4>
+                <div class="space-y-2 text-sm">
+                    <label class="flex items-center"><input type="checkbox" class="form-checkbox text-indigo-600 mr-2"> Correct component order (Battery &rarr; Resistor &rarr; LED &rarr; GND)</label>
+                    <label class="flex items-center"><input type="checkbox" class="form-checkbox text-indigo-600 mr-2"> Correct LED direction (Arrow points toward -)</label>
+                    <label class="flex items-center"><input type="checkbox" class="form-checkbox text-indigo-600 mr-2"> All components are correctly labeled.</label>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 4: INDEPENDENT PRACTICE - Arduino Control (0:55-1:20) - 25 minutes -->
+        <section id="part4" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="code" class="w-8 h-8 text-indigo-600 dark:text-indigo-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 4: Independent Practice - Arduino Control (0:55-1:20)</h2>
+            </div>
+
+            <!-- Transition: From Battery to Arduino (0:55-1:00) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">The Power of Programming</h3>
+                <p class="mb-4 text-sm">The battery provides <strong>constant power</strong>. The Arduino is a <strong>PROGRAMMABLE power source</strong>. By connecting your circuit's positive end to <strong>Pin 13</strong> instead of 5V, you can tell the LED exactly when to turn on and off.</p>
+                <div class="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg">
+                    <p class="font-bold text-indigo-700 dark:text-indigo-300 flex items-center"><i data-lucide="terminal" class="w-4 h-4 mr-2"></i> New Wiring Key:</p>
+                    <p class="text-sm mt-1"><strong>Arduino 5V Pin</strong> &rarr; Constant ON | <strong>Arduino Pin 13</strong> &rarr; Programmable ON/OFF</p>
+                </div>
+            </div>
+
+            <!-- Activity: Arduino Blink Challenge (1:00-1:15) - Interactive Activities -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Arduino Blink Challenge: Code & Circuit</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Circuit -->
+                    <div>
+                        <h4 class="font-bold mb-2 flex items-center"><i data-lucide="git-fork" class="w-4 h-4 mr-2"></i> Step 1: Wire LED to Pin 13</h4>
+                        <p class="mb-3 text-sm">Replace the battery connection. Connect the resistor's input to <strong>Arduino Pin 13</strong> and the LED's ground end to <strong>Arduino GND</strong>.</p>
+                        <img src="https://placehold.co/600x250/003366/FFFFFF?text=Arduino+LED+to+Pin+13+Circuit" alt="Diagram of Arduino Uno connected to a breadboard LED circuit on Pin 13" class="w-full rounded-md shadow-md">
+                        
+                        <h4 class="font-bold mt-4 mb-2">🧑‍🏫 Code Resource (Web Research)</h4>
+                        <a href="https://www.arduino.cc/en/software" target="_blank" class="resource-link flex items-center p-3 text-xs bg-indigo-100 dark:bg-indigo-900 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-all">
+                            <i data-lucide="monitor-dot" class="w-4 h-4 mr-2"></i> <strong>Arduino IDE:</strong> Direct link to download the official software for writing and uploading code.
+                        </a>
+                    </div>
+                    <!-- Code -->
+                    <div>
+                        <h4 class="font-bold mb-2 flex items-center"><i data-lucide="code-square" class="w-4 h-4 mr-2"></i> Step 2: Modify the Code</h4>
+                        <p class="mb-3 text-sm">This is the 'Blink' sketch. Modify the numbers to change the speed! (1000 = 1 second)</p>
+                        
+                        <div class="relative bg-gray-800 text-white p-3 rounded-lg shadow-xl">
+                            <pre id="codeEditor" class="text-xs font-mono overflow-auto h-40">
+void setup() {
+  // Sets pin 13 as an output to control the LED
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH); // Turn the LED on
+  delay(1000);           // Wait for 1000 milliseconds (1 second)
+  digitalWrite(13, LOW);  // Turn the LED off
+  delay(1000);           // Wait for 1000 milliseconds (1 second)
+}
+                            </pre>
+                            <button onclick="runBlinkChallenge()" class="mt-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-3 rounded-lg text-sm transition-colors w-full">Run Code & Simulate Blink</button>
+                        </div>
+                        
+                        <div id="simulatedLedContainer" class="mt-4 flex flex-col items-center p-3 border rounded-lg dark:border-gray-600">
+                            <p class="text-xs font-semibold mb-1">Pin 13 Output:</p>
+                            <div id="simulatedLed" class="w-6 h-6 rounded-full bg-gray-600 transition-colors duration-1000"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extension: Multiple LEDs (1:15-1:20) - Extension and Assignments -->
+            <div class="card p-6 rounded-xl mb-6 bg-yellow-50 dark:bg-yellow-900/50 border border-yellow-200 dark:border-yellow-800">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-yellow-700 dark:text-yellow-300 flex items-center"><i data-lucide="activity" class="w-5 h-5 mr-2"></i> Extension Challenge (Fast Finishers)</h3>
+                <p class="mb-2 text-sm">Challenge: <strong>Add a second LED on Pin 12.</strong> Make it blink <strong>OPPOSITE</strong> to Pin 13 (like a railroad crossing).</p>
+                <details class="text-sm mt-3">
+                    <summary class="font-bold cursor-pointer text-yellow-800 dark:text-yellow-200">View Code Hint (Scaffolding)</summary>
+                    <pre class="bg-yellow-200 dark:bg-gray-700 p-2 rounded mt-2 text-xs font-mono overflow-auto">
+void setup() {
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT); // &lt;-- NEW LINE
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  digitalWrite(12, LOW); // &lt;-- OPPOSITE
+  delay(500);
+  digitalWrite(13, LOW);
+  digitalWrite(12, HIGH); // &lt;-- OPPOSITE
+  delay(500);
+}
+                    </pre>
+                </details>
+            </div>
+            
+            <!-- Mandatory Practice Exercises with Concept Checking -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">Mandatory Concept Checking Questions</h3>
+                <div id="conceptQuiz" class="space-y-4">
+                    <!-- Q1 (Wh- Question) -->
+                    <div>
+                        <p class="font-semibold">1. Why does the long leg (Anode) of the LED need to be connected closest to the positive (+) voltage source?</p>
+                        <textarea rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Answer here..."></textarea>
+                    </div>
+                    <!-- Q2 (Application Question) -->
+                    <div>
+                        <p class="font-semibold">2. If you want your LED to blink 4 times every second, what value should you change the `delay()` in your code to?</p>
+                        <input type="text" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Enter the millisecond value...">
+                    </div>
+                    <!-- Q3 (Comparison Question) -->
+                    <div>
+                        <p class="font-semibold">3. Compare <strong>Voltage</strong> and <strong>Current</strong>. Which is the 'push' and which is the 'flow'?</p>
+                        <textarea rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Answer here..."></textarea>
+                    </div>
+                    <!-- Q4 (Yes/No Question - adapted from Exit Ticket) -->
+                    <div>
+                        <p class="font-semibold">4. Yes/No: Is the primary purpose of the resistor in this circuit to make the LED brighter?</p>
+                        <label class="inline-flex items-center"><input type="radio" name="cc_q4" value="yes" class="form-radio text-indigo-600"> <span class="ml-2 text-sm">Yes</span></label>
+                        <label class="inline-flex items-center ml-4"><input type="radio" name="cc_q4" value="no" class="form-radio text-indigo-600"> <span class="ml-2 text-sm">No</span></label>
+                    </div>
+                    <!-- Q5 (Application Question - Scaffolding) -->
+                    <div>
+                        <p class="font-semibold">5. If your working LED circuit suddenly stops working, what is the <strong>most likely</strong> simple fix to check first?</p>
+                        <select class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm">
+                            <option value="">Select one...</option>
+                            <option value="wire">A wire is loose or not firmly pressed into the breadboard.</option>
+                            <option value="code">The code has a typo in the `digitalWrite` command.</option>
+                            <option value="resistor">The resistor value is too high (e.g., 10kΩ).</option>
+                        </select>
+                    </div>
+                    <button onclick="showConceptFeedback()" class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Submit & View Explanations</button>
+                    <div id="conceptFeedback" class="mt-4 text-sm p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hidden">
+                        <p class="font-bold mb-1">Explanations:</p>
+                        <p>Q1: LEDs are diodes, meaning they only allow current one way. If you reverse the polarity, they act as a broken circuit.</p>
+                        <p>Q2: 4 times per second means a cycle of 250ms (on) + 250ms (off) = 500ms total. You'd change the delay to <strong>125</strong> milliseconds for on and <strong>125</strong> for off to achieve a fast flash!</p>
+                        <p>Q3: Voltage is the <strong>push</strong> (pressure), and Current is the <strong>flow</strong> (amount of water). You need the push to create the flow!</p>
+                        <p>Q4: The primary purpose is <strong>No</strong>, to <strong>protect</strong> the LED from high current, not to make it brighter.</p>
+                        <p>Q5: The most common issue is <strong>A wire is loose</strong> (physical connection failure).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 5: WRAP-UP & ASSESSMENT (1:20-1:30) - 10 minutes -->
+        <section id="part5" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="check-check" class="w-8 h-8 text-indigo-600 dark:text-indigo-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 5: Synthesis & Wrap-Up (1:20-1:30)</h2>
+            </div>
+
+            <!-- Synthesis and Self-Assessment (0:00-0:10) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">A. Knowledge Consolidation & Reflection</h3>
+                
+                <!-- Gallery Walk (Interactive equivalent) -->
+                <div class="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <h4 class="font-bold mb-2 flex items-center"><i data-lucide="user-check" class="w-4 h-4 mr-2"></i> Activity: Circuit Showcase Reflection</h4>
+                    <p class="text-sm mb-2">Think about the 3 other circuits you looked at. Were they neat or messy? Did they blink in a cool pattern?</p>
+                    <label for="galleryReflection" class="block text-sm font-medium mb-1">What's ONE thing you saw that you want to do better next time?</label>
+                    <textarea id="galleryReflection" rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="I want to work on neater wire management, or try the alternating blink pattern..."></textarea>
+                </div>
+
+                <!-- Exit Ticket (1:25-1:28) -->
+                <h4 class="font-bold mb-2 flex items-center text-indigo-800 dark:text-indigo-200"><i data-lucide="ticket" class="w-4 h-4 mr-2"></i> Exit Ticket - Week 1 (Final Assessment)</h4>
+                <div class="space-y-3">
+                    <div>
+                        <p class="font-semibold text-sm">1. <strong>Draw:</strong> Describe your final working circuit. (You'd draw the schematic on paper, describe it here.)</p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="My circuit description: Arduino Pin 13 > Resistor > LED Anode > LED Cathode > GND"></textarea>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">2. <strong>Explain:</strong> Why do we need a resistor with an LED?</p>
+                        <select class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm">
+                            <option value="">Select the correct reason...</option>
+                            <option value="bright">To make it brighter</option>
+                            <option value="protect">To protect it from too much current (Correct)</option>
+                            <option value="blink">To make it blink</option>
+                            <option value="color">To change its color</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">3. <strong>Reflect:</strong> One thing I learned today:</p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="I learned that polarity matters for LEDs."></textarea>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">4. <strong>Question:</strong> One thing I'm still confused about:</p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="How do I calculate resistor values precisely?"></textarea>
+                    </div>
+                </div>
+                <button onclick="showCelebration()" class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors w-full flex items-center justify-center">
+                    <i data-lucide="award" class="w-5 h-5 mr-2"></i> Confirm Completion & Get Badge
+                </button>
+
+                <div id="celebrationElement" class="mt-4 p-4 text-center bg-green-100 dark:bg-green-900/50 rounded-lg hidden">
+                    <i data-lucide="party-popper" class="w-8 h-8 text-green-700 mx-auto"></i>
+                    <p class="text-lg font-bold text-green-700 dark:text-green-300 mt-2">Achievement Unlocked: Electricity Basics!</p>
+                    <p class="text-sm text-green-600 dark:text-green-400">You successfully built and programmed your first digital output. This is the <strong>foundation</strong> for all your final projects!</p>
+                </div>
+            </div>
+
+            <!-- Bridge to Next Lesson (1:28-1:30) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-indigo-700 dark:text-indigo-300">D. Bridge to Next Lesson & Homework</h3>
+                <p class="mb-4 text-sm font-medium">Today you controlled the LED with code. <strong>Next week:</strong> you'll control <strong>WHEN</strong> the LED turns on by pressing a <strong>BUTTON</strong>. You'll write code that makes decisions (<strong>Input</strong>). </p>
+                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <p class="font-bold text-gray-700 dark:text-gray-300 flex items-center"><i data-lucide="home" class="w-4 h-4 mr-2"></i> Homework (Optional):</p>
+                    <p class="text-sm mt-1">Find 3 electronic devices at home. Try to spot: <strong>LEDs, buttons, sensors</strong>. Take a photo or list them in your notebook. We'll share next week!</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript for Interactivity, Logic, and Persistence -->
+    <script>
+        // --- Global State & Initialization ---
+        const APP_ID = 'Week1ElectronicsClass';
+        let currentState = {
+            theme: 'light',
+            objectives: {},
+            initialResponse: '',
+            blinkSpeed: 1000,
+        };
+
+        const sectionTimes = {
+            'part1': { start: 0, end: 15, name: 'Hook & Introduction' },
+            'part2': { start: 15, end: 30, name: 'Electricity Basics & Breadboards' },
+            'part3': { start: 30, end: 55, name: 'Guided Build - LED Circuit' },
+            'part4': { start: 55, end: 80, name: 'Independent Practice - Arduino Control' },
+            'part5': { start: 80, end: 90, name: 'Synthesis & Wrap-Up' }
+        };
+
+        function initApp() {
+            loadState();
+            applyTheme();
+            updateAllIcons();
+            setupEventListeners();
+            updateProgress();
+            
+            // Check for initial response on load
+            const savedText = localStorage.getItem(`${APP_ID}_deviceList`);
+            if (savedText) {
+                document.getElementById('deviceList').value = savedText;
+                document.getElementById('initialResponseSaved').textContent = 'Saved response loaded.';
+                document.getElementById('initialResponseSaved').classList.remove('hidden');
+            }
+
+            // Set up Intersection Observer for progress bar
+            setupIntersectionObserver();
+        }
+
+        // --- Persistence (localStorage) ---
+
+        function loadState() {
+            try {
+                const savedState = JSON.parse(localStorage.getItem(APP_ID));
+                if (savedState) {
+                    currentState = { ...currentState, ...savedState };
+                    
+                    // Apply objective states
+                    const objectives = document.getElementById('learningObjectives').querySelectorAll('input[type="checkbox"]');
+                    objectives.forEach(input => {
+                        const key = input.getAttribute('data-objective');
+                        input.checked = currentState.objectives[key] || false;
+                    });
+                }
+            } catch (e) {
+                console.error("Could not load state from localStorage:", e);
+            }
+        }
+
+        function saveState() {
+            // Collect objective states
+            const objectives = document.getElementById('learningObjectives').querySelectorAll('input[type="checkbox"]');
+            objectives.forEach(input => {
+                const key = input.getAttribute('data-objective');
+                currentState.objectives[key] = input.checked;
+            });
+
+            localStorage.setItem(APP_ID, JSON.stringify(currentState));
+        }
+
+        function saveInitialResponse() {
+            const responseText = document.getElementById('deviceList').value;
+            localStorage.setItem(`${APP_ID}_deviceList`, responseText);
+            document.getElementById('initialResponseSaved').textContent = 'Response saved!';
+            document.getElementById('initialResponseSaved').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('initialResponseSaved').classList.add('hidden');
+            }, 3000);
+        }
+
+        // --- Theme & UI ---
+
+        function applyTheme() {
+            document.body.className = currentState.theme === 'dark' ? 'dark-mode' : 'light-mode';
+        }
+
+        function toggleTheme() {
+            currentState.theme = currentState.theme === 'light' ? 'dark' : 'light';
+            applyTheme();
+            saveState();
+        }
+
+        function updateAllIcons() {
+            // Replaces Lucide icon tags with SVG elements
+            lucide.createIcons();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Listeners for objective checklist
+            document.getElementById('learningObjectives').addEventListener('change', (event) => {
+                if (event.target.type === 'checkbox') {
+                    saveState();
+                }
+            });
+        }
+        
+        // --- Progress and Timing ---
+
+        function setupIntersectionObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                        const sectionId = entry.target.id;
+                        updateProgress(sectionId);
+                        
+                        // Update active nav link
+                        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                        document.querySelector(`a[href="#${sectionId}"]`).classList.add('active');
+                    }
+                });
+            }, { threshold: 0.5 }); // Trigger when 50% of the section is visible
+
+            Object.keys(sectionTimes).forEach(id => {
+                const section = document.getElementById(id);
+                if (section) {
+                    observer.observe(section);
+                }
+            });
+        }
+
+        function updateProgress(currentSectionId = 'part1') {
+            const currentSection = sectionTimes[currentSectionId];
+            if (!currentSection) return;
+
+            const timeTotal = 90;
+            const progress = (currentSection.end / timeTotal) * 100;
+            
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressTime').textContent = `${currentSection.start}:00-${currentSection.end}:00 / 90 min: ${currentSection.name}`;
+        }
+        
+        // --- Section-Specific Logic ---
+        
+        function checkVCRConcept() {
+            const answer = document.querySelector('input[name="vcr_q"]:checked')?.value;
+            const feedback = document.getElementById('vcrFeedback');
+
+            if (answer === 'no') {
+                feedback.textContent = 'Correct! You need a difference in voltage (pressure difference) for electricity to flow.';
+                feedback.className = 'text-sm mt-2 font-medium text-green-600 dark:text-green-400';
+            } else if (answer === 'yes') {
+                feedback.textContent = 'Not quite! Think of the water tower analogy. If the water pressure is the same on both ends, nothing moves. Needs a difference!';
+                feedback.className = 'text-sm mt-2 font-medium text-red-600 dark:text-red-400';
+            } else {
+                 feedback.textContent = 'Please select an option.';
+                 feedback.className = 'text-sm mt-2 font-medium text-yellow-600 dark:text-yellow-400';
+            }
+        }
+        
+        function togglePolarityHint() {
+            const hint = document.getElementById('polarityHint');
+            if (hint.textContent.includes('❓')) {
+                hint.innerHTML = 'Anode (+) = <strong>Long Leg</strong> | Cathode (-) = <strong>Short Leg</strong><br>LEDs only work one direction!';
+                document.getElementById('ledPolarity').classList.add('bg-yellow-300', 'dark:bg-yellow-800');
+            } else {
+                hint.innerHTML = '❓ Which leg is positive?';
+                document.getElementById('ledPolarity').classList.remove('bg-yellow-300', 'dark:bg-yellow-800');
+            }
+        }
+
+        // Simple Code/Simulated Environment Logic
+        function runBlinkChallenge() {
+            const codeEditor = document.getElementById('codeEditor').textContent;
+            const ledSim = document.getElementById('simulatedLed');
+            
+            // Regex to extract delay value. Looks for delay(1000); or delay( 500);
+            const delayMatch = codeEditor.match(/delay\((\s*)(\d+)(\s*)\);/g);
+
+            if (!delayMatch || delayMatch.length < 2) {
+                // If code is severely broken, reset to default blink
+                currentState.blinkSpeed = 1000; 
+                console.error("Code is invalid. Using default 1000ms delay.");
+            } else {
+                // Extract the number from the first delay match (used for simplicity)
+                const firstDelay = delayMatch[0].match(/\d+/)[0];
+                currentState.blinkSpeed = parseInt(firstDelay) || 1000;
+                console.log(`Blink speed set to ${currentState.blinkSpeed}ms`);
+            }
+            
+            // Apply the new speed for the simulation
+            // Remove previous animation properties
+            ledSim.style.animation = 'none'; 
+            // Force a reflow before reapplying animation
+            void ledSim.offsetWidth; 
+
+            // Set background color to mimic the LED color (e.g., Red)
+            ledSim.style.backgroundColor = 'red'; 
+            
+            // Set up the animation
+            ledSim.style.animation = `blink-animation ${currentState.blinkSpeed * 2 / 1000}s infinite`;
+
+            // Display a message box (instead of alert)
+            showMessageBox(`Simulating Blink at ${currentState.blinkSpeed}ms delay! Check the red circle below.`);
+        }
+
+        function showConceptFeedback() {
+            const feedbackBox = document.getElementById('conceptFeedback');
+            feedbackBox.classList.remove('hidden');
+            showMessageBox('Check your Concept Checks! Detailed explanations are now visible.');
+        }
+
+        function showCelebration() {
+            document.getElementById('celebrationElement').classList.remove('hidden');
+            showMessageBox('Congratulations! You completed Week 1. Your achievement is logged.');
+        }
+
+        // Custom Message Box (replacing forbidden alert())
+        function showMessageBox(message) {
+            let msgBox = document.getElementById('customMessageBox');
+            if (!msgBox) {
+                msgBox = document.createElement('div');
+                msgBox.id = 'customMessageBox';
+                msgBox.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-xl text-white font-semibold z-[100] transition-transform duration-300 transform translate-x-full';
+                document.body.appendChild(msgBox);
+            }
+            
+            // Apply current theme background/text colors
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            msgBox.style.backgroundColor = isDarkMode ? '#10B981' : '#059669'; // Emerald-600/700
+            msgBox.style.color = 'white';
+
+            msgBox.innerHTML = `<i data-lucide="check" class="w-4 h-4 mr-2 inline-block"></i> ${message}`;
+            lucide.createIcons(); // Re-render icons if needed
+
+            // Show and then hide
+            msgBox.classList.remove('translate-x-full');
+            msgBox.classList.add('translate-x-0');
+
+            setTimeout(() => {
+                msgBox.classList.remove('translate-x-0');
+                msgBox.classList.add('translate-x-full');
+            }, 5000);
+        }
+
+    </script>
+</body>
+</html>
