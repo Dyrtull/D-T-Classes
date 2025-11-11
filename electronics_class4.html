@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4: Motors, Buzzers & Power (90 Minutes)</title>
+    <!-- Load Tailwind CSS via CDN for rapid, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons for aesthetic UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary-color: #ef4444; /* Red-500 */
+            --bg-light: #f8fafc; /* Slate-50 */
+            --text-light: #1e293b; /* Slate-800 */
+            --bg-dark: #1e293b; /* Slate-800 */
+            --text-dark: #f8fafc; /* Slate-50 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+        .dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        .card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .card {
+            background-color: white;
+        }
+        .dark-mode .card {
+            background-color: #334155; /* Slate-700 */
+        }
+        .nav-link.active {
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .code-input-area {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            background-color: #0f172a; /* Slate-900 */
+            color: #fca5a5; /* Red-300 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .terminal {
+            background-color: #0f172a;
+            color: #ef4444;
+            font-family: monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+        .critical-warning {
+            border-left: 4px solid #f97316; /* Orange-500 */
+        }
+    </style>
+</head>
+<body class="light-mode" onload="initApp()">
+
+    <!-- Header and Navigation -->
+    <header class="sticky top-0 z-50 shadow-md p-4 transition-colors duration-300 light-mode:bg-white dark-mode:bg-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap">
+            <h1 class="text-2xl font-extrabold text-red-600 dark:text-red-400">Week 4: Motors, Buzzers & Power</h1>
+            
+            <!-- Light/Dark Mode Toggle -->
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            </button>
+        </div>
+        
+        <!-- Progress Bar and Time Indicator -->
+        <div class="mt-3 max-w-7xl mx-auto">
+            <div id="progressTime" class="text-sm mb-1 text-gray-500 dark:text-gray-400">0:00 / 90 min: Hook & The Power Problem</div>
+            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progressBar" class="h-full bg-red-600 transition-all duration-500" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Section Navigation -->
+        <nav class="mt-3 max-w-7xl mx-auto overflow-x-auto whitespace-nowrap py-2 border-b dark:border-gray-700">
+            <a href="#part1" class="nav-link px-3 py-1 text-sm font-medium hover:text-red-600 transition-colors" data-time-end="15">PART 1: Hook (0:00-0:15)</a>
+            <a href="#part2" class="nav-link px-3 py-1 text-sm font-medium hover:text-red-600 transition-colors" data-time-end="45">PART 2: Motor Circuit (0:15-0:45)</a>
+            <a href="#part3" class="nav-link px-3 py-1 text-sm font-medium hover:text-red-600 transition-colors" data-time-end="70">PART 3: Buzzer & Tones (0:45-1:10)</a>
+            <a href="#part4" class="nav-link px-3 py-1 text-sm font-medium hover:text-red-600 transition-colors" data-time-end="82">PART 4: Synthesis (1:10-1:22)</a>
+            <a href="#part5" class="nav-link px-3 py-1 text-sm font-medium hover:text-red-600 transition-colors" data-time-end="90">PART 5: Wrap-Up (1:22-1:30)</a>
+            <a href="#vocabulary" class="nav-link px-3 py-1 text-sm font-medium hover:text-red-600 transition-colors" data-time-end="90">Vocabulary</a>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Mandatory Vocabulary Section -->
+        <section id="vocabulary" class="my-10 pt-4 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-4 text-red-600 dark:text-red-400 border-b pb-2">Enhanced Vocabulary</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Transistor (2N2222)</h3>
+                    <p class="text-sm">An electronic component used as a **switch** or **amplifier**. It allows a small Arduino signal to **control** a much larger current (power) for motors.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">NPN Transistor (EBC)</h3>
+                    <p class="text-sm">Our specific transistor type, with three pins: **Emitter** (to GND), **Base** (the control signal from Arduino), and **Collector** (to the Motor).</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Inductive Load</h3>
+                    <p class="text-sm">A component (like a motor) that uses coils. When power is suddenly cut, the coil generates a damaging **reverse voltage spike** (like water hammer).</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Flyback Diode (1N4001)</h3>
+                    <p class="text-sm">A protective diode placed across an inductive load (motor) to safely absorb the dangerous **reverse voltage spike**, protecting the transistor and Arduino.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Piezo Buzzer</h3>
+                    <p class="text-sm">A component that generates sound by vibrating a small disk. It connects **directly** to an Arduino pin because it draws very little current.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">tone() function</h3>
+                    <p class="text-sm">A dedicated Arduino function used to generate specific musical **frequencies** (Hz) on a pin to create notes or alarms using a buzzer.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PART 1: HOOK & THE POWER PROBLEM (0:00-0:15) - 15 minutes -->
+        <section id="part1" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="bolt" class="w-8 h-8 text-red-600 dark:text-red-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 1: Hook & The Power Problem (0:00-0:15)</h2>
+            </div>
+
+            <!-- Opening Demo: The Failure (0:00-0:05) - MANDATORY OPENING -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Opening Activity: The Failure Demo</h3>
+                <p class="mb-4"><strong>Scenario:</strong> We tried to power the motor directly from Pin 13, but it barely twitched (or the Arduino reset). Why?</p>
+                
+                <div class="p-4 bg-red-100 dark:bg-red-900/50 rounded-lg">
+                    <h4 class="font-bold text-red-700 dark:text-red-300 flex items-center"><i data-lucide="droplet" class="w-5 h-5 mr-2"></i> The Problem: Current Limits</h4>
+                    <p class="text-sm mt-1"><strong>Analogy:</strong> Trying to fill a swimming pool with a <strong>drinking straw</strong>.</p>
+                    <ul class="list-disc list-inside text-sm ml-4 mt-2">
+                        <li>Arduino Pin Max Output: **40mA** (tiny stream)</li>
+                        <li>Vibration Motor Needs: **100mA+** (small garden hose)</li>
+                    </ul>
+                    <p class="mt-2 text-sm italic"><strong>Conclusion:</strong> Arduino doesn't have enough **current** (flow) to run motors.</p>
+                </div>
+                
+                <h4 class="font-bold mt-4 mb-2">Check for Understanding:</h4>
+                <p class="text-sm mb-3">What component will allow a small Arduino signal to control the big motor current?</p>
+                <input type="text" id="powerSolution" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Hint: Electronic Switch...">
+                <button onclick="checkPowerSolution()" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Reveal Answer</button>
+                <p id="solutionFeedback" class="mt-2 text-sm font-medium hidden"></p>
+            </div>
+
+            <!-- The Solution: Transistor = Electronic Switch (0:05-0:12) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">The Solution: Transistor (Electronic Switch)</h3>
+                <p class="mb-4 text-sm">The **transistor** acts as a **relay**. The small current from Pin 9 opens the transistor, allowing the large current from the 5V rail to flow to the motor.</p>
+                
+                <div class="p-4 bg-green-100 dark:bg-green-900/50 rounded-lg">
+                    <h4 class="font-bold text-green-700 dark:text-green-300 flex items-center"><i data-lucide="git-fork" class="w-5 h-5 mr-2"></i> Wiring Analogy: Control vs. Power</h4>
+                    <p class="text-sm mt-1">Arduino **CONTROLS** the transistor (Base). The Transistor **POWERS** the motor (Collector/Emitter using the 5V rail).</p>
+                    <div class="mt-2 p-2 bg-white dark:bg-gray-800 rounded-lg text-xs font-mono">
+                        <pre>
+Arduino Pin 9 (Low Current) --&gt; Transistor BASE (Control)
+Motor (High Current) --&gt; Transistor COLLECTOR (Power)
+Transistor EMITTER --&gt; GND
+                        </pre>
+                    </div>
+                </div>
+
+                <!-- Web Research: Transistor Resources -->
+                <h4 class="font-bold mt-4 mb-2">🧑‍🏫 Transistor Resources (Web Research)</h4>
+                <a href="https://www.youtube.com/watch?v=F_o5-yKzI6g" target="_blank" class="flex items-center p-3 text-sm bg-red-100 dark:bg-red-900 rounded-lg hover:bg-red-200 dark:hover:bg-red-700 transition-all mb-2">
+                    <i data-lucide="youtube" class="w-5 h-5 mr-2"></i> <strong>Explainer Video:</strong> Transistor as a Switch Explained (3-minute segment).
+                </a>
+            </div>
+
+            <!-- Diode Protection (0:12-0:15) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Diode Protection: The Safety Net</h3>
+                <p class="mb-4 text-sm">Motors are **inductive loads**. When you turn them OFF, they generate a huge **reverse voltage spike** (like water hammer in a pipe) that can instantly destroy your transistor.</p>
+                
+                <div class="p-4 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg critical-warning border-none">
+                    <h4 class="font-bold text-yellow-800 dark:text-yellow-300 flex items-center"><i data-lucide="shield-alert" class="w-5 h-5 mr-2"></i> The Flyback Diode (1N4001)</h4>
+                    <p class="text-sm mt-1">The diode is placed **across the motor terminals** to provide a safe, short path for this reverse spike to dissipate, protecting the circuit.</p>
+                    <ul class="list-disc list-inside text-sm ml-4 mt-2">
+                        <li>**Rule:** The silver stripe (Cathode) **MUST** point toward the positive (5V) side of the motor.</li>
+                    </ul>
+                </div>
+
+                <h4 class="font-bold mt-4 mb-2">🧑‍🏫 Diode Resource:</h4>
+                <a href="https://learn.sparkfun.com/tutorials/transistors-and-mosfets" target="_blank" class="flex items-center p-3 text-sm bg-red-100 dark:bg-red-900 rounded-lg hover:bg-red-200 dark:hover:bg-red-700 transition-all">
+                    <i data-lucide="link" class="w-5 h-5 mr-2"></i> **Tutorial Link:** Detailed Explanation of Diode Protection for Inductive Loads.
+                </a>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 2: GUIDED PRACTICE - Motor Circuit (0:15-0:45) - 30 minutes -->
+        <section id="part2" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="plug-zap" class="w-8 h-8 text-red-600 dark:text-red-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 2: Guided Practice - Motor Circuit (0:15-0:45)</h2>
+            </div>
+
+            <!-- Activity 1: Build Transistor Motor Circuit (0:15-0:35) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Activity 1: The Transistor Switch Circuit</h3>
+                <p class="mb-4 text-sm">Follow the wiring steps carefully. The **EBC orientation** of the 2N2222 transistor is **CRITICAL**.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-bold mb-2">Wiring Key Components:</h4>
+                        <ul class="list-disc list-inside text-sm ml-2 space-y-2">
+                            <li><strong>1kΩ Resistor:</strong> Pin 9 $\rightarrow$ **Base** (Middle Leg) $\rightarrow$ *Protects Transistor*</li>
+                            <li><strong>Motor Connection:</strong> Motor (-) $\rightarrow$ **Collector** (Right Leg)</li>
+                            <li><strong>Ground Connection:</strong> **Emitter** (Left Leg) $\rightarrow$ Arduino GND</li>
+                            <li><strong>Diode:</strong> Across motor, **stripe towards 5V** (safety!)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">Test Code: Simple Motor Blink</h4>
+                        <div class="bg-gray-800 text-white p-2 rounded-lg text-xs font-mono h-40 overflow-y-auto">
+                            <pre>
+int motorPin = 9;
+
+void setup() {
+  pinMode(motorPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(motorPin, HIGH);  // Motor ON
+  delay(1000);
+  digitalWrite(motorPin, LOW);   // Motor OFF
+  delay(1000);
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+
+                <details class="mt-4 p-3 bg-red-100 dark:bg-red-900/50 rounded-lg">
+                    <summary class="font-bold cursor-pointer text-red-700 dark:text-red-300">Troubleshooting Check (Click to expand)</summary>
+                    <ul class="text-sm mt-2 list-disc ml-4 space-y-1">
+                        <li>**Motor doesn't run:** Check **Transistor Orientation** (EBC). Is the 1kΩ resistor connected to the **Base**?</li>
+                        <li>**Motor always ON:** Pin 9 is floating; check the **Base connection** from Pin 9.</li>
+                        <li>**Arduino resets when motor stops:** Diode is **backwards or missing**! Fix diode orientation immediately.</li>
+                    </ul>
+                </details>
+            </div>
+
+            <!-- Activity 2: Sensor-Controlled Motor (0:35-0:45) - Applied Examples -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Activity 2: Temperature-Controlled Motor</h3>
+                <p class="mb-4 text-sm">Combine **Week 3 (TMP36 Sensor)** with **Week 4 (Motor)**. Make the motor vibrate when temperature is too high (above 25°C).</p>
+                
+                <div class="bg-gray-800 text-white p-3 rounded-lg text-xs font-mono h-48 overflow-y-auto">
+                    <pre>
+// Temperature-Controlled Vibration Motor
+
+int tempPin = A0;    // Temp sensor input
+int motorPin = 9;    // Motor control output
+
+void setup() {
+  pinMode(motorPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // ... [Temperature reading and math from Week 3 goes here] ...
+  float tempC = (voltage - 0.5) * 100.0;
+  
+  if (tempC > 25.0) {
+    digitalWrite(motorPin, HIGH);  // Too hot &rarr; vibrate!
+    Serial.println("WARNING: Overheating! Motor ON");
+  } else {
+    digitalWrite(motorPin, LOW);   // Normal &rarr; motor off
+    Serial.println("Temperature OK");
+  }
+  
+  delay(1000);
+}
+                    </pre>
+                </div>
+                <p class="mt-4 text-sm italic"><strong>Connection:</strong> This is the core logic for your **Temperature Blanket** and **Sun Bracelet** projects!</p>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 3: INDEPENDENT PRACTICE - Buzzer & Tones (0:45-1:10) - 25 minutes -->
+        <section id="part3" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="volume-2" class="w-8 h-8 text-red-600 dark:text-red-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 3: Buzzer & Tones (0:45-1:10)</h2>
+            </div>
+
+            <!-- Activity 3: Piezo Buzzer Basics (0:45-0:55) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Activity 3: Direct Control Output (Buzzer)</h3>
+                <p class="mb-4 text-sm">The Piezo Buzzer draws very little current and **does NOT need a transistor**. It connects directly to the Arduino pin.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-bold mb-2">Wiring (Direct Connect):</h4>
+                        <ul class="list-disc list-inside text-sm ml-2 space-y-1">
+                            <li>Arduino Pin 8 $\rightarrow$ Buzzer **(+)**</li>
+                            <li>Buzzer **(-)** $\rightarrow$ Arduino GND</li>
+                        </ul>
+                        <h4 class="font-bold mt-4 mb-2">Tone() Function (Best Practice)</h4>
+                        <p class="text-sm"><code>tone(pin, frequency_in_Hz, duration_ms)</code> allows you to create specific musical notes.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">Code: Tone Example</h4>
+                        <div class="bg-gray-800 text-white p-2 rounded-lg text-xs font-mono h-24 overflow-y-auto">
+                            <pre>
+void loop() {
+  tone(8, 1000);  // 1000 Hz tone (Alarm)
+  delay(1000);
+  noTone(8);      // Stop tone
+  delay(1000);
+}
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity 4: Musical Challenge (0:55-1:05) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Activity 4: Musical Challenge</h3>
+                <p class="mb-4 text-sm">Use the frequencies below to play a simple song like "Mary Had a Little Lamb."</p>
+                
+                <div class="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg">
+                    <h4 class="font-bold text-indigo-700 dark:text-indigo-300">Musical Notes (Frequencies in Hz):</h4>
+                    <p class="text-xs font-mono">C4: 262 | D4: 294 | E4: 330 | F4: 349 | G4: 392 | A4: 440 | B4: 494 | C5: 523</p>
+                </div>
+                
+                <details class="text-sm mt-3">
+                    <summary class="font-bold cursor-pointer text-red-800 dark:text-red-200">View Melody Hint: E D C D E E E ...</summary>
+                    <div class="bg-gray-800 text-white p-3 rounded-lg text-xs font-mono h-40 overflow-y-auto mt-2">
+                        <pre>
+  tone(buzzer, 330);  // E
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  
+  tone(buzzer, 294);  // D
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  
+  tone(buzzer, 262);  // C
+  delay(500);
+  noTone(buzzer);
+  delay(50);
+  
+  // TODO: E D E E E
+                        </pre>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Activity 5: Alarm System Project (1:05-1:10) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Activity 5: Full Alarm System (Culminating Challenge)</h3>
+                <p class="mb-4 text-sm">Combine **Light Sensor (A1)** $\rightarrow$ **Motor (Pin 9)** $\rightarrow$ **Buzzer (Pin 8)**. The alarm triggers when the room is too dark (`lightLevel < 300`).</p>
+                
+                <div class="bg-gray-800 text-white p-3 rounded-lg text-xs font-mono h-48 overflow-y-auto">
+                    <pre>
+void loop() {
+  int lightLevel = analogRead(A1); // Light sensor input
+  
+  if (lightLevel < 300) {  // If too dark...
+    // ALARM TRIGGERED: 
+    digitalWrite(motorPin, HIGH); // Motor ON
+    tone(buzzerPin, 1000);        // Buzzer ON
+    Serial.println("!!! ALARM: TOO DARK !!!");
+  } else {
+    // All clear:
+    digitalWrite(motorPin, LOW);
+    noTone(buzzerPin);
+    Serial.println("Status: OK");
+  }
+  delay(500);
+}
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 4: SYNTHESIS & REVIEW (1:10-1:22) - 12 minutes -->
+        <section id="part4" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="list-checks" class="w-8 h-8 text-red-600 dark:text-red-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 4: Synthesis & Review (1:10-1:22)</h2>
+            </div>
+            
+            <!-- Concept Review Game: "True or False" (1:17-1:22) - Concept Checking Questions -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">True or False Review Game</h3>
+                <p class="mb-4 text-sm">Decide if the statements below are True or False (like stand up/sit down). Use this to check your foundational knowledge before the project starts!</p>
+                
+                <div id="tfQuestions" class="space-y-3">
+                    <p class="font-semibold text-sm">1. Arduino pins can directly power large motors.</p>
+                    <div class="space-x-4">
+                        <button onclick="checkTF(1, false)" class="px-3 py-1 bg-gray-200 dark:bg-gray-600 rounded-lg text-sm hover:bg-red-200 dark:hover:bg-red-800">False</button>
+                        <button onclick="checkTF(1, true)" class="px-3 py-1 bg-gray-200 dark:bg-gray-600 rounded-lg text-sm hover:bg-green-200 dark:hover:bg-green-800">True</button>
+                        <span id="tf1Feedback" class="ml-2 text-xs font-medium"></span>
+                    </div>
+
+                    <p class="font-semibold text-sm">2. Diodes protect against voltage spikes in motor circuits.</p>
+                    <div class="space-x-4">
+                        <button onclick="checkTF(2, false)" class="px-3 py-1 bg-gray-200 dark:bg-gray-600 rounded-lg text-sm hover:bg-red-200 dark:hover:bg-red-800">False</button>
+                        <button onclick="checkTF(2, true)" class="px-3 py-1 bg-gray-200 dark:bg-gray-600 rounded-lg text-sm hover:bg-green-200 dark:hover:bg-green-800">True</button>
+                        <span id="tf2Feedback" class="ml-2 text-xs font-medium"></span>
+                    </div>
+
+                    <p class="font-semibold text-sm">3. Piezo Buzzers need a transistor to work.</p>
+                    <div class="space-x-4">
+                        <button onclick="checkTF(3, false)" class="px-3 py-1 bg-gray-200 dark:bg-gray-600 rounded-lg text-sm hover:bg-red-200 dark:hover:bg-red-800">False</button>
+                        <button onclick="checkTF(3, true)" class="px-3 py-1 bg-gray-200 dark:bg-gray-600 rounded-lg text-sm hover:bg-green-200 dark:hover:bg-green-800">True</button>
+                        <span id="tf3Feedback" class="ml-2 text-xs font-medium"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 5: WRAP-UP & PROJECT PREVIEW (1:22-1:30) - 8 minutes -->
+        <section id="part5" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="rocket" class="w-8 h-8 text-red-600 dark:text-red-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 5: Wrap-Up & Project Preview (1:22-1:30)</h2>
+            </div>
+
+            <!-- Exit Ticket (1:25-1:28) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Exit Ticket - Week 4 (Final Foundation Assessment)</h3>
+                
+                <div class="space-y-3">
+                    <div>
+                        <p class="font-semibold text-sm">1. **Safety:** Why do we need a diode across a motor?</p>
+                        <select class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm">
+                            <option value="">Select the correct reason...</option>
+                            <option value="speed">To make it spin faster</option>
+                            <option value="spike">To protect from voltage spikes (Correct)</option>
+                            <option value="direction">To change direction</option>
+                            <option value="current">To measure current</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">2. **Code:** What does <code>tone(8, 1000);</code> do?</p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="Generates a 1000 Hz tone on pin 8."></textarea>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">3. **Self-Assessment:** Rate your confidence in **Troubleshooting** (1=Low, 5=High):</p>
+                        <input type="range" min="1" max="5" value="3" class="w-full" id="troubleshootConfidence">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Current Rating: <span id="confidenceValue">3</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Big Reveal: Project Week (1:22-1:25) & Homework -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-red-700 dark:text-red-300">Project Preparation: Week 5 Begins!</h3>
+                <p class="mb-4 text-sm font-medium">You have now mastered all the core inputs, outputs, and controls needed for the final project. **NEXT WEEK:** You choose your project and start building!</p>
+                
+                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <p class="font-bold text-gray-700 dark:text-gray-300 flex items-center"><i data-lucide="home" class="w-4 h-4 mr-2"></i> Homework (Required):</p>
+                    <ul class="list-disc list-inside text-sm ml-4 mt-1">
+                        <li>Read project descriptions for **Pill Container, Temperature Blanket, Pantry Tracker, and Sun Bracelet**.</li>
+                        <li>Sketch **one design idea** for your top choice in your notebook.</li>
+                        <li>List **2 questions** you have about that project.</li>
+                    </ul>
+                </div>
+                <p class="mt-4 text-sm italic font-bold">You've completed FOUR WEEKS of intensive electronics. Give yourselves a round of applause!</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript for Interactivity, Logic, and Persistence -->
+    <script>
+        // --- Global State & Initialization ---
+        const APP_ID = 'Week4ElectronicsClass';
+        let currentState = {
+            theme: 'light',
+        };
+
+        const sectionTimes = {
+            'part1': { start: 0, end: 15, name: 'Hook & The Power Problem' },
+            'part2': { start: 15, end: 45, name: 'Guided Practice - Motor Circuit' },
+            'part3': { start: 45, end: 70, name: 'Independent Practice - Buzzer & Tones' },
+            'part4': { start: 70, end: 82, name: 'Synthesis & Review' },
+            'part5': { start: 82, end: 90, name: 'Wrap-Up & Project Preview' }
+        };
+
+        function initApp() {
+            loadState();
+            applyTheme();
+            updateAllIcons();
+            setupEventListeners();
+            updateProgress();
+            setupIntersectionObserver();
+            
+            // Initial confidence value display
+            document.getElementById('confidenceValue').textContent = document.getElementById('troubleshootConfidence').value;
+        }
+
+        // --- Persistence (localStorage) ---
+
+        function loadState() {
+            try {
+                const savedState = JSON.parse(localStorage.getItem(APP_ID));
+                if (savedState) {
+                    currentState = { ...currentState, ...savedState };
+                }
+            } catch (e) {
+                console.error("Could not load state from localStorage:", e);
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(APP_ID, JSON.stringify(currentState));
+        }
+
+        // --- Theme & UI ---
+
+        function applyTheme() {
+            document.body.className = currentState.theme === 'dark' ? 'dark-mode' : 'light-mode';
+        }
+
+        function toggleTheme() {
+            currentState.theme = currentState.theme === 'light' ? 'dark' : 'light';
+            applyTheme();
+            saveState();
+        }
+
+        function updateAllIcons() {
+            lucide.createIcons();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Confidence slider update
+            const confidenceSlider = document.getElementById('troubleshootConfidence');
+            const confidenceValue = document.getElementById('confidenceValue');
+            confidenceSlider.addEventListener('input', () => {
+                confidenceValue.textContent = confidenceSlider.value;
+            });
+        }
+        
+        // --- Progress and Timing ---
+
+        function setupIntersectionObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                        const sectionId = entry.target.id;
+                        updateProgress(sectionId);
+                        
+                        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                        document.querySelector(`a[href="#${sectionId}"]`).classList.add('active');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            Object.keys(sectionTimes).forEach(id => {
+                const section = document.getElementById(id);
+                if (section) {
+                    observer.observe(section);
+                }
+            });
+        }
+
+        function updateProgress(currentSectionId = 'part1') {
+            const currentSection = sectionTimes[currentSectionId];
+            if (!currentSection) return;
+
+            const timeTotal = 90;
+            const progress = (currentSection.end / timeTotal) * 100;
+            
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressTime').textContent = `${currentSection.start}:00-${currentSection.end}:00 / 90 min: ${currentSection.name}`;
+        }
+        
+        // --- Section-Specific Logic ---
+        
+        function checkPowerSolution() {
+            const answer = document.getElementById('powerSolution').value.trim().toLowerCase();
+            const feedback = document.getElementById('solutionFeedback');
+
+            if (answer.includes('transistor') || answer.includes('switch') || answer.includes('mosfet')) {
+                feedback.innerHTML = '<strong>Correct!</strong> The solution is the **Transistor**, which acts as an electronic switch!';
+                feedback.className = 'mt-2 text-sm font-medium p-2 bg-green-100 dark:bg-green-900/50 rounded-lg text-green-700 dark:text-green-300';
+                feedback.classList.remove('hidden');
+            } else {
+                feedback.innerHTML = 'Not quite. The solution is the **Transistor**, which allows the Arduino to *control* the power.';
+                feedback.className = 'mt-2 text-sm font-medium p-2 bg-red-100 dark:bg-red-900/50 rounded-lg text-red-700 dark:text-red-300';
+                feedback.classList.remove('hidden');
+            }
+        }
+        
+        const tfAnswers = {
+            1: false, // Arduino pins can directly power large motors. (False)
+            2: true,  // Diodes protect against voltage spikes in motor circuits. (True)
+            3: false  // Piezo Buzzers need a transistor to work. (False)
+        };
+
+        function checkTF(questionId, userIsTrue) {
+            const isCorrect = (userIsTrue === tfAnswers[questionId]);
+            const feedback = document.getElementById(`tf${questionId}Feedback`);
+
+            if (isCorrect) {
+                feedback.textContent = 'Correct!';
+                feedback.className = 'ml-2 text-xs font-medium text-green-600 dark:text-green-400';
+            } else {
+                feedback.textContent = `False. ${questionId === 1 ? 'Arduino pins are too weak.' : questionId === 3 ? 'Buzzers draw little current and connect directly.' : ''}`;
+                feedback.className = 'ml-2 text-xs font-medium text-red-600 dark:text-red-400';
+            }
+        }
+
+
+        // Custom Message Box (replacing forbidden alert())
+        function showMessageBox(message) {
+            let msgBox = document.getElementById('customMessageBox');
+            if (!msgBox) {
+                msgBox = document.createElement('div');
+                msgBox.id = 'customMessageBox';
+                msgBox.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-xl text-white font-semibold z-[100] transition-transform duration-300 transform translate-x-full';
+                document.body.appendChild(msgBox);
+            }
+            
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            msgBox.style.backgroundColor = isDarkMode ? '#ef4444' : '#dc2626'; 
+            msgBox.style.color = 'white';
+
+            msgBox.innerHTML = `<i data-lucide="check" class="w-4 h-4 mr-2 inline-block"></i> ${message}`;
+            lucide.createIcons();
+
+            msgBox.classList.remove('translate-x-full');
+            msgBox.classList.add('translate-x-0');
+
+            setTimeout(() => {
+                msgBox.classList.remove('translate-x-0');
+                msgBox.classList.add('translate-x-full');
+            }, 5000);
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3: Sensors & Serial Monitor (90 Minutes)</title>
+    <!-- Load Tailwind CSS via CDN for rapid, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons for aesthetic UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary-color: #10b981; /* Emerald-500 */
+            --bg-light: #f8fafc; /* Slate-50 */
+            --text-light: #1e293b; /* Slate-800 */
+            --bg-dark: #1e293b; /* Slate-800 */
+            --text-dark: #f8fafc; /* Slate-50 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+        .dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        .card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .card {
+            background-color: white;
+        }
+        .dark-mode .card {
+            background-color: #334155; /* Slate-700 */
+        }
+        .nav-link.active {
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .code-input-area {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            background-color: #0f172a; /* Slate-900 */
+            color: #d1fae5; /* Emerald-100 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .terminal {
+            background-color: #0f172a;
+            color: #10b981;
+            font-family: monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+        /* Style for the warning/critical note */
+        .critical-warning {
+            border-left: 4px solid #ef4444; /* Red-500 */
+        }
+    </style>
+</head>
+<body class="light-mode" onload="initApp()">
+
+    <!-- Header and Navigation -->
+    <header class="sticky top-0 z-50 shadow-md p-4 transition-colors duration-300 light-mode:bg-white dark-mode:bg-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap">
+            <h1 class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">Week 3: Sensors & Serial Monitor</h1>
+            
+            <!-- Light/Dark Mode Toggle -->
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            </button>
+        </div>
+        
+        <!-- Progress Bar and Time Indicator -->
+        <div class="mt-3 max-w-7xl mx-auto">
+            <div id="progressTime" class="text-sm mb-1 text-gray-500 dark:text-gray-400">0:00 / 90 min: Hook & Review</div>
+            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progressBar" class="h-full bg-emerald-600 transition-all duration-500" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Section Navigation -->
+        <nav class="mt-3 max-w-7xl mx-auto overflow-x-auto whitespace-nowrap py-2 border-b dark:border-gray-700">
+            <a href="#part1" class="nav-link px-3 py-1 text-sm font-medium hover:text-emerald-600 transition-colors" data-time-end="15">PART 1: Hook (0:00-0:15)</a>
+            <a href="#part2" class="nav-link px-3 py-1 text-sm font-medium hover:text-emerald-600 transition-colors" data-time-end="50">PART 2: Temp Sensor (0:15-0:50)</a>
+            <a href="#part3" class="nav-link px-3 py-1 text-sm font-medium hover:text-emerald-600 transition-colors" data-time-end="80">PART 3: Light Sensor (0:50-1:20)</a>
+            <a href="#part4" class="nav-link px-3 py-1 text-sm font-medium hover:text-emerald-600 transition-colors" data-time-end="87">PART 4: Real World (1:20-1:22)</a>
+            <a href="#part5" class="nav-link px-3 py-1 text-sm font-medium hover:text-emerald-600 transition-colors" data-time-end="90">PART 5: Wrap-Up (1:22-1:30)</a>
+            <a href="#vocabulary" class="nav-link px-3 py-1 text-sm font-medium hover:text-emerald-600 transition-colors" data-time-end="90">Vocabulary</a>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Mandatory Vocabulary Section -->
+        <section id="vocabulary" class="my-10 pt-4 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-4 text-emerald-600 dark:text-emerald-400 border-b pb-2">Enhanced Vocabulary</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Analog Input</h3>
+                    <p class="text-sm">Continuous range of values (0-1023). Measures gradual changes like temperature or light. Like a **dimmer switch**.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Digital Input</h3>
+                    <p class="text-sm">Discrete values (HIGH or LOW). Measures binary states like a button press. Like an **ON/OFF light switch**.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">analogRead()</h3>
+                    <p class="text-sm">An Arduino function that reads the voltage on an analog pin (A0-A5) and converts it to an integer value between <strong>0 and 1023</strong>.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Serial Monitor</h3>
+                    <p class="text-sm">Arduino's built-in debugging tool. It's the Arduino's "voice," allowing it to <strong>send data</strong> (like sensor readings) back to the computer for viewing.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">TMP36 Sensor</h3>
+                    <p class="text-sm">A simple analog temperature sensor. Its output voltage **changes linearly** with temperature, requiring a conversion formula (math) to get °C or °F.</p>
+                </div>
+                <div class="card p-4 rounded-xl">
+                    <h3 class="font-semibold text-lg mb-1">Threshold</h3>
+                    <p class="text-sm">A **decision point** in code (e.g., <code>if (temperature > 25)</code>). The action changes if the sensor value goes above or below this set point.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PART 1: HOOK & REVIEW (0:00-0:15) - 15 minutes -->
+        <section id="part1" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="scan" class="w-8 h-8 text-emerald-600 dark:text-emerald-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 1: Hook & Review (0:00-0:15)</h2>
+            </div>
+
+            <!-- Warm-Up: Sensor Scavenger Hunt (0:00-0:05) - MANDATORY OPENING -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">Warm-Up: Sensor Scavenger Hunt</h3>
+                <p class="mb-4"><strong>Prompt:</strong> List as many **SENSORS** as you can think of in 2 minutes. What do they sense?</p>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/2">
+                        <label for="sensorList" class="block text-sm font-medium mb-2">My Sensor List:</label>
+                        <textarea id="sensorList" rows="4" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500" placeholder="e.g., Microphone -> Sound, Thermostat -> Temperature..."></textarea>
+                        <button onclick="saveSensorList()" class="mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Save List</button>
+                        <p id="sensorSaved" class="mt-2 text-sm text-green-600 dark:text-green-400 hidden">List saved!</p>
+                    </div>
+                    <div class="md:w-1/2 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="font-bold mb-2">Common Categories:</p>
+                        <ul class="list-disc list-inside text-sm">
+                            <li>Temperature (Thermostat, Fridge)</li>
+                            <li>Light (Phone Auto-brightness, Streetlights)</li>
+                            <li>Motion (Automatic Doors, Security)</li>
+                            <li>Sound (Microphones, Voice Assistants)</li>
+                        </ul>
+                        <p class="mt-3 text-xs italic"><strong>The Point:</strong> Sensors let computers **SENSE** the world, just like your eyes and skin. Today: teach Arduino to sense temperature and light.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review: Digital vs Analog (0:05-0:10) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">Digital vs. Analog Input</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
+                        <h4 class="font-bold text-blue-700 dark:text-blue-300 flex items-center"><i data-lucide="toggle-right" class="w-5 h-5 mr-2"></i> Digital (Last Week)</h4>
+                        <p class="text-sm mt-1">**Values:** ON or OFF (HIGH or LOW).</p>
+                        <p class="text-sm">**Code:** <code>digitalRead()</code></p>
+                        <p class="text-xs italic">**Analogy:** A light switch (2 states).</p>
+                    </div>
+                    <div class="p-3 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg">
+                        <h4 class="font-bold text-yellow-700 dark:text-yellow-300 flex items-center"><i data-lucide="sliders" class="w-5 h-5 mr-2"></i> Analog (This Week)</h4>
+                        <p class="text-sm mt-1">**Values:** Continuous range (0 to 1023).</p>
+                        <p class="text-sm">**Code:** <code>analogRead()</code></p>
+                        <p class="text-xs italic">**Analogy:** A dimmer switch (many states).</p>
+                    </div>
+                </div>
+                <!-- Concept Checking Questions - Distributed Check -->
+                <div class="mt-4 p-3 border-t dark:border-gray-600">
+                    <h4 class="font-bold mb-2 text-sm">Quick Check: Digital or Analog?</h4>
+                    <div id="quickCheck" class="space-y-2">
+                        <p class="text-sm">1. Volume Knob on a radio: 
+                            <span class="inline-block ml-2"><button onclick="checkConcept('volume', 'analog')" class="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">Analog</button></span>
+                            <span class="inline-block ml-2"><button onclick="checkConcept('volume', 'digital')" class="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">Digital</button></span>
+                            <span id="volumeFeedback" class="ml-2 text-xs font-medium"></span>
+                        </p>
+                        <p class="text-sm">2. Car horn (on/off):
+                            <span class="inline-block ml-2"><button onclick="checkConcept('horn', 'analog')" class="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">Analog</button></span>
+                            <span class="inline-block ml-2"><button onclick="checkConcept('horn', 'digital')" class="text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">Digital</button></span>
+                            <span id="hornFeedback" class="ml-2 text-xs font-medium"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Serial Monitor Tool (0:10-0:15) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">Serial Monitor: Arduino's Voice</h3>
+                <p class="mb-4 text-sm">When you can't see what the Arduino is thinking, the **Serial Monitor** is your X-ray vision! It allows the Arduino to send text data back to your computer.</p>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="md:w-1/2">
+                        <h4 class="font-bold text-sm mb-2">Key Code Setup:</h4>
+                        <div class="bg-gray-800 text-white p-2 rounded-lg text-xs font-mono h-20 overflow-y-auto">
+                            <pre>
+void setup() {
+  Serial.begin(9600); // Set speed to 9600 baud
+}
+
+void loop() {
+  Serial.print("Value: ");
+  Serial.println(sensorValue); // Print the number
+}
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <h4 class="font-bold text-sm mb-2">Simulated Serial Output:</h4>
+                        <div class="terminal text-xs">
+                            <p>TMP36 Temperature Sensor Test</p>
+                            <p>----------------------------</p>
+                            <p id="serialOutput">Click 'Simulate' below...</p>
+                        </div>
+                        <button onclick="simulateSerial()" class="mt-2 bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded-lg text-sm transition-colors w-full">Simulate</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 2: GUIDED PRACTICE - Temperature Sensor (0:15-0:50) - 35 minutes -->
+        <section id="part2" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="thermometer" class="w-8 h-8 text-emerald-600 dark:text-emerald-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 2: Guided Practice - Temperature Sensor (0:15-0:50)</h2>
+            </div>
+
+            <!-- Activity 1: Wire and Read TMP36 Sensor (0:15-0:35) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">Activity 1: TMP36 Wiring & Code</h3>
+                
+                <div class="p-4 bg-red-100 dark:bg-red-900/50 rounded-lg mb-4 critical-warning">
+                    <h4 class="font-bold text-red-700 dark:text-red-300 flex items-center"><i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i> CRITICAL WIRING WARNING!</h4>
+                    <p class="text-sm">If you wire the TMP36 backwards, it gets **HOT and breaks**. Always check the **flat side** orientation before connecting power!</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-bold mb-2">Wiring (Flat Side Facing You):</h4>
+                        <ul class="list-disc list-inside text-sm ml-2 space-y-1">
+                            <li><strong>Left Leg:</strong> &rarr; Arduino **5V** (Power)</li>
+                            <li><strong>Middle Leg:</strong> &rarr; Arduino **A0** (Analog Signal)</li>
+                            <li><strong>Right Leg:</strong> &rarr; Arduino **GND** (Ground)</li>
+                        </ul>
+                        <h4 class="font-bold mt-4 mb-2">🧑‍🏫 Best Wiring Resource:</h4>
+                        <a href="https://www.circuitbasics.com/arduino-temperature-sensor-tutorial/" target="_blank" class="flex items-center p-2 text-xs bg-emerald-100 dark:bg-emerald-900 rounded-lg hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-all">
+                            <i data-lucide="link" class="w-4 h-4 mr-2"></i> **Tutorial Link:** TMP36 Official Wiring Diagram.
+                        </a>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">Code Conversion (0:25-0:35):</h4>
+                        <p class="text-sm italic mb-2">We use MATH (from the datasheet) to convert the analog 0-1023 value into a real temperature.</p>
+                        <div class="bg-gray-800 text-white p-2 rounded-lg text-xs font-mono h-40 overflow-y-auto">
+                            <pre>
+// ... in loop() ...
+int sensorValue = analogRead(A0);
+float voltage = sensorValue * (5.0 / 1023.0); // 0-1023 -> 0-5V
+float temperatureC = (voltage - 0.5) * 100.0; // V -> °C
+// ...
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test and Calibrate (0:35-0:45) -->
+                <div class="mt-4 p-4 border-t dark:border-gray-600">
+                    <h4 class="font-bold mb-2 flex items-center"><i data-lucide="hand" class="w-5 h-5 mr-2"></i> Test Responsiveness:</h4>
+                    <p class="text-sm mb-3">Upload your code, open the Serial Monitor (9600 baud), and perform these tests. Watch the numbers change!</p>
+                    <ul class="list-disc list-inside text-sm ml-4">
+                        <li><strong>Test 1:</strong> Hold sensor between fingers (Temp should **INCREASE**).</li>
+                        <li><strong>Test 2:</strong> Breathe warm air on sensor (Temp should **SPIKE**).</li>
+                        <li><strong>Test 3:</strong> Place cold object nearby (Temp should **DECREASE**).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Activity 2: Temperature Alarm System (0:45-0:50) - Applied Examples -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">Activity 2: Temperature Alarm (If/Else)</h3>
+                <p class="mb-4 text-sm">Goal: Make an LED (Pin 13) turn **ON** when temperature goes above **25°C** (77°F). This is your first automatic system!</p>
+                <div class="bg-gray-800 text-white p-3 rounded-lg text-xs font-mono h-48 overflow-y-auto">
+                    <pre>
+// Assume temperatureC is calculated earlier...
+
+if (temperatureC > 25.0) {
+  digitalWrite(ledPin, HIGH); // LED on = too hot
+  Serial.println("WARNING: Too hot!");
+} else {
+  digitalWrite(ledPin, LOW);  // LED off = comfortable
+}
+
+delay(1000);
+                    </pre>
+                </div>
+                <p class="mt-4 text-sm italic"><strong>Connection:</strong> Your **Temperature Blanket** project uses this <strong>EXACT</strong> <code>if/else</code> logic to decide when to turn the heater on or off!</p>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 3: INDEPENDENT PRACTICE - Light Sensor (0:50-1:15) - 25 minutes -->
+        <section id="part3" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="sun" class="w-8 h-8 text-emerald-600 dark:text-emerald-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 3: Independent Practice - Light Sensor (0:50-1:20)</h2>
+            </div>
+
+            <!-- Activity 3: Photoresistor Circuit (0:50-1:05) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">Activity 3: Photoresistor (Voltage Divider)</h3>
+                <p class="mb-4 text-sm">The photoresistor measures light (another analog sensor). Since it only changes resistance, we need a **10kΩ resistor** to form a <strong>Voltage Divider Circuit</strong> to give the Arduino a voltage to read.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <h4 class="font-bold mb-2">Wiring Diagram:</h4>
+                        <div class="bg-gray-100 dark:bg-gray-700 p-2 rounded-lg text-xs font-mono h-24 overflow-y-auto">
+                            <pre>
+5V
+│
+├─── [Photoresistor] ───┐
+│                       │
+├─── [10kΩ Resistor] ───┤
+│                       │
+GND                     A1 (Read Here)
+                            </pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mt-2 md:mt-0 mb-2">Light Sensor Logic:</h4>
+                        <ul class="list-disc list-inside text-sm ml-2 space-y-1">
+                            <li>**Bright Light:** LOW resistance &rarr; Pin reads a **LOW** value (e.g., 50).</li>
+                            <li>**Dark:** HIGH resistance &rarr; Pin reads a **HIGH** value (e.g., 900+).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4 class="font-bold mt-4 mb-2">🧑‍🏫 Light Sensor Resource:</h4>
+                <a href="https://learn.sparkfun.com/tutorials/photocell-hookup-guide" target="_blank" class="flex items-center p-2 text-xs bg-emerald-100 dark:bg-emerald-900 rounded-lg hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-all">
+                    <i data-lucide="link" class="w-4 h-4 mr-2"></i> **Tutorial Link:** Light Sensor Voltage Divider Explanation.
+                </a>
+            </div>
+
+            <!-- Activity 4: Combination Challenge (1:05-1:15) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">Activity 4: Multi-Sensor Comfort Monitor</h3>
+                <p class="mb-4 text-sm">Challenge: Use <strong>BOTH</strong> sensors (Temp on A0, Light on A1) to control a **Red/Green LED** system.</p>
+
+                <div class="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg mb-4">
+                    <h4 class="font-bold text-indigo-700 dark:text-indigo-300">Decision Logic:</h4>
+                    <ul class="list-disc list-inside text-sm ml-4">
+                        <li><strong>Green LED:</strong> Comfortable (Temp 20-26°C **AND** Light > 300).</li>
+                        <li><strong>Red LED:</strong> Uncomfortable (Too hot **OR** too dark).</li>
+                    </ul>
+                </div>
+                
+                <details class="text-sm">
+                    <summary class="font-bold cursor-pointer text-emerald-800 dark:text-emerald-200">View Combination Code (Scaffolding)</summary>
+                    <div class="bg-gray-800 text-white p-3 rounded-lg text-xs font-mono h-48 overflow-y-auto mt-2">
+                        <pre>
+// ... setup code ...
+void loop() {
+  // Read Temp and Light, calculate tempC...
+
+  bool tempComfortable = (tempC > 20 && tempC < 26);
+  bool lightComfortable = (lightValue > 300); // Adjust this threshold
+
+  if (tempComfortable && lightComfortable) {
+    digitalWrite(greenLED, HIGH);
+    digitalWrite(redLED, LOW);
+  } else {
+    digitalWrite(greenLED, LOW);
+    digitalWrite(redLED, HIGH);
+  }
+  delay(1000);
+}
+                        </pre>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 4: REAL-WORLD CONNECTION (1:15-1:22) - 7 minutes -->
+        <section id="part4" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="globe-2" class="w-8 h-8 text-emerald-600 dark:text-emerald-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 4: Real-World Connection & Thresholds (1:15-1:22)</h2>
+            </div>
+            
+            <!-- Code Concept: Thresholds (1:20-1:22) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">Thresholds: The Decision Point</h3>
+                <p class="mb-4 text-sm">Every time you use <code>if (sensorValue > THRESHOLD)</code>, you are setting a real-world decision point. Engineers use **testing** and **datasheets** to choose these numbers.</p>
+                <div class="p-3 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg">
+                    <h4 class="font-bold text-yellow-700 dark:text-yellow-300">Examples:</h4>
+                    <ul class="list-disc list-inside text-sm ml-4">
+                        <li><strong>Thermostat:</strong> 72°F is the threshold to turn the heater ON or OFF.</li>
+                        <li><strong>Fire Alarm:</strong> A smoke density threshold triggers the siren.</li>
+                        <li><strong>Sun Bracelet:</strong> A UV level threshold triggers the alert LED.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-8 border-gray-200 dark:border-gray-700">
+
+        <!-- PART 5: WRAP-UP & REFLECTION (1:22-1:30) - 8 minutes -->
+        <section id="part5" class="my-10 pt-4 scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="list-checks" class="w-8 h-8 text-emerald-600 dark:text-emerald-400"></i>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">PART 5: Wrap-Up & Reflection (1:22-1:30)</h2>
+            </div>
+
+            <!-- Debugging Challenge (1:22-1:25) - Concept Checking Questions -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">A. Debugging Challenge</h3>
+                <p class="mb-4 font-semibold text-sm">A student's temperature sensor **always reads 50°C** in the Serial Monitor, even when the room is cold. What is the most likely problem?</p>
+                
+                <div id="debugCheck" class="space-y-2">
+                    <label class="flex items-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700">
+                        <input type="radio" name="debug_q" value="wrong_pin" class="form-radio text-emerald-600">
+                        <span class="ml-2 text-sm">They used the wrong analog pin in the code (A1 instead of A0).</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700">
+                        <input type="radio" name="debug_q" value="backwards" class="form-radio text-emerald-600">
+                        <span class="ml-2 text-sm">The sensor is wired **backwards** (5V and GND swapped) and is overheating.</span>
+                    </label>
+                    <label class="flex items-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700">
+                        <input type="radio" name="debug_q" value="wrong_baud" class="form-radio text-emerald-600">
+                        <span class="ml-2 text-sm">The baud rate in the Serial Monitor is set to 115200 instead of 9600.</span>
+                    </label>
+                    <button onclick="checkDebugQuestion()" class="mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Check Answer</button>
+                    <p id="debugFeedback" class="mt-2 text-sm font-medium"></p>
+                </div>
+            </div>
+
+            <!-- Exit Ticket (1:25-1:28) -->
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">B. Exit Ticket (Self-Assessment)</h3>
+                
+                <div class="space-y-3">
+                    <div>
+                        <p class="font-semibold text-sm">1. What does <code>analogRead()</code> return?</p>
+                        <select class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm">
+                            <option value="">Select one...</option>
+                            <option value="highlow">HIGH or LOW</option>
+                            <option value="01023">0 to 1023 (Correct)</option>
+                            <option value="temp">Temperature in Celsius</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">2. Draw (in text): The simple wiring for the TMP36 sensor (A0 connection point).</p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="GND --| | |--- 5V. Middle pin to A0."></textarea>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">3. **Explain:** What is the Serial Monitor's primary job in today's class?</p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="To view the changing sensor numbers for debugging and calibration."></textarea>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">4. **Predict:** If you put ice on a temperature sensor, the <code>analogRead()</code> value will:</p>
+                        <select class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm">
+                            <option value="">Select one...</option>
+                            <option value="increase">Increase</option>
+                            <option value="decrease">Decrease (Correct)</option>
+                            <option value="same">Stay the same</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-sm">5. **Reflect:** One thing I found challenging today:</p>
+                        <textarea rows="1" class="w-full p-2 border rounded-lg dark:bg-gray-600 dark:border-gray-500 text-sm" placeholder="The math conversion formula was tricky to understand."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Week 4 (1:28-1:30) -->
+            <div class="card p-6 rounded-xl">
+                <h3 class="text-2xl font-semibold mb-3 border-b pb-2 text-emerald-700 dark:text-emerald-300">C. Bridge to Next Lesson & Homework</h3>
+                <p class="mb-4 text-sm font-medium">We've mastered <strong>INPUT</strong> (buttons and sensors). **Next week:** we control high-power <strong>OUTPUT</strong> devices like **motors and buzzers**! We'll use a **transistor** as a digital switch.</p>
+                
+                <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <p class="font-bold text-gray-700 dark:text-gray-300 flex items-center"><i data-lucide="hard-hat" class="w-4 h-4 mr-2"></i> Next Week's Teaser:</p>
+                    <p class="text-sm mt-1">We'll build a system where the light sensor automatically turns on a motor (like a fan) when the room gets too dark, or too hot. We're connecting input to powerful output!</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript for Interactivity, Logic, and Persistence -->
+    <script>
+        // --- Global State & Initialization ---
+        const APP_ID = 'Week3ElectronicsClass';
+        let currentState = {
+            theme: 'light',
+        };
+
+        const sectionTimes = {
+            'part1': { start: 0, end: 15, name: 'Hook & Review' },
+            'part2': { start: 15, end: 50, name: 'Guided Practice - Temperature Sensor' },
+            'part3': { start: 50, end: 80, name: 'Independent Practice - Light Sensor' },
+            'part4': { start: 80, end: 87, name: 'Real-World Connection & Thresholds' },
+            'part5': { start: 87, end: 90, name: 'Wrap-Up & Reflection' }
+        };
+
+        function initApp() {
+            loadState();
+            applyTheme();
+            updateAllIcons();
+            setupEventListeners();
+            updateProgress();
+            setupIntersectionObserver();
+        }
+
+        // --- Persistence (localStorage) ---
+
+        function loadState() {
+            try {
+                const savedState = JSON.parse(localStorage.getItem(APP_ID));
+                if (savedState) {
+                    currentState = { ...currentState, ...savedState };
+                }
+            } catch (e) {
+                console.error("Could not load state from localStorage:", e);
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(APP_ID, JSON.stringify(currentState));
+        }
+        
+        function saveSensorList() {
+            const listText = document.getElementById('sensorList').value;
+            localStorage.setItem(`${APP_ID}_sensorList`, listText);
+            document.getElementById('sensorSaved').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('sensorSaved').classList.add('hidden');
+            }, 3000);
+        }
+
+        // --- Theme & UI ---
+
+        function applyTheme() {
+            document.body.className = currentState.theme === 'dark' ? 'dark-mode' : 'light-mode';
+        }
+
+        function toggleTheme() {
+            currentState.theme = currentState.theme === 'light' ? 'dark' : 'light';
+            applyTheme();
+            saveState();
+        }
+
+        function updateAllIcons() {
+            lucide.createIcons();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        }
+        
+        // --- Progress and Timing ---
+
+        function setupIntersectionObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                        const sectionId = entry.target.id;
+                        updateProgress(sectionId);
+                        
+                        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                        document.querySelector(`a[href="#${sectionId}"]`).classList.add('active');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            Object.keys(sectionTimes).forEach(id => {
+                const section = document.getElementById(id);
+                if (section) {
+                    observer.observe(section);
+                }
+            });
+        }
+
+        function updateProgress(currentSectionId = 'part1') {
+            const currentSection = sectionTimes[currentSectionId];
+            if (!currentSection) return;
+
+            const timeTotal = 90;
+            const progress = (currentSection.end / timeTotal) * 100;
+            
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressTime').textContent = `${currentSection.start}:00-${currentSection.end}:00 / 90 min: ${currentSection.name}`;
+        }
+        
+        // --- Section-Specific Logic ---
+        
+        function checkConcept(item, type) {
+            const feedbackElement = document.getElementById(`${item}Feedback`);
+            if ((item === 'volume' && type === 'analog') || (item === 'horn' && type === 'digital')) {
+                feedbackElement.textContent = 'Correct!';
+                feedbackElement.className = 'ml-2 text-xs font-medium text-green-600 dark:text-green-400';
+            } else {
+                feedbackElement.textContent = 'Incorrect! Try again.';
+                feedbackElement.className = 'ml-2 text-xs font-medium text-red-600 dark:text-red-400';
+            }
+        }
+        
+        let serialLogCount = 0;
+        function simulateSerial() {
+            const output = document.getElementById('serialOutput');
+            output.innerHTML = '<p>TMP36 Temperature Sensor Test</p><p>----------------------------</p>';
+            serialLogCount = 0;
+
+            const baseSensorValue = 310;
+            
+            function logNext() {
+                if (serialLogCount < 5) {
+                    const value = baseSensorValue + Math.floor(Math.random() * 5);
+                    const voltage = (value * (5.0 / 1023.0)).toFixed(2);
+                    const tempC = ((voltage - 0.5) * 100.0).toFixed(1);
+                    const tempF = ((tempC * 9.0 / 5.0) + 32.0).toFixed(1);
+                    
+                    const logEntry = `<p>Sensor Value: ${value} | Voltage: ${voltage}V | Temp: ${tempC}°C / ${tempF}°F</p>`;
+                    output.innerHTML += logEntry;
+                    output.scrollTop = output.scrollHeight; // Scroll to bottom
+                    serialLogCount++;
+                    setTimeout(logNext, 1000); // Simulate 1 second delay
+                }
+            }
+            logNext();
+            showMessageBox('Simulating Serial Monitor output for 5 seconds.');
+        }
+
+        function checkDebugQuestion() {
+            const selectedValue = document.querySelector('input[name="debug_q"]:checked')?.value;
+            const feedback = document.getElementById('debugFeedback');
+
+            if (selectedValue === 'backwards') {
+                feedback.textContent = 'Correct! The TMP36 produces voltage based on temperature. If wired backwards (5V and GND swapped), it often gets very hot, leading to an artificially high reading (or damage).';
+                feedback.className = 'mt-2 text-sm font-medium p-2 bg-green-100 dark:bg-green-900/50 rounded-lg text-green-700 dark:text-green-300';
+            } else {
+                feedback.textContent = 'Not quite. While other errors are possible, the most common hardware mistake that causes a stable, yet wildly incorrect HIGH temperature reading is wiring the 5V and GND pins backwards.';
+                feedback.className = 'mt-2 text-sm font-medium p-2 bg-red-100 dark:bg-red-900/50 rounded-lg text-red-700 dark:text-red-300';
+            }
+        }
+
+
+        // Custom Message Box (replacing forbidden alert())
+        function showMessageBox(message) {
+            let msgBox = document.getElementById('customMessageBox');
+            if (!msgBox) {
+                msgBox = document.createElement('div');
+                msgBox.id = 'customMessageBox';
+                msgBox.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-xl text-white font-semibold z-[100] transition-transform duration-300 transform translate-x-full';
+                document.body.appendChild(msgBox);
+            }
+            
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            msgBox.style.backgroundColor = isDarkMode ? '#10b981' : '#059669'; 
+            msgBox.style.color = 'white';
+
+            msgBox.innerHTML = `<i data-lucide="check" class="w-4 h-4 mr-2 inline-block"></i> ${message}`;
+            lucide.createIcons();
+
+            msgBox.classList.remove('translate-x-full');
+            msgBox.classList.add('translate-x-0');
+
+            setTimeout(() => {
+                msgBox.classList.remove('translate-x-0');
+                msgBox.classList.add('translate-x-full');
+            }, 5000);
+        }
+
+    </script>
+</body>
+</html>
