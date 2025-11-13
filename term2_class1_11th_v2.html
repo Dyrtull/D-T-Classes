@@ -1,0 +1,3253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE Styles Mastery: Steps 5-10 Interactive Lesson</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter (Default) and OpenDyslexic (Read Mode) Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- OpenDyslexic Web Font for Read Mode (Fallback provided in CSS) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/opendyslexic/1.0.0/opendyslexic-regular.woff2" rel="stylesheet">
+
+<style>
+        /* ===================================================================== 
+           PART 3: VISUAL DESIGN - CSS CUSTOM PROPERTIES & DESIGN SYSTEM
+           ===================================================================== */
+        :root {
+            /* Colors */
+            --color-primary: #2563EB;
+            --color-secondary: #7C3AED;
+            --color-accent: #06B6D4;
+            --color-success: #10B981;
+            --color-warning: #F59E0B;
+            --color-error: #EF4444;
+
+            /* Light Mode */
+            --background-light: #F9FAFB;
+            --surface-light: #FFFFFF;
+            --text-light: #1F2937;
+            --border-light: #E5E7EB;
+
+            /* Spacing & Radius */
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            /* Typography */
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'Consolas', monospace;
+
+            /* Transitions */
+            --transition-base: 200ms ease;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+            /* Reading Mode */
+            --reading-bg-light: #FAFAF0;
+            --reading-text-light: #2A2A2A;
+            --reading-bg-dark: #2B2B2B;
+            --reading-text-dark: #E8E8E8;
+            --reading-font: 'OpenDyslexic', 'Comic Sans MS', 'Arial', sans-serif;
+            --reading-line-height: 1.9;
+            --reading-letter-spacing: 0.05em;
+            --reading-word-spacing: 0.1em;
+            --reading-max-width: 700px;
+        }
+
+        /* Dark Mode Overrides */
+        .dark {
+            --background-light: #111827;
+            --surface-light: #1F2937;
+            --text-light: #F9FAFB;
+            --border-light: #374151;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: var(--font-sans);
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--background-light);
+            color: var(--text-light);
+            scroll-behavior: smooth;
+        }
+
+        /* Layout Components */
+        .card {
+            background-color: var(--surface-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .card-standard:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+            min-height: 44px;
+            min-width: 44px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--border-light);
+            color: var(--text-light);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+            min-height: 44px;
+            min-width: 44px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.9;
+        }
+
+        /* CCQ Buttons */
+        .ccq-btn {
+            transition: all var(--transition-base);
+        }
+
+        .ccq-btn.correct-answer {
+            background-color: #10B981 !important;
+            color: white !important;
+        }
+
+        .ccq-btn.incorrect-answer {
+            background-color: #EF4444 !important;
+            color: white !important;
+        }
+
+        /* Semantic Callout Boxes */
+        .callout {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            border-left: 4px solid;
+            margin: 1.5rem 0;
+            align-items: flex-start;
+        }
+
+        .callout-info {
+            background: #EFF6FF;
+            border-color: #3B82F6;
+            color: #1E40AF;
+        }
+
+        .callout-tip {
+            background: #F0FDF4;
+            border-color: #10B981;
+            color: #065F46;
+        }
+
+        .callout-warning {
+            background: #FFFBEB;
+            border-color: #F59E0B;
+            color: #92400E;
+        }
+
+        .callout-error {
+            background: #FEF2F2;
+            border-color: #EF4444;
+            color: #991B1B;
+        }
+
+        .dark .callout-info {
+            background: #1E3A8A;
+            border-color: #60A5FA;
+            color: #DBEAFE;
+        }
+
+        .dark .callout-tip {
+            background: #064E3B;
+            border-color: #34D399;
+            color: #D1FAE5;
+        }
+
+        .dark .callout-warning {
+            background: #78350F;
+            border-color: #FBBF24;
+            color: #FFFBEB;
+        }
+
+        .dark .callout-error {
+            background: #7F1D1D;
+            border-color: #F87171;
+            color: #FEE2E2;
+        }
+
+        .callout-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-advanced {
+            background: #FEE2F2;
+            color: #991B1B;
+        }
+
+        .badge-intermediate {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge-basic {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        /* Mastery Meter */
+        .mastery-meter {
+            height: 10px;
+            background-color: var(--border-light);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            background: linear-gradient(90deg, var(--color-error), #F87171);
+        }
+
+        /* Concept Grid */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .concept-item {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background-color: var(--background-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 2px solid var(--border-light);
+        }
+
+        .concept-status {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-locked { color: #9CA3AF; }
+        .status-complete { color: var(--color-success); }
+        .status-review { color: var(--color-warning); }
+        .status-mastered { color: var(--color-secondary); }
+
+        /* Hint System */
+        .hint-system {
+            margin-top: 1rem;
+            border-top: 1px dashed var(--border-light);
+            padding-top: 1rem;
+        }
+
+        .hint-button {
+            color: var(--color-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.5rem 0;
+        }
+
+        .feedback-success {
+            color: var(--color-success);
+            font-weight: 700;
+        }
+
+        .feedback-incorrect {
+            color: var(--color-error);
+            font-weight: 700;
+        }
+
+        /* Reflection & Certificate Styles */
+        .reflection-card {
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--color-secondary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .certificate-preview {
+            border: 10px solid var(--color-primary);
+            padding: 2rem;
+            background: #FFF;
+            color: #1F2937;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 600px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .cert-name {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--color-error);
+            margin: 0.5rem 0;
+        }
+
+        .cert-course {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-top: 0.5rem;
+        }
+
+        .cert-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 1.5rem 0;
+            border-top: 1px solid #CCC;
+            border-bottom: 1px solid #CCC;
+            padding: 1rem 0;
+        }
+
+        .cert-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        /* ===================================================================== 
+           PART 2: ACCESSIBLE READING MODE
+           ===================================================================== */
+        .reading-mode {
+            font-family: var(--reading-font) !important;
+            line-height: var(--reading-line-height) !important;
+            letter-spacing: var(--reading-letter-spacing) !important;
+            word-spacing: var(--reading-word-spacing) !important;
+        }
+
+        .reading-mode body {
+            background-color: var(--reading-bg-light) !important;
+            color: var(--reading-text-light) !important;
+            font-size: 1.15em !important;
+            text-align: left !important;
+        }
+
+        .reading-mode.dark body {
+            background-color: var(--reading-bg-dark) !important;
+            color: var(--reading-text-dark) !important;
+        }
+
+        .reading-mode main {
+            max-width: var(--reading-max-width) !important;
+            margin: 0 auto !important;
+        }
+
+        .reading-mode p {
+            margin-bottom: 1.8em !important;
+            text-align: left !important;
+        }
+
+        .reading-mode h1,
+        .reading-mode h2,
+        .reading-mode h3 {
+            margin-top: 2.5em !important;
+            margin-bottom: 1em !important;
+            font-weight: 700 !important;
+            letter-spacing: normal !important;
+            word-spacing: normal !important;
+        }
+
+        .reading-mode a {
+            text-decoration: underline !important;
+            text-underline-offset: 0.2em !important;
+            color: #0066CC !important;
+            font-weight: 600 !important;
+        }
+
+        .reading-mode .card,
+        .reading-mode .reflection-card {
+            padding: 2rem !important;
+            margin-bottom: 2.5rem !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+            border-width: 1px !important;
+        }
+
+        .reading-mode * {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+
+        .reading-mode li {
+            margin-bottom: 0.8em !important;
+        }
+
+        .reading-mode ul,
+        .reading-mode ol {
+            padding-left: 2.5em !important;
+        }
+
+        .reading-mode *:focus {
+            outline: 3px solid #0099FF !important;
+            outline-offset: 2px !important;
+        }
+
+        .reading-mode code {
+            background-color: #FFFACD !important;
+            color: #1F2937 !important;
+            padding: 0.2em 0.4em !important;
+            border-radius: 3px !important;
+            font-size: 0.95em !important;
+        }
+
+        .reading-mode p em,
+        .reading-mode p i {
+            font-style: normal !important;
+            font-weight: 600 !important;
+            color: #0066CC !important;
+        }
+
+        /* ===================================================================== 
+           PART 8: RESPONSIVE DESIGN & ACCESSIBILITY
+           ===================================================================== */
+        
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -44px;
+            left: 0;
+            background: var(--color-primary);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            z-index: 1000;
+            border-radius: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 0;
+            outline: 3px solid var(--color-warning);
+            outline-offset: 2px;
+        }
+
+        /* Tab Navigation */
+        .tab-button {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.5rem 0.5rem 0 0;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: #6B7280;
+            background: transparent;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            color: #2563EB;
+            border-bottom-color: #93C5FD;
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .tab-button.active {
+            color: #2563EB;
+            border-bottom-color: #2563EB;
+            font-weight: 600;
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .dark .tab-button {
+            color: #9CA3AF;
+        }
+
+        .dark .tab-button:hover {
+            color: #60A5FA;
+            border-bottom-color: #60A5FA;
+        }
+
+        .dark .tab-button.active {
+            color: #60A5FA;
+            border-bottom-color: #60A5FA;
+        }
+
+        /* Timer Display */
+        .timer-display {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-secondary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .timer-label {
+            color: #6B7280;
+            font-size: 0.8rem;
+        }
+
+        .dark .timer-label {
+            color: #9CA3AF;
+        }
+
+        /* Responsive Grids */
+        @media (min-width: 640px) {
+            .sm-grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .sm-gap-6 {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg-grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Mobile Tab Navigation */
+        @media (max-width: 768px) {
+            .tab-nav-container {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                gap: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+
+            .tab-nav-container::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab-button {
+                flex: 0 0 auto;
+                scroll-snap-align: start;
+                white-space: nowrap;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Touch Target Size */
+        button,
+        .clickable-card {
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
+        }
+
+        /* Pointer Events Utility */
+        .pointer-events-none {
+            pointer-events: none;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- SKIP LINK (PART 6) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header and Navigation -->
+    <header role="banner" class="sticky top-0 z-50 card border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-blue-600 dark:text-purple-400">IGCSE Steps 5-10 Mastery</h1>
+            <div class="flex items-center space-x-4">
+                <div class="timer-display">
+                    <span class="timer-label">Total Time:</span>
+                    <span id="global-timer" aria-live="polite">00:00:00</span>
+                </div>
+                <!-- Easier to Read Mode Toggle (PART 2) -->
+                <button id="reading-mode-toggle" onclick="toggleReadingMode()"
+                    class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition"
+                    aria-label="Toggle Easier to Read Mode" aria-pressed="false">
+                    <!-- Book/Reading Icon -->
+                    <svg class="w-6 h-6 text-gray-800 dark:text-gray-200" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </button>
+                <!-- Dark Mode Toggle -->
+                <button id="mode-toggle" onclick="toggleDarkMode()"
+                    class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition"
+                    aria-label="Toggle Dark Mode">
+                    <svg class="w-6 h-6 text-gray-800 dark:text-gray-200" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="h-1 bg-gray-200 dark:bg-gray-700" aria-hidden="true">
+            <div id="progress-bar" class="h-1 bg-blue-500 transition-all duration-500" style="width: 0%;"></div>
+        </div>
+
+        <!-- Section Time Indicator (NEW) -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1 flex justify-end items-center">
+            <div class="timer-display">
+                <span class="timer-label">Time for this Section:</span>
+                <span id="section-time" class="font-bold text-red-500">0 min</span>
+            </div>
+        </div>
+
+        <!-- Tab Navigation (PART 6 - ARIA) -->
+        <nav role="navigation" aria-label="Lesson Sections" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-1">
+            <div id="tab-nav-container" class="flex space-x-2" role="tablist">
+                <!-- Tabs will be generated by JavaScript -->
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT (PART 6 - ARIA) -->
+    <main id="main-content" role="main" aria-label="Main lesson content"
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10" tabindex="-1">
+        <div id="lesson-content">
+
+            <!-- 1. Introduction and Navigation -->
+            <section id="section-1" role="tabpanel" aria-labelledby="tab-1" tabindex="0" class="space-y-6">
+                <div class="card p-6 rounded-xl space-y-4">
+                    <h2 class="text-3xl font-extrabold text-blue-600 dark:text-purple-400">1. Introduction</h2>
+                    <p class="text-lg">Welcome to Document Production Mastery! This lesson focuses on <strong>Steps
+                            5-10</strong> of the IGCSE Document Production Task, covering <strong>Styles, Shapes, and
+                            Professional Proofreading</strong>. Your goal is to develop the precision required for exam
+                        success.</p>
+                    <p class="font-semibold">Estimated Time: 85 minutes total.</p>
+
+                    <div class="callout callout-tip">
+                        <div class="callout-icon">💡</div>
+                        <div class="callout-content">
+                            <p class="callout-title">Expert Tip</p>
+                            <p>Use the tabs above or <code>Ctrl + Arrow Keys</code> to quickly navigate between
+                                sections!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Learning Objectives & Goals -->
+            <section id="section-2" style="display:none;" role="tabpanel" aria-labelledby="tab-2" tabindex="0"
+                class="space-y-6">
+                <h2 class="text-3xl font-bold">2. Learning Objectives</h2>
+                <div class="card p-6 rounded-xl space-y-4">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400">Learning Goals</h3>
+                    <p class="font-medium">By the end of this lesson, you will be able to:</p>
+                    <ul class="list-disc ml-6 space-y-2">
+                        <li><strong>Create</strong> a custom paragraph style (GA-subhead) with 10 exact specifications
+                            (Step 5). </li>
+                        <li><strong>Format</strong> a shape to the exact width (5cm) and precise properties (Step 8-9).
+                        </li>
+                        <li><strong>Verify</strong> document quality by checking for visual consistency and layout
+                            errors (Step 10). </li>
+                    </ul>
+
+                    <div class="callout callout-tip mt-4">
+                        <div class="callout-icon">✅</div>
+                        <div class="callout-content">
+                            <p class="callout-title">Success Criteria</p>
+                            <p>You are successful when you achieve mastery in the <strong>Concept Checking
+                                    Questions</strong> embedded within the steps!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 3. Opening Activity: The Efficiency Challenge (MODIFIED) -->
+            <section id="section-3" style="display:none;" role="tabpanel" aria-labelledby="tab-3" tabindex="0"
+                class="space-y-6">
+                <h2 class="text-3xl font-bold">3. Opening Activity</h2>
+                <div id="opening-hook-card"
+                    class="card card-standard p-6 rounded-xl space-y-4 border-l-4 border-blue-500">
+                    <h3 class="text-2xl font-semibold">Quick Prediction Activity: Style vs. Manual Formatting</h3>
+                    <p>You have 40 subheadings. You need to apply <strong>4 separate formatting steps</strong> to each
+                        (e.g., Font, Size, Bold, Center). Which is faster?</p>
+
+                    <div class="grid sm-grid-2 sm-gap-6 mt-4">
+                        <div class="p-4 border rounded-lg hover:shadow-lg transition duration-200" data-method="manual">
+                            <p class="font-bold">⌨️ Manual Formatting</p>
+                            <p class="text-sm">40 headings × 4 steps/heading = 160 actions.</p>
+                            <label class="block pt-2"><input type="radio" name="prediction" value="manual"
+                                    class="h-4 w-4 text-red-600"> Choose Manual</label>
+                        </div>
+                        <div class="p-4 border rounded-lg hover:shadow-lg transition duration-200" data-method="style">
+                            <p class="font-bold">✨ Styles Method</p>
+                            <p class="text-sm">1 style creation + 40 applications = 41 actions.</p>
+                            <label class="block pt-2"><input type="radio" name="prediction" value="style"
+                                    class="h-4 w-4 text-green-600"> Choose Styles</label>
+                        </div>
+                    </div>
+
+
+                    <p id="opening-status" role="status" aria-live="polite" class="text-sm pt-2 text-green-500"
+                        style="display:none;"></p>
+
+                    <div class="callout callout-info mt-4">
+                        <div class="callout-icon">💡</div>
+                        <div class="callout-content">
+                            <p class="callout-title">Hint</p>
+                            <p>Once you make a choice, move to the next section to learn which method provides the most
+                                efficiency and consistency.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Step 5: Create Style (UPDATED) -->
+            <section id="section-4" role="tabpanel" aria-labelledby="tab-4" tabindex="0" class="space-y-8"
+                style="display: none;">
+                <h2 class="text-3xl font-bold">4. Step 5: Create Style</h2>
+
+                <!-- PART A: ORIGINAL EXAM INSTRUCTION (ALWAYS FIRST) -->
+                <div
+                    class="exam-instruction-card card p-6 rounded-xl border-l-4 border-red-500 bg-red-50 dark:bg-red-900">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl flex-shrink-0"> 📋 </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-red-700 dark:text-red-300 mb-3">
+                                📖 EXACT Exam Instruction (Read Carefully!)
+                            </h3>
+                            <div
+                                class="instruction-text bg-white dark:bg-gray-800 p-4 rounded-lg border-2 border-red-300 dark:border-red-700">
+                                <!-- COPY EXACT TEXT FROM PDF HERE -->
+                                <p class="font-mono text-base leading-relaxed">
+                                    "Create and store the following style, basing it on the default/normal paragraph
+                                    style:
+                                    Style name: GA-subhead
+                                    Font style: serif
+                                    Font size (points): 20
+                                    Alignment: centre
+                                    Enhancement: bold, italic, all capitals
+                                    Line spacing: single
+                                    Space before (points): 0
+                                    Space after (points): 0
+                                    Take a screenshot to show that you have defined the settings for the GA-subhead
+                                    style.
+                                    Make sure that there is evidence that you have based this on the default/normal
+                                    paragraph style.
+                                    Place this in your Evidence Document."
+                                </p>
+                            </div>
+
+                            <!-- Reading Comprehension Aid -->
+                            <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+                                <p class="text-sm font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+                                    🔍 What This Instruction Is Asking You To Do:
+                                </p>
+                                <ul class="list-disc ml-6 space-y-1 text-sm text-yellow-900 dark:text-yellow-100">
+                                    <li><strong>Main Action:</strong> Create a NEW paragraph style called "GA-subhead"
+                                    </li>
+                                    <li><strong>Specific Requirements:</strong> Must have exactly 10 properties set
+                                        (font, size, alignment, 3 enhancements, line spacing, 2 space values, based on
+                                        Normal)</li>
+                                    <li><strong>Where to Do It:</strong> In the Styles panel (Home tab → Styles → New
+                                        Style)</li>
+                                    <li><strong>Evidence Required:</strong> Screenshot showing ALL style properties AND
+                                        proof it's based on "Normal"</li>
+                                </ul>
+                            </div>
+                            <!-- Common Misreading Warning -->
+                            <div class="callout callout-error mt-4">
+                                <div class="callout-icon"> ⚠️ </div>
+                                <div class="callout-content">
+                                    <p class="callout-title"> ⚠️ Students Often Misread This As...</p>
+                                    <p>"Just format one heading with these properties" <strong>← This is WRONG!</strong>
+                                    </p>
+                                    <p class="mt-2"><strong>Correct Understanding:</strong> You must CREATE and SAVE a
+                                        reusable style definition, NOT just format text manually. The difference: a
+                                        style can be applied to multiple items with one click.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PART B: DETAILED SPECIFICATION BREAKDOWN (FROM OLD SECTION 4) -->
+                <div class="specification-breakdown card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 mb-4">
+                        📊 Specification Requirements Explained
+                    </h3>
+
+                    <h4 class="text-xl font-semibold mb-2">Precision Checklist: The 10 Essential Settings</h4>
+                    <div class="grid sm-grid-2 lg-grid-3 sm-gap-6 gap-4">
+                        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-gray-700"><strong>1-2. Name &
+                                Base:</strong> GA-subhead, Based on Normal</div>
+                        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-gray-700"><strong>3-4. Font:</strong>
+                            Serif, 20pt</div>
+                        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-gray-700"><strong>5. Alignment:</strong>
+                            Centre</div>
+                        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-gray-700"><strong>6-8. Enhancements
+                                (3):</strong> Bold, Italic, All Capitals</div>
+                        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-gray-700"><strong>9-10. Spacing:</strong>
+                            0pt Before, 0pt After</div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 pt-6 mb-4">Visual Comparison:
+                        Before & After</h3>
+                    <div class="grid sm-grid-2 sm-gap-6 gap-4 p-4">
+                        <div class="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                            <p class="font-bold text-lg mb-2">LEFT: Before Style (Normal)</p>
+                            <p class="text-left text-base font-sans font-normal lowercase"
+                                style="border: 1px solid #CCC; padding: 1rem;">games</p>
+                        </div>
+                        <div class="p-4 bg-gray-200 dark:bg-gray-600 rounded-lg">
+                            <p class="font-bold text-lg mb-2">RIGHT: After GA-subhead</p>
+                            <p class="text-center font-serif text-[20pt] font-bold italic uppercase"
+                                style="border: 1px solid #CCC; padding: 1rem; line-height: 1;">GAMES</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- PART C: STEP-BY-STEP IMPLEMENTATION GUIDE -->
+                <div class="implementation-guide card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 mb-4">
+                        🛠️ How to Complete This Step (Step-by-Step)
+                    </h3>
+                    <ol class="list-decimal ml-6 space-y-3">
+                        <li>Go to the <strong>Home Tab</strong> and click the small arrow in the <strong>Styles</strong>
+                            pane to open the Styles window.</li>
+                        <li>Click the <strong>New Style</strong> button (usually the bottom-left button with 'A' and a
+                            plus sign).</li>
+                        <li>Enter <strong>GA-subhead</strong> as the name. Set <strong>Style based on:</strong> to
+                            <strong>Normal</strong>.
+                        </li>
+                        <li>Set the Font to a <strong>Serif</strong> font (e.g., Times New Roman) and Size to
+                            <strong>20pt</strong>.
+                        </li>
+                        <li>Click the <strong>Format</strong> button, select <strong>Font</strong>, and check
+                            <strong>Bold, Italic</strong>, and in the Effects section, check <strong>All caps</strong>.
+                        </li>
+                        <li>Click the <strong>Format</strong> button, select <strong>Paragraph</strong>, set
+                            <strong>Alignment</strong> to <strong>Centered</strong>. Set <strong>Spacing Before</strong>
+                            and <strong>After</strong> to <strong>0 pt</strong>. Set <strong>Line spacing</strong> to
+                            <strong>Single</strong>.
+                        </li>
+                        <li>Click <strong>OK</strong> to save the style.</li>
+                        <li>Take the <strong>REQUIRED SCREENSHOT</strong> showing the *Modify Style* dialog box with all
+                            10 settings visible, especially <strong>Based on: Normal</strong>.</li>
+                    </ol>
+                </div>
+                <!-- PART D: COMMON MISTAKES & TROUBLESHOOTING -->
+                <div class="troubleshooting-section card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-orange-600 dark:text-orange-400 mb-4">
+                        ⚠️ Common Mistakes Students Make
+                    </h3>
+                    <ul class="list-disc ml-6 space-y-2">
+                        <li><strong>Missing All Caps:</strong> Students often apply Bold/Italic but forget to check the
+                            separate <strong>All Caps</strong> box in the Font properties.</li>
+                        <li><strong>Wrong Spacing:</strong> Forgetting to set <strong>Space before (points): 0</strong>
+                            and <strong>Space after (points): 0</strong>. The default is usually non-zero and will cause
+                            marks to be lost.</li>
+                        <li><strong>Incorrect Evidence:</strong> Taking a screenshot of the <em>applied</em> text
+                            instead of the <em>definition</em> dialog box, which proves the style was correctly stored.
+                        </li>
+                    </ul>
+                </div>
+                <!-- PART E: SELF-CHECK VERIFICATION CHECKLIST -->
+                <div class="verification-checklist card p-6 rounded-xl bg-green-50 dark:bg-green-900">
+                    <h3 class="text-2xl font-semibold text-green-700 dark:text-green-300 mb-4">
+                        ✅ Self-Verification Checklist
+                    </h3>
+                    <p class="mb-4">Before moving on, verify you've completed all requirements:</p>
+                    <div class="space-y-3">
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-5-1">
+                            <span class="flex-1">Style is named GA-subhead (exact spelling).</span>
+                        </label>
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-5-2">
+                            <span class="flex-1">Font size is <strong>EXACTLY 20pt</strong> and style is
+                                <strong>Serif</strong>.</span>
+                        </label>
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-5-3">
+                            <span class="flex-1">The three enhancements (Bold, Italic, All Caps) are all applied.</span>
+                        </label>
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-5-4">
+                            <span class="flex-1">Spacing Before/After are both set to <strong>0pt</strong>.</span>
+                        </label>
+                    </div>
+                    <button class="btn-primary w-full mt-4" onclick="validateStepCompletion('5')">
+                        ✓ I've Completed This Step
+                    </button>
+                </div>
+                <!-- PART F: CONCEPT CHECKING QUESTIONS (EMBEDDED) -->
+                <div class="embedded-ccq-section card p-6 rounded-xl border-l-4 border-purple-500">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                        🧠 Check Your Understanding (Step 5)
+                    </h3>
+                    <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                        Answer these questions to verify your understanding before moving forward.
+                    </p>
+
+                    <!-- Question 1 -->
+                    <div class="ccq-embedded space-y-4" data-step="5" data-question="1">
+                        <p class="font-bold mb-3">Question 1: Can you create the GA-subhead style with 18-point font
+                            size instead of 20-point?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('5', '1', false, this)">Yes, 18pt is close enough</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('5', '1', true, this)">No, it must be EXACTLY 20pt</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-5-1" style="display:none;"></div>
+                    </div>
+                    <!-- Question 2 -->
+                    <div class="ccq-embedded space-y-4 pt-6" data-step="5" data-question="2">
+                        <p class="font-bold mb-3">Question 2: If you forget to set the style to 'Based on: Normal', will
+                            you lose marks?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('5', '2', true, this)">Yes, the screenshot must show it's
+                                based on Normal</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('5', '2', false, this)">No, as long as the formatting looks
+                                correct</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-5-2" style="display:none;"></div>
+                    </div>
+                    <!-- Question 3 -->
+                    <div class="ccq-embedded space-y-4 pt-6" data-step="5" data-question="3">
+                        <p class="font-bold mb-3">Question 3: Which of these is the MOST commonly missed requirement in
+                            Step 5?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('5', '3', false, this)">Forgetting to make text Bold</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('5', '3', true, this)">Not applying 'All Capitals'
+                                enhancement</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('5', '3', false, this)">Using the wrong font color</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-5-3" style="display:none;"></div>
+                    </div>
+                    <!-- Step CCQ Score Display -->
+                    <div class="step-ccq-score mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+                        <p class="text-lg font-semibold">Step 5 Understanding Score:</p>
+                        <p class="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                            <span class="current-score" id="score-step-5">0</span>/3
+                        </p>
+                    </div>
+                </div>
+                <!-- PART G: STEP COMPLETION CERTIFICATE -->
+                <div
+                    class="step-certificate-generator card p-6 rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                        🎓 Step 5 Mastery Certificate
+                    </h3>
+                    <p class="mb-2 text-sm font-semibold text-red-700 dark:text-red-300">
+                        💡 Remember to **KEEP** this certificate! You must submit it to your teacher at the end of the
+                        lesson.
+                    </p>
+                    <p class="mb-4">You've completed Step 5! Generate your certificate to track your progress.</p>
+
+                    <button class="btn-primary w-full" onclick="generateStepCertificate('5')">
+                        🏆 Generate Step 5 Certificate
+                    </button>
+
+                    <div id="step-5-certificate-display" class="certificate-container mt-6" style="display:none;">
+                        <!-- Certificate rendered here by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Step 6-7: Apply Style & Move Content (UPDATED) -->
+            <section id="section-5" role="tabpanel" aria-labelledby="tab-5" tabindex="0" class="space-y-8"
+                style="display: none;">
+                <h2 class="text-3xl font-bold">5. Step 6-7: Apply & Move</h2>
+
+                <!-- PART A: ORIGINAL EXAM INSTRUCTION (ALWAYS FIRST) -->
+                <div
+                    class="exam-instruction-card card p-6 rounded-xl border-l-4 border-red-500 bg-red-50 dark:bg-red-900">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl flex-shrink-0"> 📋 </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-red-700 dark:text-red-300 mb-3">
+                                📖 EXACT Exam Instructions (Read Carefully!)
+                            </h3>
+                            <div
+                                class="instruction-text bg-white dark:bg-gray-800 p-4 rounded-lg border-2 border-red-300 dark:border-red-700 space-y-4">
+                                <p class="font-bold text-base">Step 6:</p>
+                                <p class="font-mono text-base leading-relaxed">
+                                    "Identify the three subheadings in the document and apply the GA-subhead style to
+                                    each one."
+                                </p>
+                                <p class="font-bold text-base pt-2">Step 7:</p>
+                                <p class="font-mono text-base leading-relaxed">
+                                    "Locate and move the paragraph: Cloud gaming is a method … to access content. so
+                                    that it appears as a new paragraph immediately after the heading Cloud Gaming"
+                                </p>
+                            </div>
+
+                            <!-- Reading Comprehension Aid (STEP 6) -->
+                            <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+                                <p class="text-sm font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+                                    🔍 What Step 6 Is Asking You To Do:
+                                </p>
+                                <ul class="list-disc ml-6 space-y-1 text-sm text-yellow-900 dark:text-yellow-100">
+                                    <li><strong>Main Action:</strong> Find the 3 main subheadings in the document</li>
+                                    <li><strong>Specific Requirements:</strong> Apply the GA-subhead style (that you
+                                        created in Step 5) to each one</li>
+                                    <li><strong>Key Subheadings:</strong> GAMES, CLOUD GAMING, VIRTUAL REALITY</li>
+                                </ul>
+                            </div>
+                            <!-- Common Misreading Warning (STEP 6) -->
+                            <div class="callout callout-error mt-4">
+                                <div class="callout-icon"> ⚠️ </div>
+                                <div class="callout-content">
+                                    <p class="callout-title"> ⚠️ Students Often Misread This As...</p>
+                                    <p>"Format each heading manually with the same properties" <strong>← This is
+                                            WRONG!</strong></p>
+                                    <p class="mt-2"><strong>Correct Understanding:</strong> You must APPLY the style
+                                        (click in heading → select GA-subhead from Styles gallery). Do NOT re-format
+                                        manually. You lose marks for inconsistency if you do.</p>
+                                </div>
+                            </div>
+                            <!-- Reading Comprehension Aid (STEP 7) -->
+                            <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+                                <p class="text-sm font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+                                    🔍 What Step 7 Is Asking You To Do:
+                                </p>
+                                <ul class="list-disc ml-6 space-y-1 text-sm text-yellow-900 dark:text-yellow-100">
+                                    <li><strong>Main Action:</strong> Find the specific paragraph that starts with
+                                        "Cloud gaming is a method"</li>
+                                    <li><strong>Specific Requirements:</strong> Move it (cut and paste) so it appears
+                                        RIGHT AFTER the "CLOUD GAMING" heading</li>
+                                    <li><strong>Correct Understanding:</strong> Use Cut (Ctrl+X) and Paste (Ctrl+V)
+                                        using <strong>Keep Source Formatting</strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PART B: DETAILED SPECIFICATION BREAKDOWN -->
+                <div class="specification-breakdown card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 mb-4">
+                        📊 Consistency and Placement Explained
+                    </h3>
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">Style Consistency (Step 6)</h4>
+                            <p>All three subheadings must look <strong>identical</strong>. If they don't, manually clear
+                                the formatting (Ctrl+Space or Clear All Formatting) and reapply the GA-subhead style.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">Paragraph Movement (Step 7)</h4>
+                            <p>You are testing <strong>content reorganization</strong>. The paragraph should be a
+                                standard body paragraph, maintaining its original formatting (usually 'Normal' or 'Body
+                                Text'). Do not format it as a heading.</p>
+                            <div class="callout callout-warning mt-3 p-2">
+                                <p class="font-bold">CRITICAL: Paste Options</p>
+                                <p class="text-sm">When pasting, select <strong>'Keep Source Formatting'</strong>. Using
+                                    'Keep Text Only' loses the essential body text formatting and will cost marks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PART C: STEP-BY-STEP IMPLEMENTATION GUIDE -->
+                <div class="implementation-guide card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 mb-4">
+                        🛠️ How to Complete This Step (Step-by-Step)
+                    </h3>
+                    <ol class="list-decimal ml-6 space-y-3">
+                        <li><strong>Step 6:</strong> Select or place the cursor in the first subheading (GAMES). In the
+                            Styles Gallery (Home Tab), click <strong>GA-subhead</strong>. Repeat for CLOUD GAMING and
+                            VIRTUAL REALITY.</li>
+                        <li><strong>Step 7:</strong> Search the document for the paragraph starting <strong>"Cloud
+                                gaming is a method..."</strong>.</li>
+                        <li><strong>Cut</strong> the entire paragraph (Ctrl+X).</li>
+                        <li>Place the cursor immediately <strong>after</strong> the CLOUD GAMING subheading.</li>
+                        <li><strong>Paste</strong> the paragraph (Ctrl+V), ensuring you use the option to <strong>Keep
+                                Source Formatting</strong>.</li>
+                    </ol>
+                </div>
+                <!-- PART E: SELF-CHECK VERIFICATION CHECKLIST -->
+                <div class="verification-checklist card p-6 rounded-xl bg-green-50 dark:bg-green-900">
+                    <h3 class="text-2xl font-semibold text-green-700 dark:text-green-300 mb-4">
+                        ✅ Self-Verification Checklist
+                    </h3>
+                    <div class="space-y-3">
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-6-7-1">
+                            <span class="flex-1">GAMES, CLOUD GAMING, and VIRTUAL REALITY all use the
+                                <strong>GA-subhead</strong> style.</span>
+                        </label>
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-6-7-2">
+                            <span class="flex-1">The paragraph "Cloud gaming is a method..." is immediately after the
+                                <strong>CLOUD GAMING</strong> heading.</span>
+                        </label>
+                    </div>
+                    <button class="btn-primary w-full mt-4" onclick="validateStepCompletion('6-7')">
+                        ✓ I've Completed These Steps
+                    </button>
+                </div>
+                <!-- PART F: CONCEPT CHECKING QUESTIONS (EMBEDDED) -->
+                <div class="embedded-ccq-section card p-6 rounded-xl border-l-4 border-purple-500">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                        🧠 Check Your Understanding (Steps 6-7)
+                    </h3>
+                    <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                        Answer these questions to verify your understanding before moving forward.
+                    </p>
+
+                    <!-- Question 1 -->
+                    <div class="ccq-embedded space-y-4" data-step="6-7" data-question="1">
+                        <p class="font-bold mb-3">Question 1: After applying GA-subhead, you notice one heading looks
+                            slightly different. What should you do?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '1', false, this)">Leave it - small differences don't
+                                matter</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '1', true, this)">Check if manual formatting was
+                                accidentally applied and remove it</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '1', false, this)">Recreate the style from
+                                scratch</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-6-7-1" style="display:none;"></div>
+                    </div>
+                    <!-- Question 2 -->
+                    <div class="ccq-embedded space-y-4 pt-6" data-step="6-7" data-question="2">
+                        <p class="font-bold mb-3">Question 2: When moving the paragraph in Step 7, which paste option
+                            should you prioritize?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '2', false, this)">Keep Text Only</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '2', true, this)">Keep Source Formatting</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '2', false, this)">Merge Formatting</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-6-7-2" style="display:none;"></div>
+                    </div>
+                    <!-- Question 3 -->
+                    <div class="ccq-embedded space-y-4 pt-6" data-step="6-7" data-question="3">
+                        <p class="font-bold mb-3">Question 3: What is the key difference between Step 5 and Step 6?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '3', true, this)">Step 5 creates the style definition;
+                                Step 6 applies it to content</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '3', false, this)">Step 5 is for headings; Step 6 is
+                                for body text</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('6-7', '3', false, this)">They are the same thing, just worded
+                                differently</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-6-7-3" style="display:none;"></div>
+                    </div>
+                    <!-- Step CCQ Score Display -->
+                    <div class="step-ccq-score mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+                        <p class="text-lg font-semibold">Steps 6-7 Understanding Score:</p>
+                        <p class="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                            <span class="current-score" id="score-step-6-7">0</span>/3
+                        </p>
+                    </div>
+                </div>
+                <!-- PART G: STEP COMPLETION CERTIFICATE -->
+                <div
+                    class="step-certificate-generator card p-6 rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                        🎓 Steps 6-7 Mastery Certificate
+                    </h3>
+                    <p class="mb-2 text-sm font-semibold text-red-700 dark:text-red-300">
+                        💡 Remember to **KEEP** this certificate! You must submit it to your teacher at the end of the
+                        lesson.
+                    </p>
+                    <p class="mb-4">You've completed Steps 6-7! Generate your certificate to track your progress.</p>
+
+                    <button class="btn-primary w-full" onclick="generateStepCertificate('6-7')">
+                        🏆 Generate Steps 6-7 Certificate
+                    </button>
+
+                    <div id="step-6-7-certificate-display" class="certificate-container mt-6" style="display:none;">
+                        <!-- Certificate rendered here by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Step 8-9: Shape Format (UPDATED) -->
+            <section id="section-6" role="tabpanel" aria-labelledby="tab-6" tabindex="0" class="space-y-8"
+                style="display: none;">
+                <h2 class="text-3xl font-bold">6. Step 8-9: Shape Format</h2>
+
+                <!-- PART A: ORIGINAL EXAM INSTRUCTION (ALWAYS FIRST) -->
+                <div
+                    class="exam-instruction-card card p-6 rounded-xl border-l-4 border-red-500 bg-red-50 dark:bg-red-900">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl flex-shrink-0"> 📋 </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-red-700 dark:text-red-300 mb-3">
+                                📖 EXACT Exam Instructions (Read Carefully!)
+                            </h3>
+                            <div
+                                class="instruction-text bg-white dark:bg-gray-800 p-4 rounded-lg border-2 border-red-300 dark:border-red-700 space-y-4">
+                                <p class="font-bold text-base">Step 8:</p>
+                                <p class="font-mono text-base leading-relaxed">
+                                    "Place a cloud shape aligned to the right of the column and the top of the paragraph
+                                    starting … There are many advantages Format the shape so that: - it is re-sized to a
+                                    width of five centimetres - the outside edge of the cloud is black and 3–4 points
+                                    thick - it is filled with a light-grey shading (10–25%) - the text wraps around the
+                                    shape."
+                                </p>
+                                <p class="font-bold text-base pt-2">Step 9:</p>
+                                <p class="font-mono text-base leading-relaxed">
+                                    "Enter the text Cloud Gaming in the cloud shape created in Step 8. Format this text
+                                    to display in a bold, black font. Make sure that the text fits within the shape and
+                                    does not touch the border. The completed shape should look like this: Cloud Gaming"
+                                </p>
+                            </div>
+
+                            <!-- Reading Comprehension Aid -->
+                            <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+                                <p class="text-sm font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+                                    🔍 What Steps 8-9 Are Asking You To Do:
+                                </p>
+                                <ul class="list-disc ml-6 space-y-1 text-sm text-yellow-900 dark:text-yellow-100">
+                                    <li><strong>Main Action:</strong> Insert a Cloud shape next to a specific paragraph
+                                    </li>
+                                    <li><strong>Specific Requirements (4 Shape + 2 Text):</strong> Width:
+                                        <strong>EXACTLY 5cm</strong>; Outline: Black, 3-4pt thick; Fill: Light gray
+                                        (10-25%); Text wrapping: Enabled; Contains text "Cloud Gaming" in bold, black.
+                                    </li>
+                                    <li><strong>Evidence Required:</strong> Shape visible in printed document with all
+                                        specifications correct</li>
+                                </ul>
+                            </div>
+                            <!-- Common Misreading Warning -->
+                            <div class="callout callout-error mt-4">
+                                <div class="callout-icon"> ⚠️ </div>
+                                <div class="callout-content">
+                                    <p class="callout-title"> ⚠️ Students Often Misread This As...</p>
+                                    <p>"The shape should be approximately 5cm" <strong>← This is WRONG!</strong></p>
+                                    <p class="mt-2"><strong>Correct Understanding:</strong> The width must be
+                                        <strong>EXACTLY 5.0 centimeters</strong>. Use the Size and Position dialog and
+                                        type "5 cm" - do not estimate by dragging handles.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PART B: DETAILED SPECIFICATION BREAKDOWN -->
+                <div class="specification-breakdown card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 mb-4">
+                        📊 Specification Requirements Explained (Precision Check)
+                    </h3>
+
+                    <h4 class="text-xl font-semibold mb-2">Key Precision Points</h4>
+                    <ul class="list-disc ml-6 space-y-2">
+                        <li><strong>5.0cm Width:</strong> Must be set using the <strong>Size and Position</strong>
+                            dialog box. Dragging by eye is not acceptable.</li>
+                        <li><strong>Light Gray Fill:</strong> This is a gray <strong>shading</strong> of 10-25%. Pure
+                            white or a dark gray (e.g., 50%) is incorrect.</li>
+                        <li><strong>Text Wrap:</strong> Must be set to allow text to flow around the shape (e.g., Square
+                            or Tight).</li>
+                        <li><strong>Text Margin:</strong> The text "Cloud Gaming" must <strong>not touch the
+                                border</strong>—it requires internal padding/margin for professional look.</li>
+                    </ul>
+                </div>
+                <!-- PART C: STEP-BY-STEP IMPLEMENTATION GUIDE -->
+                <div class="implementation-guide card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 mb-4">
+                        🛠️ How to Complete This Step (Step-by-Step)
+                    </h3>
+                    <ol class="list-decimal ml-6 space-y-3">
+                        <li>Go to <strong>Insert Tab</strong> -> <strong>Shapes</strong> and choose the
+                            <strong>Cloud</strong> shape. Draw it roughly near the target paragraph.
+                        </li>
+                        <li><strong>Right-click</strong> the shape and select <strong>Size and Position</strong>. Set
+                            the <strong>Width</strong> to <strong>5 cm</strong> (or 5.0 cm).</li>
+                        <li>In the <strong>Format Shape</strong> options, set <strong>Shape Fill</strong> to a light
+                            gray color (e.g., 15% Gray).</li>
+                        <li>Set <strong>Shape Outline</strong> to <strong>Black</strong> and <strong>Weight</strong> to
+                            <strong>3pt</strong> or <strong>4pt</strong>.
+                        </li>
+                        <li><strong>Right-click</strong> the shape -> <strong>Wrap Text</strong> -> Choose
+                            <strong>Square</strong> (or Tight). Align the shape to the right of the column.
+                        </li>
+                        <li><strong>Right-click</strong> the shape -> <strong>Add Text</strong>. Type <strong>Cloud
+                                Gaming</strong>.</li>
+                        <li>Select the text, set the font color to <strong>Black</strong> and apply
+                            <strong>Bold</strong> enhancement.
+                        </li>
+                        <li>Adjust the shape's height or internal margins (if necessary) to ensure the text does not
+                            touch the border.</li>
+                    </ol>
+                </div>
+                <!-- PART E: SELF-CHECK VERIFICATION CHECKLIST -->
+                <div class="verification-checklist card p-6 rounded-xl bg-green-50 dark:bg-green-900">
+                    <h3 class="text-2xl font-semibold text-green-700 dark:text-green-300 mb-4">
+                        ✅ Self-Verification Checklist
+                    </h3>
+                    <div class="space-y-3">
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-8-9-1">
+                            <span class="flex-1">Shape Width is <strong>EXACTLY 5.0cm</strong>.</span>
+                        </label>
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-8-9-2">
+                            <span class="flex-1">Fill is light gray (10-25%) and Outline is black and 3-4pt
+                                thick.</span>
+                        </label>
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-8-9-3">
+                            <span class="flex-1">Text "Cloud Gaming" is bold and black, and does <strong>not touch the
+                                    border</strong>.</span>
+                        </label>
+                    </div>
+                    <button class="btn-primary w-full mt-4" onclick="validateStepCompletion('8-9')">
+                        ✓ I've Completed These Steps
+                    </button>
+                </div>
+                <!-- PART F: CONCEPT CHECKING QUESTIONS (EMBEDDED) -->
+                <div class="embedded-ccq-section card p-6 rounded-xl border-l-4 border-purple-500">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                        🧠 Check Your Understanding (Steps 8-9)
+                    </h3>
+                    <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                        Answer these questions to verify your understanding before moving forward.
+                    </p>
+
+                    <!-- Question 1 -->
+                    <div class="ccq-embedded space-y-4" data-step="8-9" data-question="1">
+                        <p class="font-bold mb-3">Question 1: You've inserted the cloud shape. It looks about 5cm wide
+                            when you drag it. Is this sufficient?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('8-9', '1', false, this)">Yes, visual estimation is
+                                fine</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('8-9', '1', true, this)">No, you MUST use Size and Position
+                                dialog to set exactly 5.0cm</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-8-9-1" style="display:none;"></div>
+                    </div>
+                    <!-- Question 2 -->
+                    <div class="ccq-embedded space-y-4 pt-6" data-step="8-9" data-question="2">
+                        <p class="font-bold mb-3">Question 2: The instruction says 'light-grey shading (10–25%)'. What
+                            does this percentage primarily relate to?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('8-9', '2', true, this)">The transparency/opacity level of the
+                                gray fill</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('8-9', '2', false, this)">The size of the shape as a
+                                percentage of the page</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('8-9', '2', false, this)">The darkness of the outline
+                                border</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-8-9-2" style="display:none;"></div>
+                    </div>
+                    <!-- Question 3 -->
+                    <div class="ccq-embedded space-y-4 pt-6" data-step="8-9" data-question="3">
+                        <p class="font-bold mb-3">Question 3: Why does the instruction emphasize that text should 'not
+                            touch the border' of the shape?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('8-9', '3', false, this)">It's just a style preference, not
+                                critical</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('8-9', '3', true, this)">Text touching the border looks
+                                unprofessional and is hard to read</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('8-9', '3', false, this)">The shape will break if text touches
+                                it</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-8-9-3" style="display:none;"></div>
+                    </div>
+                    <!-- Step CCQ Score Display -->
+                    <div class="step-ccq-score mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+                        <p class="text-lg font-semibold">Steps 8-9 Understanding Score:</p>
+                        <p class="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                            <span class="current-score" id="score-step-8-9">0</span>/3
+                        </p>
+                    </div>
+                </div>
+                <!-- PART G: STEP COMPLETION CERTIFICATE -->
+                <div
+                    class="step-certificate-generator card p-6 rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                        🎓 Steps 8-9 Mastery Certificate
+                    </h3>
+                    <p class="mb-2 text-sm font-semibold text-red-700 dark:text-red-300">
+                        💡 Remember to **KEEP** this certificate! You must submit it to your teacher at the end of the
+                        lesson.
+                    </p>
+                    <p class="mb-4">You've completed Steps 8-9! Generate your certificate to track your progress.</p>
+
+                    <button class="btn-primary w-full" onclick="generateStepCertificate('8-9')">
+                        🏆 Generate Steps 8-9 Certificate
+                    </button>
+
+                    <div id="step-8-9-certificate-display" class="certificate-container mt-6" style="display:none;">
+                        <!-- Certificate rendered here by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. Step 10: Proofread (UPDATED) -->
+            <section id="section-7" role="tabpanel" aria-labelledby="tab-7" tabindex="0" class="space-y-8"
+                style="display: none;">
+                <h2 class="text-3xl font-bold">7. Step 10: Proofread</h2>
+
+                <!-- PART A: ORIGINAL EXAM INSTRUCTION (ALWAYS FIRST) -->
+                <div
+                    class="exam-instruction-card card p-6 rounded-xl border-l-4 border-red-500 bg-red-50 dark:bg-red-900">
+                    <div class="flex items-start gap-4">
+                        <div class="text-3xl flex-shrink-0"> 📋 </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-red-700 dark:text-red-300 mb-3">
+                                📖 EXACT Exam Instruction (Read Carefully!)
+                            </h3>
+                            <div
+                                class="instruction-text bg-white dark:bg-gray-800 p-4 rounded-lg border-2 border-red-300 dark:border-red-700">
+                                <p class="font-mono text-base leading-relaxed">
+                                    "Spell check and proofread the document.
+                                    Make sure that:
+                                    - the list is not split over two columns or pages
+                                    - there are no widows or orphans
+                                    - there are no blank pages
+                                    - original styles are maintained
+                                    - all styles are applied consistently
+                                    - spacing is consistent between all items.
+                                    Save the document using the same file name and format used in Step 1.
+                                    Print the document."
+                                </p>
+                            </div>
+
+                            <!-- Reading Comprehension Aid -->
+                            <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+                                <p class="text-sm font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+                                    🔍 What Step 10 Is Asking You To Do:
+                                </p>
+                                <ul class="list-disc ml-6 space-y-1 text-sm text-yellow-900 dark:text-yellow-100">
+                                    <li><strong>Main Action:</strong> Check the ENTIRE document for quality and errors
+                                    </li>
+                                    <li><strong>Specific Requirements:</strong> Run spell check AND Manually verify
+                                        layout quality (widows, orphans, list splits, consistent styles).</li>
+                                    <li><strong>Two Types of Checking:</strong> <strong>Validation</strong> = computer
+                                        automated (spell check); <strong>Verification</strong> = human manual (visual
+                                        inspection against specs).</li>
+                                    <li><strong>Evidence Required:</strong> Final printed document showing professional
+                                        quality with NO errors</li>
+                                </ul>
+                            </div>
+                            <!-- Common Misreading Warning -->
+                            <div class="callout callout-error mt-4">
+                                <div class="callout-icon"> ⚠️ </div>
+                                <div class="callout-content">
+                                    <p class="callout-title"> ⚠️ Students Often Misread This As...</p>
+                                    <p>"Just click spell check and I'm done" <strong>← This is WRONG!</strong></p>
+                                    <p class="mt-2"><strong>Correct Understanding:</strong> Spell check is ONLY the
+                                        first step. You must also MANUALLY CHECK for: widows/orphans, split lists,
+                                        consistent styles, proper spacing.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PART B: DETAILED SPECIFICATION BREAKDOWN (FROM OLD SECTION 7) -->
+                <div class="specification-breakdown card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 mb-4">
+                        📊 Manual Verification Checklist
+                    </h3>
+                    <div class="callout callout-warning">
+                        <div class="callout-icon">⚠️</div>
+                        <div class="callout-content">
+                            <p class="callout-title">The Layout Quality Check (Human Verification)</p>
+                            <p>You must manually inspect the document for <strong>Widows/Orphans</strong> (single lines
+                                separated from their paragraph across a page/column break) and ensure <strong>Lists are
+                                    not split</strong> across columns. Automated tools cannot catch this!</p>
+                        </div>
+                    </div>
+
+                    <ul class="list-disc ml-6 space-y-2 text-lg">
+                        <li class="font-medium">Style Consistency: Are all three subheadings <strong>identical</strong>?
+                        </li>
+                        <li class="font-medium">Shape Precision: Is the Cloud <strong>EXACTLY 5.0cm</strong> wide? (Use
+                            the Size & Position dialog).</li>
+                        <li class="font-medium">Content Placement: Is the moved paragraph correctly placed after "CLOUD
+                            GAMING"?</li>
+                        <li class="font-medium">Layout Quality: Are there <strong>NO widows or orphans</strong> in the
+                            entire document? (Fix using Paragraph -> Line and Page Breaks settings).</li>
+                    </ul>
+                </div>
+                <!-- PART C: STEP-BY-STEP IMPLEMENTATION GUIDE -->
+                <div class="implementation-guide card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 mb-4">
+                        🛠️ Proofreading Process
+                    </h3>
+                    <ol class="list-decimal ml-6 space-y-3">
+                        <li><strong>Automated Validation:</strong> Run Spell Check (Review tab -> Spelling & Grammar).
+                        </li>
+                        <li><strong>Widow/Orphan Check:</strong> Visually scan the document for single lines at the top
+                            or bottom of pages/columns. Adjust paragraph settings (Keep lines together) to fix.</li>
+                        <li><strong>List Integrity Check:</strong> Ensure any bulleted or numbered lists remain on one
+                            page/column.</li>
+                        <li><strong>Consistency Verification:</strong> Manually check that all 10 properties of the
+                            GA-subhead style are applied consistently across all three headings.</li>
+                        <li><strong>Save/Print:</strong> Save the final document using the <strong>exact same file name
+                                and format</strong> used in Step 1.</li>
+                    </ol>
+                </div>
+                <!-- PART E: SELF-CHECK VERIFICATION CHECKLIST -->
+                <div class="verification-checklist card p-6 rounded-xl bg-green-50 dark:bg-green-900">
+                    <h3 class="text-2xl font-semibold text-green-700 dark:text-green-300 mb-4">
+                        ✅ Final Verification Checklist
+                    </h3>
+                    <div class="space-y-3">
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-10-1">
+                            <span class="flex-1">Spell check has been run and all errors fixed.</span>
+                        </label>
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-10-2">
+                            <span class="flex-1">There are <strong>no widows or orphans</strong> (single lines separated
+                                from their paragraph).</span>
+                        </label>
+                        <label
+                            class="flex items-start gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg hover:shadow-md transition">
+                            <input type="checkbox" class="mt-1 h-5 w-5 text-green-600 rounded" data-check="step-10-3">
+                            <span class="flex-1">Styles are consistently applied and the file is saved in the correct
+                                format.</span>
+                        </label>
+                    </div>
+                    <button class="btn-primary w-full mt-4" onclick="validateStepCompletion('10')">
+                        ✓ I've Completed This Step
+                    </button>
+                </div>
+                <!-- PART F: CONCEPT CHECKING QUESTIONS (EMBEDDED) -->
+                <div class="embedded-ccq-section card p-6 rounded-xl border-l-4 border-purple-500">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                        🧠 Check Your Understanding (Step 10)
+                    </h3>
+                    <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                        Answer these questions to verify your understanding before moving forward.
+                    </p>
+
+                    <!-- Question 1 -->
+                    <div class="ccq-embedded space-y-4" data-step="10" data-question="1">
+                        <p class="font-bold mb-3">Question 1: What is the difference between Validation and Verification
+                            in proofreading?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '1', true, this)">Validation = computer checks,
+                                Verification = human checks</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '1', false, this)">Validation = human checks,
+                                Verification = computer checks</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '1', false, this)">They are the same thing</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-10-1" style="display:none;"></div>
+                    </div>
+                    <!-- Question 2 -->
+                    <div class="ccq-embedded space-y-4 pt-6" data-step="10" data-question="2">
+                        <p class="font-bold mb-3">Question 2: What is a 'widow' in document layout?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '2', true, this)">A single line of a paragraph appearing
+                                alone at the top of a page/column</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '2', false, this)">A blank page in the middle of a
+                                document</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '2', false, this)">A spelling error that spell check
+                                missed</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-10-2" style="display:none;"></div>
+                    </div>
+                    <!-- Question 3 -->
+                    <div class="ccq-embedded space-y-4 pt-6" data-step="10" data-question="3">
+                        <p class="font-bold mb-3">Question 3: Why must you save the document in Step 10 using the 'same
+                            file name and format used in Step 1'?</p>
+                        <div class="answer-options space-y-2">
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '3', true, this)">To ensure the examiner can open and
+                                mark your work</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '3', false, this)">Because Word only allows one save per
+                                document</button>
+                            <button class="ccq-btn btn-secondary w-full text-left"
+                                onclick="checkEmbeddedCCQ('10', '3', false, this)">To create a backup copy
+                                automatically</button>
+                        </div>
+                        <div class="answer-feedback mt-3" id="feedback-10-3" style="display:none;"></div>
+                    </div>
+                    <!-- Step CCQ Score Display -->
+                    <div class="step-ccq-score mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg text-center">
+                        <p class="text-lg font-semibold">Step 10 Understanding Score:</p>
+                        <p class="text-3xl font-bold text-purple-600 dark:text-purple-400">
+                            <span class="current-score" id="score-step-10">0</span>/3
+                        </p>
+                    </div>
+                </div>
+                <!-- PART G: STEP COMPLETION CERTIFICATE -->
+                <div
+                    class="step-certificate-generator card p-6 rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900 dark:to-blue-900">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">
+                        🎓 Step 10 Mastery Certificate
+                    </h3>
+                    <p class="mb-2 text-sm font-semibold text-red-700 dark:text-red-300">
+                        💡 Remember to **KEEP** this certificate! You must submit it to your teacher at the end of the
+                        lesson.
+                    </p>
+                    <p class="mb-4">You've completed Step 10! Generate your certificate to track your progress.</p>
+
+                    <button class="btn-primary w-full" onclick="generateStepCertificate('10')">
+                        🏆 Generate Step 10 Certificate
+                    </button>
+
+                    <div id="step-10-certificate-display" class="certificate-container mt-6" style="display:none;">
+                        <!-- Certificate rendered here by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. Synthesis and Practice (UPDATED) -->
+            <section id="section-8" role="tabpanel" aria-labelledby="tab-8" tabindex="0" class="space-y-6"
+                style="display: none;">
+                <h2 class="text-3xl font-bold">8. Synthesis & Practice</h2>
+                <div class="card p-6 rounded-xl space-y-4">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400">Challenge: Create a Style
+                        Guide</h3>
+                    <div class="callout callout-tip">
+                        <div class="callout-icon">⭐</div>
+                        <div class="callout-content">
+                            <p class="callout-title">Product Differentiation</p>
+                            <p>Create a document called <strong>StyleGuide.docx</strong> that clearly documents
+                                <strong>GA-subhead</strong>, including its purpose, exact specifications, and a visual
+                                example. This tests your ability to translate technical specs into clear instructions.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400 pt-6">Advanced Practice: Shape
+                        Integration</h3>
+                    <p>Recreate the Cloud Shape from Step 8-9, but this time, align it to the <strong>left</strong> of
+                        the column and use a custom line style (e.g., dashed, 4.5pt). This pushes you beyond
+                        memorization and into genuine application of formatting tools.</p>
+                </div>
+            </section>
+
+            <!-- 9. Wrap-Up and Celebration (UPDATED) -->
+            <section id="section-9" role="tabpanel" aria-labelledby="tab-9" tabindex="0" class="space-y-6"
+                style="display: none;">
+                <h2 class="text-3xl font-bold">9. Wrap-Up & Celebration</h2>
+
+                <!-- Knowledge Consolidation - Interactive 3-2-1 -->
+                <div class="consolidation-321 card p-6 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-purple-600 dark:text-purple-400">📝 Reflect on Your Learning
+                        (3-2-1)</h3>
+
+                    <div class="reflection-card card-1">
+                        <div class="card-number">3</div>
+                        <h4>Three Things I Learned</h4>
+                        <input type="text" id="learned-1" placeholder="1. Precision matters with dimensions (e.g., 5cm)"
+                            class="reflection-input w-full p-2 border rounded mt-2 dark:bg-gray-800">
+                        <input type="text" id="learned-2" placeholder="2. Styles save time and ensure consistency"
+                            class="reflection-input w-full p-2 border rounded mt-2 dark:bg-gray-800">
+                        <input type="text" id="learned-3" placeholder="3. Verification is a human check against specs"
+                            class="reflection-input w-full p-2 border rounded mt-2 dark:bg-gray-800">
+                    </div>
+
+                    <div class="reflection-card card-2">
+                        <div class="card-number">2</div>
+                        <h4>Two Ways This Will Help in Your Exam</h4>
+                        <textarea id="exam-help-1" rows="2"
+                            placeholder="1. Avoid losing marks on precise specifications."
+                            class="reflection-textarea w-full p-2 border rounded mt-2 dark:bg-gray-800"></textarea>
+                        <textarea id="exam-help-2" rows="2"
+                            placeholder="2. Proofread systematically to catch layout errors."
+                            class="reflection-textarea w-full p-2 border rounded mt-2 dark:bg-gray-800"></textarea>
+                    </div>
+
+                    <div class="reflection-card card-3">
+                        <div class="card-number">1</div>
+                        <h4>One Question I Still Have</h4>
+                        <textarea id="question-remaining" rows="2"
+                            placeholder="I'm still wondering about character vs. paragraph styles..."
+                            class="reflection-textarea w-full p-2 border rounded mt-2 dark:bg-gray-800"></textarea>
+                    </div>
+
+                    <button class="btn-primary btn-large w-full mt-4" onclick="saveReflection321()">💾 Save My
+                        Reflections</button>
+                    <p id="wrapup-status" role="status" aria-live="polite" class="text-sm pt-2 text-green-500"
+                        style="display:none;"></p>
+                </div>
+
+                <!-- Certificate Generator (Final Comprehensive) -->
+                <div class="celebration-section card p-6 rounded-xl mt-6">
+                    <h3 class="text-2xl font-semibold text-green-600 dark:text-green-400">🎉 Generate Your Final Mastery
+                        Certificate</h3>
+                    <p class="mb-2 text-sm font-semibold text-red-700 dark:text-red-300">
+                        💡 Remember to **KEEP** this certificate! You must submit it to your teacher at the end of the
+                        lesson.
+                    </p>
+                    <p>This certificate combines your CCQ scores from all steps and your objective completion status.
+                    </p>
+                    <button class="btn-primary w-full mt-4" onclick="generateFinalCertificate()">🎓 Generate Final
+                        Certificate</button>
+
+                    <div class="certificate-generator mt-4" id="certificate-container" style="display:none;">
+                        <!-- Certificate Preview (Rendered by JS) -->
+                        <div class="certificate-preview" id="certificate">
+                            <!-- JS Populated -->
+                        </div>
+                        <div class="motivational-message mt-4 text-center" id="final-message">
+                            <!-- JS Populated -->
+                        </div>
+                        <button class="btn-secondary w-full mt-4" onclick="downloadCertificate()">📥 Download as Image
+                            (Instructions)</button>
+                        <div class="mt-4 p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                            <p class="text-sm text-blue-800 dark:text-blue-200">
+                                💡 <strong>Remember:</strong> You must submit this certificate to Phidias along with
+                                your four step-certificates and the Word document!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. Submission to Phidias (UPDATED) -->
+            <section id="section-10" role="tabpanel" aria-labelledby="tab-10" tabindex="0" class="space-y-6"
+                style="display: none;">
+                <h2 class="text-3xl font-bold">10. Submission to Phidias</h2>
+
+                <div class="card p-6 rounded-xl space-y-4 border-l-4 border-blue-500">
+                    <h3 class="text-2xl font-semibold text-blue-600 dark:text-purple-400">📤 What You Must Submit</h3>
+
+                    <div class="callout callout-warning">
+                        <div class="callout-icon">⚠️</div>
+                        <div class="callout-content">
+                            <p class="callout-title">CRITICAL: All 3 Items Required</p>
+                            <p>Missing ANY of these items = Incomplete submission. Upload ALL THREE to Phidias before
+                                the deadline.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Submission Item 1 -->
+                        <div class="submission-item card p-4 bg-green-50 dark:bg-green-900 border-l-4 border-green-500">
+                            <div class="flex items-start gap-4">
+                                <div class="text-3xl">📄</div>
+                                <div class="flex-1">
+                                    <h4 class="text-xl font-bold text-green-700 dark:text-green-300">1. Your Completed
+                                        Word Document</h4>
+                                    <p class="mt-2"><strong>File name:</strong> GAMARKET.docx (or the format you used)
+                                    </p>
+                                    <div class="mt-3 p-3 bg-white dark:bg-gray-800 rounded">
+                                        <p class="text-sm font-semibold">✅ Before submitting, verify:</p>
+                                        <ul class="text-sm list-disc ml-6 mt-1">
+                                            <li>GA-subhead style applied to all 3 subheadings</li>
+                                            <li>Cloud shape exactly 5cm wide with "Cloud Gaming" text</li>
+                                            <li>No widows, orphans, or blank pages</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submission Item 2 -->
+                        <div
+                            class="submission-item card p-4 bg-purple-50 dark:bg-purple-900 border-l-4 border-purple-500">
+                            <div class="flex items-start gap-4">
+                                <div class="text-3xl">🎓</div>
+                                <div class="flex-1">
+                                    <h4 class="text-xl font-bold text-purple-700 dark:text-purple-300">2. Step
+                                        Completion Certificates (4 Total)</h4>
+                                    <p class="mt-2"><strong>Which certificates:</strong> Step 5, Step 6-7, Step 8-9,
+                                        Step 10.</p>
+                                    <p class="mt-3"><strong>How to submit:</strong> Save screenshots of each certificate
+                                        (e.g., `Step5_Certificate.png`), or combine all 4 into one PDF.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submission Item 3 -->
+                        <div class="submission-item card p-4 bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-500">
+                            <div class="flex items-start gap-4">
+                                <div class="text-3xl">🏆</div>
+                                <div class="flex-1">
+                                    <h4 class="text-xl font-bold text-blue-700 dark:text-blue-300">3. Final Mastery
+                                        Certificate (from Wrap-Up)</h4>
+                                    <p class="mt-2"><strong>File name:</strong> Final_Certificate_[YourName].png (or
+                                        .pdf)</p>
+                                    <p class="mt-2"><strong>What it shows:</strong> Your overall CCQ score and
+                                        objectives completion status.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submission Checklist -->
+                    <div class="submission-checklist mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                        <h4 class="text-lg font-bold mb-3">✅ Final Submission Checklist</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-start gap-3">
+                                <input type="checkbox" class="mt-1 h-5 w-5 text-blue-600 rounded" id="check-word">
+                                <span>GAMARKET.docx file uploaded</span>
+                            </label>
+                            <label class="flex items-start gap-3">
+                                <input type="checkbox" class="mt-1 h-5 w-5 text-blue-600 rounded" id="check-step-certs">
+                                <span>All 4 Step Certificates uploaded</span>
+                            </label>
+                            <label class="flex items-start gap-3">
+                                <input type="checkbox" class="mt-1 h-5 w-5 text-blue-600 rounded" id="check-final-cert">
+                                <span>Final Mastery Certificate uploaded</span>
+                            </label>
+                            <label class="flex items-start gap-3">
+                                <input type="checkbox" class="mt-1 h-5 w-5 text-blue-600 rounded" id="check-names">
+                                <span>All files have your name, center number, and candidate number</span>
+                            </label>
+                        </div>
+                        <button class="btn-primary w-full mt-4" onclick="confirmSubmission()">
+                            ✓ I've Checked Everything - Ready to Submit!
+                        </button>
+                        <p id="submission-confirmation" class="text-center mt-3 font-bold text-green-600"
+                            style="display:none;">
+                            ✅ Great! Now upload your files to Phidias. Good luck!
+                        </p>
+                        <p id="submission-error" class="text-center mt-3 font-bold text-red-600" style="display:none;">
+                            ⚠️ Please check all items before confirming. Missing items will result in an incomplete
+                            submission!
+                        </p>
+                    </div>
+
+                    <!-- Quick Actions Section (NEW) -->
+                    <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
+                        <h4 class="text-lg font-bold mb-2 text-blue-700 dark:text-blue-300">📦 Quick Actions</h4>
+                        <button class="btn-secondary w-full mb-2" onclick="downloadAllCertificates()">
+                            📥 Download All Certificates (Instructions)
+                        </button>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">This will guide you to save all 5
+                            certificates for easy submission.</p>
+                    </div>
+
+                    <!-- Common Submission Mistakes -->
+                    <div class="callout callout-error mt-6">
+                        <div class="callout-icon">❌</div>
+                        <div class="callout-content">
+                            <p class="callout-title">Common Submission Mistakes to Avoid</p>
+                            <ul class="list-disc ml-6 mt-2 space-y-1">
+                                <li><strong>Wrong file format:</strong> Submitting .pages or .pdf instead of .docx</li>
+                                <li><strong>Missing certificates:</strong> Only uploading the Word file</li>
+                                <li><strong>Corrupted files:</strong> Not testing if files open correctly before
+                                    submitting</li>
+                                <li><strong>Late submission:</strong> Waiting until the last minute (upload can fail!)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 11. Interactive Vocabulary Reference (UPDATED - COMPLETE) -->
+            <section id="section-11" role="tabpanel" aria-labelledby="tab-11" tabindex="0" class="space-y-6"
+                style="display: none;">
+                <h2 class="text-3xl font-bold">11. Vocabulary Reference</h2>
+                <div class="card p-6 rounded-xl space-y-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex-1 mr-4">
+                            <input type="text" id="vocab-search" onkeyup="filterVocab()"
+                                placeholder="Search terms (e.g., serif, proofreading, widow)"
+                                class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                                aria-label="Search vocabulary terms">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="filterByLevel('all')"
+                                class="px-3 py-2 text-sm rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                                id="filter-all">All (12)</button>
+                            <button onclick="filterByLevel('basic')"
+                                class="px-3 py-2 text-sm rounded bg-blue-100 dark:bg-blue-900 hover:bg-blue-200"
+                                id="filter-basic">Basic</button>
+                            <button onclick="filterByLevel('intermediate')"
+                                class="px-3 py-2 text-sm rounded bg-yellow-100 dark:bg-yellow-900 hover:bg-yellow-200"
+                                id="filter-intermediate">Inter.</button>
+                            <button onclick="filterByLevel('advanced')"
+                                class="px-3 py-2 text-sm rounded bg-red-100 dark:bg-red-900 hover:bg-red-200"
+                                id="filter-advanced">Adv.</button>
+                        </div>
+                    </div>
+
+                    <div id="vocabulary-list" class="space-y-3">
+                        <!-- Term 1: GA-subhead Style -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="styles ga-subhead advanced paragraph" data-level="advanced">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>GA-subhead Style</span>
+                                    <span class="badge badge-advanced ml-2">Advanced</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>The specific custom paragraph style created in Step 5, based on a corporate house
+                                        style requirement, defined by 10 precise formatting properties.</p>
+                                    <p class="mt-2 font-bold">The 10 Properties:</p>
+                                    <ul class="list-disc ml-6 mt-2 text-sm space-y-1">
+                                        <li>Name: GA-subhead</li>
+                                        <li>Based on: Normal</li>
+                                        <li>Font: Serif (e.g., Times New Roman)</li>
+                                        <li>Size: 20pt</li>
+                                        <li>Alignment: Centre</li>
+                                        <li>Enhancements: Bold, Italic, All Capitals</li>
+                                        <li>Line Spacing: Single</li>
+                                        <li>Space Before: 0pt</li>
+                                        <li>Space After: 0pt</li>
+                                    </ul>
+                                    <p class="mt-2 font-bold text-red-600">Exam Importance:</p>
+                                    <p class="text-sm">Missing ANY of these 10 properties = lost marks. The screenshot
+                                        must show "Based on: Normal".</p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 2: Verification (Manual Check) -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="proofreading verification consistency manual check" data-level="intermediate">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Verification (Manual Check)</span>
+                                    <span class="badge badge-intermediate ml-2">Intermediate</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>Manual human checking against the original source/specs (e.g., confirming the
+                                        shape width is exactly 5cm, checking for widows/orphans). Critical for Step 10.
+                                    </p>
+                                    <p class="mt-2 font-bold">Examples of Verification:</p>
+                                    <ul class="list-disc ml-6 mt-2 text-sm">
+                                        <li>Measuring cloud shape width with Size & Position dialog</li>
+                                        <li>Visually scanning for widows/orphans</li>
+                                        <li>Checking all 3 subheadings look identical</li>
+                                        <li>Confirming paragraph moved to correct location</li>
+                                    </ul>
+                                    <p class="mt-2 font-bold">vs. Validation:</p>
+                                    <p class="text-sm">Validation = automated computer checks (spell check, grammar
+                                        check). Both are needed for Step 10!</p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 3: Widow -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="widow layout proofreading quality" data-level="intermediate">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Widow</span>
+                                    <span class="badge badge-intermediate ml-2">Intermediate</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>A single line of a paragraph that appears alone at the <strong>TOP</strong> of a
+                                        page or column, separated from the rest of its paragraph. This breaks visual
+                                        flow and looks unprofessional.</p>
+                                    <div class="mt-3 p-3 bg-red-50 dark:bg-red-900 rounded border-l-4 border-red-500">
+                                        <p class="text-sm font-mono">
+                                            Page 1 bottom: "This is a paragraph about cloud<br>
+                                            gaming. It discusses the many advantages<br>
+                                            and how streaming technology works."<br>
+                                            <span class="text-red-600">─── PAGE BREAK ───</span><br>
+                                            Page 2 top: <span class="text-red-600 font-bold">"Overall, it's very
+                                                convenient." ← WIDOW!</span>
+                                        </p>
+                                    </div>
+                                    <p class="mt-2 font-bold">How to Fix:</p>
+                                    <p class="text-sm">Paragraph Settings → Line and Page Breaks → Check "Widow/Orphan
+                                        control" OR manually adjust spacing/breaks.</p>
+                                    <p class="mt-2 font-bold">Exam Context:</p>
+                                    <p class="text-sm text-red-600">Step 10 requires manual checking for widows.
+                                        Examiners deduct marks if present.</p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 4: Orphan -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="orphan layout proofreading quality" data-level="intermediate">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Orphan</span>
+                                    <span class="badge badge-intermediate ml-2">Intermediate</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>A single line of a paragraph that appears alone at the <strong>BOTTOM</strong> of
+                                        a page or column, separated from the rest of its paragraph.</p>
+                                    <div class="mt-3 p-3 bg-red-50 dark:bg-red-900 rounded border-l-4 border-red-500">
+                                        <p class="text-sm font-mono">
+                                            Page 1 bottom: <span class="text-red-600 font-bold">"Cloud gaming is a
+                                                method ← ORPHAN!"</span><br>
+                                            <span class="text-red-600">─── PAGE BREAK ───</span><br>
+                                            Page 2 top: "that allows players to stream games<br>
+                                            directly from remote servers without needing<br>
+                                            powerful hardware at home."
+                                        </p>
+                                    </div>
+                                    <p class="mt-2 font-bold">Memory Trick:</p>
+                                    <p class="text-sm"><strong>ORPHAN</strong> = first line left behind at bottom
+                                        (orphaned from family).<br>
+                                        <strong>WIDOW</strong> = last line alone at top (surviving line).
+                                    </p>
+                                    <p class="mt-2 font-bold">Both Must Be Fixed:</p>
+                                    <p class="text-sm">Step 10 explicitly requires checking for both widows AND orphans.
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 5: Validation vs Verification -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="validation verification proofreading testing quality" data-level="advanced">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Validation vs. Verification</span>
+                                    <span class="badge badge-advanced ml-2">Advanced</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definitions:</p>
+                                    <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="p-3 bg-blue-50 dark:bg-blue-900 rounded">
+                                            <p class="font-bold text-blue-700 dark:text-blue-300">Validation ✓</p>
+                                            <p class="text-sm mt-1">Automated computer checks</p>
+                                            <p class="text-xs mt-2 font-mono">Examples:<br>
+                                                • Spell check<br>
+                                                • Grammar check<br>
+                                                • Format validation</p>
+                                        </div>
+                                        <div class="p-3 bg-purple-50 dark:bg-purple-900 rounded">
+                                            <p class="font-bold text-purple-700 dark:text-purple-300">Verification ✓</p>
+                                            <p class="text-sm mt-1">Manual human checks against specs</p>
+                                            <p class="text-xs mt-2 font-mono">Examples:<br>
+                                                • Measuring shape width<br>
+                                                • Checking for widows/orphans<br>
+                                                • Style consistency check</p>
+                                        </div>
+                                    </div>
+                                    <p class="mt-3 font-bold text-red-600">Critical Exam Mistake:</p>
+                                    <p class="text-sm">Many students only do validation (spell check) and lose marks
+                                        because they skip manual verification. Step 10 requires BOTH!</p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 6: Paragraph Style -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="styles paragraph formatting efficiency" data-level="basic">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Paragraph Style</span>
+                                    <span class="badge badge-basic ml-2">Basic</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>A saved collection of formatting properties that can be applied to entire
+                                        paragraphs with one click. Includes font, size, alignment, spacing, and
+                                        enhancements.</p>
+                                    <p class="mt-2 font-bold">Why Use Styles?</p>
+                                    <ul class="list-disc ml-6 mt-2 text-sm">
+                                        <li><strong>Consistency:</strong> All items formatted identically</li>
+                                        <li><strong>Efficiency:</strong> 41 actions vs. 160 for manual formatting (40
+                                            headings)</li>
+                                        <li><strong>Easy Updates:</strong> Change style definition once → all instances
+                                            update</li>
+                                    </ul>
+                                    <p class="mt-2 font-bold">Analogy:</p>
+                                    <p class="text-sm">Think of a style as a <strong>rubber stamp</strong>. You design
+                                        the stamp once (Step 5), then use it repeatedly (Step 6) for identical output.
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 7: Serif Font -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="serif font typography formatting" data-level="basic">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Serif Font</span>
+                                    <span class="badge badge-basic ml-2">Basic</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>A font family with small decorative strokes (serifs) at the ends of letters.
+                                        Examples: Times New Roman, Georgia, Garamond.</p>
+                                    <div class="mt-3 p-3 bg-white dark:bg-gray-800 rounded flex justify-around">
+                                        <div class="text-center">
+                                            <p class="font-serif text-4xl">Ag</p>
+                                            <p class="text-xs mt-1 font-bold text-green-600">✓ Serif</p>
+                                            <p class="text-xs">(Times New Roman)</p>
+                                            <p class="text-xs text-gray-500">Notice the little "feet"</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="font-sans text-4xl">Ag</p>
+                                            <p class="text-xs mt-1 font-bold text-red-600">✗ Sans-Serif</p>
+                                            <p class="text-xs">(Arial)</p>
+                                            <p class="text-xs text-gray-500">Clean, no decorations</p>
+                                        </div>
+                                    </div>
+                                    <p class="mt-3 font-bold text-red-600">⚠️ Common Exam Trap:</p>
+                                    <p class="text-sm">Students often confuse Serif with Sans-Serif and lose marks on
+                                        Step 5. <strong>GA-subhead MUST use a Serif font</strong> (not Arial, not
+                                        Calibri).</p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 8: Text Wrapping -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="text wrapping shapes formatting layout" data-level="intermediate">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Text Wrapping</span>
+                                    <span class="badge badge-intermediate ml-2">Intermediate</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>Controls how text flows around shapes, images, or objects in a document.</p>
+                                    <p class="mt-2 font-bold">Common Options:</p>
+                                    <ul class="list-disc ml-6 mt-2 space-y-2 text-sm">
+                                        <li><strong>In Line with Text:</strong> Object acts like a character (moves with
+                                            text)</li>
+                                        <li><strong>Square:</strong> Text wraps in a rectangular boundary around the
+                                            object</li>
+                                        <li><strong>Tight:</strong> Text wraps closely following the object's actual
+                                            shape</li>
+                                        <li><strong>Through:</strong> Text flows through transparent areas</li>
+                                        <li><strong>Behind Text / In Front of Text:</strong> Object layered with text
+                                        </li>
+                                    </ul>
+                                    <p class="mt-2 font-bold">Step 8 Requirement:</p>
+                                    <p class="text-sm text-red-600">Cloud shape must have text wrapping enabled (usually
+                                        <strong>Square</strong> or <strong>Tight</strong>). Without wrapping, text won't
+                                        flow around the shape correctly.
+                                    </p>
+                                    <p class="mt-2 font-bold">How to Access:</p>
+                                    <p class="text-sm">Right-click shape → Wrap Text → Choose option</p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 9: Points (pt) -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="points measurements typography font" data-level="basic">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Points (pt)</span>
+                                    <span class="badge badge-basic ml-2">Basic</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>The standard unit for measuring font size and line thickness in typography.
+                                        <strong>1 point = 1/72 of an inch</strong> (approximately 0.35mm).
+                                    </p>
+                                    <p class="mt-2 font-bold">Exam Usage (Steps 5-10):</p>
+                                    <ul class="list-disc ml-6 mt-2 text-sm">
+                                        <li><strong>Font size:</strong> 20pt for GA-subhead (Step 5)</li>
+                                        <li><strong>Line thickness:</strong> 3-4pt for cloud outline (Step 8)</li>
+                                        <li><strong>Spacing:</strong> 0pt before/after GA-subhead (Step 5)</li>
+                                    </ul>
+                                    <div class="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900 rounded">
+                                        <p class="font-bold text-sm">Visual Reference:</p>
+                                        <p class="text-sm mt-1">
+                                            <span style="font-size: 12pt;">12pt text</span> |
+                                            <span style="font-size: 16pt;">16pt text</span> |
+                                            <span style="font-size: 20pt;">20pt text (GA-subhead)</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 10: Centimeter (cm) -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="centimeter measurements shapes dimensions" data-level="basic">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Centimeter (cm)</span>
+                                    <span class="badge badge-basic ml-2">Basic</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>Metric unit of length used for measuring shape dimensions in Word. <strong>1 cm =
+                                            10 millimeters ≈ 0.39 inches</strong>.</p>
+                                    <div class="mt-3 p-3 bg-red-50 dark:bg-red-900 rounded border-l-4 border-red-500">
+                                        <p class="font-bold text-red-700 dark:text-red-300">⚠️ Step 8 CRITICAL
+                                            Requirement:</p>
+                                        <p class="text-sm mt-1">Cloud shape width must be <strong>EXACTLY 5.0
+                                                cm</strong>.</p>
+                                        <p class="text-sm mt-2"><strong>How to set:</strong> Right-click shape → Size
+                                            and Position → Width: type "5 cm"</p>
+                                        <p class="text-sm mt-2 font-bold text-red-600">❌ NEVER estimate by eye!</p>
+                                        <p class="text-xs mt-1">Examiners use digital measurement tools. Even 4.9cm or
+                                            5.1cm = lost marks.</p>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 11: Light Gray Shading (10-25%) -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="shading gray fill color opacity" data-level="intermediate">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>Light Gray Shading (10-25%)</span>
+                                    <span class="badge badge-intermediate ml-2">Intermediate</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>A fill color with reduced opacity/intensity. The percentage indicates how dark
+                                        the gray appears: <strong>0% = white (no gray), 100% = black (solid)</strong>.
+                                    </p>
+                                    <div class="mt-3 grid grid-cols-4 gap-2">
+                                        <div class="text-center">
+                                            <div
+                                                class="w-full h-16 bg-white border-2 border-gray-300 flex items-center justify-center text-xs">
+                                                0%<br>White</div>
+                                            <p class="text-xs mt-1 text-red-600">Too light</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <div
+                                                class="w-full h-16 bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-xs">
+                                                10%<br>Light</div>
+                                            <p class="text-xs mt-1 text-green-600 font-bold">✓ Correct</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <div
+                                                class="w-full h-16 bg-gray-200 border-2 border-gray-300 flex items-center justify-center text-xs">
+                                                25%<br>Light</div>
+                                            <p class="text-xs mt-1 text-green-600 font-bold">✓ Correct</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <div
+                                                class="w-full h-16 bg-gray-400 border-2 border-gray-300 flex items-center justify-center text-xs text-white">
+                                                50%<br>Medium</div>
+                                            <p class="text-xs mt-1 text-red-600">Too dark</p>
+                                        </div>
+                                    </div>
+                                    <p class="mt-3 font-bold">Step 8 Requirement:</p>
+                                    <p class="text-sm">Cloud fill must be <strong>10-25% (light gray)</strong>. Using
+                                        50% or higher is <strong>incorrect</strong> and loses marks.</p>
+                                    <p class="mt-2 font-bold">How to Apply:</p>
+                                    <p class="text-sm">Shape Fill → More Fill Colors → Custom → Adjust transparency
+                                        slider OR choose "Light Gray" from standard colors.</p>
+                                </div>
+                            </details>
+                        </div>
+
+                        <!-- Term 12: All Capitals (Enhancement) -->
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg vocab-item"
+                            data-term="capitals uppercase enhancement formatting" data-level="intermediate">
+                            <details>
+                                <summary
+                                    class="w-full text-left p-4 font-medium flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <span>All Capitals (Enhancement)</span>
+                                    <span class="badge badge-intermediate ml-2">Intermediate</span>
+                                </summary>
+                                <div
+                                    class="p-4 border-t border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                                    <p class="font-bold">Definition:</p>
+                                    <p>A font effect that automatically converts all text to uppercase letters,
+                                        regardless of how it was typed.</p>
+                                    <div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900 rounded">
+                                        <p class="text-sm"><strong>Example:</strong></p>
+                                        <p class="text-sm mt-1">If you type: <code>games</code></p>
+                                        <p class="text-sm mt-1">With All Caps enabled: <strong>GAMES</strong></p>
+                                    </div>
+                                    <p class="mt-2 font-bold">Where to Find:</p>
+                                    <p class="text-sm">Font Dialog (Ctrl+D) → Effects section → Check "All caps"</p>
+                                    <p class="mt-2 font-bold text-red-600">⚠️ MOST Common Step 5 Mistake:</p>
+                                    <p class="text-sm">Students remember to apply <strong>Bold</strong> and
+                                        <strong>Italic</strong> but forget <strong>"All Capitals"</strong> because it's
+                                        in a separate checkbox in the Effects section (not grouped with Bold/Italic
+                                        buttons).
+                                    </p>
+                                    <p class="mt-2 font-bold">Step 5 Requirement:</p>
+                                    <p class="text-sm">All THREE enhancements are required: Bold, Italic,
+                                        <strong>AND</strong> All Capitals.
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+
+                    <!-- Vocabulary Statistics -->
+                    <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
+                        <h4 class="font-bold text-blue-700 dark:text-blue-300 mb-2">📊 Vocabulary Coverage</h4>
+                        <div class="grid grid-cols-3 gap-4 text-center text-sm">
+                            <div>
+                                <p class="text-2xl font-bold text-blue-600" id="basic-count">5</p>
+                                <p class="text-xs">Basic Terms</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-yellow-600" id="intermediate-count">5</p>
+                                <p class="text-xs">Intermediate</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-red-600" id="advanced-count">2</p>
+                                <p class="text-xs">Advanced</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reset Progress Section -->
+                    <div class="mt-8 p-4 bg-red-50 dark:bg-red-900 rounded-lg border-l-4 border-red-500">
+                        <h4 class="text-lg font-bold text-red-700 dark:text-red-300 mb-2">⚠️ Reset Progress (Advanced)
+                        </h4>
+                        <p class="text-sm mb-3">This will delete all your CCQ answers, certificates, and progress. Use
+                            only if you want to start completely fresh.</p>
+                        <button class="btn-secondary w-full bg-red-600 hover:bg-red-700 text-white"
+                            onclick="resetAllProgress()">
+                            🔄 Reset All Progress
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+
+
+    </main>
+
+    <!-- Simple Confetti Library (Inline) -->
+    <script>
+        // Simple confetti function for celebration effects
+        function confetti(args) {
+            const defaults = { particleCount: 50, spread: 50, startVelocity: 30, colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'] };
+            const opts = Object.assign({}, defaults, args);
+            const random = (min, max) => Math.random() * (max - min) + min;
+
+            function shoot() {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    left: ${opts.origin.x * 100}vw;
+                    top: ${opts.origin.y * 100}vh;
+                    width: ${random(5, 12)}px;
+                    height: ${random(5, 12)}px;
+                    background: ${opts.colors[Math.floor(random(0, opts.colors.length))]};
+                    z-index: 10000;
+                    opacity: 1;
+                    pointer-events: none;
+                    transform: translate(-50%, -50%) rotate(${random(0, 360)}deg);
+                    border-radius: 50%;
+                `;
+                document.body.appendChild(particle);
+
+                const velocity = opts.startVelocity * random(0.8, 1.2);
+                const angleRad = opts.angle * (Math.PI / 180);
+                const vx = velocity * Math.cos(angleRad);
+                const vy = velocity * Math.sin(angleRad);
+                const gravity = 0.5;
+
+                let x = 0;
+                let y = 0;
+                let rotation = 0;
+
+                function update() {
+                    if (y > window.innerHeight) {
+                        particle.remove();
+                        return;
+                    }
+
+                    x += vx;
+                    y += vy;
+
+                    rotation += random(-10, 10);
+
+                    // Gravity
+                    vy += gravity;
+
+                    particle.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+                    requestAnimationFrame(update);
+                }
+                update();
+            }
+
+            for (let i = 0; i < opts.particleCount; i++) {
+                setTimeout(shoot, i * 5);
+            }
+        }
+    </script>
+
+    <script>
+        // =====================================================================
+        // GLOBAL TIME MANAGEMENT (NEW)
+        // =====================================================================
+        let startTime = Date.now();
+        let timerInterval;
+
+        const SECTION_TIMES = {
+            1: 4, 2: 4, 3: 4, // 12 min total for Intro/Objectives/Activity
+            4: 13, // Step 5
+            5: 11, // Step 6-7
+            6: 11, // Step 8-9
+            7: 13, // Step 10
+            8: 12, // Synthesis
+            9: 5, // Wrap-Up
+            10: 3, // Submission
+            11: 5 // Vocabulary
+        };
+
+        const formatTime = (seconds) => {
+            const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+            const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+            const s = String(seconds % 60).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        };
+
+        const startGlobalTimer = () => {
+            timerInterval = setInterval(() => {
+                const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+                document.getElementById('global-timer').textContent = formatTime(elapsedSeconds);
+            }, 1000);
+        };
+
+        // =====================================================================
+        // PART 7 & 6: STATE MANAGEMENT, NAVIGATION, AND UTILITIES (Refactored)
+        // =====================================================================
+        const sectionTitles = {
+            1: 'Intro', 2: 'Objectives', 3: 'Activity', 4: 'Step 5',
+            5: 'Step 6-7', 6: 'Step 8-9', 7: 'Step 10',
+            8: 'Synthesis', 9: 'Wrap-Up', 10: 'Submission',
+            11: 'Vocabulary'
+        };
+        const totalSections = Object.keys(sectionTitles).length; // Now 11
+        let currentSection = 1;
+
+        let lessonState = {
+            currentSection: 1,
+            darkMode: false,
+            readingMode: false,
+            ccqResults: {
+                '5': { correct: 0, total: 3, mastered: false, answered: {} },
+                '6-7': { correct: 0, total: 3, mastered: false, answered: {} },
+                '8-9': { correct: 0, total: 3, mastered: false, answered: {} },
+                '10': { correct: 0, total: 3, mastered: false, answered: {} },
+            },
+            stepCertificates: {
+                '5': false, '6-7': false, '8-9': false, '10': false
+            },
+            openingResponse: null
+        };
+
+        // NEW EMBEDDED CCQ DATA (FROM DOCX)
+        const embeddedCCQs = {
+            "5-1": { correct: true, feedback: "✅ Correct! Exam specifications must be followed <strong>EXACTLY</strong>. Even 18pt or 22pt = 0 marks." },
+            "5-2": { correct: true, feedback: "✅ Correct! The instruction specifically asks for <strong>EVIDENCE</strong> in the screenshot that the style is based on Normal." },
+            "5-3": { correct: true, feedback: "✅ Correct! Students often remember Bold and Italic but forget <strong>'All Capitals'</strong> because it's in a different location in the Font dialog. All THREE enhancements are required." },
+            "6-7-1": { correct: true, feedback: "✅ Correct! If subheadings look different, it means manual formatting was applied on top of the style. You must remove this (Ctrl+Space or Clear Formatting) then reapply the style for consistency." },
+            "6-7-2": { correct: true, feedback: "✅ Correct! <strong>'Keep Source Formatting'</strong> preserves the original paragraph formatting. This is the safest option." },
+            "6-7-3": { correct: true, feedback: "✅ Correct! Step 5 = CREATE and SAVE the style as a reusable template. Step 6 = USE that template by applying it to actual content. Understanding this difference is crucial for exam success." },
+            "8-9-1": { correct: true, feedback: "✅ Correct! Never estimate measurements by eye. You MUST use the <strong>Size and Position dialog</strong> to enter EXACTLY 5.0 cm. Examiners measure digitally." },
+            "8-9-2": { correct: true, feedback: "✅ Correct! The percentage refers to how dark the gray is. 10% = very light gray, 25% = still light but slightly darker. This tests your understanding of <strong>shading/opacity</strong>." },
+            "8-9-3": { correct: true, feedback: "✅ Correct! Professional document design requires <strong>white space (margins)</strong> around text for readability. Text touching borders looks cramped and unprofessional." },
+            "10-1": { correct: true, feedback: "✅ Correct! <strong>VALIDATION</strong> = automated computer checks (spell check). <strong>VERIFICATION</strong> = manual human checks against original specs (widows/orphans, shape size)." },
+            "10-2": { correct: true, feedback: "✅ Correct! A <strong>WIDOW</strong> = last line of a paragraph stranded at TOP of next page/column. An <strong>ORPHAN</strong> = first line of a paragraph stranded at BOTTOM of previous page/column." },
+            "10-3": { correct: true, feedback: "✅ Correct! The exam requires consistency. Wrong format = examiner cannot open/mark your work = 0 marks for entire task." },
+        };
+
+        // --- Persistence and Theming ---
+        const loadState = () => {
+            try {
+                const savedState = localStorage.getItem('lessonState_enhanced'); // Using new key to avoid conflicts
+                if (savedState) {
+                    const parsedState = JSON.parse(savedState);
+                    lessonState = { ...lessonState, ...parsedState };
+                    // Ensure 'answered' property exists after load
+                    Object.keys(lessonState.ccqResults).forEach(stepId => {
+                        lessonState.ccqResults[stepId].answered = lessonState.ccqResults[stepId].answered || {};
+                    });
+                }
+                currentSection = lessonState.currentSection || 1;
+
+                // Apply theme preferences
+                if (lessonState.darkMode) {
+                    document.documentElement.classList.add('dark');
+                }
+                if (lessonState.readingMode) {
+                    document.body.classList.add('reading-mode');
+                    updateReadingModeToggle();
+                }
+
+                // Apply initial CCQ status
+                Object.keys(lessonState.ccqResults).forEach(stepId => {
+                    const scoreElement = document.getElementById(`score-step-${stepId}`);
+                    if (scoreElement) {
+                        scoreElement.textContent = lessonState.ccqResults[stepId].correct;
+                    }
+                    // Re-apply button disabling based on state
+                    document.querySelectorAll(`.ccq-embedded[data-step="${stepId}"]`).forEach(qCard => {
+                        const qNum = qCard.getAttribute('data-question');
+                        if (lessonState.ccqResults[stepId].answered[qNum] !== undefined) {
+                            qCard.querySelectorAll('.ccq-btn').forEach(btn => btn.classList.add('pointer-events-none'));
+
+                            // Re-apply coloring if answered
+                            const buttons = qCard.querySelectorAll('.ccq-btn');
+                            const correctOption = Object.values(embeddedCCQs).find(q => q.question === qCard.querySelector('.font-bold').textContent.trim()).correct;
+
+                            buttons.forEach(btn => {
+                                const isBtnCorrect = btn.onclick.toString().includes(`checkEmbeddedCCQ('${stepId}', '${qNum}', ${correctOption}, this)`);
+                                if (isBtnCorrect) {
+                                    btn.classList.remove('btn-secondary');
+                                    btn.classList.add('correct-answer');
+                                }
+                                if (lessonState.ccqResults[stepId].answered[qNum] === true) {
+                                    qCard.classList.add('answered-correctly');
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Apply certificate status
+                Object.keys(lessonState.stepCertificates).forEach(stepId => {
+                    if (lessonState.stepCertificates[stepId]) {
+                        const display = document.getElementById(`step-${stepId}-certificate-display`);
+                        if (display) {
+                            display.innerHTML = generateStepCertificateHTML(stepId);
+                            display.style.display = 'block';
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.error("Could not load state:", e);
+            }
+        };
+
+        const saveState = () => {
+            try {
+                lessonState.currentSection = currentSection;
+                localStorage.setItem('lessonState_enhanced', JSON.stringify(lessonState));
+                updateProgress();
+            } catch (e) {
+                console.error("Could not save state:", e);
+            }
+        };
+
+        const toggleDarkMode = () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            lessonState.darkMode = isDark;
+            saveState();
+        };
+
+        const updateReadingModeToggle = () => {
+            const toggleBtn = document.getElementById('reading-mode-toggle');
+            if (!toggleBtn) return;
+
+            const isReadingMode = document.body.classList.contains('reading-mode');
+
+            if (isReadingMode) {
+                toggleBtn.classList.add('bg-green-100', 'dark:bg-green-800');
+                toggleBtn.setAttribute('aria-pressed', 'true');
+            } else {
+                toggleBtn.classList.remove('bg-green-100', 'dark:bg-green-800');
+                toggleBtn.setAttribute('aria-pressed', 'false');
+            }
+        };
+
+        const toggleReadingMode = () => {
+            document.body.classList.toggle('reading-mode');
+            const isReadingMode = document.body.classList.contains('reading-mode');
+            lessonState.readingMode = isReadingMode;
+            updateReadingModeToggle();
+            saveState();
+        };
+
+        // --- Navigation ---
+        const updateProgress = () => {
+            const progress = Math.min(100, (currentSection / totalSections) * 100);
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+        };
+
+        const renderTabs = () => {
+            const container = document.getElementById('tab-nav-container');
+            if (!container) {
+                console.error('Tab container not found!');
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= totalSections; i++) {
+                const button = document.createElement('button');
+                button.textContent = `${i}. ${sectionTitles[i]}`;
+                button.setAttribute('data-section', i);
+                button.setAttribute('role', 'tab');
+                button.setAttribute('id', `tab-${i}`);
+                button.setAttribute('aria-controls', `section-${i}`);
+                button.className = 'tab-button';
+                button.onclick = () => navigate(i);
+                container.appendChild(button);
+            }
+            
+            console.log(`Rendered ${totalSections} tabs`);
+        };
+
+        const updateActiveTab = (section) => {
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                const btnSection = parseInt(btn.getAttribute('data-section'));
+                const isCurrent = btnSection === section;
+                
+                if (isCurrent) {
+                    btn.classList.add('active');
+                    btn.setAttribute('aria-selected', 'true');
+                } else {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                }
+            });
+
+            const sectionTimeMinutes = SECTION_TIMES[section] || 0;
+            const timeElement = document.getElementById('section-time');
+            if (timeElement) {
+                timeElement.textContent = `${sectionTimeMinutes} min`;
+            }
+        };
+
+        const navigate = (section, focus = true) => {
+            // Hide all sections
+            for (let i = 1; i <= totalSections; i++) {
+                document.getElementById(`section-${i}`).style.display = 'none';
+                document.getElementById(`section-${i}`).setAttribute('tabindex', '-1');
+            }
+
+            currentSection = section;
+
+            // Show the target section
+            const targetSection = document.getElementById(`section-${currentSection}`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.setAttribute('tabindex', '0'); // Make section focusable
+                if (focus) {
+                    targetSection.focus();
+                }
+            }
+
+            updateActiveTab(currentSection);
+            saveState();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // --- Keyboard Navigation ---
+        document.addEventListener('keydown', function (e) {
+            // Ctrl + Arrow keys for navigation
+            if (e.ctrlKey) {
+                if (e.key === 'ArrowRight' && currentSection < totalSections) {
+                    e.preventDefault();
+                    navigate(currentSection + 1);
+                } else if (e.key === 'ArrowLeft' && currentSection > 1) {
+                    e.preventDefault();
+                    navigate(currentSection - 1);
+                } else if (e.key >= '1' && e.key <= totalSections.toString()) {
+                    e.preventDefault();
+                    navigate(parseInt(e.key));
+                }
+            }
+        });
+
+        // =====================================================================
+        // NEW CCQ and Certificate Logic
+        // =====================================================================
+
+        const checkEmbeddedCCQ = (stepId, qNum, isCorrect, clickedButton) => {
+            const qId = `${stepId}-${qNum}`;
+            const resultElement = document.getElementById(`feedback-${qId}`);
+            const questionCard = clickedButton.closest('.ccq-embedded');
+            const answerData = embeddedCCQs[qId];
+
+            // PERMANENTLY DISABLE BUTTONS ON FIRST CLICK (NEW REQUIREMENT)
+            questionCard.querySelectorAll('.ccq-btn').forEach(btn => btn.classList.add('pointer-events-none'));
+
+            // Check if already answered (regardless of correctness)
+            if (lessonState.ccqResults[stepId].answered[qNum] !== undefined) {
+                // Even if already answered, we show feedback but don't re-score
+                const message = '<div class="feedback-info flex items-center space-x-2"><span class="text-xl">ℹ️</span><p>Question already attempted. Score cannot be changed.</p></div>';
+                resultElement.innerHTML = message;
+                resultElement.style.display = 'block';
+                return;
+            }
+
+            // Reset all buttons for this question (mostly for initial visual state removal)
+            questionCard.querySelectorAll('.ccq-btn').forEach(btn => {
+                btn.classList.remove('correct-answer', 'incorrect-answer');
+                btn.classList.add('btn-secondary');
+            });
+
+            let message = '';
+
+            const isAnswerCorrect = isCorrect === answerData.correct;
+
+            if (isAnswerCorrect) {
+                message = '<div class="feedback-success flex items-center space-x-2"><span class="text-xl">✅</span><p>' + answerData.feedback + '</p></div>';
+                clickedButton.classList.remove('btn-secondary');
+                clickedButton.classList.add('correct-answer');
+
+                // Update state for correct answer
+                lessonState.ccqResults[stepId].correct += 1;
+                lessonState.ccqResults[stepId].answered[qNum] = true;
+
+                questionCard.classList.add('answered-correctly');
+                triggerMinConfetti(clickedButton);
+            } else {
+                message = '<div class="feedback-incorrect flex items-center space-x-2"><span class="text-xl">❌</span><p>Try again. ' + answerData.feedback + '</p></div>';
+                clickedButton.classList.remove('btn-secondary');
+                clickedButton.classList.add('incorrect-answer');
+
+                // Update state for incorrect answer (prevents re-scoring later)
+                lessonState.ccqResults[stepId].answered[qNum] = false;
+            }
+
+            // Update score display
+            const scoreElement = document.getElementById(`score-step-${stepId}`);
+            if (scoreElement) {
+                scoreElement.textContent = lessonState.ccqResults[stepId].correct;
+            }
+
+            resultElement.innerHTML = message;
+            resultElement.style.display = 'block';
+            saveState();
+        };
+
+        const validateStepCompletion = (stepId) => {
+            const checklist = document.querySelector(`#section-${sectionTitlesToNumbers[stepId]} .verification-checklist`);
+            const checkboxes = checklist.querySelectorAll('input[type="checkbox"]');
+
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+            if (allChecked) {
+                const button = checklist.querySelector('button');
+                button.textContent = '✅ Step Verified!';
+                button.classList.remove('btn-primary');
+                button.classList.add('bg-green-600', 'hover:bg-green-700', 'text-white');
+                triggerMinConfetti(button);
+            } else {
+                // Custom message box instead of alert
+                const section = document.getElementById(`section-${sectionTitlesToNumbers[stepId]}`);
+                let msgBox = section.querySelector('.custom-message-box');
+                if (!msgBox) {
+                    msgBox = document.createElement('div');
+                    msgBox.className = 'custom-message-box p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg mt-4';
+                    msgBox.innerHTML = '⚠️ <strong>Error:</strong> Please check all verification boxes before confirming completion.';
+                    checklist.parentNode.insertBefore(msgBox, checklist.nextSibling);
+                    setTimeout(() => msgBox.remove(), 4000);
+                }
+            }
+        };
+
+        const generateStepCertificateHTML = (stepId) => {
+            const studentName = 'Student'; // Placeholder
+            const score = lessonState.ccqResults[stepId].correct;
+            const total = lessonState.ccqResults[stepId].total;
+            const percentage = Math.round((score / total) * 100);
+            const stepName = sectionTitlesToFullNames[stepId];
+
+            return `
+                <div class="certificate-border border-8 border-double border-purple-500 p-8">
+                    <div class="certificate-header">
+                        <h2 class="text-4xl font-extrabold text-blue-600">Step Completion Certificate</h2>
+                    </div>
+                    <div class="certificate-body mt-6">
+                        <p class="cert-intro">This certifies that <strong>${studentName}</strong> has completed</p>
+                        <h4 class="cert-course text-red-600">${stepName}</h4>
+                        <p class="cert-achievement">and achieved a Concept Score of</p>
+                        
+                        <div class="cert-stats">
+                            <div class="cert-stat">
+                                <span class="stat-value text-purple-600">${score}/${total}</span>
+                                <span class="stat-label">CCQ Score</span>
+                            </div>
+                            <div class="cert-stat">
+                                <span class="stat-value text-purple-600">${percentage}%</span>
+                                <span class="stat-label">Mastery</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cert-footer mt-6">
+                            <p class="cert-date text-sm">Date: ${new Date().toLocaleDateString()}</p>
+                            <div class="cert-seal mt-2 text-lg font-bold text-purple-600">
+                                🎓 Steps 5-10 In Progress
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        const generateStepCertificate = (stepId) => {
+            const studentName = prompt('Enter your name for the Step Certificate:') || 'Student'; // Allow name input
+            lessonState.stepCertificates[stepId] = true;
+            saveState();
+
+            const certDisplay = document.getElementById(`step-${stepId}-certificate-display`);
+            certDisplay.innerHTML = generateStepCertificateHTML(stepId).replace('Student', studentName);
+            certDisplay.style.display = 'block';
+
+            certDisplay.scrollIntoView({ behavior: 'smooth' });
+            triggerCelebration();
+        };
+
+
+        const generateFinalCertificate = () => {
+            const studentName = prompt('Enter your name for the FINAL certificate:') || 'Student';
+
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+            Object.values(lessonState.ccqResults).forEach(res => {
+                totalCorrect += res.correct;
+                totalQuestions += res.total;
+            });
+
+            const stepsCompleted = Object.values(lessonState.stepCertificates).filter(c => c).length;
+            const totalSteps = Object.keys(lessonState.stepCertificates).length;
+
+            const masteryPercent = Math.round((totalCorrect / totalQuestions) * 100);
+
+            let message = '';
+            if (masteryPercent >= 80 && stepsCompleted === totalSteps) {
+                message = '<p class="text-xl font-bold text-green-600">You demonstrated EXCELLENT mastery and are fully exam-ready!</p>';
+            } else if (masteryPercent >= 50 && stepsCompleted >= totalSteps / 2) {
+                message = '<p class="text-xl font-bold text-blue-600">Great progress! Review your lower CCQ scores before the exam.</p>';
+            } else {
+                message = '<p class="text-xl font-bold text-red-600">Strong effort! Please review all Step Sections carefully and retry the CCQs.</p>';
+            }
+
+            const certHtml = `
+                <div class="certificate-border border-8 border-double border-purple-500 p-8">
+                    <div class="certificate-header">
+                        <h2 class="text-4xl font-extrabold text-blue-600">Final Mastery Certificate</h2>
+                    </div>
+                    <div class="certificate-body mt-6">
+                        <p class="cert-intro">This certifies that</p>
+                        <h3 class="cert-name text-red-600">${studentName}</h3>
+                        <p class="cert-achievement">has successfully mastered</p>
+                        <h4 class="cert-course">IGCSE Document Production: Steps 5-10</h4>
+                        
+                        <div class="cert-stats">
+                            <div class="cert-stat">
+                                <span class="stat-value text-purple-600">${totalCorrect}/${totalQuestions}</span>
+                                <span class="stat-label">Total CCQ Score</span>
+                            </div>
+                            <div class="cert-stat">
+                                <span class="stat-value text-purple-600">${stepsCompleted}/${totalSteps}</span>
+                                <span class="stat-label">Steps Certified</span>
+                            </div>
+                            <div class="cert-stat">
+                                <span class="stat-value text-purple-600">${masteryPercent}%</span>
+                                <span class="stat-label">Overall Mastery</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cert-footer mt-6">
+                            <p class="cert-date text-sm">Date: ${new Date().toLocaleDateString()}</p>
+                            <div class="cert-seal mt-2 text-lg font-bold text-purple-600">
+                                🏆 Exam-Ready Excellence
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('certificate-container').style.display = 'block';
+            document.getElementById('certificate').innerHTML = certHtml;
+            document.getElementById('final-message').innerHTML = message;
+
+            document.getElementById('certificate-container').scrollIntoView({ behavior: 'smooth' });
+            triggerCelebration();
+        };
+
+
+        // --- Section 10: Submission to Phidias Logic (Custom Message Box instead of alert) ---
+        const confirmSubmission = () => {
+            const checkboxes = [
+                document.getElementById('check-word'),
+                document.getElementById('check-step-certs'),
+                document.getElementById('check-final-cert'),
+                document.getElementById('check-names'),
+            ];
+
+            const allChecked = checkboxes.every(cb => cb.checked);
+
+            document.getElementById('submission-confirmation').style.display = 'none';
+            document.getElementById('submission-error').style.display = 'none';
+
+            if (allChecked) {
+                document.getElementById('submission-confirmation').style.display = 'block';
+                triggerMinConfetti(document.querySelector('.submission-checklist'));
+            } else {
+                document.getElementById('submission-error').style.display = 'block';
+            }
+
+        };
+
+
+        // --- Section 3: Opening Activity ---
+        const saveOpeningResponse = () => {
+            const choice = document.querySelector('input[name="prediction"]:checked');
+
+            const statusElement = document.getElementById('opening-status');
+
+            if (!choice) {
+                statusElement.textContent = 'Please select a choice before continuing.';
+                statusElement.className = 'text-sm pt-2 text-red-500';
+                statusElement.style.display = 'block';
+                return;
+            }
+
+            // Save only the choice
+            lessonState.openingResponse = {
+                choice: choice.value,
+                timestamp: new Date().toISOString()
+            };
+            saveState();
+
+            statusElement.className = 'text-sm pt-2 text-green-500';
+            statusElement.textContent = '✅ Prediction saved successfully! Navigate to the next section via the tabs.';
+            statusElement.style.display = 'block';
+        };
+
+        // --- Enhanced Vocabulary Filter Functions ---
+        const filterVocab = () => {
+            const searchInput = document.getElementById('vocab-search').value.toLowerCase();
+            const vocabItems = document.querySelectorAll('.vocab-item');
+
+            vocabItems.forEach(item => {
+                const term = item.getAttribute('data-term').toLowerCase();
+                if (term.includes(searchInput)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        };
+
+        const filterByLevel = (level) => {
+            const vocabItems = document.querySelectorAll('.vocab-item');
+
+            // Reset filter buttons
+            ['all', 'basic', 'intermediate', 'advanced'].forEach(l => {
+                const btn = document.getElementById(`filter-${l}`);
+                if (btn) btn.classList.remove('ring-2', 'ring-blue-500');
+            });
+
+            // Highlight active button
+            const activeBtn = document.getElementById(`filter-${level}`);
+            if (activeBtn) activeBtn.classList.add('ring-2', 'ring-blue-500');
+
+            vocabItems.forEach(item => {
+                const itemLevel = item.getAttribute('data-level');
+                if (level === 'all' || itemLevel === level) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        };
+
+        const resetAllProgress = () => {
+            if (confirm('⚠️ Are you SURE you want to delete all progress? This cannot be undone!')) {
+                if (confirm('⚠️ FINAL WARNING: This will erase ALL your CCQ scores, certificates, and reflections. Continue?')) {
+                    localStorage.removeItem('lessonState_enhanced');
+                    showToast('🔄 Progress Reset! Reloading page...');
+                    setTimeout(() => location.reload(), 1500);
+                }
+            }
+        };
+
+        // Toast Notification Function (NEW)
+        const showToast = (message) => {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-300';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        };
+
+        // Enhanced Download Certificate Instructions (NEW)
+        const downloadCertificate = () => {
+            const instructions = `
+📸 HOW TO DOWNLOAD YOUR CERTIFICATE:
+
+Since we can't automatically save images in the browser, here's how to capture your certificate:
+
+METHOD 1 - Screenshot (Recommended):
+1. Make sure the certificate is fully visible on screen
+2. Windows: Press Windows Key + Shift + S (Snipping Tool)
+   Mac: Press Cmd + Shift + 4 (drag to select area)
+3. Save as: Final_Certificate_[YourName].png
+
+METHOD 2 - Browser Print:
+1. Right-click the certificate → Print
+2. Choose "Save as PDF" as printer
+3. Save as: Final_Certificate_[YourName].pdf
+
+METHOD 3 - Mobile:
+1. Take a clear screenshot of the entire certificate
+2. Crop to remove extra space
+3. Save to Photos/Gallery
+
+✅ REMEMBER: You need to submit this to Phidias!
+    `;
+
+            alert(instructions);
+
+            // Also log to console for easy copy-paste
+            console.log(instructions);
+        };
+
+        // Download All Certificates Helper (NEW)
+        const downloadAllCertificates = () => {
+            const stepCerts = Object.keys(lessonState.stepCertificates).filter(id => lessonState.stepCertificates[id]);
+
+            if (stepCerts.length === 0) {
+                alert('⚠️ You haven\'t generated any step certificates yet! Complete the steps and generate certificates first.');
+                return;
+            }
+
+            const instructions = `
+📦 DOWNLOAD ALL CERTIFICATES CHECKLIST:
+
+You need to save ${stepCerts.length + 1} certificates total:
+
+STEP CERTIFICATES (${stepCerts.length}):
+${stepCerts.map(id => `✓ Step ${id} Certificate (from Section ${sectionTitlesToNumbers[id] || 'N/A'})`).join('\n')}
+
+FINAL CERTIFICATE (1):
+✓ Final Mastery Certificate (from Section 9: Wrap-Up)
+
+HOW TO SAVE EACH ONE:
+1. Navigate to each section (use tabs above)
+2. Scroll to the certificate display
+3. Take a screenshot of each certificate
+4. Name them clearly:
+   - Step5_Certificate_[YourName].png
+   - Step6-7_Certificate_[YourName].png
+   - Step8-9_Certificate_[YourName].png
+   - Step10_Certificate_[YourName].png
+   - Final_Certificate_[YourName].png
+
+SUBMISSION OPTIONS:
+Option A: Upload all 5 images separately to Phidias
+Option B: Combine all 5 into one PDF file (use a PDF merger tool)
+
+💡 TIP: Do this NOW before closing the browser!
+    `;
+
+            alert(instructions);
+            console.log(instructions);
+        };
+
+        // Update Reading Mode Toggle with Toast (ENHANCED)
+        const toggleReadingMode = () => {
+            document.body.classList.toggle('reading-mode');
+            const isReadingMode = document.body.classList.contains('reading-mode');
+            lessonState.readingMode = isReadingMode;
+            updateReadingModeToggle();
+            saveState();
+
+            // Show toast notification
+            showToast(isReadingMode ? '📖 Reading Mode Enabled' : '👁️ Normal Mode Restored');
+        };
+
+        // Enhanced Save Reflection with Toast (UPDATED)
+        const saveReflection321 = () => {
+            const reflections = {
+                learned: [
+                    document.getElementById('learned-1').value.trim(),
+                    document.getElementById('learned-2').value.trim(),
+                    document.getElementById('learned-3').value.trim()
+                ],
+                examHelp: [
+                    document.getElementById('exam-help-1').value.trim(),
+                    document.getElementById('exam-help-2').value.trim()
+                ],
+                question: document.getElementById('question-remaining').value.trim(),
+                timestamp: new Date().toISOString()
+            };
+
+            // Check if at least some fields are filled
+            const hasContent = reflections.learned.some(l => l.length > 0) ||
+                reflections.examHelp.some(e => e.length > 0) ||
+                reflections.question.length > 0;
+
+            if (!hasContent) {
+                showToast('⚠️ Please fill in at least one reflection field!');
+                return;
+            }
+
+            // Save reflections to state
+            lessonState.reflections = reflections;
+            saveState();
+
+            const statusElement = document.getElementById('wrapup-status');
+            statusElement.className = 'text-sm pt-2 text-green-500';
+            statusElement.innerHTML = '✅ Your reflections have been saved! Don\'t forget to generate your final certificate below.';
+            statusElement.style.display = 'block';
+
+            // Animate save confirmation
+            document.querySelectorAll('.reflection-card').forEach(card => {
+                card.classList.add('transition', 'ring-4', 'ring-green-400', 'ring-opacity-50');
+                setTimeout(() => {
+                    card.classList.remove('ring-4', 'ring-green-400', 'ring-opacity-50');
+                }, 1000);
+            });
+
+            showToast('💾 Reflections Saved Successfully!');
+        };
+
+        // --- Helper Mappings ---
+        const sectionTitlesToNumbers = {
+            '5': 4, '6-7': 5, '8-9': 6, '10': 7
+        };
+        const sectionTitlesToFullNames = {
+            '5': 'Step 5: Create Style',
+            '6-7': 'Step 6-7: Apply & Move',
+            '8-9': 'Step 8-9: Shape Format',
+            '10': 'Step 10: Proofread'
+        };
+
+        // --- Celebration Functions ---
+        const triggerCelebration = () => {
+            const duration = 3000;
+            const animationEnd = Date.now() + duration;
+            const colors = ['#2563EB', '#7C3AED', '#10B981', '#EF4444'];
+
+            (function frame() {
+                if (Date.now() > animationEnd) return;
+
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 }, colors: colors });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 }, colors: colors });
+                requestAnimationFrame(frame);
+            }());
+        };
+
+        const triggerMinConfetti = (element) => {
+            const rect = element.getBoundingClientRect();
+            confetti({
+                particleCount: 15,
+                spread: 30,
+                startVelocity: 15,
+                origin: { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + rect.height / 2) / window.innerHeight }
+            });
+        };
+
+
+        // Initialize App on Load
+        window.addEventListener('DOMContentLoaded', function () {
+            // Start Timer immediately
+            startGlobalTimer();
+            loadState();
+            renderTabs();
+            navigate(currentSection, false);
+        });
+    </script>
+
+</body>
+
+</html>
