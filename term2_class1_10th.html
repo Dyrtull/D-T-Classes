@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Introduction to Mechanisms & Levers</title>
+    <!-- Web research integration: Using a clean, modern font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* CSS Variables for Theming (Light/Dark Mode) */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --bg-main: #f4f7f6;
+            --bg-card: #ffffff;
+            --bg-light: #ecf0f1;
+            --text-dark: #2c3e50;
+            --text-light: #5a6a7a;
+            --border-color: #dfe4ea;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --shadow-color-hover: rgba(0, 0, 0, 0.15);
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --gradient-success: linear-gradient(135deg, var(--success) 0%, #2ecc71 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, #e67e22 100%);
+            --gradient-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .dark-mode {
+            --primary: #ecf0f1;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --bg-main: #1a2634;
+            --bg-card: #2c3e50;
+            --bg-light: #233140;
+            --text-dark: #ffffff;
+            --text-light: #bdc3c7;
+            --border-color: #3e5062;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --shadow-color-hover: rgba(0, 0, 0, 0.4);
+            --gradient-bg: linear-gradient(135deg, #2c3e50 0%, #1a2634 100%);
+        }
+
+        /* General Body Styling */
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text-light);
+            background: var(--bg-main);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            min-height: 100vh;
+            box-shadow: 0 0 40px var(--shadow-color);
+            transition: background 0.3s ease;
+        }
+
+        /* 1. Header & Navigation */
+        header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .theme-toggle-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        nav {
+            background: var(--bg-light);
+            padding: 1rem;
+            position: sticky;
+            top: 85px; /* Adjusted based on header height */
+            z-index: 99;
+            border-bottom: 3px solid var(--secondary);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: var(--bg-light);
+            padding: 0.5rem 1rem;
+            position: sticky;
+            top: 152px; /* Adjusted based on header+nav height */
+            z-index: 98;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: var(--border-color);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px var(--shadow-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 3rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--secondary);
+            padding-left: 1rem;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem;
+        }
+
+        p, li {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+        
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        /* Card System */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-color-hover);
+        }
+
+        .card h4 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .card code {
+            background: var(--bg-light);
+            color: var(--accent);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        /* Expandable Section */
+        .expandable {
+            margin: 1rem 0;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-card);
+        }
+
+        .expandable-header {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .expandable-header:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .expandable-header span:last-child {
+            transition: transform 0.3s ease;
+        }
+
+        .expandable-header.active span:last-child {
+            transform: rotate(180deg);
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .expandable-content.active {
+            max-height: 2000px; /* Large value */
+            padding: 1.5rem;
+        }
+
+        /* Quiz & Calculator Styling */
+        .quiz-container {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+        
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .quiz-question p {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0.5rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px var(--shadow-color-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #239b56;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px var(--shadow-color-hover);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Feedback Messages */
+        .feedback {
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .feedback.success {
+            background: rgba(39, 174, 96, 0.1);
+            border-left: 4px solid var(--success);
+            color: var(--success);
+        }
+
+        .feedback.error {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        /* Utility */
+        .text-center {
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Inputs */
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-dark);
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+        
+        label {
+            font-weight: 600;
+            color: var(--text-dark);
+            display: block;
+            margin-top: 1rem;
+        }
+        
+        /* Specificity for radio labels */
+        input[type="radio"] + label {
+            width: auto;
+            display: inline;
+            padding: 0.5rem;
+            cursor: pointer;
+            margin-top: 0;
+        }
+
+        /* Illustrations */
+        .svg-container {
+            text-align: center;
+            margin: 2rem 0;
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        svg, .img-placeholder {
+            max-width: 100%;
+            height: auto;
+            stroke: var(--text-dark);
+            fill: var(--text-dark);
+        }
+        
+        .img-placeholder {
+            width: 100%;
+            border-radius: 8px;
+        }
+        
+        /* Vocabulary */
+        .vocab-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .vocab-item {
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        .vocab-term {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+        
+        .vocab-def {
+            margin-top: 0.5rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                text-align: left;
+                padding: 1rem;
+            }
+            header h1 {
+                font-size: 1.5rem;
+            }
+            header p {
+                font-size: 0.9rem;
+            }
+            .theme-toggle-btn {
+                top: 1rem;
+                right: 1rem;
+                width: 35px;
+                height: 35px;
+                font-size: 1.2rem;
+            }
+            nav {
+                top: 80px; /* Adjusted for responsive header height */
+            }
+            .progress-container {
+                top: 147px; /* Adjusted for responsive header+nav height */
+            }
+            section {
+                padding: 2rem 1rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 1. Header and Navigation -->
+        <header>
+            <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle light/dark mode">🌙</button>
+            <h1>🔧 Week 1: Introduction to Mechanisms & Levers</h1>
+            <p>IGCSE Design & Technology (0445) | Grade 10 | 90 minutes</p>
+        </header>
+
+        <!-- NEW NAV -->
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#opening" class="nav-link">Opening</a></li>
+                <li><a href="#objectives" class="nav-link">Objectives</a></li>
+                <li><a href="#exploration" class="nav-link">Exploration</a></li>
+                <li><a href="#practice" class="nav-link">Guided Practice</a></li>
+                <li><a href="#ccq" class="nav-link">Concept Check</a></li>
+                <li><a href="#wrapup" class="nav-link">Wrap-Up</a></li>
+                <li><a href="#vocabulary" class="nav-link">Vocabulary</a></li>
+            </ul>
+        </nav>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%;">0%</div>
+            </div>
+        </div>
+
+        <!-- 2. Opening Activity (REBUILT) -->
+        <section id="opening">
+            <h2>🎯 Opening Activity: Lever Hunt & Force Challenge</h2>
+            <p><strong>Time: 10 minutes</strong></p>
+            
+            <div class="card" style="margin-top: 2rem;">
+                <h4>Part A: Lever Hunt (In Pairs)</h4>
+                <p>Look at these common objects. Discuss these three questions with your partner:</p>
+                <ol>
+                    <li>Which of these help you do work more easily?</li>
+                    <li>Where do you push or pull on each one (the Effort)?</li>
+                    <li>Where does the object seem to rotate or pivot (the Fulcrum)?</li>
+                </ol>
+                <ul style="list-style: none; display: flex; flex-wrap: wrap; gap: 1rem; padding-left: 0; margin-top: 1rem;">
+                    <li style="background: var(--bg-light); padding: 0.5rem 1rem; border-radius: 5px;">Scissors</li>
+                    <li style="background: var(--bg-light); padding: 0.5rem 1rem; border-radius: 5px;">Wheelbarrow</li>
+                    <li style="background: var(--bg-light); padding: 0.5rem 1rem; border-radius: 5px;">Tweezers</li>
+                    <li style="background: var(--bg-light); padding: 0.5rem 1rem; border-radius: 5px;">Bottle Opener</li>
+                    <li style="background: var(--bg-light); padding: 0.5rem 1rem; border-radius: 5px;">Crowbar</li>
+                    <li style="background: var(--bg-light); padding: 0.5rem 1rem; border-radius: 5px;">Seesaw</li>
+                </ul>
+            </div>
+            
+            <div class="card" style="margin-top: 2rem;">
+                <h4>Part B: Force Challenge (Teacher Demonstration)</h4>
+                <p>Think about a bottle opener:</p>
+                <ul>
+                    <li>The teacher places the opener on a bottle. Where is their hand (Effort)? Where is the cap (Load)? Where does it pivot (Fulcrum)?</li>
+                    <li>Now, the teacher tries again, but with their hand *closer* to the cap.</li>
+                </ul>
+                <p><strong>Key Question:</strong> Which way was easier? Why?</p>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h4>Connection</h4>
+                <p>All these tools rotate around a point to help us. Today we'll learn there are THREE different ways to arrange these parts - these are called 'lever classes.'</p>
+                <p>By the end of class, you'll be able to identify which class each of these belongs to!</p>
+                <div class="svg-container">
+                    <img src="https://cdn.britannica.com/84/241884-050-F43F390E/Trebuchet-catapult-medieval-siege-engine-Chateau-Castelnaud-Castle-Perigord-France.jpg" alt="Medieval Trebuchet" class="img-placeholder">
+                </div>
+                <label for="openingThoughts">Your initial thoughts: How did ancient armies use levers like this to launch projectiles?</label>
+                <textarea id="openingThoughts" placeholder="Type your thoughts here..."></textarea>
+            </div>
+        </section>
+
+        <!-- 3. Learning Objectives Section (NEW) -->
+        <section id="objectives">
+            <h2>🎓 Learning Objectives</h2>
+            <p>Here's our plan for this week (Cambridge 4.3.1).</p>
+            
+            <h3>By the end of this class, I will be able to…</h3>
+            <div class="expandable">
+                <div class="expandable-header active"> <!-- Start open -->
+                    <span>🧠 Cognitive Objectives (What I'll know)</span>
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content active"> <!-- Start open -->
+                    <ul>
+                        <li>✅ <strong>Identify</strong> the three classes of levers.</li>
+                        <li>✅ <strong>Understand</strong> and label the Fulcrum, Load, and Effort.</li>
+                        <li>✅ <strong>Calculate</strong> Mechanical Advantage (MA) for levers.</li>
+                        <li>✅ <strong>Introduce</strong> and define Torque as a rotational force.</li>
+                        <li>✅ <strong>Recognize</strong> real-world lever applications (including catapults).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Concept Exploration (REBUILT) -->
+        <section id="exploration">
+            <h2>🔍 Concept Exploration: Levers, MA & Torque</h2>
+            <p>Reference: Student Book pages 265-266</p>
+
+            <h3>⚙️ What is a Lever?</h3>
+            <p>A lever is a <strong>rigid bar</strong> that pivots around a fixed point called a <strong>Fulcrum</strong>. Levers help us lift heavy loads (the <strong>Load</strong>) with less force (the <strong>Effort</strong>).</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Class 1: Fulcrum in the Middle</h4>
+                    <div class="svg-container">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <title>Class 1 Lever Diagram</title>
+                            <line x1="20" y1="60" x2="230" y2="60" stroke="var(--primary)" stroke-width="6"/>
+                            <polygon points="125,60 105,85 145,85" fill="var(--accent)"/>
+                            <circle cx="20" cy="60" r="12" fill="var(--secondary)"/>
+                            <text x="10" y="105" font-size="12" fill="var(--secondary)">Effort</text>
+                            <circle cx="230" cy="60" r="12" fill="var(--warning)"/>
+                            <text x="220" y="105" font-size="12" fill="var(--warning)">Load</text>
+                            <text x="105" y="105" font-size="12" fill="var(--accent)">Fulcrum</text>
+                        </svg>
+                    </div>
+                    <p>The Fulcrum is between the Effort and the Load.</p>
+                    <p><strong>Examples:</strong> Seesaw, scissors, crowbar, catapult arm.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Class 2: Load in the Middle</h4>
+                    <div class="svg-container">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <title>Class 2 Lever Diagram</title>
+                            <line x1="20" y1="60" x2="230" y2="40" stroke="var(--primary)" stroke-width="6"/>
+                            <polygon points="20,60 10,85 30,85" fill="var(--accent)"/>
+                            <circle cx="230" cy="40" r="12" fill="var(--secondary)"/>
+                            <text x="220" y="25" font-size="12" fill="var(--secondary)">Effort</text>
+                            <circle cx="125" cy="50" r="12" fill="var(--warning)"/>
+                            <text x="110" y="30" font-size="12" fill="var(--warning)">Load</text>
+                            <text x="5" y="105" font-size="12" fill="var(--accent)">Fulcrum</text>
+                        </svg>
+                    </div>
+                    <p>The Load is between the Fulcrum and the Effort.</p>
+                    <p><strong>Examples:</strong> Wheelbarrow, bottle opener, nutcracker.</p>
+                    <p><strong>Fact:</strong> Always has Mechanical Advantage (MA > 1).</p>
+                </div>
+
+                <div class="card">
+                    <h4>Class 3: Effort in the Middle</h4>
+                    <div class="svg-container">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <title>Class 3 Lever Diagram</title>
+                            <line x1="20" y1="60" x2="230" y2="40" stroke="var(--primary)" stroke-width="6"/>
+                            <polygon points="20,60 10,85 30,85" fill="var(--accent)"/>
+                            <circle cx="125" cy="50" r="12" fill="var(--secondary)"/>
+                            <text x="110" y="30" font-size="12" fill="var(--secondary)">Effort</text>
+                            <circle cx="230" cy="40" r="12" fill="var(--warning)"/>
+                            <text x="220" y="25" font-size="12" fill="var(--warning)">Load</text>
+                            <text x="5" y="105" font-size="12" fill="var(--accent)">Fulcrum</text>
+                        </svg>
+                    </div>
+                    <p>The Effort is between the Fulcrum and the Load.</p>
+                    <p><strong>Examples:</strong> Tweezers, fishing rod, human arm.</p>
+                    <p><strong>Fact:</strong> Always has MA < 1 (a disadvantage!) but gives speed/distance.</p>
+                </div>
+            </div>
+
+            <!-- NEW: Mechanical Advantage Section -->
+            <h3>📈 Mechanical Advantage (MA)</h3>
+            <p><strong>Definition:</strong> The factor by which a mechanism multiplies the force you apply. A high MA means it's easier to move the load.</p>
+            <div class="card">
+                <h4>MA Formula</h4>
+                <p><code>MA = Distance from Fulcrum to Effort (Effort Arm)</code></p>
+                <p style="text-align: center;">--- divided by ---</p>
+                <p><code>MA = Distance from Fulcrum to Load (Load Arm)</code></p>
+                <p style="font-size: 1.2rem; text-align: center; margin: 1rem 0;"><code>MA = a / b</code></p>
+                <p><strong>Example:</strong> If the Effort Arm (a) is <strong>1.5m</strong> and the Load Arm (b) is <strong>0.5m</strong>:</p>
+                <p><code>MA = 1.5m / 0.5m = 3</code></p>
+                <p>This means you can lift <strong>3 times the load</strong> with the same effort!</p>
+            </div>
+
+            <!-- NEW: Torque Section -->
+            <h3 style="margin-top: 2rem;">🌀 Introduction to Torque (τ)</h3>
+            <p><strong>Definition:</strong> Torque is the <strong>rotational force</strong> that causes an object to rotate around an axis (like a fulcrum).</p>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Torque Formula</h4>
+                    <p><code>Torque (τ) = Force × Perpendicular Distance from axis</code></p>
+                    <p><strong>Units:</strong> Newton-meters (Nm)</p>
+                    <p><strong>Example (Pushing a door):</strong></p>
+                    <ul>
+                        <li>You push with <strong>10N</strong> of force.</li>
+                        <li>You push at <strong>0.8m</strong> from the hinge.</li>
+                        <li>Torque = 10N × 0.8m = <strong>8 Nm</strong></li>
+                    </ul>
+                    <p>Pushing farther from the hinge (greater distance) creates more torque, making it easier to open!</p>
+                </div>
+                <div class="card">
+                    <h4>Torque in Levers (Principle of Moments)</h4>
+                    <p>For a lever to be balanced, the torques must be equal:</p>
+                    <p style="text-align: center; font-weight: 600;"><code>Clockwise Torque = Counterclockwise Torque</code></p>
+                    <p>This gives us a new formula:</p>
+                    <p><code>(Force_effort × Distance_effort) = (Force_load × Distance_load)</code></p>
+                    <p>You can use this to find out how much effort force you need to lift a specific load!</p>
+                </div>
+            </div>
+            
+            <!-- NEW: Catapult Connection -->
+            <div class="card" style="background: var(--gradient-accent); color: white; margin-top: 2rem;">
+                <h4 style="color: white;">🔥 Catapult Connection</h4>
+                <p style="color: white;">A catapult's throwing arm is a <strong>Class 1 Lever</strong>. The goal is to create a <strong>massive torque</strong> to launch the projectile (Load).</p>
+                <p style="color: white;">Engineers did this by applying a huge Effort (like a massive counterweight) with a short effort arm, which pivots and swings the long load arm, flinging the projectile with incredible speed!</p>
+            </div>
+        </section>
+
+        <!-- 5. Guided Practice (UPDATED) -->
+        <section id="practice">
+            <h2>🛠️ Guided Practice: Virtual Lab (Experiment 1)</h2>
+            <p><strong>Time: 30 minutes</strong></p>
+            
+            <div class="quiz-container">
+                <h4>Part A: Class 1 Lever (Virtual)</h4>
+                <p>Let's use a 30cm ruler with a pencil as a fulcrum. A <strong>100g Load</strong> is placed at the <strong>5cm mark</strong>.</p>
+                
+                <h5 style="margin-top: 1.5rem; color: var(--text-dark);">Setup 1: Balanced Lever</h5>
+                <p>Place the Fulcrum (pencil) at the <strong>15cm mark</strong>. Apply Effort at the <strong>25cm mark</strong>.</p>
+                
+                <label for="setup1-load-arm">Load Arm (Fulcrum at 15cm to Load at 5cm):</label>
+                <input type="number" id="setup1-load-arm" placeholder="Enter distance in cm">
+                
+                <label for="setup1-effort-arm">Effort Arm (Fulcrum at 15cm to Effort at 25cm):</label>
+                <input type="number" id="setup1-effort-arm" placeholder="Enter distance in cm">
+                
+                <button class="btn btn-primary" id="calcSetup1">Calculate Setup 1</button>
+                <div class="feedback" id="setup1-feedback"></div>
+
+                <hr style="margin: 2rem 0; border: 1px solid var(--border-color);">
+
+                <h5 style="color: var(--text-dark);">Setup 2: Gaining Advantage</h5>
+                <p>Now, move the Fulcrum (pencil) to the <strong>10cm mark</strong>. The 100g Load is still at <strong>5cm</strong>. Apply Effort at the <strong>25cm mark</strong>.</p>
+                
+                <label for="setup2-load-arm">Load Arm (Fulcrum at 10cm to Load at 5cm):</label>
+                <input type="number" id="setup2-load-arm" placeholder="Enter distance in cm">
+                
+                <label for="setup2-effort-arm">Effort Arm (Fulcrum at 10cm to Effort at 25cm):</label>
+                <input type="number" id="setup2-effort-arm" placeholder="Enter distance in cm">
+                
+                <button class="btn btn-primary" id="calcSetup2">Calculate Setup 2</button>
+                <div class="feedback" id="setup2-feedback"></div>
+                
+                <hr style="margin: 2rem 0; border: 1px solid var(--border-color);">
+                
+                <!-- NEW PART B -->
+                <h4>Part B: Class 2 Lever (Virtual)</h4>
+                <p>Let's model a wheelbarrow. The wheel (Fulcrum) is at <strong>0cm</strong>. The Load is at <strong>50cm</strong>. You lift the handles (Effort) at <strong>150cm</strong>.</p>
+                
+                <label for="setup3-load-arm">Load Arm (Fulcrum at 0cm to Load at 50cm):</label>
+                <input type="number" id="setup3-load-arm" placeholder="Enter distance in cm">
+                
+                <label for="setup3-effort-arm">Effort Arm (Fulcrum at 0cm to Effort at 150cm):</label>
+                <input type="number" id="setup3-effort-arm" placeholder="Enter distance in cm">
+                
+                <button class="btn btn-primary" id="calcSetup3">Calculate Setup 3 (MA)</button>
+                <div class="feedback" id="setup3-feedback"></div>
+            </div>
+        </section>
+        
+        <!-- 6. Concept Checking (NEW) -->
+        <section id="ccq">
+            <h2>🧠 Concept Checking Questions</h2>
+            <p>Let's check your understanding of MA and Torque.</p>
+
+            <div class="quiz-container">
+                <!-- CCQ 1 -->
+                <div class="quiz-question">
+                    <p>1. If you want the <strong>maximum</strong> Mechanical Advantage from a lever, where should you place the fulcrum?</p>
+                    <textarea id="ccq1-answer" rows="2" placeholder="Type your answer here... (e.g., 'Close to the...' or 'Far from the...')"></textarea>
+                </div>
+                <!-- CCQ 2 -->
+                <div class="quiz-question">
+                    <p>2. In your own words, why does a wheelbarrow (Class 2) make it easier to lift heavy things? (Hint: Think about the arm lengths)</p>
+                    <textarea id="ccq2-answer" rows="2" placeholder="Type your answer here..."></textarea>
+                </div>
+                <!-- CCQ 3 -->
+                <div class="quiz-question">
+                    <p>3. Calculate the MA if the Effort Arm is <strong>2m</strong> and the Load Arm is <strong>0.4m</strong>.</p>
+                    <input type="number" id="ccq3-answer" placeholder="Enter MA">
+                    <button class="btn btn-primary" id="check-ccq3" style="margin-top: 1rem;">Check Answer</button>
+                    <div class="feedback" id="ccq3-feedback"></div>
+                </div>
+                <!-- CCQ 4 -->
+                <div class="quiz-question">
+                    <p>4. If you push with <strong>50N</strong> of force at <strong>2m</strong> from the fulcrum, what Torque do you generate?</p>
+                    <input type="number" id="ccq4-answer" placeholder="Enter Torque in Nm">
+                    <button class="btn btn-primary" id="check-ccq4" style="margin-top: 1rem;">Check Answer</button>
+                    <div class="feedback" id="ccq4-feedback"></div>
+                </div>
+                <!-- CCQ 5 -->
+                <div class="quiz-question">
+                    <p>5. For a catapult, do you want the projectile (Load) close to or far from the fulcrum? Why?</p>
+                    <textarea id="ccq5-answer" rows="2" placeholder="Type your answer here..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Wrap-Up (NEW) -->
+        <section id="wrapup">
+            <h2>🏁 Wrap-Up & Exit Ticket</h2>
+            <p><strong>Time: 15 minutes</strong></p>
+
+            <div class="quiz-container">
+                <h4>Skills Activity (Page 268)</h4>
+                <p>A lever has an Effort Arm (a) of <strong>1.5m</strong> and a Load Arm (b) of <strong>0.5m</strong>.</p>
+                <div class="quiz-question">
+                    <p>(i) What is the Mechanical Advantage (MA)?</p>
+                    <input type="number" id="skill-ma" placeholder="Calculate MA">
+                </div>
+                <div class="quiz-question">
+                    <p>(ii) What Effort is needed to raise a <strong>300N</strong> Load? (Hint: Effort = Load / MA)</p>
+                    <input type="number" id="skill-effort1" placeholder="Calculate Effort in N">
+                </div>
+                <div class="quiz-question">
+                    <p>(iii) What Effort is needed to raise a <strong>480N</strong> Load?</p>
+                    <input type="number" id="skill-effort2" placeholder="Calculate Effort in N">
+                </div>
+                <button class="btn btn-primary" id="check-skills">Check Skills Activity</button>
+                <div class="feedback" id="skills-feedback"></div>
+            </div>
+            
+            <div class="quiz-container" style="margin-top: 2rem; background: var(--bg-light);">
+                <h4>Exit Ticket</h4>
+                <p>Please complete these questions before you leave.</p>
+                
+                <div class="quiz-question">
+                    <p>1. Describe a sketch of a <strong>Class 1</strong> lever. Where are the Fulcrum, Load, and Effort?</p>
+                    <textarea id="exit-sketch" rows="2" placeholder="e.g., The fulcrum is in the middle..."></textarea>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>2. Calculate the MA if the Effort Arm is <strong>80cm</strong> and the Load Arm is <strong>20cm</strong>.</p>
+                    <input type="number" id="exit-ma" placeholder="Enter MA">
+                </div>
+                
+                <div class="quiz-question">
+                    <p>3. Calculate the Torque if <strong>20N</strong> of force is applied at the Effort Arm (80cm). (Hint: Convert cm to m!)</p>
+                    <input type="number" id="exit-torque" placeholder="Enter Torque in Nm">
+                </div>
+                
+                <div class="quiz-question">
+                    <p>4. <strong>Reflection:</strong> How could you use levers to throw an object really, really far?</p>
+                    <textarea id="exit-reflection" rows="2" placeholder="Type your reflection here..."></textarea>
+                </div>
+            </div>
+
+            <div class="text-center" style="margin-top: 2rem;">
+                <button class="btn btn-success" id="saveWrapUpBtn">Complete Lesson & Save Reflection</button>
+                <button class="btn btn-primary" id="downloadCertificateBtn" style="display: none;">Download Certificate</button>
+            </div>
+            
+            <div id="celebration-badge" class="hidden" style="text-align: center; padding: 2rem; background: var(--gradient-success); color: white; border-radius: 10px; margin-top: 1rem;">
+                <h3>🎉 Lesson Complete! 🎉</h3>
+                <p>Your reflections are saved! You can now download your certificate.</p>
+            </div>
+        </section>
+
+        <!-- 8. Vocabulary (UPDATED) -->
+        <section id="vocabulary">
+            <h2>📚 Vocabulary List</h2>
+            <p>Review the key terms from today's lesson.</p>
+
+            <div class="vocab-list" id="vocabList">
+                <!-- Vocabulary will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <footer>
+            <p style="text-align: center; padding: 2rem; background: var(--bg-light); color: var(--text-light); border-top: 1px solid var(--border-color);">
+                IGCSE Design & Technology (0445) | Lesson Module
+            </p>
+        </footer>
+
+    </div> <!-- End .container -->
+
+    <!-- Hidden canvas for generating the certificate -->
+    <canvas id="certificateCanvas" width="800" height="1100" style="display: none;"></canvas>
+
+    <!-- Embedded JavaScript -->
+    <script>
+        /**
+         * Main Application Object
+         */
+        const App = {
+            // State object to hold all dynamic data
+            state: {
+                progress: 0,
+                openingThoughts: "",
+                theme: 'light',
+                // NEW: State for new activities
+                ccqAnswers: {
+                    ccq1: "",
+                    ccq2: "",
+                    ccq3: "",
+                    ccq4: "",
+                    ccq5: ""
+                },
+                skillsActivity: {
+                    ma: "",
+                    effort1: "",
+                    effort2: ""
+                },
+                exitTicket: {
+                    sketch: "",
+                    ma: "",
+                    torque: "",
+                    reflection: ""
+                },
+                // UPDATED Vocab
+                vocabTerms: [
+                    { term: 'Lever', definition: 'A rigid bar that pivots around a fixed point (the fulcrum) to move a load.' },
+                    { term: 'Fulcrum', definition: 'The fixed pivot point around which a lever rotates.' },
+                    { term: 'Load', definition: 'The force or weight that is being moved or lifted by the lever.' },
+                    { term: 'Effort', definition: 'The force applied to the lever to move the load.' },
+                    { term: 'Mechanical Advantage (MA)', definition: 'The factor by which a mechanism multiplies force. (MA = Effort Arm / Load Arm)' },
+                    { term: 'Torque (τ)', definition: 'A rotational force that causes an object to rotate. (Torque = Force × Distance)' },
+                    { term: 'Principle of Moments', definition: 'For a balanced lever, the clockwise torque equals the counterclockwise torque.' },
+                    { term: 'Newton-meter (Nm)', definition: 'The standard unit of torque.' }
+                ]
+            },
+
+            /**
+             * Initializes the application
+             */
+            init: function() {
+                App.loadProgress();
+                App.addEventListeners();
+                App.initVocabulary();
+                App.updateProgressBar();
+                App.applyTheme();
+                App.applySavedData();
+            },
+
+            /**
+             * Adds all event listeners for the page
+             */
+            addEventListeners: function() {
+                document.getElementById('themeToggle').addEventListener('click', App.toggleTheme);
+                document.getElementById('saveWrapUpBtn').addEventListener('click', App.saveWrapUp);
+                document.getElementById('downloadCertificateBtn').addEventListener('click', App.generateCertificate);
+
+                // Nav link highlighting on scroll
+                window.addEventListener('scroll', App.updateActiveNav);
+
+                // Expandable sections
+                document.querySelectorAll('.expandable-header').forEach(header => {
+                    header.addEventListener('click', App.toggleExpand);
+                });
+                
+                // --- NEW Event Listeners ---
+
+                // Guided Practice: Virtual Lab
+                document.getElementById('calcSetup1').addEventListener('click', App.calculateVirtualLab1);
+                document.getElementById('calcSetup2').addEventListener('click', App.calculateVirtualLab2);
+                document.getElementById('calcSetup3').addEventListener('click', App.calculateVirtualLab3); // ADDED
+                
+                // Concept Check
+                document.getElementById('check-ccq3').addEventListener('click', () => App.checkCalculation('ccq3-answer', 5, 'ccq3-feedback', 'Correct! MA = 2m / 0.4m = 5'));
+                document.getElementById('check-ccq4').addEventListener('click', () => App.checkCalculation('ccq4-answer', 100, 'ccq4-feedback', 'Correct! Torque = 50N * 2m = 100 Nm'));
+
+                // Wrap-Up: Skills Activity
+                document.getElementById('check-skills').addEventListener('click', App.checkSkillsActivity);
+            },
+            
+            /**
+             * --- LOCALSTORAGE & STATE ---
+             */
+            saveProgress: function() {
+                // Save non-vocabulary state
+                const stateToSave = { ...App.state };
+                delete stateToSave.vocabTerms; 
+                localStorage.setItem('mechanismsLessonProgress', JSON.stringify(stateToSave));
+            },
+
+            loadProgress: function() {
+                const savedState = localStorage.getItem('mechanismsLessonProgress');
+                if (savedState) {
+                    const loadedState = JSON.parse(savedState);
+                    // Merge loaded state into default state, ensuring nested objects are merged
+                    App.state = { 
+                        ...App.state, 
+                        ...loadedState,
+                        ccqAnswers: { ...App.state.ccqAnswers, ...loadedState.ccqAnswers },
+                        skillsActivity: { ...App.state.skillsActivity, ...loadedState.skillsActivity },
+                        exitTicket: { ...App.state.exitTicket, ...loadedState.exitTicket }
+                    };
+                }
+            },
+            
+            applySavedData: function() {
+                // Apply saved text to textareas
+                if (App.state.openingThoughts) document.getElementById('openingThoughts').value = App.state.openingThoughts;
+                
+                if (App.state.ccqAnswers.ccq1) document.getElementById('ccq1-answer').value = App.state.ccqAnswers.ccq1;
+                if (App.state.ccqAnswers.ccq2) document.getElementById('ccq2-answer').value = App.state.ccqAnswers.ccq2;
+                if (App.state.ccqAnswers.ccq5) document.getElementById('ccq5-answer').value = App.state.ccqAnswers.ccq5;
+                
+                if (App.state.exitTicket.sketch) document.getElementById('exit-sketch').value = App.state.exitTicket.sketch;
+                if (App.state.exitTicket.reflection) document.getElementById('exit-reflection').value = App.state.exitTicket.reflection;
+
+                // Check if lesson was already completed
+                const saveBtn = document.getElementById('saveWrapUpBtn');
+                if (localStorage.getItem('lessonCompleted') === 'true') {
+                    saveBtn.classList.add('btn-disabled');
+                    saveBtn.textContent = 'Reflection Saved!';
+                    document.getElementById('celebration-badge').style.display = 'block';
+                    document.getElementById('downloadCertificateBtn').style.display = 'inline-block';
+                }
+            },
+            
+            /**
+             * --- UI & THEME ---
+             */
+            toggleTheme: function() {
+                App.state.theme = (App.state.theme === 'light') ? 'dark' : 'light';
+                App.applyTheme();
+                App.saveProgress();
+            },
+            
+            applyTheme: function() {
+                const toggleBtn = document.getElementById('themeToggle');
+                if (App.state.theme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    toggleBtn.textContent = '☀️';
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    toggleBtn.textContent = '🌙';
+                }
+            },
+
+            updateProgressBar: function() {
+                const scrollY = window.scrollY;
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                App.state.progress = Math.round((scrollY / totalHeight) * 100);
+                
+                const progressBar = document.getElementById('progressBar');
+                if(progressBar) {
+                    progressBar.style.width = `${App.state.progress}%`;
+                    progressBar.textContent = `${App.state.progress}%`;
+                }
+            },
+            
+            updateActiveNav: function() {
+                App.updateProgressBar(); // Update progress bar on scroll
+                
+                let currentSection = '';
+                const sections = document.querySelectorAll('section');
+                const navHeight = document.getElementById('main-nav').offsetHeight;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - navHeight - 150; // Offset
+                    if (window.scrollY >= sectionTop) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            },
+
+            toggleExpand: function(e) {
+                const header = e.target.closest('.expandable-header');
+                if (!header) return;
+
+                const content = header.nextElementSibling;
+                header.classList.toggle('active');
+                content.classList.toggle('active');
+            },
+            
+            showFeedback: function(elementId, message, type) {
+                const feedbackEl = document.getElementById(elementId);
+                if (!feedbackEl) return;
+                
+                feedbackEl.textContent = message;
+                feedbackEl.className = `feedback ${type} show`;
+            },
+            
+            /**
+             * --- SECTION-SPECIFIC LOGIC (NEW) ---
+             */
+             
+            // 2. Opening Activity
+            // Removed checkLeverHunt as it's no longer a quiz
+            
+            // 5. Guided Practice
+            calculateVirtualLab1: function() {
+                const loadArm = parseFloat(document.getElementById('setup1-load-arm').value);
+                const effortArm = parseFloat(document.getElementById('setup1-effort-arm').value);
+
+                if (loadArm === 10 && effortArm === 10) {
+                    const ma = effortArm / loadArm;
+                    App.showFeedback('setup1-feedback', `Correct! Load Arm = 10cm, Effort Arm = 10cm. MA = ${ma}. No advantage!`, 'success');
+                } else {
+                    App.showFeedback('setup1-feedback', 'Not quite! Check the distances. (Hint: 15-5=10 and 25-15=10)', 'error');
+                }
+            },
+            
+            calculateVirtualLab2: function() {
+                const loadArm = parseFloat(document.getElementById('setup2-load-arm').value);
+                const effortArm = parseFloat(document.getElementById('setup2-effort-arm').value);
+
+                if (loadArm === 5 && effortArm === 15) {
+                    const ma = effortArm / loadArm;
+                    const effort = (100 * loadArm) / effortArm; // From Principle of Moments
+                    App.showFeedback('setup2-feedback', `Correct! Load Arm = 5cm, Effort Arm = 15cm. MA = ${ma}. Effort needed = ${effort.toFixed(1)}g. Much easier!`, 'success');
+                } else {
+                    App.showFeedback('setup2-feedback', 'Not quite! Check the distances. (Hint: 10-5=5 and 25-10=15)', 'error');
+                }
+            },
+            
+            // NEW function for Class 2 Lever
+            calculateVirtualLab3: function() {
+                const loadArm = parseFloat(document.getElementById('setup3-load-arm').value);
+                const effortArm = parseFloat(document.getElementById('setup3-effort-arm').value);
+
+                if (loadArm === 50 && effortArm === 150) {
+                    const ma = effortArm / loadArm;
+                    App.showFeedback('setup3-feedback', `Correct! Load Arm = 50cm, Effort Arm = 150cm. MA = ${ma}. This gives a 3x advantage!`, 'success');
+                } else {
+                    App.showFeedback('setup3-feedback', 'Not quite! Check the distances from the fulcrum (0cm).', 'error');
+                }
+            },
+            
+            // 6. Concept Check
+            checkCalculation: function(inputId, correctAnswer, feedbackId, successMessage) {
+                const answer = parseFloat(document.getElementById(inputId).value);
+                if (answer === correctAnswer) {
+                    App.showFeedback(feedbackId, successMessage, 'success');
+                } else {
+                    App.showFeedback(feedbackId, 'Incorrect, try calculating again.', 'error');
+                }
+            },
+
+            // 7. Wrap-Up
+            checkSkillsActivity: function() {
+                const ma = parseFloat(document.getElementById('skill-ma').value);
+                const effort1 = parseFloat(document.getElementById('skill-effort1').value);
+                const effort2 = parseFloat(document.getElementById('skill-effort2').value);
+                let correct = 0;
+                
+                if (ma === 3) correct++;
+                if (effort1 === 100) correct++;
+                if (effort2 === 160) correct++;
+
+                if (correct === 3) {
+                    App.showFeedback('skills-feedback', 'All correct! MA = 3, Effort 1 = 100N, Effort 2 = 160N.', 'success');
+                } else {
+                    App.showFeedback('skills-feedback', `You got ${correct}/3 correct. Check your calculations! (MA = 1.5/0.5, Effort = Load / MA)`, 'error');
+                }
+            },
+
+            saveWrapUp: function() {
+                // Save CCQ answers
+                App.state.ccqAnswers.ccq1 = document.getElementById('ccq1-answer').value;
+                App.state.ccqAnswers.ccq2 = document.getElementById('ccq2-answer').value;
+                App.state.ccqAnswers.ccq3 = document.getElementById('ccq3-answer').value;
+                App.state.ccqAnswers.ccq4 = document.getElementById('ccq4-answer').value;
+                App.state.ccqAnswers.ccq5 = document.getElementById('ccq5-answer').value;
+                
+                // Save Skills Activity answers
+                App.state.skillsActivity.ma = document.getElementById('skill-ma').value;
+                App.state.skillsActivity.effort1 = document.getElementById('skill-effort1').value;
+                App.state.skillsActivity.effort2 = document.getElementById('skill-effort2').value;
+                
+                // Save Exit Ticket answers
+                App.state.exitTicket.sketch = document.getElementById('exit-sketch').value;
+                App.state.exitTicket.ma = document.getElementById('exit-ma').value;
+                App.state.exitTicket.torque = document.getElementById('exit-torque').value;
+                App.state.exitTicket.reflection = document.getElementById('exit-reflection').value;
+                
+                // Save everything to localStorage
+                App.saveProgress();
+                
+                // Mark lesson as complete
+                localStorage.setItem('lessonCompleted', 'true');
+
+                // Show celebration & download button
+                document.getElementById('celebration-badge').style.display = 'block';
+                document.getElementById('downloadCertificateBtn').style.display = 'inline-block';
+                
+                // Disable save button
+                const saveBtn = document.getElementById('saveWrapUpBtn');
+                saveBtn.classList.add('btn-disabled');
+                saveBtn.textContent = 'Reflection Saved!';
+            },
+            
+            // 8. Vocabulary
+            initVocabulary: function() {
+                const vocabList = document.getElementById('vocabList');
+                vocabList.innerHTML = ''; // Clear list
+                
+                App.state.vocabTerms.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'vocab-item';
+                    el.innerHTML = `
+                        <div class="vocab-term">${item.term}</div>
+                        <div class="vocab-def">${item.definition}</div>
+                    `;
+                    vocabList.appendChild(el);
+                });
+            },
+
+            // --- CERTIFICATE GENERATION (REBUILT) ---
+
+            /**
+             * Helper function to draw wrapped text on a canvas
+             * @returns {number} The new Y position after drawing
+             */
+            wrapText: function(context, text, x, y, maxWidth, lineHeight) {
+                const words = text.split(' ');
+                let line = '';
+                
+                for(let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = context.measureText(testLine);
+                    const testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0) {
+                        context.fillText(line, x, y);
+                        line = words[n] + ' ';
+                        y += lineHeight;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                context.fillText(line, x, y);
+                return y + lineHeight; // Return the position for the *next* line
+            },
+
+            /**
+             * Generates the certificate image and triggers download
+             */
+            generateCertificate: function() {
+                const canvas = document.getElementById('certificateCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // 1. Clear and set background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // 2. Draw Title
+                ctx.fillStyle = '#2c3e50'; // --primary
+                ctx.font = 'bold 30px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('Lesson Reflection Certificate', canvas.width / 2, 50);
+                
+                ctx.font = '20px Inter';
+                ctx.fillText('Week 1: Introduction to Mechanisms & Levers', canvas.width / 2, 90);
+                
+                ctx.strokeStyle = '#3498db'; // --secondary
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(50, 110);
+                ctx.lineTo(canvas.width - 50, 110);
+                ctx.stroke();
+
+                let yPos = 150;
+                const leftMargin = 50;
+                const contentWidth = canvas.width - 100;
+                const indent = 70;
+                const indentWidth = canvas.width - 120;
+                const lineHeight = 22;
+
+                // 3. Draw CCQ Answers
+                ctx.fillStyle = '#3498db'; // --secondary
+                ctx.font = 'bold 22px Inter';
+                ctx.textAlign = 'left';
+                ctx.fillText('Concept Check Questions', leftMargin, yPos);
+                yPos += 40;
+
+                ctx.fillStyle = '#2c3e50'; // --text-dark
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '1. Max MA, where to place fulcrum?', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a'; // --text-light
+                yPos = App.wrapText(ctx, App.state.ccqAnswers.ccq1 || '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 20;
+
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '2. Why does a wheelbarrow make it easier?', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a';
+                yPos = App.wrapText(ctx, App.state.ccqAnswers.ccq2 || '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 20;
+
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '3. MA for 2m / 0.4m?', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a';
+                yPos = App.wrapText(ctx, App.state.ccqAnswers.ccq3 || '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 20;
+
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '4. Torque for 50N at 2m?', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a';
+                yPos = App.wrapText(ctx, App.state.ccqAnswers.ccq4 ? `${App.state.ccqAnswers.ccq4} Nm` : '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 20;
+
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '5. Catapult: projectile close or far?', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a';
+                yPos = App.wrapText(ctx, App.state.ccqAnswers.ccq5 || '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 40;
+
+                // 4. Draw Exit Ticket Answers
+                ctx.fillStyle = '#3498db'; // --secondary
+                ctx.font = 'bold 22px Inter';
+                ctx.textAlign = 'left';
+                ctx.fillText('Exit Ticket & Reflection', leftMargin, yPos);
+                yPos += 40;
+
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '1. Describe Class 1 Lever Sketch:', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a';
+                yPos = App.wrapText(ctx, App.state.exitTicket.sketch || '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 20;
+
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '2. MA for 80cm / 20cm?', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a';
+                yPos = App.wrapText(ctx, App.state.exitTicket.ma || '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 20;
+
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '3. Torque for 20N at 80cm (0.8m)?', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a';
+                yPos = App.wrapText(ctx, App.state.exitTicket.torque ? `${App.state.exitTicket.torque} Nm` : '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 20;
+
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = 'bold 16px Inter';
+                yPos = App.wrapText(ctx, '4. Reflection: How to throw an object far?', leftMargin, yPos, contentWidth, lineHeight);
+                ctx.font = '16px Inter';
+                ctx.fillStyle = '#5a6a7a';
+                yPos = App.wrapText(ctx, App.state.exitTicket.reflection || '(No answer)', indent, yPos, indentWidth, lineHeight);
+                yPos += 40;
+
+                // 5. Draw Footer
+                ctx.strokeStyle = '#dfe4ea'; // --border-color
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(50, yPos);
+                ctx.lineTo(canvas.width - 50, yPos);
+                ctx.stroke();
+                yPos += 30;
+
+                ctx.fillStyle = '#5a6a7a';
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('Lesson Completed Successfully', canvas.width / 2, yPos);
+
+                // 6. Trigger Download
+                const link = document.createElement('a');
+                link.download = 'week1_levers_certificate.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+
+        }; // End App Object
+
+        // Run the app once the DOM is ready
+        document.addEventListener('DOMContentLoaded', App.init);
+    </script>
+</body>
+</html>
