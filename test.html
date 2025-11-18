@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanisms I: Levers, Linkages & Motion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --bg-light: #ecf0f1;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--bg-light);
+            padding: 1rem;
+            position: sticky;
+            top: 120px;
+            z-index: 99;
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 3rem 2rem;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--secondary);
+            padding-left: 1rem;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem;
+        }
+
+        /* Interactive Box */
+        .mystery-box {
+            background: white;
+            border: 3px dashed var(--secondary);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mystery-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+        }
+
+        .mystery-box.revealed {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Card System */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card h4 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* Expandable Section */
+        .expandable {
+            margin: 1rem 0;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .expandable-header {
+            background: var(--secondary);
+            color: white;
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .expandable-header:hover {
+            background: var(--primary);
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+        }
+
+        .expandable-content.active {
+            max-height: 2000px;
+            padding: 1.5rem;
+        }
+
+        /* Drag and Drop */
+        .drag-drop-container {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .drag-source {
+            flex: 1;
+            min-width: 250px;
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .draggable {
+            background: white;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            cursor: move;
+            border: 2px solid var(--secondary);
+            transition: all 0.3s;
+        }
+
+        .draggable:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .draggable.dragging {
+            opacity: 0.5;
+        }
+
+        .drop-zone {
+            flex: 1;
+            min-width: 250px;
+            min-height: 150px;
+            background: white;
+            border: 3px dashed var(--text-light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--success);
+            background: rgba(39, 174, 96, 0.1);
+        }
+
+        .drop-zone.correct {
+            border-color: var(--success);
+            background: rgba(39, 174, 96, 0.2);
+        }
+
+        .drop-zone.incorrect {
+            border-color: var(--accent);
+            background: rgba(231, 76, 60, 0.2);
+        }
+
+        /* Quiz */
+        .quiz-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: var(--bg-light);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--secondary);
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .quiz-option.correct {
+            background: var(--success);
+            color: white;
+        }
+
+        .quiz-option.incorrect {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--secondary));
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Feedback Messages */
+        .feedback {
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .feedback.success {
+            background: rgba(39, 174, 96, 0.2);
+            border-left: 4px solid var(--success);
+            color: var(--success);
+        }
+
+        .feedback.error {
+            background: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid var(--accent);
+            color: var(--accent);
+        }
+
+        /* Illustrations */
+        .svg-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Input Fields */
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--bg-light);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .drag-drop-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Achievement Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--warning);
+            color: white;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 0.5rem;
+        }
+
+        /* Vocabulary Section */
+        .vocab-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .vocab-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .vocab-term {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        .vocab-def {
+            margin-top: 0.5rem;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔧 Mechanisms I: Levers, Linkages & Motion</h1>
+            <p>IGCSE Design & Technology (0445) | Grade 10 | Duration: 90 minutes</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#opening">Opening</a></li>
+                <li><a href="#objectives">Objectives</a></li>
+                <li><a href="#exploration">Exploration</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#activities">Activities</a></li>
+                <li><a href="#practice">Practice</a></li>
+                <li><a href="#wrapup">Wrap-Up</a></li>
+                <li><a href="#vocabulary">Vocabulary</a></li>
+            </ul>
+        </nav>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%;">0%</div>
+            </div>
+        </div>
+
+        <!-- SECTION 1: OPENING ACTIVITY -->
+        <section id="opening">
+            <h2>🎯 Opening Activity: The Lever & Linkage Mystery Box</h2>
+            <p><strong>Time: 10 minutes</strong></p>
+            
+            <div class="mystery-box" id="mysteryBox" onclick="revealMystery()">
+                <h3>🎁 Click the Mystery Box!</h3>
+                <p>What's inside? How does it work?</p>
+                <p style="font-size: 3rem;">📦</p>
+            </div>
+
+            <div id="mysteryReveal" style="display: none;">
+                <h3>🎉 The Mystery Revealed!</h3>
+                <p>Inside the box, there's a simple lever mechanism connected to a bell. When you pull the visible lever, it activates a linkage system that makes the bell ring!</p>
+                
+                <div class="svg-container">
+                    <svg width="400" height="200" viewBox="0 0 400 200">
+                        <!-- Lever -->
+                        <line x1="50" y1="150" x2="350" y2="100" stroke="#2c3e50" stroke-width="8"/>
+                        <!-- Fulcrum -->
+                        <polygon points="200,150 180,170 220,170" fill="#e74c3c"/>
+                        <!-- Input -->
+                        <circle cx="50" cy="150" r="15" fill="#3498db"/>
+                        <text x="30" y="195" fill="#3498db" font-weight="bold">INPUT</text>
+                        <!-- Output -->
+                        <circle cx="350" cy="100" r="15" fill="#27ae60"/>
+                        <text x="330" y="80" fill="#27ae60" font-weight="bold">OUTPUT</text>
+                        <!-- Bell -->
+                        <path d="M340 100 Q350 90 360 100 L370 120 Q365 130 350 130 Q335 130 330 120 Z" fill="#f39c12" stroke="#000" stroke-width="2"/>
+                    </svg>
+                </div>
+
+                <h4>💭 Think About It:</h4>
+                <textarea id="openingThoughts" placeholder="What type of lever do you think this is? Where do we use levers in daily life?" rows="3"></textarea>
+                <button class="btn btn-primary" onclick="saveOpening()">Save My Thoughts</button>
+                <div class="feedback success" id="openingFeedback">Great thinking! We'll explore this more throughout the lesson.</div>
+            </div>
+
+            <h3>🌍 Levers in Your Daily Life</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🚪 Doors</h4>
+                    <p>Door handles use lever principles to make opening easier!</p>
+                </div>
+                <div class="card">
+                    <h4>✂️ Scissors</h4>
+                    <p>The classic first-class lever for cutting with precision.</p>
+                </div>
+                <div class="card">
+                    <h4>🍾 Bottle Openers</h4>
+                    <p>Second-class levers that multiply your force!</p>
+                </div>
+                <div class="card">
+                    <h4>🚗 Car Jacks</h4>
+                    <p>Powerful levers that can lift thousands of pounds.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: LEARNING OBJECTIVES -->
+        <section id="objectives">
+            <h2>🎓 Learning Objectives</h2>
+            
+            <h3>By the end of this class, you will be able to:</h3>
+            <div class="expandable">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    <span>🧠 Cognitive Objectives</span>
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <ul>
+                        <li>✅ Identify and explain the three classes of levers with real-world examples</li>
+                        <li>✅ Describe how basic linkage systems transmit and transform motion</li>
+                        <li>✅ Distinguish between linear, rotational, oscillating, and reciprocating motion</li>
+                        <li>✅ Analyze input-process-output relationships in mechanical systems</li>
+                        <li>✅ Design and prototype a simple card automaton using levers or linkages</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="expandable">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    <span>❤️ Social-Emotional Objectives</span>
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <ul>
+                        <li>🤝 Collaborate effectively in pairs to build and troubleshoot mechanisms</li>
+                        <li>💬 Practice positive communication and constructive critique with peers</li>
+                        <li>🗣️ Actively participate and share findings during group activities</li>
+                        <li>🎯 Develop problem-solving persistence when mechanisms don't work initially</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>📚 Connection to Prior Knowledge</h3>
+            <p>Remember when we studied forces and simple machines? Today we'll dive deeper into how these principles create movement and mechanical advantage in real systems.</p>
+
+            <h3>✨ Success Criteria</h3>
+            <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <p>You'll know you've succeeded when you can:</p>
+                <ul>
+                    <li>Correctly classify a lever by examining the positions of effort, load, and fulcrum</li>
+                    <li>Predict how changing one component of a mechanism will affect the output</li>
+                    <li>Build a working automaton that demonstrates at least one type of motion</li>
+                    <li>Explain the input-process-output flow in your own mechanism</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CONCEPT EXPLORATION -->
+        <section id="exploration">
+            <h2>🔍 Concept Exploration</h2>
+
+            <h3>⚙️ What is a Lever?</h3>
+            <p>A lever is a <strong>rigid bar</strong> that pivots around a fixed point called a <strong>fulcrum</strong>. Levers help us lift heavy loads or move objects with less effort by providing <strong>mechanical advantage</strong>.</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Class 1: Fulcrum in the Middle</h4>
+                    <div class="svg-container">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <line x1="20" y1="60" x2="230" y2="60" stroke="#2c3e50" stroke-width="6"/>
+                            <polygon points="125,60 105,85 145,85" fill="#e74c3c"/>
+                            <circle cx="20" cy="60" r="12" fill="#3498db"/>
+                            <text x="10" y="105" font-size="12" fill="#3498db">Effort</text>
+                            <circle cx="230" cy="60" r="12" fill="#f39c12"/>
+                            <text x="220" y="105" font-size="12" fill="#f39c12">Load</text>
+                            <text x="105" y="105" font-size="12" fill="#e74c3c">Fulcrum</text>
+                        </svg>
+                    </div>
+                    <p><strong>Examples:</strong> Seesaw, scissors, pliers, crowbar</p>
+                </div>
+
+                <div class="card">
+                    <h4>Class 2: Load in the Middle</h4>
+                    <div class="svg-container">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <line x1="20" y1="60" x2="230" y2="40" stroke="#2c3e50" stroke-width="6"/>
+                            <polygon points="20,60 10,85 30,85" fill="#e74c3c"/>
+                            <circle cx="230" cy="40" r="12" fill="#3498db"/>
+                            <text x="220" y="25" font-size="12" fill="#3498db">Effort</text>
+                            <circle cx="125" cy="50" r="12" fill="#f39c12"/>
+                            <text x="110" y="30" font-size="12" fill="#f39c12">Load</text>
+                            <text x="5" y="105" font-size="12" fill="#e74c3c">Fulcrum</text>
+                        </svg>
+                    </div>
+                    <p><strong>Examples:</strong> Wheelbarrow, bottle opener, nutcracker</p>
+                </div>
+
+                <div class="card">
+                    <h4>Class 3: Effort in the Middle</h4>
+                    <div class="svg-container">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <line x1="20" y1="60" x2="230" y2="40" stroke="#2c3e50" stroke-width="6"/>
+                            <polygon points="20,60 10,85 30,85" fill="#e74c3c"/>
+                            <circle cx="125" cy="50" r="12" fill="#3498db"/>
+                            <text x="110" y="30" font-size="12" fill="#3498db">Effort</text>
+                            <circle cx="230" cy="40" r="12" fill="#f39c12"/>
+                            <text x="220" y="25" font-size="12" fill="#f39c12">Load</text>
+                            <text x="5" y="105" font-size="12" fill="#e74c3c">Fulcrum</text>
+                        </svg>
+                    </div>
+                    <p><strong>Examples:</strong> Tweezers, fishing rod, baseball bat, broom</p>
+                </div>
+            </div>
+
+            <h3>🔗 Linkages: Connecting Movement</h3>
+            <p>A <strong>linkage</strong> is a series of rigid bars joined by pivots (pin joints) that transmit motion from one point to another. They can transform one type of motion into another!</p>
+
+            <div class="expandable">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    <span>📐 4-Bar Linkage</span>
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p>The most common linkage mechanism consists of four rigid links connected by four pivot joints. It can convert rotational motion to oscillating motion.</p>
+                    <p><strong>Real-World Applications:</strong></p>
+                    <ul>
+                        <li>Windshield wipers on cars</li>
+                        <li>Bicycle pedal mechanisms</li>
+                        <li>Robotic arms</li>
+                        <li>Adjustable desk lamps</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>🌀 Types of Motion</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>➡️ Linear Motion</h4>
+                    <p>Movement in a <strong>straight line</strong></p>
+                    <p>Examples: Train on tracks, elevator, sliding door</p>
+                </div>
+
+                <div class="card">
+                    <h4>🔄 Rotational Motion</h4>
+                    <p>Movement <strong>around a central point</strong></p>
+                    <p>Examples: Wheels, fans, merry-go-round, Earth spinning</p>
+                </div>
+
+                <div class="card">
+                    <h4>↔️ Oscillating Motion</h4>
+                    <p><strong>Back and forth</strong> on an arc</p>
+                    <p>Examples: Pendulum, swing, windshield wipers</p>
+                </div>
+
+                <div class="card">
+                    <h4>⬆️⬇️ Reciprocating Motion</h4>
+                    <p><strong>Back and forth</strong> in a straight line</p>
+                    <p>Examples: Piston in engine, sewing machine needle, saw blade</p>
+                </div>
+            </div>
+
+            <h3>🔄 Input-Process-Output Model</h3>
+            <div class="card" style="background: linear-gradient(to right, #3498db, #27ae60);">
+                <div style="display: flex; justify-content: space-around; align-items: center; color: white;">
+                    <div style="text-align: center;">
+                        <h4>INPUT</h4>
+                        <p>Effort/Force Applied</p>
+                        <p>🖐️ Pulling a handle</p>
+                    </div>
+                    <div style="font-size: 2rem;">→</div>
+                    <div style="text-align: center;">
+                        <h4>PROCESS</h4>
+                        <p>Mechanism</p>
+                        <p>⚙️ Lever & Linkage</p>
+                    </div>
+                    <div style="font-size: 2rem;">→</div>
+                    <div style="text-align: center;">
+                        <h4>OUTPUT</h4>
+                        <p>Result/Action</p>
+                        <p>🔔 Bell rings</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: APPLIED EXAMPLES -->
+        <section id="examples">
+            <h2>🎨 Applied Examples</h2>
+
+            <div class="expandable">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    <span>Example 1: The Wheelbarrow (Class 2 Lever)</span>
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <h4>Step-by-Step Analysis:</h4>
+                    <ol>
+                        <li><strong>Identify the fulcrum:</strong> The wheel at the front</li>
+                        <li><strong>Locate the load:</strong> Heavy items in the bucket (middle)</li>
+                        <li><strong>Find the effort:</strong> Your hands lifting the handles (far end)</li>
+                        <li><strong>Mechanical advantage:</strong> Because the effort is far from the fulcrum, you can lift heavy loads easily!</li>
+                    </ol>
+                    <p><strong>Real-World Connection:</strong> Construction workers use wheelbarrows to transport materials that would be impossible to carry by hand.</p>
+                    <button class="btn btn-success" onclick="showSolution('sol1')">Show Calculation</button>
+                    <div id="sol1" style="display: none; margin-top: 1rem; background: var(--bg-light); padding: 1rem; border-radius: 5px;">
