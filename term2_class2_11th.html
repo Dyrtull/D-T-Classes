@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE Styles Mastery Class</title>
+    <!-- Load Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom Styles for light/dark mode and interactivity */
+        .dark-mode {
+            background-color: #1e293b;
+            color: #e2e8f0;
+        }
+        .light-mode {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .section-card {
+            border-left: 4px solid var(--accent-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .dark-mode .section-card {
+            background-color: #334155;
+            border-color: #3b82f6;
+        }
+        .light-mode .section-card {
+            background-color: #ffffff;
+            border-color: #10b981;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 1000px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .ccq-question, .quiz-question {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background-color: #f0fdf4; /* Light green background for visibility */
+        }
+        .dark-mode .ccq-question {
+            background-color: #064e3b;
+            border-color: #475569;
+        }
+        .correct-feedback { background-color: #d1fae5; color: #065f46; }
+        .incorrect-feedback { background-color: #fee2e2; color: #991b1b; }
+        
+        /* Table Styles for IGCSE Tables */
+        .igcse-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .igcse-table th, .igcse-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .dark-mode .igcse-table th, .dark-mode .igcse-table td {
+            border-color: #475569;
+        }
+    </style>
+</head>
+
+<body class="light-mode min-h-screen">
+
+    <!-- 1. Header and Navigation -->
+    <header class="sticky top-0 z-50 shadow-md p-4 flex justify-between items-center bg-white dark:bg-gray-800 transition duration-300">
+        <h1 class="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400">Styles Mastery (0417)</h1>
+        <nav class="hidden md:flex space-x-4">
+            <a href="#opening" class="text-sm font-medium hover:text-indigo-500 transition">Warm-Up</a>
+            <a href="#guided-practice" class="text-sm font-medium hover:text-indigo-500 transition">Guided Practice</a>
+            <a href="#independent-practice" class="text-sm font-medium hover:text-indigo-500 transition">Independent Task</a>
+            <a href="#wrapup" class="text-sm font-medium hover:text-indigo-500 transition">Wrap-Up</a>
+        </nav>
+        <div class="flex items-center space-x-4">
+            <button id="mode-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <svg id="sun-icon" class="w-5 h-5 hidden text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <svg id="moon-icon" class="w-5 h-5 text-gray-500 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            </button>
+            <div id="progress-indicator" class="w-24 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+            <span id="time-estimate" class="text-xs text-gray-500 dark:text-gray-400">0 min</span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6 space-y-12">
+
+        <!-- 2. Opening Activity (Warm Up) -->
+        <section id="opening" class="p-6 rounded-xl shadow-lg section-card transition duration-300" style="--accent-color: #f59e0b;">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">🔥 Warm-Up: The 50-Page Disaster</h2>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                <strong>Scenario:</strong> Imagine you have a 50-page corporate report. All 30 section headings have been manually formatted: Arial, 16pt, Bold, Centred.
+                Suddenly, your client demands: "Change all headings to Times New Roman, 18pt, and left-aligned."
+            </p>
+            <label for="opening-response" class="block font-medium mb-2 text-red-600 dark:text-red-400">
+                What would you do to fix this efficiently, and what tool (if any) would you use to prevent this disaster next time?
+            </label>
+            <textarea id="opening-response" rows="3" class="w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Write your strategy here..."></textarea>
+            <div class="mt-4 flex justify-between items-center">
+                <button onclick="saveOpeningResponse()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-150 shadow-md">
+                    Save Response
+                </button>
+                <p id="opening-status" class="text-sm italic text-gray-500 dark:text-gray-400"></p>
+            </div>
+        </section>
+
+        <!-- 3. Learning Objectives -->
+        <section id="objectives" class="p-6 rounded-xl shadow-lg section-card transition duration-300" style="--accent-color: #10b981;">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">🎯 Learning Objectives</h2>
+            
+            <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-3">Cognitive Goals</h3>
+            <ul class="list-disc list-inside space-y-2 ml-4 text-gray-600 dark:text-gray-300">
+                <li>By the end of the class, I will be able to <strong>create a new paragraph style</strong>  with <strong>10+ properties correctly applied</strong>, based on the Normal style, achieving <strong>100% adherence</strong> to IGCSE specifications.</li>
+                <li>I will be able to <strong>modify an existing style</strong>  and see the formatting update <strong>instantly</strong> throughout the document.</li>
+                <li>I will be able to <strong>apply advanced document features</strong> like footers, bullet lists, and image wrapping, ensuring all layout and spacing rules are followed.</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mt-6 mb-3">Social-Emotional Goals</h3>
+            <ul class="list-disc list-inside space-y-2 ml-4 text-gray-600 dark:text-gray-300">
+                <li>I will <strong>self-regulate</strong> my pacing during the independent practice activity to complete the task within the allocated time.</li>
+                <li>I will demonstrate <strong>critical thinking</strong> by using Concept Checking Questions to verify my deep understanding, not just rote memorization.</li>
+                <li>I will practice <strong>adaptability</strong> when switching between guided instruction and independent problem solving.</li>
+            </ul>
+        </section>
+
+        <!-- 4. Guided Practice (BROKER.docx) -->
+        <section id="guided-practice" class="p-6 rounded-xl shadow-lg section-card transition duration-300" style="--accent-color: #8b5cf6;">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">💻 Guided Practice: Styles Refresher</h2>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                In this section, we will use a sample corporate document to practice creating and manipulating styles.
+            </p>
+
+            <!-- DOWNLOAD LINK PLACEHOLDER -->
+            <div class="bg-indigo-50 dark:bg-indigo-900 border-l-4 border-indigo-500 p-4 mb-6">
+                <p class="font-bold text-indigo-700 dark:text-indigo-200">📂 Required File:</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Please download the file below to begin the exercises.</p>
+                <a href="https://docs.google.com/document/d/1oe40d8bJepOk9vLSyv7ty_z-xg9jfTzy/edit?usp=drive_link&ouid=114473330638073035121&rtpof=true&sd=true" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition">
+                    ⬇️ Download BROKER.docx
+                </a>
+            </div>
+
+            <!-- Exercise 1 -->
+            <div class="mb-6 p-4 border rounded-lg dark:border-gray-600">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Exercise 1: Create "TY-Highlight"</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-2">Open <strong>BROKER.docx</strong>. Find the paragraph starting "Our advanced database...". Create a new style named <strong>TY-Highlight</strong> based on <strong>Normal</strong> with:</p>
+                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-300 ml-4 mb-2">
+                    <li>Font: Arial, 12pt, Bold, Dark Red</li>
+                    <li>Alignment: Justified</li>
+                    <li>Shading: Light Yellow</li>
+                    <li>Space Before/After: 6pt</li>
+                </ul>
+                <div class="flex items-center mt-2">
+                    <input type="checkbox" id="gp-ex1" class="w-5 h-5 text-indigo-600 rounded">
+                    <label for="gp-ex1" class="ml-2 text-gray-700 dark:text-gray-300">I have created and applied this style.</label>
+                </div>
+            </div>
+
+            <!-- Exercise 2 -->
+            <div class="mb-6 p-4 border rounded-lg dark:border-gray-600">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Exercise 2: Modify "TY-Table"</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-2">Locate the style <strong>TY-Table</strong> and modify it to:</p>
+                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-300 ml-4 mb-2">
+                    <li>Font: Calibri, 11pt, Italic</li>
+                    <li>Alignment: Left</li>
+                    <li>Borders: Top and Bottom only (Black, Solid)</li>
+                    <li>Space After: 3pt</li>
+                </ul>
+                <div class="flex items-center mt-2">
+                    <input type="checkbox" id="gp-ex2" class="w-5 h-5 text-indigo-600 rounded">
+                    <label for="gp-ex2" class="ml-2 text-gray-700 dark:text-gray-300">I have modified the style and checked the table.</label>
+                </div>
+            </div>
+
+            <!-- Exercise 3 & 4 -->
+            <div class="mb-6 p-4 border rounded-lg dark:border-gray-600">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Exercise 3 & 4: Consistency & Titles</h3>
+                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-300 ml-4 mb-2">
+                    <li>Check all headings with <strong>TY-Subhead</strong>. Ensure "All Capitals" is on.</li>
+                    <li>Apply <strong>TY-Title</strong> to the main title. Modify it to: Arial, 28pt, Bold, Underline, Centred, Blue.</li>
+                </ul>
+                <div class="flex items-center mt-2">
+                    <input type="checkbox" id="gp-ex3" class="w-5 h-5 text-indigo-600 rounded">
+                    <label for="gp-ex3" class="ml-2 text-gray-700 dark:text-gray-300">I have verified consistency and titles.</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Independent Practice (Task 2 - Exact PDF Instructions) -->
+        <section id="independent-practice" class="p-6 rounded-xl shadow-lg section-card transition duration-300" style="--accent-color: #2563eb;">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">📝 Independent Practice: Task 2 - Document</h2>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                You are going to edit a report for a seed retailer. They use a corporate house style for all their documents. Paragraph styles must be created, modified and applied as instructed.
+            </p>
+
+            <div class="bg-blue-50 dark:bg-blue-900 p-4 mb-6 rounded">
+                <p class="font-bold text-blue-800 dark:text-blue-200">📂 Exam Source Files:</p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <a href="https://docs.google.com/document/d/1ZI3vZOWjdgbGBVDD5iwUvvhqNLAs_IXz/edit?usp=drive_link&ouid=114473330638073035121&rtpof=true&sd=true" class="text-xs bg-white border border-gray-300 px-2 py-1 rounded">⬇️ m2521document.rtf</a>
+                    <a href="https://docs.google.com/document/d/1AI4RxDbwJi7YJ4vKGhwpcccHN2tAHfF9/edit?usp=drive_link&ouid=114473330638073035121&rtpof=true&sd=true" class="text-xs bg-white border border-gray-300 px-2 py-1 rounded">⬇️ m2521evidence.rtf</a>
+                    <a href="https://drive.google.com/file/d/1RGsG4fsHzIpdq9PuQ2MLKq3IwOU-aTaa/view?usp=sharing" class="text-xs bg-white border border-gray-300 px-2 py-1 rounded">⬇️ m2521worldcrops.png</a>
+                </div>
+            </div>
+
+            <!-- Step 1 & 2 -->
+            <div class="space-y-4 mb-8">
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 1</p>
+                    <p class="dark:text-gray-200">Using suitable software, open the file <strong>m2521document.rtf</strong>. The page setup is set to A4, portrait orientation with two-centimetre margins. Do not make any changes to these. Three paragraph styles have already been created... Save the document in your work area with the file name <strong>CROPS</strong>.</p>
+                </div>
+                
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 2</p>
+                    <p class="dark:text-gray-200">Place in the footer of the CROPS document: your name, centre number and candidate number left-aligned, automated page numbers right-aligned. Make sure that all alignments match page margins, no other text is included, and footer is on all pages.</p>
+                </div>
+                
+                <!-- CCQ 1 Inserted Here -->
+                <button onclick="checkCCQ(1)" class="w-full text-left bg-green-100 hover:bg-green-200 text-green-800 p-2 rounded text-sm font-bold border border-green-300">
+                    ❓ Quick Check: Footer Mechanics (Click to verify understanding)
+                </button>
+                <div id="ccq-container-1" class="ccq-question hidden p-4 mt-2"></div>
+            </div>
+
+            <!-- Step 3 (Style Creation) -->
+            <div class="space-y-4 mb-8">
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 3</p>
+                    <p class="dark:text-gray-200">Create and store the following style, basing it on the default/normal paragraph style:</p>
+                    <table class="igcse-table text-sm dark:text-gray-200">
+                        <tr class="bg-gray-100 dark:bg-gray-600 font-bold">
+                            <td>Style name</td><td>Font style</td><td>Font size</td><td>Alignment</td><td>Enhancement</td><td>Line spacing</td><td>Space before</td><td>Space after</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CR-Subhead</strong></td><td>sans-serif</td><td>14</td><td>left</td><td>bold, italic</td><td>single</td><td>0</td><td>10</td>
+                        </tr>
+                    </table>
+                    <p class="dark:text-gray-200">Place this in your Evidence Document (Screenshot showing settings and 'based on' evidence).</p>
+                </div>
+            </div>
+
+            <!-- Step 4 (Style Modification) -->
+            <div class="space-y-4 mb-8">
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 4</p>
+                    <p class="dark:text-gray-200">The style named <strong>CR-Table</strong> has already been created. Modify the CR-Table style so only the following formatting is applied:</p>
+                    <table class="igcse-table text-sm dark:text-gray-200">
+                        <tr class="bg-gray-100 dark:bg-gray-600 font-bold">
+                            <td>Style name</td><td>Font style</td><td>Font size</td><td>Alignment</td><td>Enhancement</td><td>Line spacing</td><td>Space before</td><td>Space after</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CR-Table</strong></td><td>serif</td><td>10</td><td>centre</td><td>italic</td><td>single</td><td>0</td><td>0</td>
+                        </tr>
+                    </table>
+                    <p class="dark:text-gray-200">Take screenshot evidence showing you have modified the CR-Table style.</p>
+                </div>
+            </div>
+
+            <!-- Steps 5-8 -->
+            <div class="space-y-4 mb-8">
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 5 & 6</p>
+                    <p class="dark:text-gray-200">5. Add the text <strong>by</strong> followed by a space and <strong>your name</strong> after the title <em>Global Crop Report</em>... <br>6. Apply the style <strong>CR-Head</strong> to the title and the text you entered.</p>
+                </div>
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 7</p>
+                    <p class="dark:text-gray-200">Apply a bulleted list to the text from <em>fungi...</em> to <em>the animals themselves</em>. Format bullets: aligned to left margin, single line spacing, no space before/after each line, 6-point space after the last item.</p>
+                </div>
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 8</p>
+                    <p class="dark:text-gray-200">Identify the six subheadings in the document and apply the style <strong>CR-Subhead</strong> you created in step 3 to each of these.</p>
+                </div>
+            </div>
+
+            <!-- Step 9 (Columns) -->
+            <div class="space-y-4 mb-8">
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 9</p>
+                    <p class="dark:text-gray-200">Select the subheading <em>Crop Diversity</em> and the following text up to and including the paragraph ending <em>... plants in our meals</em>. Change the page layout so that only this text is displayed in two columns of equal width with a 2-centimetre space between the columns.</p>
+                </div>
+                <!-- CCQ 2 Inserted Here -->
+                <button onclick="checkCCQ(2)" class="w-full text-left bg-green-100 hover:bg-green-200 text-green-800 p-2 rounded text-sm font-bold border border-green-300">
+                    ❓ Quick Check: Column Application (Click to verify understanding)
+                </button>
+                <div id="ccq-container-2" class="ccq-question hidden p-4 mt-2"></div>
+            </div>
+
+            <!-- Steps 10-11 (Table) -->
+            <div class="space-y-4 mb-8">
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Steps 10 & 11</p>
+                    <p class="dark:text-gray-200">10. Insert a new row between <em>Wheat</em> and <em>Potatoes</em>. Enter: <strong>Cassava</strong> | <strong>3%</strong>.<br>
+                    11. Apply light-grey (20-40%) background fill to rows one and two. Format first row to be a single cell. Format table so: text on one line, 1-point black internal/external gridlines, borders fit column width, 6pt space after table.</p>
+                </div>
+            </div>
+
+            <!-- Step 12 (Image) -->
+            <div class="space-y-4 mb-8">
+                <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                    <p class="font-mono text-sm text-gray-500">Step 12</p>
+                    <p class="dark:text-gray-200">Import image <strong>m2521worldcrops.png</strong> and place in paragraph beginning <em>There are more than</em>. Rotate image 180°. Format so: resized to 2cm width and 2cm height, aligned to left column margin and top of paragraph, text wraps around image.</p>
+                </div>
+                <!-- CCQ 3 Inserted Here -->
+                <button onclick="checkCCQ(3)" class="w-full text-left bg-green-100 hover:bg-green-200 text-green-800 p-2 rounded text-sm font-bold border border-green-300">
+                    ❓ Quick Check: Image Wrapping (Click to verify understanding)
+                </button>
+                <div id="ccq-container-3" class="ccq-question hidden p-4 mt-2"></div>
+            </div>
+
+            <!-- Step 13 (Check) -->
+            <div class="p-3 bg-white dark:bg-gray-700 border rounded shadow-sm">
+                <p class="font-mono text-sm text-gray-500">Step 13</p>
+                <p class="dark:text-gray-200">Spell check and proofread. Check: list/table not split, no widows/orphans, no blank pages, original styles maintained, consistency. Save and Print.</p>
+            </div>
+        </section>
+
+        <!-- 6. Concepts (Reference) -->
+        <section id="concepts" class="p-6 rounded-xl shadow-lg section-card transition duration-300" style="--accent-color: #6366f1;">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">🧠 Reference: Concept Library</h2>
+            <div class="space-y-4">
+                <div class="border rounded-lg dark:border-gray-600">
+                    <button class="w-full flex justify-between items-center p-4 font-semibold text-left text-indigo-600 dark:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition" onclick="toggleAccordion(this)">
+                        <span>Definition: Paragraph vs Character Style</span>
+                        <span class="transform transition-transform duration-300">+</span>
+                    </button>
+                    <div class="accordion-content p-4 text-gray-700 dark:text-gray-300">
+                        <p><strong>Paragraph Style:</strong> Affects the entire paragraph (spacing, alignment). Used for CR-Subhead.</p>
+                        <p class="mt-2"><strong>Character Style:</strong> Affects only selected text (font, bold). Used for highlights.</p>
+                    </div>
+                </div>
+                <!-- Additional concept items can remain here -->
+            </div>
+        </section>
+
+        <!-- 7. Wrap-Up -->
+        <section id="wrapup" class="p-6 rounded-xl shadow-lg section-card transition duration-300" style="--accent-color: #ef4444;">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">🎉 Wrap-Up & Closure</h2>
+
+            <!-- A. Knowledge Consolidation -->
+            <div class="mb-6 p-4 bg-red-50 dark:bg-red-900 rounded-lg">
+                <h3 class="text-xl font-semibold mb-2 text-red-700 dark:text-red-400">A. 3-2-1 Reflection</h3>
+                <label class="block text-sm font-medium mb-1 dark:text-gray-200">3 things I learned about styles:</label>
+                <textarea id="reflect-3" rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white mb-2"></textarea>
+                <label class="block text-sm font-medium mb-1 dark:text-gray-200">2 interesting facts:</label>
+                <textarea id="reflect-2" rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white mb-2"></textarea>
+                <label class="block text-sm font-medium mb-1 dark:text-gray-200">1 question I still have:</label>
+                <textarea id="reflect-1" rows="2" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:text-white"></textarea>
+            </div>
+
+            <!-- B. Objective Confirmation -->
+            <div class="mb-6 p-4 bg-red-100 dark:bg-red-800 rounded-lg">
+                <h3 class="text-xl font-semibold mb-2 text-red-700 dark:text-red-400">B. Objective Confirmation</h3>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="obj-1" class="form-checkbox h-5 w-5 text-green-600 rounded">
+                        <label for="obj-1" class="ml-2 dark:text-gray-200">I can create a new style with 10+ properties.</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="obj-2" class="form-checkbox h-5 w-5 text-green-600 rounded">
+                        <label for="obj-2" class="ml-2 dark:text-gray-200">I can modify an existing style correctly.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Celebration -->
+            <div class="mb-6 p-4 bg-red-200 dark:bg-red-700 rounded-lg text-center">
+                <h3 class="text-xl font-semibold text-red-800 dark:text-red-100">Achievement Unlocked! 🏆</h3>
+                <p class="dark:text-gray-200">Style Master Badge</p>
+                <button onclick="saveWrapUp()" class="mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition">
+                    Finalize & Save Session
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global JavaScript -->
+    <script>
+        // --- CONSTANTS AND DATA ---
+        const CLASS_DURATION_MIN = 90;
+        let elapsed_time = 0;
+        let progress_interval;
+
+        // CCQ Data
+        const ccqData = {
+            1: {
+                question: "CCQ 1 (Yes/No): When setting the Footer, does the 'Right-Aligned' page number require you to use the Space bar to move it to the right?",
+                type: 'radio',
+                options: { 'Yes': false, 'No': true },
+                correctAnswer: 'No',
+                feedbackCorrect: "Correct! Never use the Space bar. You must use the Tab key or the Paragraph Alignment setting (Right Align) to ensure it stays in position regardless of margins.",
+                feedbackIncorrect: "Incorrect. Using the space bar is imprecise. In IGCSE, you must use Alignment buttons or Tab stops to ensure the data is exactly at the margin."
+            },
+            2: {
+                question: "CCQ 2 (Why): Why must you select ONLY the text from 'Crop Diversity' to '...meals' before clicking 'Columns'?",
+                type: 'text',
+                correctAnswer: "to prevent the whole document from changing",
+                feedbackCorrect: "Excellent! If you don't select specific text, the column setting will apply to the 'Whole Document' or 'This point forward', breaking the layout of your previous headers.",
+                feedbackIncorrect: "Not quite. The key reason is scope. Columns are a 'Section' property. If you don't select text, Word assumes you want to change the section you are currently in, which might be the whole page."
+            },
+            3: {
+                question: "CCQ 3 (Application): For the image, which Text Wrap setting allows the text to flow tightly around the square image boundary?",
+                type: 'radio',
+                options: { 'In Line with Text': false, 'Square': true, 'Behind Text': false },
+                correctAnswer: 'Square',
+                feedbackCorrect: "Correct! 'Square' wrapping forces the text to wrap around the rectangular box of the image. 'In Line' would treat it like a big letter.",
+                feedbackIncorrect: "Incorrect. 'In Line' treats it like text. 'Behind Text' hides it. You need 'Square' (or sometimes 'Tight') to push text around it."
+            }
+        };
+
+        // --- UTILITY FUNCTIONS ---
+        function updateProgress() {
+            elapsed_time++;
+            const progress = Math.min((elapsed_time / (CLASS_DURATION_MIN * 60)) * 100, 100);
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('time-estimate').textContent = `${Math.floor(elapsed_time / 60)} min`;
+        }
+
+        window.onload = () => {
+            progress_interval = setInterval(updateProgress, 60000); 
+            loadProgress();
+            
+            // Check local storage for theme
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+            }
+        };
+
+        document.getElementById('mode-toggle').addEventListener('click', () => {
+            const body = document.body;
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                document.getElementById('sun-icon').classList.add('hidden');
+                document.getElementById('moon-icon').classList.remove('hidden');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('span:last-child');
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('open');
+                icon.style.transform = 'rotate(45deg)';
+            }
+        }
+
+        function saveOpeningResponse() {
+            const response = document.getElementById('opening-response').value.trim();
+            if (response.length > 5) {
+                localStorage.setItem('openingResponse', response);
+                document.getElementById('opening-status').textContent = 'Response saved.';
+                document.getElementById('opening-status').classList.add('text-green-500');
+            }
+        }
+
+        function saveWrapUp() {
+            document.getElementById('wrapup').style.borderColor = '#10b981';
+            alert("Session Saved! Good luck with your practice.");
+        }
+
+        // --- CCQ LOGIC ---
+        function checkCCQ(qNum) {
+            const ccqContainer = document.getElementById(`ccq-container-${qNum}`);
+            const data = ccqData[qNum];
+
+            if (ccqContainer.classList.contains('hidden')) {
+                ccqContainer.classList.remove('hidden');
+                let html = `<h4 class="font-bold mb-3 dark:text-gray-800">${data.question}</h4>`;
+
+                if (data.type === 'radio') {
+                    Object.keys(data.options).forEach(option => {
+                        html += `
+                            <div class="flex items-center mb-2">
+                                <input type="radio" name="ccq-${qNum}" id="ccq-${qNum}-${option}" value="${option}" class="form-radio h-4 w-4 text-blue-600">
+                                <label for="ccq-${qNum}-${option}" class="ml-2 text-gray-800 dark:text-gray-800">${option}</label>
+                            </div>
+                        `;
+                    });
+                    html += `<button onclick="submitCCQ(${qNum}, '${data.type}')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded text-sm">Submit Answer</button>`;
+                } else if (data.type === 'text') {
+                    html += `
+                        <textarea id="ccq-text-${qNum}" rows="2" class="w-full p-2 border rounded mb-2 text-gray-800" placeholder="Type answer..."></textarea>
+                        <button onclick="submitCCQ(${qNum}, '${data.type}')" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded text-sm">Submit Answer</button>
+                    `;
+                }
+                ccqContainer.innerHTML = html;
+            }
+        }
+
+        function submitCCQ(qNum, type) {
+            const data = ccqData[qNum];
+            let isCorrect = false;
+            
+            if (type === 'radio') {
+                const selected = document.querySelector(`input[name="ccq-${qNum}"]:checked`);
+                if (selected && data.options[selected.value]) isCorrect = true;
+            } else {
+                const ans = document.getElementById(`ccq-text-${qNum}`).value.toLowerCase();
+                if (ans.includes(data.correctAnswer) || ans.includes('select') || ans.includes('highlight')) isCorrect = true; 
+            }
+
+            const ccqContainer = document.getElementById(`ccq-container-${qNum}`);
+            ccqContainer.innerHTML = `<div class="p-3 rounded ${isCorrect ? 'correct-feedback' : 'incorrect-feedback'}">
+                <strong>${isCorrect ? 'Correct!' : 'Check Again:'}</strong> ${isCorrect ? data.feedbackCorrect : data.feedbackIncorrect}
+            </div>`;
+        }
+
+        function loadProgress() {
+            if(localStorage.getItem('openingResponse')) {
+                document.getElementById('opening-response').value = localStorage.getItem('openingResponse');
+            }
+        }
+    </script>
+</body>
+</html>
