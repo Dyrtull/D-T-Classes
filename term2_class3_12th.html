@@ -1,0 +1,2277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3: Arduino Sensors & Serial Monitor</title>
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-teal-800: rgba(41, 150, 161, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-orange-400: rgba(230, 129, 97, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+            --color-green-500: rgba(34, 197, 94, 1);
+            
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
+            
+            --color-bg-1: rgba(59, 130, 246, 0.08);
+            --color-bg-2: rgba(245, 158, 11, 0.08);
+            --color-bg-3: rgba(34, 197, 94, 0.08);
+            --color-bg-4: rgba(239, 68, 68, 0.08);
+            
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-error: var(--color-red-500);
+            --color-success: var(--color-green-500);
+            --color-warning: var(--color-orange-500);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-btn-primary-text: var(--color-cream-50);
+            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+            
+            --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-family-mono: "Monaco", ui-monospace, monospace;
+            --font-size-xs: 11px;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-md: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --space-4: 4px;
+            --space-6: 6px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --radius-sm: 6px;
+            --radius-base: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+            --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: rgba(167, 169, 169, 0.7);
+                --color-primary: var(--color-teal-300);
+                --color-primary-hover: var(--color-teal-400);
+                --color-primary-active: var(--color-teal-800);
+                --color-secondary: rgba(119, 124, 124, 0.15);
+                --color-border: rgba(119, 124, 124, 0.3);
+                --color-card-border: rgba(119, 124, 124, 0.15);
+                --color-btn-primary-text: var(--color-slate-900);
+            }
+        }
+
+        * { box-sizing: border-box; }
+        
+        html {
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            line-height: 1.5;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-background);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-teal-600) 100%);
+            color: white;
+            padding: var(--space-32) var(--space-20);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: var(--font-size-3xl);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .header-subtitle {
+            margin: var(--space-8) 0 0 0;
+            font-size: var(--font-size-lg);
+            opacity: 0.95;
+        }
+
+        nav {
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: var(--space-12) var(--space-20);
+            display: flex;
+            justify-content: center;
+            gap: var(--space-12);
+            flex-wrap: wrap;
+            position: sticky;
+            top: 60px;
+            z-index: 99;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            padding: var(--space-8) var(--space-16);
+            font-size: var(--font-size-base);
+            cursor: pointer;
+            border-radius: var(--radius-base);
+            transition: all var(--duration-fast) var(--ease-standard);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        nav button:hover {
+            background-color: var(--color-secondary);
+            color: var(--color-primary);
+        }
+
+        nav button.active {
+            background-color: var(--color-primary);
+            color: var(--color-btn-primary-text);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background-color: var(--color-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 101;
+            transition: width var(--duration-normal) var(--ease-standard);
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-teal-400) 100%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-20);
+        }
+
+        section {
+            display: none;
+            animation: fadeIn var(--duration-normal) var(--ease-standard);
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-20);
+            margin-bottom: var(--space-20);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--duration-normal) var(--ease-standard);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            font-size: var(--font-size-2xl);
+            margin: 0 0 var(--space-16) 0;
+            color: var(--color-text);
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: var(--font-size-xl);
+            margin: var(--space-16) 0 var(--space-8) 0;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0 0 var(--space-16) 0;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-8) var(--space-16);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-standard);
+            border: none;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-btn-primary-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+        }
+
+        .btn-outline:hover {
+            background: var(--color-secondary);
+        }
+
+        .btn-sm {
+            padding: var(--space-4) var(--space-12);
+            font-size: var(--font-size-sm);
+            border-radius: var(--radius-sm);
+        }
+
+        .btn-lg {
+            padding: var(--space-12) var(--space-24);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Opening Activity Styles */
+        .hook-section {
+            background: linear-gradient(135deg, var(--color-bg-1) 0%, var(--color-bg-2) 100%);
+            border: 2px solid var(--color-primary);
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-24);
+        }
+
+        .sensor-hunt {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-16);
+            margin: var(--space-16) 0;
+        }
+
+        .sensor-item {
+            background: var(--color-surface);
+            border: 2px solid transparent;
+            padding: var(--space-16);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-standard);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .sensor-item:hover {
+            border-color: var(--color-primary);
+            transform: scale(1.05);
+        }
+
+        .sensor-item.selected {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .poll-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-12);
+            margin: var(--space-16) 0;
+        }
+
+        .poll-option {
+            padding: var(--space-16);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-standard);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .poll-option:hover {
+            border-color: var(--color-primary);
+            background: var(--color-secondary);
+        }
+
+        .poll-option.selected {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        /* Concept Cards */
+        .concept-card {
+            background: var(--color-bg-3);
+            border-left: 4px solid var(--color-green-500);
+            padding: var(--space-16);
+            margin: var(--space-16) 0;
+            border-radius: var(--radius-md);
+        }
+
+        .concept-card.warning {
+            background: var(--color-bg-4);
+            border-left-color: var(--color-warning);
+        }
+
+        .concept-card.info {
+            background: var(--color-bg-1);
+            border-left-color: var(--color-primary);
+        }
+
+        /* Expandable Sections */
+        .expandable {
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .expandable-header {
+            background: var(--color-secondary);
+            padding: var(--space-12) var(--space-16);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background var(--duration-fast) var(--ease-standard);
+        }
+
+        .expandable-header:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .expandable-content {
+            padding: var(--space-16);
+            display: none;
+            background: var(--color-surface);
+        }
+
+        .expandable-content.open {
+            display: block;
+        }
+
+        .toggle-icon {
+            transition: transform var(--duration-fast) var(--ease-standard);
+        }
+
+        .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        /* Code blocks */
+        code {
+            background: var(--color-gray-200);
+            color: var(--color-text);
+            padding: var(--space-2) var(--space-6);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-sm);
+        }
+
+        pre {
+            background: var(--color-charcoal-700);
+            color: #e0e0e0;
+            padding: var(--space-16);
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            pre {
+                background: rgba(0, 0, 0, 0.3);
+            }
+        }
+
+        /* Quiz/Activity Styles */
+        .quiz-question {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: var(--space-16);
+            margin: var(--space-16) 0;
+            border-radius: var(--radius-md);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-8);
+            margin-top: var(--space-12);
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            padding: var(--space-12);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--color-primary);
+            background: var(--color-secondary);
+        }
+
+        .quiz-option input[type="radio"],
+        .quiz-option input[type="checkbox"] {
+            margin-right: var(--space-12);
+            cursor: pointer;
+        }
+
+        .quiz-option.correct {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--color-green-500);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--color-error);
+        }
+
+        .feedback {
+            margin-top: var(--space-12);
+            padding: var(--space-12);
+            border-radius: var(--radius-sm);
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--color-success);
+            border: 1px solid var(--color-success);
+            border-radius: var(--radius-sm);
+            padding: var(--space-12);
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--color-error);
+            border: 1px solid var(--color-error);
+            border-radius: var(--radius-sm);
+            padding: var(--space-12);
+        }
+
+        /* Resources Section */
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-16);
+            margin: var(--space-16) 0;
+        }
+
+        .resource-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            padding: var(--space-16);
+            border-radius: var(--radius-lg);
+            transition: all var(--duration-normal) var(--ease-standard);
+        }
+
+        .resource-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .resource-title {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--space-8);
+            font-size: var(--font-size-lg);
+        }
+
+        .resource-type {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: var(--space-4) var(--space-12);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            margin-bottom: var(--space-8);
+        }
+
+        .resource-time {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin: var(--space-8) 0;
+        }
+
+        .resource-description {
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+            margin: var(--space-8) 0;
+        }
+
+        .resource-link {
+            display: inline-block;
+            margin-top: var(--space-12);
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--duration-fast) var(--ease-standard);
+        }
+
+        .resource-link:hover {
+            color: var(--color-primary-hover);
+        }
+
+        /* Learning Objectives */
+        .objectives-grid {
+            display: grid;
+            gap: var(--space-16);
+            margin: var(--space-16) 0;
+        }
+
+        .objective-item {
+            background: var(--color-bg-1);
+            padding: var(--space-16);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .objective-label {
+            font-weight: 600;
+            color: var(--color-primary);
+            font-size: var(--font-size-sm);
+            text-transform: uppercase;
+            margin-bottom: var(--space-4);
+        }
+
+        /* Vocabulary */
+        .vocab-item {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: var(--space-16);
+            margin: var(--space-12) 0;
+            border-radius: var(--radius-md);
+        }
+
+        .vocab-term {
+            font-weight: 700;
+            color: var(--color-primary);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--space-4);
+        }
+
+        .vocab-definition {
+            color: var(--color-text);
+            margin-bottom: var(--space-8);
+        }
+
+        .vocab-example {
+            background: var(--color-secondary);
+            padding: var(--space-12);
+            border-radius: var(--radius-sm);
+            font-style: italic;
+            color: var(--color-text-secondary);
+            margin-top: var(--space-8);
+        }
+
+        /* Practice Section */
+        .practice-exercise {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: var(--space-16);
+            margin: var(--space-16) 0;
+            border-radius: var(--radius-md);
+        }
+
+        .exercise-number {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: 600;
+            margin-right: var(--space-8);
+        }
+
+        .exercise-title {
+            font-weight: 600;
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--space-12);
+        }
+
+        .hint-toggle {
+            background: var(--color-warning);
+            color: white;
+            padding: var(--space-8) var(--space-12);
+            border-radius: var(--radius-sm);
+            border: none;
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+            margin-top: var(--space-8);
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .hint-toggle:hover {
+            opacity: 0.9;
+        }
+
+        .hint-content {
+            display: none;
+            background: rgba(168, 75, 47, 0.1);
+            border-left: 3px solid var(--color-warning);
+            padding: var(--space-12);
+            margin-top: var(--space-8);
+            border-radius: var(--radius-sm);
+        }
+
+        .hint-content.show {
+            display: block;
+        }
+
+        /* Wrap-up Section */
+        .reflection-input {
+            width: 100%;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-family: var(--font-family-base);
+            font-size: var(--font-size-base);
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .achievement-badge {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-teal-600) 100%);
+            color: white;
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin: var(--space-24) 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .badge-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-12);
+        }
+
+        .badge-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--space-8);
+        }
+
+        .progress-tracker {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: var(--space-16);
+            margin: var(--space-16) 0;
+            border-radius: var(--radius-md);
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            margin: var(--space-12) 0;
+            font-size: var(--font-size-base);
+        }
+
+        .progress-checkbox {
+            width: 24px;
+            height: 24px;
+            margin-right: var(--space-12);
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: var(--space-16);
+            right: var(--space-16);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+            z-index: 1000;
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .theme-toggle:hover {
+            background: var(--color-secondary);
+        }
+
+        /* Diagram Styles */
+        .diagram {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: var(--space-20);
+            border-radius: var(--radius-lg);
+            margin: var(--space-16) 0;
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-sm);
+            line-height: 1.8;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .centered-text {
+            text-align: center;
+        }
+
+        .mt-20 { margin-top: var(--space-20); }
+        .mb-20 { margin-bottom: var(--space-20); }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: var(--space-12);
+            }
+
+            header h1 {
+                font-size: var(--font-size-2xl);
+            }
+
+            nav {
+                gap: var(--space-8);
+            }
+
+            nav button {
+                padding: var(--space-6) var(--space-12);
+                font-size: var(--font-size-sm);
+            }
+
+            .poll-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sensor-hunt {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">🌙</button>
+
+    <!-- Header -->        <header>
+            <h1>⚡ Arduino Sensors: Temperature & Sound</h1>
+            <div class="header-subtitle">Week 3 • 90 Minutes • Dual Sensor Exploration</div>
+        </header>
+
+    <!-- Navigation -->
+    <nav>
+        <button class="nav-btn active" data-section="opening">Opening Activity</button>
+        <button class="nav-btn" data-section="objectives">Learning Objectives</button>
+        <button class="nav-btn" data-section="concepts">Concept Exploration</button>
+        <button class="nav-btn" data-section="examples">Applied Examples</button>
+        <button class="nav-btn" data-section="practice">Practice & CCQs</button>
+        <button class="nav-btn" data-section="vocabulary">Vocabulary</button>
+        <button class="nav-btn" data-section="resources">Resources</button>
+        <button class="nav-btn" data-section="wrapup">Wrap-Up</button>
+    </nav>
+
+    <!-- Content Container -->
+    <div class="container">
+
+        <!-- ============================================
+             SECTION 1: OPENING ACTIVITY (5-10 min)
+             ============================================ -->
+        <section id="opening" class="active">
+            <div class="hook-section">
+                <h2>🔍 Sensor Scavenger Hunt!</h2>
+                <p>In the next 2 minutes, think of as many <strong>SENSORS</strong> as you can and what they sense. Click on each sensor you recognize:</p>
+
+                <div class="sensor-hunt" id="sensorHunt">
+                    <div class="sensor-item" data-sensor="thermometer">
+                        🌡️ Thermistor<br><small>Temperature (KY-013)</small>
+                    </div>
+                    <div class="sensor-item" data-sensor="sound">
+                        🎤 Sound Sensor<br><small>Noise Level (KY-038)</small>
+                    </div>
+                    <div class="sensor-item" data-sensor="motion">
+                        🚨 Motion Sensor<br><small>Movement</small>
+                    </div>
+                    <div class="sensor-item" data-sensor="light">
+                        💡 Light Sensor<br><small>Brightness</small>
+                    </div>
+                    <div class="sensor-item" data-sensor="touch">
+                        👆 Touch Sensor<br><small>Contact</small>
+                    </div>
+                    <div class="sensor-item" data-sensor="distance">
+                        📏 Distance Sensor<br><small>Range</small>
+                    </div>
+                </div>
+
+                <p style="margin-top: var(--space-20); font-weight: 600; color: var(--color-primary);">💭 Real-World Connection:</p>
+                <p><strong>Sensors let computers SENSE the world, just like your eyes, ears, and skin sense things for you.</strong></p>
+                <p>Today we'll teach Arduino to sense <strong>temperature</strong> (KY-013) and <strong>sound levels</strong> (KY-038) — the same way professionals design smart devices!</p>
+
+                <div class="card">
+                    <h3>Your Responses Saved! ✓</h3>
+                    <p id="sensorResponse">Click sensors above to record your initial thinking. You'll reflect on this at the end!</p>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="scrollToSection('objectives')">
+                Ready to Learn? Continue →
+            </button>
+        </section>
+
+        <!-- ============================================
+             SECTION 2: LEARNING OBJECTIVES
+             ============================================ -->
+        <section id="objectives">
+            <h2>🎯 Learning Objectives</h2>
+
+            <div class="objectives-grid">
+                <div class="objective-item">
+                    <div class="objective-label">Cognitive Goals</div>
+                    <p><strong>By the end of this class, I will be able to:</strong></p>
+                    <ul>
+                        <li>Explain the difference between <strong>digital and analog input</strong></li>
+                        <li>Read sensor data using <code>analogRead()</code> (temperature or sound)</li>
+                        <li>Use the <strong>Serial Monitor</strong> to debug and display sensor values</li>
+                        <li>Map sensor readings to LED output (if/else logic)</li>
+                        <li>Build a responsive sensor system (temperature alarm OR sound-reactive LED)</li>
+                    </ul>
+                </div>
+
+                <div class="objective-item">
+                    <div class="objective-label">Social-Emotional Goals</div>
+                    <ul>
+                        <li>Work collaboratively with a partner to troubleshoot circuits</li>
+                        <li>Practice <strong>self-regulation</strong> through debugging challenges</li>
+                        <li>Develop <strong>critical thinking</strong> by interpreting sensor data</li>
+                        <li>Celebrate problem-solving breakthroughs</li>
+                    </ul>
+                </div>
+
+                <div class="objective-item">
+                    <div class="objective-label">Success Criteria</div>
+                    <p><strong>You'll know you've got it when:</strong></p>
+                    <ul>
+                        <li>✅ Your assigned sensor circuit wired correctly (3 wires: VCC, GND, Signal)</li>
+                        <li>✅ Serial Monitor displays realistic readings (temperature or sound level)</li>
+                        <li>✅ You can explain: "analogRead returns 0-1023, not just HIGH/LOW"</li>
+                        <li>✅ Your LED responds to your sensor's threshold</li>
+                        <li>✅ You can predict what changing code will do</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <strong>🔗 Connection to Prior Knowledge:</strong>
+                <p>Last week, you used <code>digitalRead()</code> to sense buttons (ON/OFF only). This week, sensors give us <strong>many values</strong>. We'll use the same if/else logic from Week 2, but now with continuous data from either a KY-013 temperature sensor or KY-038 sound sensor!</p>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="scrollToSection('concepts')">
+                Continue to Concepts →
+            </button>
+        </section>
+
+        <!-- ============================================
+             SECTION 3: CONCEPT EXPLORATION (20-25 min)
+             ============================================ -->
+        <section id="concepts">
+            <h2>📚 Concept Exploration</h2>
+
+            <div class="card">
+                <h3>Digital vs Analog Input</h3>
+                <p>Understanding the difference is <strong>CRITICAL</strong> to this week's success.</p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-20); margin: var(--space-20) 0;">
+                    <div class="concept-card">
+                        <strong>🔘 DIGITAL (Last Week)</strong>
+                        <ul>
+                            <li>Button = <strong>ON</strong> or <strong>OFF</strong></li>
+                            <li>Code: <code>digitalRead()</code></li>
+                            <li>Returns: <code>HIGH</code> or <code>LOW</code></li>
+                            <li>Like a light switch (2 states)</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card warning">
+                        <strong>🌊 ANALOG (This Week!)</strong>
+                        <ul>
+                            <li>Sensor = <strong>Continuous range</strong></li>
+                            <li>Code: <code>analogRead()</code></li>
+                            <li>Returns: <strong>0 to 1023</strong></li>
+                            <li>Like a dimmer switch (infinite states)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="diagram">
+DIGITAL:           ANALOG:
+━━━━ ON           ━━━━━━ 1023 (Max brightness)
+                  ━━━━━━ 512 (Medium)
+_______ OFF       ━ 0 (Off)
+
+Only 2 options    1024 possible values!
+                </div>
+            </div>
+
+            <!-- TMP36 Sensor Explanation -->
+            <div class="card">
+                <h3>🌡️ & 🎤 Today's Sensors: KY-013 & KY-038</h3>
+
+                <p style="font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-16);">Your class is split into two groups. Both groups learn THE SAME CONCEPTS with different sensors:</p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-20); margin: var(--space-20) 0;">
+                    <!-- KY-013 Temperature -->
+                    <div class="expandable">
+                        <div class="expandable-header">
+                            🌡️ GROUP 1: KY-013 Thermistor (Temperature)
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="expandable-content">
+                            <p><strong>Physical Description:</strong></p>
+                            <ul>
+                                <li>Pre-assembled module (black PCB)</li>
+                                <li>3 pins: <strong>VCC, GND, A0</strong></li>
+                                <li>No polarity issues (works either direction)</li>
+                                <li>Thermistor measures temperature</li>
+                            </ul>
+
+                            <p style="margin-top: var(--space-16);"><strong>Wiring (Simple!):</strong></p>
+                            <div class="diagram">
+KY-013 Pinout:
+VCC (red)   ──> Arduino 5V
+GND (black) ──> Arduino GND
+A0 (yellow) ──> Arduino A0
+                            </div>
+
+                            <p style="margin-top: var(--space-16);"><strong>Technical Specs:</strong></p>
+                            <ul>
+                                <li>Range: -50°C to +110°C</li>
+                                <li>Accuracy: ±2°C typical</li>
+                                <li>Output voltage varies with temperature</li>
+                                <li>Thermistor: NTC 10kΩ</li>
+                            </ul>
+
+                            <p style="margin-top: var(--space-16);"><strong>Conversion Formula:</strong></p>
+                            <pre>1. Read analog value (0-1023)
+2. Convert to voltage: voltage = value × (5.0 / 1023.0)
+3. Apply thermistor formula:
+   temp(°C) = (voltage - 0.5) × 100
+   (Approximation; adjust based on calibration)</pre>
+
+                            <div class="concept-card info">
+                                <strong>💡 Why It's Different:</strong>
+                                <p>KY-013 is a <strong>module</strong> (pre-assembled), not a bare sensor. Makes wiring simpler and more reliable than TMP36!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KY-038 Sound -->
+                    <div class="expandable">
+                        <div class="expandable-header">
+                            🎤 GROUP 2: KY-038 Sound Sensor (Noise Level)
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="expandable-content">
+                            <p><strong>Physical Description:</strong></p>
+                            <ul>
+                                <li>Pre-assembled module (red PCB)</li>
+                                <li>3 pins: <strong>VCC, GND, A0</strong></li>
+                                <li>Built-in microphone detects sound</li>
+                                <li>Adjustable sensitivity potentiometer</li>
+                            </ul>
+
+                            <p style="margin-top: var(--space-16);"><strong>Wiring (Simple!):</strong></p>
+                            <div class="diagram">
+KY-038 Pinout:
+VCC (red)   ──> Arduino 5V
+GND (black) ──> Arduino GND
+A0 (yellow) ──> Arduino A0
+                            </div>
+
+                            <p style="margin-top: var(--space-16);"><strong>Technical Specs:</strong></p>
+                            <ul>
+                                <li>Frequency range: 100-8000 Hz</li>
+                                <li>Output: 0-1023 (sound level)</li>
+                                <li>Sensitive microphone detects ambient noise</li>
+                                <li>Has potentiometer for calibration</li>
+                            </ul>
+
+                            <p style="margin-top: var(--space-16);"><strong>Reading Sound Levels:</strong></p>
+                            <pre>1. Read analog value (0-1023)
+2. 0 = Silence
+3. 500-700 = Normal talking
+4. 800+ = Loud noise (shouting, music)
+5. Adjust sensitivity using onboard dial</pre>
+
+                            <div class="concept-card info">
+                                <strong>💡 Why It's Different:</strong>
+                                <p>KY-038 measures <strong>sound/noise</strong> instead of temperature. Same analog concept, DIFFERENT REAL-WORLD APPLICATION!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Serial Monitor -->
+            <div class="card">
+                <h3>💻 The Serial Monitor Tool</h3>
+                <p><strong>Serial Monitor = Arduino's voice to the world.</strong></p>
+                <p>When you can't see what Arduino is thinking, how do you know what's happening? Serial Monitor lets you:</p>
+                <ul>
+                    <li>👀 See sensor readings in real-time</li>
+                    <li>🐛 Debug code and find problems</li>
+                    <li>📊 Analyze data from your circuit</li>
+                    <li>✅ Verify your code is working</li>
+                </ul>
+
+                <div class="expandable">
+                    <div class="expandable-header">
+                        How to Open Serial Monitor
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="expandable-content">
+                        <ol>
+                            <li>Upload your code to Arduino</li>
+                            <li>Click the <strong>magnifying glass icon</strong> (top-right of IDE)</li>
+                            <li>Or: Tools → Serial Monitor</li>
+                            <li>Window opens showing scrolling numbers/text</li>
+                            <li><strong>⚠️ IMPORTANT:</strong> Check <strong>baud rate</strong> dropdown at bottom-right
+                                <ul>
+                                    <li>Must match your code: <code>Serial.begin(9600)</code></li>
+                                    <li>If mismatch → gibberish text</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <div class="diagram">
+Serial Monitor Window Controls:
+├─ Baud rate dropdown (bottom right) → must be 9600
+├─ Autoscroll checkbox → on/off
+├─ Clear button → clear old output
+└─ Data stream → shows what Arduino sends!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🎯 Why Two Sensors? (Same Concept, Different Worlds)</h3>
+
+                <div class="concept-card">
+                    <strong>📊 Both sensors use analogRead():</strong>
+                    <ul>
+                        <li>🌡️ KY-013: Reads voltage from thermistor → converts to temperature</li>
+                        <li>🎤 KY-038: Reads sound pressure level → converts to noise level</li>
+                    </ul>
+                </div>
+
+                <div class="concept-card warning">
+                    <strong>🌍 Real-World Examples:</strong>
+                    <p><strong>KY-013 Applications:</strong> Thermostats, ovens, climate control, CPU cooling systems, medical devices</p>
+                    <p><strong>KY-038 Applications:</strong> Security alarms, sound-activated lights, noise monitoring in offices, music reactivity, voice assistants</p>
+                </div>
+
+                <p style="margin-top: var(--space-16); font-weight: 600;">💡 The Big Insight:</p>
+                <p><strong>Analog sensing is a SKILL, not a specific sensor.</strong> Learn the principle with KY-013 or KY-038, apply it to ANY sensor later. You're learning engineering fundamentals!</p>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="scrollToSection('examples')">
+                See Applied Examples →
+            </button>
+        </section>
+
+        <!-- ============================================
+             SECTION 4: APPLIED EXAMPLES (15-20 min)
+             ============================================ -->
+        <section id="examples">
+            <h2>🔧 Applied Examples</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-20); margin: var(--space-20) 0;">
+                <!-- Example 1A: Temperature -->
+                <div class="card">
+                    <h3>Example 1A: KY-013 Temperature 🌡️</h3>
+                    <p><strong>Goal:</strong> Wire sensor, upload code, see real temperature in Serial Monitor</p>
+
+                    <p><strong>Wiring Checklist:</strong></p>
+                    <ul>
+                        <li>🔴 Red wire → KY-013 VCC → Arduino 5V</li>
+                        <li>⚫ Black wire → KY-013 GND → Arduino GND</li>
+                        <li>🟡 Yellow wire → KY-013 A0 → Arduino A0</li>
+                        <li>✅ All wires firmly inserted</li>
+                    </ul>
+
+                    <p><strong>Code for KY-013:</strong></p>
+                    <pre>// KY-013 Temperature Sensor
+int sensorPin = A0;
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("KY-013 Test");
+}
+
+void loop() {
+  int raw = analogRead(sensorPin);
+  float voltage = raw * (5.0 / 1023.0);
+  float tempC = (voltage - 0.5) * 100.0;
+  
+  Serial.print("Raw: ");
+  Serial.print(raw);
+  Serial.print(" | Temp: ");
+  Serial.print(tempC);
+  Serial.println("°C");
+  
+  delay(1000);
+}</pre>
+
+                    <p><strong>Expected Output:</strong></p>
+                    <pre>Raw: 312 | Temp: 22.4°C
+Raw: 313 | Temp: 22.5°C</pre>
+
+                    <p><strong>Test Responsiveness:</strong></p>
+                    <ul>
+                        <li>🖐️ Hold sensor → temperature RISES</li>
+                        <li>🧊 Ice nearby → DROPS</li>
+                    </ul>
+                </div>
+
+                <!-- Example 1B: Sound -->
+                <div class="card">
+                    <h3>Example 1B: KY-038 Sound 🎤</h3>
+                    <p><strong>Goal:</strong> Wire sensor, upload code, see sound levels in Serial Monitor</p>
+
+                    <p><strong>Wiring Checklist:</strong></p>
+                    <ul>
+                        <li>🔴 Red wire → KY-038 VCC → Arduino 5V</li>
+                        <li>⚫ Black wire → KY-038 GND → Arduino GND</li>
+                        <li>🟡 Yellow wire → KY-038 A0 → Arduino A0</li>
+                        <li>✅ All wires firmly inserted</li>
+                    </ul>
+
+                    <p><strong>Code for KY-038:</strong></p>
+                    <pre>// KY-038 Sound Sensor
+int sensorPin = A0;
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("KY-038 Test");
+}
+
+void loop() {
+  int soundLevel = analogRead(sensorPin);
+  
+  Serial.print("Sound: ");
+  Serial.println(soundLevel);
+  
+  delay(100);
+}</pre>
+
+                    <p><strong>Expected Output (varies by noise):</strong></p>
+                    <pre>Sound: 250  (quiet)
+Sound: 580  (normal talk)
+Sound: 850  (loud)</pre>
+
+                    <p><strong>Test Responsiveness:</strong></p>
+                    <ul>
+                        <li>🤐 Silent room → low values (200-400)</li>
+                        <li>🗣️ Talk near mic → mid values (500-700)</li>
+                        <li>📢 Clap/shout → high values (800+)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-20); margin: var(--space-20) 0;">
+                <!-- Example 2A: Temperature Alarm -->
+                <div class="card">
+                    <h3>Example 2A: Temp Alarm (KY-013) 🚨</h3>
+
+                    <p><strong>Challenge:</strong> Make LED turn ON when temperature > 25°C</p>
+
+                    <pre>int sensorPin = A0;
+int ledPin = 13;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int raw = analogRead(sensorPin);
+  float voltage = raw * (5.0 / 1023.0);
+  float tempC = (voltage - 0.5) * 100.0;
+  
+  if (tempC > 25.0) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("HOT!");
+  } else {
+    digitalWrite(ledPin, LOW);
+    Serial.println("OK");
+  }
+  
+  delay(1000);
+}</pre>
+
+                    <p><strong>Test:</strong></p>
+                    <ul>
+                        <li>Hold sensor → temp rises → LED ON</li>
+                        <li>Release → temp drops → LED OFF</li>
+                    </ul>
+
+                    <div class="concept-card info">
+                        <strong>🏠 Real-World:</strong>
+                        <p>Temperature Blanket uses this exact logic!</p>
+                    </div>
+                </div>
+
+                <!-- Example 2B: Sound Alarm -->
+                <div class="card">
+                    <h3>Example 2B: Sound Alarm (KY-038) 📣</h3>
+
+                    <p><strong>Challenge:</strong> Make LED turn ON when noise > 600</p>
+
+                    <pre>int sensorPin = A0;
+int ledPin = 13;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int soundLevel = analogRead(sensorPin);
+  
+  if (soundLevel > 600) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("LOUD!");
+  } else {
+    digitalWrite(ledPin, LOW);
+    Serial.println("quiet");
+  }
+  
+  delay(100);
+}</pre>
+
+                    <p><strong>Test:</strong></p>
+                    <ul>
+                        <li>Be quiet → LED OFF</li>
+                        <li>Clap/shout → LED ON</li>
+                    </ul>
+
+                    <div class="concept-card info">
+                        <strong>🎙️ Real-World:</strong>
+                        <p>Noise-activated street lights use this logic!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Example 3: Combo Challenge (Both Groups Together!) 🤝</h3>
+
+                <p><strong>Goal:</strong> Use BOTH sensors on ONE Arduino (Group 1 + Group 2 partner up!)</p>
+
+                <p style="font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-16);">Wiring (Temp on A0, Sound on A1):</p>
+                <div class="diagram">
+KY-013 (Temperature):
+VCC ──> 5V
+GND ──> GND
+A0  ──> Arduino A0
+
+KY-038 (Sound):
+VCC ──> 5V
+GND ──> GND
+A0  ──> Arduino A1
+                </div>
+
+                <p><strong>Combo Code:</strong></p>
+                <pre>int tempPin = A0;
+int soundPin = A1;
+int ledPin = 13;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // Read both
+  int tempRaw = analogRead(tempPin);
+  float tempC = ((tempRaw * 5.0 / 1023.0) - 0.5) * 100.0;
+  int soundLevel = analogRead(soundPin);
+  
+  Serial.print("Temp:");
+  Serial.print(tempC);
+  Serial.print("C | Sound:");
+  Serial.println(soundLevel);
+  
+  // LED on if EITHER too hot OR too loud
+  if (tempC > 25.0 || soundLevel > 600) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("ALERT!");
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+  
+  delay(500);
+}</pre>
+
+                <div class="concept-card info">
+                    <strong>💡 Key Learning:</strong>
+                    <p>You can read MULTIPLE sensors! Use different analog pins (A0, A1, A2...). Logic works the same: <code>analogRead()</code> → compare → decide → act.</p>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="scrollToSection('practice')">
+                Ready for Practice? →
+            </button>
+        </section>
+
+        <!-- ============================================
+             SECTION 5: PRACTICE & CONCEPT CHECKING QUESTIONS
+             ============================================ -->
+        <section id="practice">
+            <h2>💪 Practice & Concept Checking Questions</h2>
+
+            <div class="card">
+                <h3>Interactive Challenge 1: Map the Pins</h3>
+
+                <div class="practice-exercise">
+                    <div class="exercise-title">
+                        <span class="exercise-number">1</span>
+                        Wiring Challenge
+                    </div>
+                    <p>Match each TMP36 pin to its Arduino connection:</p>
+
+                    <div style="margin: var(--space-16) 0;">
+                        <div style="padding: var(--space-12); background: var(--color-secondary); margin: var(--space-8) 0; border-radius: var(--radius-sm);">
+                            <strong>Left leg (flat side on left)</strong>
+                            <select style="width: 100%; padding: var(--space-8); margin-top: var(--space-8); border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                                <option>-- Select --</option>
+                                <option value="5v">5V (Power)</option>
+                                <option value="a0">A0 (Signal)</option>
+                                <option value="gnd">GND (Ground)</option>
+                            </select>
+                        </div>
+
+                        <div style="padding: var(--space-12); background: var(--color-secondary); margin: var(--space-8) 0; border-radius: var(--radius-sm);">
+                            <strong>Middle leg</strong>
+                            <select style="width: 100%; padding: var(--space-8); margin-top: var(--space-8); border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                                <option>-- Select --</option>
+                                <option value="5v">5V (Power)</option>
+                                <option value="a0">A0 (Signal)</option>
+                                <option value="gnd">GND (Ground)</option>
+                            </select>
+                        </div>
+
+                        <div style="padding: var(--space-12); background: var(--color-secondary); margin: var(--space-8) 0; border-radius: var(--radius-sm);">
+                            <strong>Right leg</strong>
+                            <select style="width: 100%; padding: var(--space-8); margin-top: var(--space-8); border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+                                <option>-- Select --</option>
+                                <option value="5v">5V (Power)</option>
+                                <option value="a0">A0 (Signal)</option>
+                                <option value="gnd">GND (Ground)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary btn-sm" onclick="checkWiring()">Check Answers</button>
+                </div>
+            </div>
+
+            <!-- CONCEPT CHECKING QUESTIONS - MANDATORY -->
+            <div class="card">
+                <h3>✓ Concept Checking Questions</h3>
+                <p><strong>Verify your deep understanding with these strategic questions:</strong></p>
+
+                <!-- CCQ 1: Yes/No about analogRead -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 1 (Yes/No):</strong> Does <code>analogRead()</code> return only HIGH or LOW?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq1" value="no" onchange="checkCCQ(1, 'no')"> No
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq1" value="yes" onchange="checkCCQ(1, 'yes')"> Yes
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq1-feedback"></div>
+                </div>
+
+                <!-- CCQ 1B: Wiring these modules -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 1B (Yes/No):</strong> Both KY-013 and KY-038 have the same 3 pins (VCC, GND, A0)?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq1b" value="yes" onchange="checkCCQ(1, 'yes')"> Yes
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq1b" value="no" onchange="checkCCQ(1, 'no')"> No
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq1b-feedback"></div>
+                </div>
+
+                <!-- CCQ 2: What's wrong? (Negative checking) -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 2 (Negative Checking):</strong> A student forgets to wire the sensor's GND pin. The sensor will still work fine, right?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq2" value="yes" onchange="checkCCQ(2, 'yes')"> Yes, no problem
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq2" value="no" onchange="checkCCQ(2, 'no')"> No, circuit won't work
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq2-feedback"></div>
+                </div>
+
+                <!-- CCQ 3: Application question -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 3 (Application):</strong> For KY-038, if you change the threshold from 600 to 500 in the sound alarm, what happens?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq3" value="earlier" onchange="checkCCQ(3, 'earlier')"> LED turns on at LOWER sound levels (more sensitive)
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq3" value="later" onchange="checkCCQ(3, 'later')"> LED turns on at HIGHER sound levels (less sensitive)
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq3" value="same" onchange="checkCCQ(3, 'same')"> No change in behavior
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq3-feedback"></div>
+                </div>
+
+                <!-- CCQ 4: Wh- question (Why) -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 4 (Why):</strong> Why do we need a Serial Monitor when testing circuits?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq4" value="debug" onchange="checkCCQ(4, 'debug')"> To see what Arduino is thinking and debug problems
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq4" value="print" onchange="checkCCQ(4, 'print')"> To print code on paper
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq4" value="upload" onchange="checkCCQ(4, 'upload')"> To upload code faster
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq4-feedback"></div>
+                </div>
+
+                <!-- CCQ 5: Comparison question -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 5 (Comparison):</strong> What's the difference between KY-013 (temperature) and KY-038 (sound) for Arduino use?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq5" value="concept" onchange="checkCCQ(5, 'concept')"> Same analog reading concept, different physical measurements
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq5" value="wiring" onchange="checkCCQ(5, 'wiring')"> Different wiring (KY-038 needs extra resistor)
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq5" value="pins" onchange="checkCCQ(5, 'pins')"> Different number of pins
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq5-feedback"></div>
+                </div>
+
+                <!-- CCQ 6: What question -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 6 (What):</strong> What does the baud rate in Serial Monitor need to match?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq6" value="code" onchange="checkCCQ(6, 'code')"> The baud rate in your code (e.g., Serial.begin(9600))
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq6" value="arduino" onchange="checkCCQ(6, 'arduino')"> The Arduino board speed
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq6" value="wifi" onchange="checkCCQ(6, 'wifi')"> Your WiFi router speed
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq6-feedback"></div>
+                </div>
+
+                <!-- CCQ 7: Why question -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 7 (Why):</strong> Why are both KY-013 and KY-038 pre-assembled as modules instead of bare components?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq7" value="easy" onchange="checkCCQ(7, 'easy')"> Easier and more reliable to wire (no external resistors needed)
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq7" value="cheaper" onchange="checkCCQ(7, 'cheaper')"> It's cheaper to make modules
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq7" value="faster" onchange="checkCCQ(7, 'faster')"> It makes code run faster
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq7-feedback"></div>
+                </div>
+
+                <!-- CCQ 8: Application -->
+                <div class="quiz-question">
+                    <p><strong>CCQ 8 (Application):</strong> Your KY-013 sensor reads very high temperatures even at room temp. Which is most likely the problem?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq8" value="formula" onchange="checkCCQ(8, 'formula')"> Wrong conversion formula in your code
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq8" value="wiring" onchange="checkCCQ(8, 'wiring')"> Sensor wired backwards or not connected
+                        </label>
+                        <label class="quiz-option">
+                            <input type="radio" name="ccq8" value="arduino" onchange="checkCCQ(8, 'arduino')"> Arduino board is overheating
+                        </label>
+                    </div>
+                    <div class="feedback" id="ccq8-feedback"></div>
+                </div>
+
+                <div class="concept-card info" style="margin-top: var(--space-20);">
+                    <strong>📊 Concept Mastery Tracker:</strong>
+                    <p id="ccqScore">Answer all 8 questions to see your mastery level.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Practice Exercise Set</h3>
+
+                <div class="practice-exercise">
+                    <div class="exercise-title">
+                        <span class="exercise-number">2</span>
+                        Code Reading Challenge
+                    </div>
+                    <p>What does this code do?</p>
+                    <pre>if (temperatureC > 28.0) {
+  digitalWrite(ledPin, HIGH);
+} else {
+  digitalWrite(ledPin, LOW);
+}</pre>
+                    <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Hint</button>
+                    <div class="hint-content">
+                        <p><strong>Hint:</strong> This checks if temperature is above a certain number. If yes → one action. If no → different action.</p>
+                    </div>
+                </div>
+
+                <div class="practice-exercise">
+                    <div class="exercise-title">
+                        <span class="exercise-number">3</span>
+                        Threshold Modification
+                    </div>
+                    <p>Modify the temperature alarm to turn LED on when temperature is BELOW 15°C. Write your modified if statement:</p>
+                    <textarea class="reflection-input" id="exercise3" placeholder="Write your code here..."></textarea>
+                    <button class="hint-toggle" onclick="toggleHint(this)">💡 Show Solution</button>
+                    <div class="hint-content">
+                        <p><strong>Solution:</strong></p>
+                        <pre>if (temperatureC < 15.0) {
+  digitalWrite(ledPin, HIGH);
+} else {
+  digitalWrite(ledPin, LOW);
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="scrollToSection('vocabulary')">
+                Learn Key Vocabulary →
+            </button>
+        </section>
+
+        <!-- ============================================
+             SECTION 6: VOCABULARY
+             ============================================ -->
+        <section id="vocabulary">
+            <h2>📖 Vocabulary</h2>
+
+            <div style="margin-bottom: var(--space-16);">
+                <input type="text" id="vocabSearch" placeholder="🔍 Search vocabulary..." style="width: 100%; padding: var(--space-12); border: 1px solid var(--color-border); border-radius: var(--radius-md); font-size: var(--font-size-base);">
+            </div>
+
+            <div id="vocabularyList">
+                <div class="vocab-item">
+                    <div class="vocab-term">Analog Input</div>
+                    <div class="vocab-definition">A continuous range of values (0 to 1023) representing varying measurements, unlike digital signals that are only ON/OFF.</div>
+                    <div class="vocab-example">Example: A temperature sensor returns values like 312, 313, 315 — not just 0 or 1.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">analogRead()</div>
+                    <div class="vocab-definition">Arduino function that reads a voltage on an analog pin (A0-A5) and converts it to a digital number between 0-1023.</div>
+                    <div class="vocab-example">Example: <code>int value = analogRead(A0);</code> reads pin A0 and stores result in variable 'value'.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">Threshold</div>
+                    <div class="vocab-definition">A decision point in code where one value divides two different outcomes. If below threshold → one action. If above → different action.</div>
+                    <div class="vocab-example">Example: <code>if (temperature > 25) { alarm = ON; }</code> — threshold is 25°C.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">Sensor</div>
+                    <div class="vocab-definition">A device that detects changes in physical conditions (temperature, light, motion, etc.) and converts them into electrical signals Arduino can read.</div>
+                    <div class="vocab-example">Example: TMP36 senses temperature and outputs a voltage proportional to how hot it is.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">Serial Monitor</div>
+                    <div class="vocab-definition">A tool in Arduino IDE that displays data sent from Arduino to your computer via USB connection, used for debugging and viewing sensor readings.</div>
+                    <div class="vocab-example">Example: Open with magnifying glass icon, set baud rate to 9600, watch sensor values scroll by.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">Baud Rate</div>
+                    <div class="vocab-definition">The speed of serial communication measured in bits-per-second. Both code and Serial Monitor must use the same baud rate or communication fails.</div>
+                    <div class="vocab-example">Example: <code>Serial.begin(9600)</code> sets baud rate to 9600. Serial Monitor must also be set to 9600.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">ADC (Analog-to-Digital Converter)</div>
+                    <div class="vocab-definition">Hardware inside Arduino that converts analog voltages (continuous 0-5V) into digital numbers (0-1023) that code can use.</div>
+                    <div class="vocab-example">Example: 2.5V input → ADC converts to 512 (middle of 0-1023 range).</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">KY-013 Thermistor Module</div>
+                    <div class="vocab-definition">A pre-assembled temperature sensor module with NTC 10kΩ thermistor. 3 pins: VCC, GND, A0. Outputs voltage proportional to temperature.</div>
+                    <div class="vocab-example">Example: Room temperature (~22°C) outputs ~1.52V. Formula: temp(°C) = (voltage - 0.5) × 100.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">KY-038 Sound Sensor Module</div>
+                    <div class="vocab-definition">A pre-assembled microphone module that detects ambient sound/noise levels. 3 pins: VCC, GND, A0. Outputs analog value 0-1023 based on sound pressure.</div>
+                    <div class="vocab-example">Example: Silence = 200-300. Normal talking = 500-700. Clapping/shouting = 800+. Sensitivity adjustable with onboard potentiometer.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">Module</div>
+                    <div class="vocab-definition">A pre-assembled circuit board with a sensor plus necessary supporting components (resistors, capacitors, etc.). Makes wiring simpler than bare sensors.</div>
+                    <div class="vocab-example">Example: KY-013 module includes thermistor + supporting circuitry. Just wire 3 pins instead of building complex circuit.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">Debugging</div>
+                    <div class="vocab-definition">The process of finding and fixing errors in code or circuits. Serial Monitor is a primary debugging tool.</div>
+                    <div class="vocab-example">Example: Code doesn't work → use Serial Monitor to print values and see where logic fails.</div>
+                </div>
+
+                <div class="vocab-item">
+                    <div class="vocab-term">Calibration</div>
+                    <div class="vocab-definition">Adjusting sensor values or thresholds to work correctly in your specific environment, as conditions vary between locations.</div>
+                    <div class="vocab-example">Example: Light threshold of 300 works in your classroom but needs to be 500 in a brightly-lit hallway.</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="scrollToSection('resources')">
+                Explore Resources →
+            </button>
+        </section>
+
+        <!-- ============================================
+             SECTION 7: RESOURCES
+             ============================================ -->
+        <section id="resources">
+            <h2>🔗 Curated Online Resources</h2>
+
+            <p style="margin-bottom: var(--space-20);">These high-quality resources support what you learned. Use them for reinforcement, alternative explanations, or going deeper:</p>
+
+            <!-- Video Tutorials -->
+            <h3>📹 Video Tutorials</h3>
+            <div class="resource-list">
+                <div class="resource-card">
+                    <span class="resource-type">Video</span>
+                    <div class="resource-title">Analog Input with Arduino (analogRead)</div>
+                    <p class="resource-description">Clear walkthrough of analogRead() function with potentiometer example. Great for understanding how analog values work. Applies to KY-013 & KY-038!</p>
+                    <div class="resource-time">⏱️ ~5 minutes | Level: Beginner</div>
+                    <a href="https://www.youtube.com/watch?v=5nF5R4CGZG4" class="resource-link" target="_blank">Watch Video →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Video</span>
+                    <div class="resource-title">How to Use the Arduino Serial Monitor</div>
+                    <p class="resource-description">Step-by-step guide to opening, using, and troubleshooting Serial Monitor. Shows common mistakes and fixes.</p>
+                    <div class="resource-time">⏱️ ~6 minutes | Level: Beginner</div>
+                    <a href="https://www.youtube.com/watch?v=j2qrRxQ9mSs" class="resource-link" target="_blank">Watch Video →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Video</span>
+                    <div class="resource-title">Thermistor Sensor Tutorial (Temperature Basics)</div>
+                    <p class="resource-description">Explains how thermistors work (NTC/PTC), temperature conversion formulas, and practical use. Perfect for understanding KY-013.</p>
+                    <div class="resource-time">⏱️ ~8 minutes | Level: Intermediate</div>
+                    <a href="https://deepbluembedded.com/arduino-adc-analogread-analog-input/" class="resource-link" target="_blank">Watch Video →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Video</span>
+                    <div class="resource-title">Sound/Noise Detection with Microphone Module</div>
+                    <p class="resource-description">How microphone sensors detect sound, setting thresholds for noise detection, and practical applications (alarms, reactivity).</p>
+                    <div class="resource-time">⏱️ ~6 minutes | Level: Beginner to Intermediate</div>
+                    <a href="https://www.makerguides.com/tmp36-arduino-tutorial/" class="resource-link" target="_blank">Watch Video →</a>
+                </div>
+            </div>
+
+            <!-- Interactive Simulations -->
+            <h3>⚙️ Interactive Simulators</h3>
+            <div class="resource-list">
+                <div class="resource-card">
+                    <span class="resource-type">Interactive</span>
+                    <div class="resource-title">Wokwi: Online Arduino Simulator</div>
+                    <p class="resource-description">Write and test Arduino code in your browser. Simulate analog input circuits without physical hardware. Perfect for debugging!</p>
+                    <div class="resource-time">⏱️ Self-paced | Level: All levels</div>
+                    <a href="https://wokwi.com" class="resource-link" target="_blank">Try Simulator →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Interactive</span>
+                    <div class="resource-title">Arduino ADC Conversion Tool (DeepBlue Embedded)</div>
+                    <p class="resource-description">Interactive tool showing how analog voltages (0-5V) convert to digital values (0-1023). Adjust voltage, see the number change instantly.</p>
+                    <div class="resource-time">⏱️ 10 minutes | Level: Beginner</div>
+                    <a href="https://deepbluembedded.com/arduino-adc-analogread-analog-input/" class="resource-link" target="_blank">Try Tool →</a>
+                </div>
+            </div>
+
+            <!-- Detailed Tutorials -->
+            <h3>📚 In-Depth Tutorials</h3>
+            <div class="resource-list">
+                <div class="resource-card">
+                    <span class="resource-type">Article</span>
+                    <div class="resource-title">Thermistor Sensors & Temperature Conversion (KY-013)</div>
+                    <p class="resource-description">Comprehensive guide on how thermistors work, temperature formulas, calibration techniques, and practical examples with code.</p>
+                    <div class="resource-time">⏱️ 15 minutes read | Level: Intermediate</div>
+                    <a href="https://www.makerguides.com/tmp36-arduino-tutorial/" class="resource-link" target="_blank">Read Article →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Article</span>
+                    <div class="resource-title">Sound Sensors & Noise Detection Basics</div>
+                    <p class="resource-description">How microphone modules detect sound, understanding decibels and sound levels, setting appropriate thresholds, real-world applications.</p>
+                    <div class="resource-time">⏱️ 12 minutes read | Level: Intermediate</div>
+                    <a href="https://deepbluembedded.com/arduino-adc-analogread-analog-input/" class="resource-link" target="_blank">Read Article →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Article</span>
+                    <div class="resource-title">Arduino ADC & analogRead() Tutorial (Deep Blue Embedded)</div>
+                    <p class="resource-description">Deep dive into how Arduino's ADC works, resolution, accuracy, and best practices. Applies to ANY analog sensor (temperature, sound, light, etc.)</p>
+                    <div class="resource-time">⏱️ 20 minutes read | Level: Intermediate to Advanced</div>
+                    <a href="https://deepbluembedded.com/arduino-adc-analogread-analog-input/" class="resource-link" target="_blank">Read Article →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Article</span>
+                    <div class="resource-title">Arduino Serial Monitor Tutorial (Programming Electronics)</div>
+                    <p class="resource-description">Clear explanation of serial communication, how to open and use Serial Monitor, troubleshooting common issues.</p>
+                    <div class="resource-time">⏱️ 10 minutes read | Level: Beginner</div>
+                    <a href="https://www.programmingelectronics.com/tutorial-20-analog-io-and-serial-communications-old-version/" class="resource-link" target="_blank">Read Article →</a>
+                </div>
+            </div>
+
+            <!-- Advanced/Extension Resources -->
+            <h3>🚀 Go Deeper (Extension)</h3>
+            <div class="resource-list">
+                <div class="resource-card">
+                    <span class="resource-type">Reference</span>
+                    <div class="resource-title">Official Arduino analogRead() Documentation</div>
+                    <p class="resource-description">Official Arduino language reference for analogRead(). See all parameters, return values, and advanced options.</p>
+                    <div class="resource-time">⏱️ Reference | Level: Intermediate</div>
+                    <a href="https://www.arduino.cc/en/Tutorial/AnalogInput" class="resource-link" target="_blank">Read Docs →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Code Example</span>
+                    <div class="resource-title">TMP36 Interfacing (BC Robotics)</div>
+                    <p class="resource-description">Complete working code examples with detailed comments. Includes calibration techniques and data logging tips.</p>
+                    <div class="resource-time">⏱️ 15 minutes | Level: Intermediate</div>
+                    <a href="https://bc-robotics.com/tutorials/using-a-tmp36-temperature-sensor-with-arduino/" class="resource-link" target="_blank">See Examples →</a>
+                </div>
+
+                <div class="resource-card">
+                    <span class="resource-type">Research</span>
+                    <div class="resource-title">TMP36 Datasheet (Full Technical Specs)</div>
+                    <p class="resource-description">Complete datasheet with all electrical specifications, accuracy curves, and application notes. For students who want to understand the sensor deeply.</p>
+                    <div class="resource-time">⏱️ Reference | Level: Advanced</div>
+                    <a href="https://lastminuteengineers.com/tmp36-temperature-sensor-arduino-tutorial/" class="resource-link" target="_blank">See Datasheet →</a>
+                </div>
+            </div>                <div class="concept-card info" style="margin-top: var(--space-24);">
+                    <strong>💡 How to Use These Resources:</strong>
+                    <ul>
+                        <li><strong>During Class:</strong> Both KY-013 & KY-038 groups use same videos/articles (analog principle is universal)</li>
+                        <li><strong>Group-Specific:</strong> Temperature group → read thermistor article. Sound group → read sound sensor article</li>
+                        <li><strong>Homework:</strong> Try simulator projects to practice without hardware</li>
+                        <li><strong>Extension:</strong> Deep-dive into ADC tutorial to understand the physics behind analog reading</li>
+                        <li><strong>Troubleshooting:</strong> When circuits don't work, check serial monitor article first!</li>
+                    </ul>
+                </div>
+
+            <button class="btn btn-primary btn-lg btn-full" onclick="scrollToSection('wrapup')">
+                Ready for Wrap-Up & Reflection →
+            </button>
+        </section>
+
+        <!-- ============================================
+             SECTION 8: WRAP-UP & CLOSURE (5-10 min)
+             ============================================ -->
+        <section id="wrapup">
+            <h2>🎓 Wrap-Up & Closure</h2>
+
+            <!-- Part A: Knowledge Consolidation -->
+            <div class="card">
+                <h3>Part A: Knowledge Consolidation</h3>
+                <p><strong>3-2-1 Reflection:</strong> Summarize your learning:</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-16); margin: var(--space-16) 0;">
+                    <div style="background: var(--color-bg-3); padding: var(--space-16); border-radius: var(--radius-md); border-left: 4px solid var(--color-green-500);">
+                        <div style="font-weight: 600; color: var(--color-green-500); margin-bottom: var(--space-8);">3 Things I Learned</div>
+                        <textarea class="reflection-input" id="learned3" placeholder="1.\n2.\n3."></textarea>
+                    </div>
+
+                    <div style="background: var(--color-bg-2); padding: var(--space-16); border-radius: var(--radius-md); border-left: 4px solid var(--color-warning);">
+                        <div style="font-weight: 600; color: var(--color-warning); margin-bottom: var(--space-8);">2 Interesting Facts</div>
+                        <textarea class="reflection-input" id="interesting2" placeholder="1.\n2."></textarea>
+                    </div>
+
+                    <div style="background: var(--color-bg-4); padding: var(--space-16); border-radius: var(--radius-md); border-left: 4px solid var(--color-error);">
+                        <div style="font-weight: 600; color: var(--color-error); margin-bottom: var(--space-8);">1 Question Still Have</div>
+                        <textarea class="reflection-input" id="question1" placeholder="What do you still wonder about?"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part B: Objective Confirmation -->
+            <div class="card">
+                <h3>Part B: Objective Confirmation</h3>
+                <p><strong>Did you meet today's goals?</strong> Check each box if you can do it:</p>
+
+                <div class="progress-tracker">
+                    <div class="progress-item">
+                        <input type="checkbox" class="progress-checkbox" id="obj1">
+                        <label for="obj1">✓ Explain the difference between digital and analog input</label>
+                    </div>
+
+                    <div class="progress-item">
+                        <input type="checkbox" class="progress-checkbox" id="obj2">
+                        <label for="obj2">✓ Read temperature from a sensor using analogRead()</label>
+                    </div>
+
+                    <div class="progress-item">
+                        <input type="checkbox" class="progress-checkbox" id="obj3">
+                        <label for="obj3">✓ Use Serial Monitor to debug and display sensor values</label>
+                    </div>
+
+                    <div class="progress-item">
+                        <input type="checkbox" class="progress-checkbox" id="obj4">
+                        <label for="obj4">✓ Map sensor readings to LED output with if/else</label>
+                    </div>
+
+                    <div class="progress-item">
+                        <input type="checkbox" class="progress-checkbox" id="obj5">
+                        <label for="obj5">✓ Build an automatic temperature alarm system</label>
+                    </div>
+
+                    <div class="progress-item">
+                        <input type="checkbox" class="progress-checkbox" id="se1">
+                        <label for="se1">✓ Collaborated effectively with a partner</label>
+                    </div>
+
+                    <div class="progress-item">
+                        <input type="checkbox" class="progress-checkbox" id="se2">
+                        <label for="se2">✓ Debugged problems through troubleshooting</label>
+                    </div>
+
+                    <div class="progress-item">
+                        <input type="checkbox" class="progress-checkbox" id="se3">
+                        <label for="se3">✓ Predicted what code changes would do</label>
+                    </div>
+                </div>
+
+                <div style="margin-top: var(--space-16); padding: var(--space-16); background: var(--color-secondary); border-radius: var(--radius-md);">
+                    <p id="checkboxCount" style="font-weight: 600; color: var(--color-primary);">Objectives met: 0/8</p>
+                </div>
+            </div>
+
+            <!-- Part C: Reflection Prompts -->
+            <div class="card">
+                <h3>Part C: Deep Reflection</h3>
+
+                <div style="margin: var(--space-16) 0;">
+                    <label style="display: block; font-weight: 600; margin-bottom: var(--space-8);">What was the most challenging concept for you today?</label>
+                    <textarea class="reflection-input" id="reflection1" placeholder="Describe the challenge..."></textarea>
+                </div>
+
+                <div style="margin: var(--space-16) 0;">
+                    <label style="display: block; font-weight: 600; margin-bottom: var(--space-8);">What strategy helped you solve problems most effectively?</label>
+                    <textarea class="reflection-input" id="reflection2" placeholder="What worked for you?"></textarea>
+                </div>
+
+                <div style="margin: var(--space-16) 0;">
+                    <label style="display: block; font-weight: 600; margin-bottom: var(--space-8);">How confident do you feel applying this knowledge to projects?</label>
+                    <div style="display: flex; gap: var(--space-12); margin-top: var(--space-12);">
+                        <button class="btn btn-outline btn-sm" onclick="setConfidence('low')" id="conf-low">🟡 Needs Review</button>
+                        <button class="btn btn-outline btn-sm" onclick="setConfidence('medium')" id="conf-med">🟢 Getting There</button>
+                        <button class="btn btn-outline btn-sm" onclick="setConfidence('high')" id="conf-high">🟢 Very Confident!</button>
+                    </div>
+                    <div id="confidenceDisplay" style="margin-top: var(--space-12); font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <!-- Part D: Bridge to Next Lesson -->
+            <div class="card">
+                <h3>Part D: Bridge to Week 4</h3>
+
+                <div class="concept-card warning">
+                    <strong>🔜 Next Week: OUTPUT POWER!</strong>
+                    <p>This week: We learned <strong>INPUT</strong> (sensors send data TO Arduino).</p>
+                    <p><strong>Next week:</strong> We learn <strong>OUTPUT</strong> (Arduino controls motors, buzzers, HIGH-power devices).</p>
+                    <p><strong>The Connection:</strong> Week 4 combines what you learned:</p>
+                    <ul>
+                        <li>Read a sensor (Week 3) → Make a decision (if/else from Week 2) → Control a motor (Week 4)</li>
+                        <li>Example: "If temperature is too hot, turn on a fan motor!"</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: var(--space-16);"><strong>🏠 Optional Homework Reflection:</strong></p>
+                <p><strong>Temperature group:</strong> Where do you see thermostats or temperature sensors at home? Oven? Fridge? Water heater? Thermostat?</p>
+                <p><strong>Sound group:</strong> Where do you see sound sensors or microphones? Smartphones? Security systems? Smart speakers? Hearing aids?</p>
+                <p>We'll share examples and discuss how they use thresholds just like our code!</p>
+            </div>
+
+            <!-- Part E: Celebration & Achievement -->
+            <div class="achievement-badge">
+                <div class="badge-icon">⭐</div>
+                <div class="badge-title">Week 3 Completion!</div>
+                <p>Congratulations! You've learned to:</p>
+                <ul style="text-align: left; display: inline-block;">
+                    <li>✅ Read analog sensor data</li>
+                    <li>✅ Use Serial Monitor for debugging</li>
+                    <li>✅ Build responsive circuits</li>
+                </ul>
+                <p style="margin-top: var(--space-12); font-size: var(--font-size-lg); font-weight: 600;">You're now equipped with skills real engineers use daily!</p>
+            </div>
+
+            <!-- Save Responses -->
+            <div class="card">
+                <button class="btn btn-primary btn-lg btn-full" onclick="saveAllResponses()">
+                    💾 Save Your Reflections
+                </button>
+                <p id="saveMessage" style="text-align: center; margin-top: var(--space-12); color: var(--color-success); font-weight: 600;"></p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: var(--color-surface); border-top: 1px solid var(--color-border); padding: var(--space-20); text-align: center; color: var(--color-text-secondary); margin-top: var(--space-32);">
+        <p>Week 3: Arduino Sensors & Serial Monitor | Interactive Learning Hub | 90 Minutes</p>
+        <p style="font-size: var(--font-size-sm);">© 2025 Design & Technology Education | Student-Centered Learning</p>
+    </footer>
+
+    <script>
+        // ============================================
+        // NAVIGATION & SECTION MANAGEMENT
+        // ============================================
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                showSection(sectionId);
+                
+                // Update nav
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function scrollToSection(sectionId) {
+            showSection(sectionId);
+            const section = document.getElementById(sectionId);
+            const navBtn = document.querySelector(`[data-section="${sectionId}"]`);
+            if (navBtn) {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                navBtn.classList.add('active');
+            }
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============================================
+        // PROGRESS BAR
+        // ============================================
+        function updateProgress() {
+            const sections = document.querySelectorAll('section');
+            let currentIndex = 0;
+            sections.forEach((s, i) => {
+                if (s.classList.contains('active')) currentIndex = i + 1;
+            });
+            const progress = (currentIndex / sections.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', function() {
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            // Note: In a real app, this would toggle CSS variables via data attribute
+            alert('Dark mode toggled! (Full implementation uses CSS media queries)');
+        });
+
+        // ============================================
+        // OPENING ACTIVITY - SENSOR HUNT
+        // ============================================
+        let selectedSensors = [];
+        document.querySelectorAll('.sensor-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                const sensor = this.getAttribute('data-sensor');
+                if (selectedSensors.includes(sensor)) {
+                    selectedSensors = selectedSensors.filter(s => s !== sensor);
+                } else {
+                    selectedSensors.push(sensor);
+                }
+                updateSensorResponse();
+            });
+        });
+
+        function updateSensorResponse() {
+            const response = document.getElementById('sensorResponse');
+            if (selectedSensors.length === 0) {
+                response.textContent = 'Click sensors above to record your initial thinking.';
+            } else {
+                response.textContent = '✓ Sensors selected: ' + selectedSensors.join(', ') + '. Great! These will be reflected at the end.';
+            }
+        }
+
+        // ============================================
+        // EXPANDABLE SECTIONS
+        // ============================================
+        document.querySelectorAll('.expandable-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('.toggle-icon');
+                content.classList.toggle('open');
+                icon.classList.toggle('open');
+            });
+        });
+
+        // ============================================
+        // CONCEPT CHECKING QUESTIONS
+        // ============================================
+        const ccqAnswers = {
+            1: { correct: 'no', explanation: '✓ Correct! analogRead() returns 0-1023, not just HIGH/LOW. That\'s digital.\n💡 Hint: High-quality sensors give MANY values (analog), not just 2 states (digital).' },
+            2: { correct: 'no', explanation: '✓ Correct! Backwards = DAMAGE. Always check flat side orientation first.\n💡 Hint: When wired backwards, the sensor gets hot—you might smell it burning!' },
+            3: { correct: 'later', explanation: '✓ Correct! At 30°C threshold, LED waits longer before turning on.\n💡 Hint: Higher threshold = higher temperature needed = later activation.' },
+            4: { correct: 'debug', explanation: '✓ Correct! Serial Monitor is "X-ray vision" into your code.\n💡 Hint: Without it, you\'re blind to what Arduino is actually doing.' },
+            5: { correct: 'range', explanation: '✓ Correct! Buttons = 2 values, sensors = 1024 possible values.\n💡 Hint: That range is why sensors are called "analog" (infinite graduations).' },
+            6: { correct: 'code', explanation: '✓ Correct! If baud rates mismatch, you see gibberish.\n💡 Hint: 9600 is most common, but always match code to Serial Monitor.' },
+            7: { correct: 'divider', explanation: '✓ Correct! Photoresistor changes RESISTANCE. Voltage divider converts that to VOLTAGE.\n💡 Hint: TMP36 outputs voltage already, so no divider needed.' },
+            8: { correct: 'baud', explanation: '✓ Correct! Baud rate mismatch = gibberish every time.\n💡 Hint: Always check baud rate FIRST when Serial Monitor looks wrong.' }
+        };
+
+        function checkCCQ(questionNum, selectedAnswer) {
+            const correct = ccqAnswers[questionNum].correct;
+            const feedback = document.getElementById('ccq' + questionNum + '-feedback');
+            
+            if (selectedAnswer === correct) {
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = '✅ ' + ccqAnswers[questionNum].explanation;
+            } else {
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = '❌ Not quite. Try again!\n' + ccqAnswers[questionNum].explanation;
+            }
+
+            updateCCQScore();
+        }
+
+        function updateCCQScore() {
+            let correct = 0;
+            for (let i = 1; i <= 8; i++) {
+                const feedback = document.getElementById('ccq' + i + '-feedback');
+                if (feedback && feedback.classList.contains('correct')) {
+                    correct++;
+                }
+            }
+            const total = 8;
+            let level = 'Keep trying!';
+            if (correct >= 7) level = '🌟 MASTERY! You understand deeply!';
+            else if (correct >= 5) level = '✅ Strong Understanding! A few concepts to review.';
+            else if (correct >= 3) level = '🟡 Getting There! Review tough concepts.';
+            
+            document.getElementById('ccqScore').textContent = `Answered correctly: ${correct}/${total} — ${level}`;
+        }
+
+        // ============================================
+        // HINT TOGGLES
+        // ============================================
+        function toggleHint(button) {
+            const hint = button.nextElementSibling;
+            hint.classList.toggle('show');
+            button.textContent = hint.classList.contains('show') ? '💡 Hide Hint' : '💡 Show Hint';
+        }
+
+        // ============================================
+        // VOCABULARY SEARCH
+        // ============================================
+        document.getElementById('vocabSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.vocab-item').forEach(item => {
+                const term = item.querySelector('.vocab-term').textContent.toLowerCase();
+                const def = item.querySelector('.vocab-definition').textContent.toLowerCase();
+                if (term.includes(query) || def.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // ============================================
+        // WRAP-UP FUNCTIONS
+        // ============================================
+        document.querySelectorAll('.progress-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateCheckboxCount);
+        });
+
+        function updateCheckboxCount() {
+            const checked = document.querySelectorAll('.progress-checkbox:checked').length;
+            document.getElementById('checkboxCount').textContent = `Objectives met: ${checked}/8`;
+        }
+
+        function setConfidence(level) {
+            const display = document.getElementById('confidenceDisplay');
+            const levels = {
+                'low': '🟡 You identified some challenging areas. That\'s smart! Review resources or ask for help.',
+                'medium': '🟢 You\'re on the right track! A bit more practice will build full confidence.',
+                'high': '🟢 Excellent! You\'re ready to apply this to projects. Great work!'
+            };
+            
+            document.getElementById('conf-low').classList.remove('btn-primary');
+            document.getElementById('conf-med').classList.remove('btn-primary');
+            document.getElementById('conf-high').classList.remove('btn-primary');
+            
+            if (level === 'low') document.getElementById('conf-low').classList.add('btn-primary');
+            if (level === 'medium') document.getElementById('conf-med').classList.add('btn-primary');
+            if (level === 'high') document.getElementById('conf-high').classList.add('btn-primary');
+            
+            display.textContent = levels[level];
+        }
+
+        function saveAllResponses() {
+            const data = {
+                sensors: selectedSensors,
+                learned3: document.getElementById('learned3').value,
+                interesting2: document.getElementById('interesting2').value,
+                question1: document.getElementById('question1').value,
+                reflection1: document.getElementById('reflection1').value,
+                reflection2: document.getElementById('reflection2').value,
+                objectivesChecked: document.querySelectorAll('.progress-checkbox:checked').length,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('week3_responses', JSON.stringify(data));
+            const msg = document.getElementById('saveMessage');
+            msg.textContent = '✓ Your reflections saved successfully! (Stored in browser)';
+            setTimeout(() => { msg.textContent = ''; }, 3000);
+        }
+
+        function checkWiring() {
+            alert('Correct answers:\n• Left leg: 5V\n• Middle leg: A0\n• Right leg: GND\n\nCheck your selections above!');
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
