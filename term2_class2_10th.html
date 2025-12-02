@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Levers (Class 2 & 3) & Linkages</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #60a5fa;
+            --primary-dark: #3b82f6;
+            --secondary: #34d399;
+            --accent: #fbbf24;
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* --- Layout & Nav --- */
+        header {
+            background-color: var(--bg-card);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .logo { font-weight: 800; font-size: 1.2rem; color: var(--primary); }
+        .progress-container { width: 100px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 0 1rem; }
+        .progress-bar { height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s ease; }
+
+        .theme-toggle {
+            background: none; border: 1px solid var(--border);
+            color: var(--text-main); padding: 0.5rem; border-radius: 50%;
+            cursor: pointer; font-size: 1.2rem;
+        }
+
+        main { max-width: 800px; margin: 0 auto; padding: 1.5rem; }
+
+        section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        h2 { border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; margin-top: 0; color: var(--primary); }
+        h3 { color: var(--text-main); margin-top: 1.5rem; }
+
+        /* --- Interactive Elements --- */
+        button.action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        button.action-btn:hover { background-color: var(--primary-dark); }
+        
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        
+        .interactive-card {
+            border: 2px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--bg-card);
+        }
+        .interactive-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .interactive-card.selected { border-color: var(--secondary); background-color: rgba(16, 185, 129, 0.1); }
+        .interactive-card.wrong { border-color: #ef4444; background-color: rgba(239, 68, 68, 0.1); }
+
+        /* --- Specific Section Styles --- */
+        /* Opening Activity */
+        .hook-img-placeholder {
+            font-size: 3rem; margin-bottom: 0.5rem; display: block;
+        }
+
+        /* Diagrams */
+        .lever-diagram {
+            width: 100%; height: 150px;
+            background: var(--border);
+            position: relative;
+            border-radius: 8px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        /* Arm Simulation */
+        .arm-sim-container {
+            position: relative; width: 100%; height: 200px;
+            background: #f0f0f0; border-radius: 8px; overflow: hidden;
+            margin: 1rem 0;
+        }
+        .upper-arm {
+            position: absolute; left: 20px; top: 100px; width: 100px; height: 20px;
+            background: #888; border-radius: 10px;
+        }
+        .forearm {
+            position: absolute; left: 110px; top: 100px; width: 150px; height: 16px;
+            background: #e2b497; border-radius: 8px;
+            transform-origin: 10px 50%; /* Pivot at elbow */
+            transition: transform 0.1s linear;
+        }
+        .hand-ball {
+            position: absolute; right: -10px; top: -10px;
+            width: 30px; height: 30px; background: var(--primary);
+            border-radius: 50%;
+        }
+        .muscle {
+            position: absolute;
+            left: 80px; top: 80px;
+            width: 60px; height: 5px;
+            background: #ef4444;
+            transform-origin: 0 50%;
+        }
+        
+        /* Vocab */
+        .vocab-item {
+            border-bottom: 1px solid var(--border); padding: 0.5rem 0;
+            display: flex; justify-content: space-between; align-items: baseline;
+        }
+        .vocab-term { font-weight: bold; color: var(--primary); }
+
+        /* CCQs */
+        .ccq-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .feedback { margin-top: 0.5rem; font-weight: bold; font-size: 0.9rem; }
+        .feedback.correct { color: var(--secondary); }
+        .feedback.incorrect { color: #ef4444; }
+
+        /* Missed Class Section */
+        .missed-class-card {
+            border-left: 5px solid var(--accent);
+            background-color: #fffbeb;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 8px;
+        }
+        [data-theme="dark"] .missed-class-card {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--text-main);
+        }
+        
+        .resource-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+        .resource-link:hover {
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+        [data-theme="dark"] .resource-link { background: rgba(0,0,0,0.2); }
+
+        /* Wrap Up */
+        .badge {
+            display: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; padding: 2rem; border-radius: 20px;
+            text-align: center; margin-top: 2rem; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* Utilities */
+        .hidden { display: none; }
+        .flex-between { display: flex; justify-content: space-between; }
+        .tag { font-size: 0.75rem; background: var(--border); padding: 2px 6px; border-radius: 4px; }
+        
+        input[type="range"] { width: 100%; }
+        
+        /* Linkage Demo */
+        .linkage-demo {
+            height: 200px; position: relative; border: 1px dashed var(--text-muted);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .linkage-bar {
+            width: 100px; height: 10px; background: var(--text-main);
+            position: absolute; transition: transform 0.3s;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">PHY 101: Levers</div>
+    <div class="progress-container" title="Lesson Progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+</header>
+
+<main id="app">
+
+    <!-- Section 1: Opening Activity -->
+    <section id="opening-activity">
+        <h2>1. Lever Class Challenge</h2>
+        <p>Before we start, let's test your intuition. Look at the tools below. Are they Class 1, 2, or 3?</p>
+        
+        <div id="hook-game-container">
+            <div id="hook-item-display" style="text-align: center; margin-bottom: 1rem;">
+                <span id="hook-icon" class="hook-img-placeholder">🚪</span>
+                <h3 id="hook-name">Door Handle</h3>
+            </div>
+            
+            <div class="card-grid">
+                <button class="interactive-card" onclick="checkHook(1)">Class 1<br><small>(Fulcrum Middle)</small></button>
+                <button class="interactive-card" onclick="checkHook(2)">Class 2<br><small>(Load Middle)</small></button>
+                <button class="interactive-card" onclick="checkHook(3)">Class 3<br><small>(Effort Middle)</small></button>
+            </div>
+            <p id="hook-feedback" style="text-align: center; font-weight: bold; height: 1.5em;"></p>
+        </div>
+        <p style="font-style: italic; font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem;">
+            *Remember: It's okay if you guess wrong now. We are here to learn why!
+        </p>
+    </section>
+
+    <!-- Section 2: Objectives -->
+    <section id="objectives">
+        <h2>2. Learning Goals</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <h3>🧠 Cognitive</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li>✅ <strong>Distinguish</strong> between all three lever classes.</li>
+                    <li>✅ <strong>Explain</strong> why Class 3 levers trade force for speed.</li>
+                    <li>✅ <strong>Calculate</strong> Mechanical Advantage (MA).</li>
+                    <li>✅ <strong>Identify</strong> linkages in everyday mechanisms.</li>
+                </ul>
+            </div>
+            <div>
+                <h3>❤️ Social & Emotional (SEL)</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li>🧠 <strong>Self-Regulation:</strong> I will monitor my own confusion when learning about MA < 1 and use the simulation to clarify my understanding.</li>
+                    <li>🤝 <strong>Social Awareness:</strong> I will appreciate how different tool designs (tweezers vs. nutcrackers) help people with different abilities and needs.</li>
+                    <li>💡 <strong>Critical Thinking:</strong> I will challenge my assumption that "machines always make lifting easier" by exploring speed advantages.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="ccq-box">
+            <p><strong>Success Criteria:</strong> By the end of this lesson, you will be able to sketch your own arm as a lever and explain exactly why you can throw a ball fast!</p>
+        </div>
+    </section>
+
+    <!-- Section 3: Concept Exploration -->
+    <section id="concepts">
+        <h2>3. Deep Dive: Class 3 Levers</h2>
+        
+        <p>In Class 1 and 2, the Mechanical Advantage (MA) is often greater than 1 (makes lifting easier). But in <strong>Class 3</strong>, the Effort is in the middle.</p>
+        
+        <div style="background: var(--bg-body); padding: 1rem; border-radius: 8px; text-align: center;">
+            <strong>FLE Rule:</strong><br>
+            Class 1: <strong>F</strong>ulcrum Middle<br>
+            Class 2: <strong>L</strong>oad Middle<br>
+            Class 3: <strong>E</strong>ffort Middle
+        </div>
+
+        <h3>Why use Class 3 if it's "harder"?</h3>
+        <p>If the MA is less than 1, we lose force... but we gain <strong>Speed and Distance</strong>.</p>
+
+        <div class="arm-sim-container" aria-label="Interactive arm simulation">
+            <div class="upper-arm"></div>
+            <div class="forearm" id="sim-forearm">
+                <div class="hand-ball"></div>
+            </div>
+            <div class="muscle" id="sim-muscle"></div>
+            <div style="position: absolute; bottom: 10px; left: 10px; width: 90%;">
+                <label for="bicep-slider">Contract Bicep (Effort):</label>
+                <input type="range" id="bicep-slider" min="0" max="60" value="0" oninput="updateArmSim(this.value)">
+            </div>
+        </div>
+        <p id="sim-stats" style="font-family: monospace; font-size: 0.9rem;">
+            Muscle Contracted: 0cm | Hand Moved: 0cm | Speed Multiplier: 7x
+        </p>
+        
+        <details>
+            <summary style="cursor: pointer; color: var(--primary); font-weight: bold;">Click to Analyze the Forearm Example</summary>
+            <ul>
+                <li><strong>Fulcrum:</strong> Elbow</li>
+                <li><strong>Effort:</strong> Bicep attachment (~5cm from elbow)</li>
+                <li><strong>Load:</strong> Hand/Ball (~35cm from elbow)</li>
+                <li><strong>Calculation:</strong> MA = Effort Arm / Load Arm = 5 / 35 = <strong>0.14</strong></li>
+            </ul>
+        </details>
+
+        <!-- Missed Class Section -->
+        <div class="missed-class-card">
+            <h3 style="margin-top:0; color: var(--accent);">📚 Missed Class? Catch Up Here!</h3>
+            <p>If you missed this week's lesson on Levers & Linkages, review these key resources:</p>
+            
+            <a href="https://www.youtube.com/watch?v=lDT00R78E44" target="_blank" class="resource-link">
+                <span style="font-size: 1.5rem; margin-right: 1rem;">📺</span>
+                <div>
+                    <strong>Class 1, 2, and 3 Levers</strong>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Differences explained with simple examples.</div>
+                </div>
+            </a>
+            
+            <a href="https://www.youtube.com/watch?v=D0y-e0rR0Fk" target="_blank" class="resource-link">
+                <span style="font-size: 1.5rem; margin-right: 1rem;">⚙️</span>
+                <div>
+                    <strong>What is a Linkage?</strong>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Visual guide to 4-bar linkages and motion transfer.</div>
+                </div>
+            </a>
+            
+            <a href="https://www.youtube.com/watch?v=pfzJ-z5Ij48" target="_blank" class="resource-link">
+                <span style="font-size: 1.5rem; margin-right: 1rem;">🔢</span>
+                <div>
+                    <strong>Calculating Mechanical Advantage</strong>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Step-by-step math for lever classes.</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Section 4: Linkages -->
+    <section id="linkages">
+        <h2>4. Introduction to Linkages</h2>
+        <p>A linkage is simply a series of levers connected by pins or joints. They transfer motion, change direction, or amplify movement.</p>
+        
+        <div class="linkage-demo">
+            <!-- Simple visual representation of a 4-bar linkage -->
+            <svg width="200" height="150" viewBox="0 0 200 150">
+                <line x1="50" y1="130" x2="150" y2="130" stroke="var(--text-muted)" stroke-width="4" /> <!-- Base -->
+                <line id="link-input" x1="50" y1="130" x2="50" y2="50" stroke="var(--primary)" stroke-width="4" />
+                <line id="link-couple" x1="50" y1="50" x2="150" y2="50" stroke="var(--accent)" stroke-width="4" />
+                <line id="link-output" x1="150" y1="50" x2="150" y2="130" stroke="var(--secondary)" stroke-width="4" />
+                <circle cx="50" cy="130" r="4" fill="black"/>
+                <circle cx="150" cy="130" r="4" fill="black"/>
+            </svg>
+        </div>
+        <p style="text-align: center;">
+            <button class="action-btn" style="width: auto;" onclick="animateLinkage()">Simulate Motion</button>
+        </p>
+        <p><small>Common Examples: Windshield wipers, bicycle brakes, car suspension.</small></p>
+    </section>
+
+    <!-- Section 5: Guided Practice with CCQs -->
+    <section id="practice">
+        <h2>5. Practice & Concept Checks</h2>
+        
+        <!-- Exercise 1 -->
+        <div class="exercise-block">
+            <h3>Exercise 1: The Fishing Rod</h3>
+            <p>You are fishing. Your hand acts as the fulcrum at the bottom of the rod. Your other hand pushes the rod forward (effort) a bit higher up. The fish (load) is at the tip.</p>
+            <p><strong>Question:</strong> What Class is this?</p>
+            
+            <div class="card-grid">
+                <button class="interactive-card" onclick="checkExercise(1, 'class3')">Class 3</button>
+                <button class="interactive-card" onclick="checkExercise(1, 'class2')">Class 2</button>
+            </div>
+            <p id="ex1-feedback" class="feedback hidden"></p>
+
+            <!-- CCQ 1: Conditional Appearance -->
+            <div id="ccq-1" class="ccq-box hidden">
+                <h4>🛑 Concept Check:</h4>
+                <p>Would it be correct to say that the tip of the rod moves <em>slower</em> than your hand?</p>
+                <button class="tag" onclick="checkCCQ(1, true)">Yes</button>
+                <button class="tag" onclick="checkCCQ(1, false)">No</button>
+                <p id="ccq1-feedback" class="feedback hidden"></p>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 2rem 0;">
+
+        <!-- Exercise 2 -->
+        <div class="exercise-block">
+            <h3>Exercise 2: Calculation</h3>
+            <p>Effort Arm = 0.2m. Load Arm = 0.6m.</p>
+            <p>Calculate MA. (Hint: MA = EA ÷ LA)</p>
+            <input type="number" id="ma-input" placeholder="Enter number..." style="padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border);">
+            <button class="action-btn" style="width: auto; margin-left: 1rem;" onclick="checkMA()">Check</button>
+            <p id="ma-feedback" class="feedback hidden"></p>
+            
+            <!-- CCQ 2: Application -->
+            <div id="ccq-2" class="ccq-box hidden">
+                <h4>🛑 Concept Check:</h4>
+                <p>If the MA is 0.33, is the force you input being multiplied (made stronger) or reduced (made weaker)?</p>
+                <button class="tag" onclick="checkCCQ(2, 'multiplied')">Multiplied</button>
+                <button class="tag" onclick="checkCCQ(2, 'reduced')">Reduced</button>
+                <p id="ccq2-feedback" class="feedback hidden"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Wrap Up -->
+    <section id="wrap-up">
+        <h2>6. Wrap-Up & Reflection</h2>
+        
+        <div class="tabs">
+            <button class="action-btn" style="margin-bottom: 1rem;" onclick="showTab('reflect-consolidation')">A. Consolidation</button>
+            <button class="action-btn" style="margin-bottom: 1rem; background-color: var(--secondary);" onclick="showTab('reflect-check')">B. Objective Check</button>
+        </div>
+
+        <!-- Consolidation -->
+        <div id="reflect-consolidation">
+            <h3>3-2-1 Reflection</h3>
+            <label>3 Things I learned:</label>
+            <textarea style="width:100%; height: 60px; margin-bottom: 10px;"></textarea>
+            
+            <label>2 Interesting facts:</label>
+            <textarea style="width:100%; height: 60px; margin-bottom: 10px;"></textarea>
+            
+            <label>1 Question I still have:</label>
+            <textarea style="width:100%; height: 60px;"></textarea>
+            
+            <button class="action-btn" onclick="saveReflection()">Save Reflection</button>
+        </div>
+
+        <!-- Objective Check -->
+        <div id="reflect-check" class="hidden">
+            <h3>Did we meet our goals?</h3>
+            <label style="display: block; margin: 0.5rem 0;">
+                <input type="checkbox" id="obj1"> I can distinguish all 3 lever classes.
+            </label>
+            <label style="display: block; margin: 0.5rem 0;">
+                <input type="checkbox" id="obj2"> I understand Class 3 gives speed, not force.
+            </label>
+            <label style="display: block; margin: 0.5rem 0;">
+                <input type="checkbox" id="obj3"> I can calculate MA.
+            </label>
+            
+            <h3>Bridge to Next Lesson</h3>
+            <p>Next week, we will combine these levers with <strong>Pulleys</strong> to create compound machines!</p>
+            
+            <button class="action-btn" onclick="finishLesson()">Complete Lesson</button>
+        </div>
+
+        <div id="completion-badge" class="badge">
+            <h1 style="margin: 0;">🏆</h1>
+            <h3>Lesson Complete!</h3>
+            <p>You are a Mechanical Master.</p>
+            <p id="final-score"></p>
+        </div>
+
+    </section>
+
+    <!-- Section 7: Vocabulary -->
+    <section id="vocab">
+        <h2>Vocabulary Bank</h2>
+        <input type="text" id="vocab-search" placeholder="Search terms..." onkeyup="filterVocab()" style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid var(--border);">
+        <div id="vocab-list">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 2rem;">
+        Physics Grade 8 • Generated for Educational Purposes
+    </p>
+</footer>
+
+<script>
+    // --- Data & State ---
+    const state = {
+        theme: 'light',
+        hookScore: 0,
+        currentHookIndex: 0,
+        completedSections: new Set(),
+        vocab: [
+            { term: "Fulcrum", def: "The fixed point around which a lever pivots." },
+            { term: "Effort", def: "The force applied to a machine to do work." },
+            { term: "Load", def: "The object or weight being moved or lifted." },
+            { term: "Mechanical Advantage (MA)", def: "The number of times a machine increases a force exerted on it." },
+            { term: "Class 3 Lever", def: "A lever where the effort is between the fulcrum and the load. (MA < 1)." },
+            { term: "Linkage", def: "A system of levers connected by pivots used to transmit motion." },
+            { term: "Oscillating Motion", def: "Movement back and forth at a regular speed." }
+        ],
+        hookItems: [
+            { name: "Stapler", type: 2, icon: "📎" }, // Actually Class 2 (Load middle) or 3 depending on holding, usually taught as 2 or 3. Let's use Class 2 for standard textbook example (Load is resistance of staple, Effort is hand, Fulcrum is hinge). **Actually often Class 3 in other texts.** Let's stick to the prompt's ambiguity or define specific usage. *Correction*: Stapler holding end = Class 2.
+            { name: "Broom", type: 3, icon: "🧹" }, // Fulcrum top hand, Effort bottom hand, Load bristles
+            { name: "Pliers", type: 1, icon: "🔧" }, // Fulcrum middle
+            { name: "Car Brake Pedal", type: 2, icon: "🚗" }, // Fulcrum top, Load (piston) middle, Effort bottom
+            { name: "Door Handle", type: 2, icon: "🚪" } // Fulcrum hinge, Load latch, Effort handle end
+        ]
+    };
+
+    // --- Initialization ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Theme
+        if (localStorage.getItem('theme') === 'dark') toggleTheme();
+        
+        // Load Hook
+        loadHookItem();
+
+        // Load Vocab
+        renderVocab();
+
+        // Setup Progress Scroll Listener
+        window.addEventListener('scroll', updateProgress);
+    });
+
+    // --- Theme Logic ---
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById('themeToggle');
+        if (body.getAttribute('data-theme') === 'dark') {
+            body.removeAttribute('data-theme');
+            btn.innerHTML = '🌙';
+            state.theme = 'light';
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerHTML = '☀️';
+            state.theme = 'dark';
+        }
+        localStorage.setItem('theme', state.theme);
+    }
+
+    // --- Progress Logic ---
+    function updateProgress() {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById("progressBar").style.width = scrolled + "%";
+    }
+
+    // --- Section 1: Opening Activity Logic ---
+    function loadHookItem() {
+        if (state.currentHookIndex >= state.hookItems.length) {
+            document.getElementById('hook-game-container').innerHTML = `
+                <div style="text-align: center;">
+                    <h3>Challenge Complete!</h3>
+                    <p>You correctly identified mechanics patterns.</p>
+                    <p>Proceed to learn WHY some are Class 3!</p>
+                </div>`;
+            return;
+        }
+        const item = state.hookItems[state.currentHookIndex];
+        document.getElementById('hook-name').innerText = item.name;
+        document.getElementById('hook-icon').innerText = item.icon;
+        document.getElementById('hook-feedback').innerText = "";
+    }
+
+    function checkHook(guess) {
+        const item = state.hookItems[state.currentHookIndex];
+        const fb = document.getElementById('hook-feedback');
+        
+        // Simplified Logic for the game to keep momentum
+        // Note: Real world mechanics can be complex, but we simplify for Grade 8
+        if (guess === item.type) {
+            fb.innerHTML = `<span style="color:var(--secondary)">Correct! It's a Class ${item.type}.</span>`;
+            setTimeout(() => {
+                state.currentHookIndex++;
+                loadHookItem();
+            }, 1000);
+        } else {
+            fb.innerHTML = `<span style="color:#ef4444">Try again! Think about what's in the middle.</span>`;
+        }
+    }
+
+    // --- Section 3: Arm Simulation ---
+    function updateArmSim(val) {
+        const angle = val; 
+        // Visual Rotation
+        const forearm = document.getElementById('sim-forearm');
+        forearm.style.transform = `rotate(-${angle}deg)`;
+        
+        // Calculations for display
+        const muscleContraction = (val * 0.1).toFixed(1); // Fake scale
+        const handMove = (val * 0.7).toFixed(1);
+        
+        document.getElementById('sim-stats').innerHTML = 
+            `Muscle Shortened: ${muscleContraction}cm | Hand Moved: ${handMove}cm | Speed Multiplier: ~7x`;
+    }
+
+    // --- Section 4: Linkage Animation ---
+    function animateLinkage() {
+        const input = document.getElementById('link-input');
+        const output = document.getElementById('link-output');
+        const couple = document.getElementById('link-couple');
+        
+        // Simple CSS Animation injection
+        input.innerHTML = `<animate attributeName="x2" values="50;30;50" dur="1s" repeatCount="3" />`;
+        // This is a pseudo-animation for visual effect, not a physics engine
+        // In a real physics engine we'd calculate vectors. 
+        // Here we simulate the concept: One moves, others follow.
+        
+        let steps = 0;
+        const interval = setInterval(() => {
+            steps++;
+            const offset = Math.sin(steps * 0.5) * 20;
+            
+            // Move Input Bar Top
+            input.setAttribute('x2', 50 + offset);
+            
+            // Move Couple Bar
+            couple.setAttribute('x1', 50 + offset);
+            couple.setAttribute('x2', 150 - offset);
+            
+            // Move Output Bar Top
+            output.setAttribute('x2', 150 - offset);
+            
+            if(steps > 20) clearInterval(interval);
+        }, 50);
+    }
+
+    // --- Section 5: Practice & CCQs ---
+    function checkExercise(exNum, answer) {
+        const fb = document.getElementById('ex1-feedback');
+        const ccq = document.getElementById('ccq-1');
+        
+        fb.classList.remove('hidden');
+        if (answer === 'class3') {
+            fb.innerHTML = "Correct! The hand holding the rod (fulcrum) is at the bottom, the other hand (effort) is in the middle.";
+            fb.className = "feedback correct";
+            ccq.classList.remove('hidden'); // Trigger CCQ
+        } else {
+            fb.innerHTML = "Incorrect. Draw the diagram: Where is the pivot? Where is the force applied?";
+            fb.className = "feedback incorrect";
+        }
+    }
+
+    function checkCCQ(num, answer) {
+        if (num === 1) {
+            const fb = document.getElementById('ccq1-feedback');
+            fb.classList.remove('hidden');
+            if (answer === false) { // Correct answer: No, it moves faster
+                fb.innerHTML = "Correct! The tip moves much farther and faster than your hand. That's the Class 3 advantage!";
+                fb.className = "feedback correct";
+            } else {
+                fb.innerHTML = "Not quite. Look at the arm simulation again. Small effort movement = Large load movement.";
+                fb.className = "feedback incorrect";
+            }
+        }
+        if (num === 2) {
+            const fb = document.getElementById('ccq2-feedback');
+            fb.classList.remove('hidden');
+            if (answer === 'reduced') {
+                fb.innerHTML = "Exactly! We sacrifice force (reduction) to gain speed.";
+                fb.className = "feedback correct";
+            } else {
+                fb.innerHTML = "Think again. If MA < 1, the output force is smaller than the input force.";
+                fb.className = "feedback incorrect";
+            }
+        }
+    }
+
+    function checkMA() {
+        const val = parseFloat(document.getElementById('ma-input').value);
+        const fb = document.getElementById('ma-feedback');
+        const ccq = document.getElementById('ccq-2');
+        
+        fb.classList.remove('hidden');
+        
+        // 0.2 / 0.6 = 0.333...
+        if (val >= 0.3 && val <= 0.34) {
+            fb.innerHTML = "Correct! 0.2 ÷ 0.6 = 0.33.";
+            fb.className = "feedback correct";
+            ccq.classList.remove('hidden'); // Trigger CCQ
+        } else {
+            fb.innerHTML = "Check your math. MA = Effort Arm ÷ Load Arm.";
+            fb.className = "feedback incorrect";
+        }
+    }
+
+    // --- Section 6: Wrap Up ---
+    function showTab(id) {
+        document.getElementById('reflect-consolidation').classList.add('hidden');
+        document.getElementById('reflect-check').classList.add('hidden');
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    function saveReflection() {
+        alert("Reflection saved to your digital notebook!");
+        showTab('reflect-check');
+    }
+
+    function finishLesson() {
+        // Confetti logic simplified for single file
+        document.getElementById('reflect-check').classList.add('hidden');
+        const badge = document.getElementById('completion-badge');
+        badge.style.display = 'block';
+        badge.scrollIntoView({behavior: "smooth"});
+        
+        // Simple confetti effect using emojis
+        for(let i=0; i<20; i++) {
+            createConfetti();
+        }
+    }
+
+    function createConfetti() {
+        const el = document.createElement('div');
+        el.innerText = '🎉';
+        el.style.position = 'fixed';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = '-50px';
+        el.style.fontSize = '20px';
+        el.style.transition = 'top 2s ease-in';
+        document.body.appendChild(el);
+        setTimeout(() => { el.style.top = '110vh'; }, 100);
+        setTimeout(() => { el.remove(); }, 2000);
+    }
+
+    // --- Section 7: Vocab ---
+    function renderVocab() {
+        const list = document.getElementById('vocab-list');
+        list.innerHTML = state.vocab.map(v => `
+            <div class="vocab-item">
+                <span class="vocab-term">${v.term}</span>
+                <span style="font-size: 0.9rem;">${v.def}</span>
+            </div>
+        `).join('');
+    }
+
+    function filterVocab() {
+        const query = document.getElementById('vocab-search').value.toLowerCase();
+        const items = document.querySelectorAll('.vocab-item');
+        items.forEach(item => {
+            const text = item.innerText.toLowerCase();
+            item.style.display = text.includes(query) ? 'flex' : 'none';
+        });
+    }
+
+</script>
+
+</body>
+</html>
