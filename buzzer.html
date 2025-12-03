@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino Buzzer Workshop: From Beeps to Star Wars</title>
+    <style>
+        :root {
+            --arduino-teal: #00979D;
+            --code-bg: #f4f4f4;
+            --dark-side: #c0392b;
+            --highlight: #f1c40f;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: var(--arduino-teal);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #eee;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+        .tab.active {
+            background: var(--arduino-teal);
+            color: white;
+            border-bottom: 2px solid var(--arduino-teal);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        h2 { border-bottom: 2px solid var(--arduino-teal); padding-bottom: 10px; }
+        h3 { color: var(--arduino-teal); margin-top: 25px;}
+        
+        /* Wiring Box */
+        .wiring-box {
+            background-color: #e8f6f7;
+            border-left: 5px solid var(--arduino-teal);
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .wiring-list li { margin-bottom: 8px; }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+            position: relative;
+        }
+        code { font-family: 'Consolas', 'Monaco', monospace; color: #333; }
+        
+        /* Syntax Highlighting */
+        .k { color: #d35400; font-weight: bold; } /* Keyword */
+        .t { color: #00979D; font-weight: bold; } /* Type/Function */
+        .c { color: #7f8c8d; font-style: italic; } /* Comment */
+        .n { color: #2980b9; } /* Number */
+        .s { color: #c0392b; } /* String */
+        
+        /* Student Redaction Styles */
+        .blank {
+            display: inline-block;
+            width: 80px;
+            border-bottom: 2px solid #333;
+            background: #fff3cd;
+            color: transparent;
+            cursor: pointer;
+            text-align: center;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        .blank:hover {
+            background: #ffe69c;
+        }
+        .blank.revealed {
+            color: #d35400;
+            background: transparent;
+            border-bottom: none;
+            width: auto;
+            font-weight: bold;
+        }
+
+        .toggle-btn {
+            background: var(--dark-side);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .toggle-btn:hover { background: #a93226; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Arduino Sound Lab</h1>
+    <p>Step-by-Step Guide for Students & Teachers</p>
+</header>
+
+<div class="container">
+    <div class="tabs">
+        <div class="tab active" onclick="openTab('step1')">1. Simple Beep</div>
+        <div class="tab" onclick="openTab('step2')">2. Imperial March</div>
+        <div class="tab" onclick="openTab('step3')">3. LED Sync</div>
+        <div class="tab" onclick="openTab('step4')">4. Button Trigger</div>
+    </div>
+
+    <div id="step1" class="content-section active">
+        <h2>Level 1: The Basic Beep</h2>
+        <p>Learn how to connect a buzzer and make your first sound.</p>
+
+        <div class="wiring-box">
+            <h3>⚡ Wiring Instructions</h3>
+            <ul class="wiring-list">
+                <li><strong>Buzzer Signal (S):</strong> Pin 8</li>
+                <li><strong>Buzzer VCC (+):</strong> 5V</li>
+                <li><strong>Buzzer GND (-):</strong> GND</li>
+            </ul>
+        </div>
+
+        <h3>📝 Student Code Challenge</h3>
+        <p>Click the yellow boxes to reveal the answer, or try to guess the missing code first!</p>
+        <button class="toggle-btn" onclick="revealAll('code1')">Reveal All Answers</button>
+        
+        <pre id="code1"><code><span class="c">// Simple Passive Buzzer Test</span>
+<span class="k">const</span> <span class="k">int</span> buzzerPin = <span class="blank" onclick="reveal(this)">8</span>;
+
+<span class="k">void</span> <span class="t">setup</span>() {
+  <span class="t">pinMode</span>(buzzerPin, <span class="blank" onclick="reveal(this)">OUTPUT</span>);
+}
+
+<span class="k">void</span> <span class="t">loop</span>() {
+  <span class="c">// Play 1000Hz tone</span>
+  <span class="t">tone</span>(buzzerPin, 1000); 
+  <span class="t">delay</span>(1000);
+  
+  <span class="c">// Stop the sound</span>
+  <span class="blank" onclick="reveal(this)">noTone</span>(buzzerPin);     
+  <span class="t">delay</span>(500);
+}</code></pre>
+    </div>
+
+    <div id="step2" class="content-section">
+        <h2>Level 2: The Imperial March</h2>
+        <p>Using variables to create specific musical notes.</p>
+
+        <div class="wiring-box">
+            <h3>⚡ Wiring Instructions</h3>
+            <p>Same as Level 1 (Buzzer on Pin 8).</p>
+        </div>
+
+        <h3>📝 Student Code Challenge</h3>
+        <p>Fill in the blanks to complete the melody loop.</p>
+        <button class="toggle-btn" onclick="revealAll('code2')">Reveal All Answers</button>
+
+        <pre id="code2"><code><span class="k">const</span> <span class="k">int</span> buzzerPin = 8;
+<span class="k">#define</span> NOTE_A4  440
+<span class="k">#define</span> NOTE_F4  349
+<span class="k">#define</span> NOTE_C5  523
+
+<span class="k">void</span> <span class="t">setup</span>() {
+  <span class="t">pinMode</span>(buzzerPin, OUTPUT);
+}
+
+<span class="k">void</span> <span class="t">loop</span>() {
+  <span class="c">// Play A4 three times</span>
+  beep(NOTE_A4, 500);
+  beep(<span class="blank" onclick="reveal(this)">NOTE_A4</span>, 500);
+  beep(NOTE_A4, 500);
+  
+  <span class="c">// Play F4 then C5</span>
+  beep(<span class="blank" onclick="reveal(this)">NOTE_F4</span>, 350);
+  beep(NOTE_C5, 150);
+  
+  <span class="t">delay</span>(2000);
+}
+
+<span class="c">// Custom helper function</span>
+<span class="k">void</span> beep(<span class="k">int</span> note, <span class="k">int</span> duration) {
+  <span class="t">tone</span>(buzzerPin, note, duration);
+  <span class="t">delay</span>(<span class="blank" onclick="reveal(this)">duration</span>); 
+  <span class="t">delay</span>(50);
+}</code></pre>
+    </div>
+
+    <div id="step3" class="content-section">
+        <h2>Level 3: Adding Visuals (LED)</h2>
+        <p>Make a red LED blink in perfect sync with the music.</p>
+
+        <div class="wiring-box">
+            <h3>⚡ Wiring Instructions</h3>
+            <ul class="wiring-list">
+                <li><strong>Buzzer:</strong> Remains on Pin 8</li>
+                <li><strong>LED Long Leg (+):</strong> Pin 7</li>
+                <li><strong>LED Short Leg (-):</strong> Connect to Resistor (220Ω), then to GND</li>
+            </ul>
+        </div>
+
+        <h3>📝 Student Code Challenge</h3>
+        <p>Complete the `beep` function to turn the light on and off.</p>
+        <button class="toggle-btn" onclick="revealAll('code3')">Reveal All Answers</button>
+
+        <pre id="code3"><code><span class="k">const</span> <span class="k">int</span> buzzerPin = 8;
+<span class="k">const</span> <span class="k">int</span> ledPin = <span class="blank" onclick="reveal(this)">7</span>;
+
+<span class="k">void</span> <span class="t">setup</span>() {
+  <span class="t">pinMode</span>(buzzerPin, OUTPUT);
+  <span class="t">pinMode</span>(ledPin, <span class="blank" onclick="reveal(this)">OUTPUT</span>);
+}
+
+<span class="k">void</span> <span class="t">loop</span>() {
+  <span class="c">// Melody calls go here...</span>
+  beep(440, 500);
+}
+
+<span class="k">void</span> beep(<span class="k">int</span> note, <span class="k">int</span> duration) {
+  <span class="c">// 1. Turn LED ON</span>
+  <span class="t">digitalWrite</span>(ledPin, <span class="blank" onclick="reveal(this)">HIGH</span>);
+  
+  <span class="c">// 2. Play Sound</span>
+  <span class="t">tone</span>(buzzerPin, note, duration);
+  
+  <span class="c">// 3. Wait</span>
+  <span class="t">delay</span>(duration);
+  
+  <span class="c">// 4. Turn LED OFF</span>
+  <span class="t">digitalWrite</span>(ledPin, <span class="blank" onclick="reveal(this)">LOW</span>);
+  
+  <span class="t">delay</span>(50);
+}</code></pre>
+    </div>
+
+    <div id="step4" class="content-section">
+        <h2>Level 4: Button Trigger</h2>
+        <p>The music should only play when the button is pressed.</p>
+
+        <div class="wiring-box">
+            <h3>⚡ Wiring Instructions</h3>
+            <ul class="wiring-list">
+                <li><strong>Buzzer:</strong> Pin 8</li>
+                <li><strong>LED:</strong> Pin 7</li>
+                <li><strong>Button Leg A:</strong> Pin 2</li>
+                <li><strong>Button Leg B:</strong> GND</li>
+            </ul>
+        </div>
+
+        <h3>📝 Student Code Challenge</h3>
+        <p>Use the internal pull-up resistor logic.</p>
+        <button class="toggle-btn" onclick="revealAll('code4')">Reveal All Answers</button>
+
+        <pre id="code4"><code><span class="k">const</span> <span class="k">int</span> buttonPin = 2;
+
+<span class="k">void</span> <span class="t">setup</span>() {
+  <span class="c">// Activate internal resistor</span>
+  <span class="t">pinMode</span>(buttonPin, <span class="blank" onclick="reveal(this)">INPUT_PULLUP</span>);
+  
+  <span class="t">pinMode</span>(8, OUTPUT);
+  <span class="t">pinMode</span>(7, OUTPUT);
+}
+
+<span class="k">void</span> <span class="t">loop</span>() {
+  <span class="c">// Check if button is pressed (LOW means pressed)</span>
+  <span class="k">int</span> buttonState = <span class="t">digitalRead</span>(buttonPin);
+
+  <span class="k">if</span> (buttonState == <span class="blank" onclick="reveal(this)">LOW</span>) {
+    playImperialMarch();
+  }
+}
+
+<span class="k">void</span> playImperialMarch() {
+  <span class="c">// Song code here...</span>
+}</code></pre>
+    </div>
+
+</div>
+
+<script>
+    function openTab(stepId) {
+        // Hide all contents
+        var contents = document.getElementsByClassName('content-section');
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].classList.remove('active');
+        }
+        
+        // Remove active class from tabs
+        var tabs = document.getElementsByClassName('tab');
+        for (var i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove('active');
+        }
+
+        // Show specific content and activate tab
+        document.getElementById(stepId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function reveal(element) {
+        element.classList.add('revealed');
+    }
+
+    function revealAll(sectionId) {
+        var container = document.getElementById(sectionId);
+        var blanks = container.getElementsByClassName('blank');
+        for (var i = 0; i < blanks.length; i++) {
+            blanks[i].classList.add('revealed');
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: The Hardware Handshake</title>
+    <style>
+        :root {
+            /* Palette based on your 12th grade file (Teal/Natural tones) */
+            --color-white: rgba(255, 255, 255, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            
+            /* Primary Accent: Arduino Teal */
+            --color-primary: #00979D;
+            --color-primary-hover: #008184;
+            --color-primary-active: #005F61;
+            
+            /* Secondary: Warning/Warmth */
+            --color-secondary: rgba(230, 129, 97, 0.15); 
+            --color-secondary-hover: rgba(230, 129, 97, 0.25);
+            --color-warning: #E68161;
+            
+            /* Success/Error */
+            --color-error: #D32F2F;
+            --color-success: #2e7d32;
+            
+            /* UI Elements */
+            --color-border: rgba(94, 82, 64, 0.2);
+            --color-bg-1: rgba(0, 151, 157, 0.08); /* Light Teal */
+            --color-bg-2: rgba(245, 158, 11, 0.08); /* Light Orange */
+            --color-bg-error: rgba(211, 47, 47, 0.05); /* Light Red */
+            
+            /* Base settings */
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-charcoal-700);
+            --color-text-light: var(--color-white);
+            
+            --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-family-mono: "Monaco", "Consolas", monospace;
+            
+            --radius-md: 10px;
+            --radius-lg: 12px;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+            --duration-normal: 250ms;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-border: rgba(255, 255, 255, 0.15);
+                --color-bg-1: rgba(0, 151, 157, 0.15);
+            }
+        }
+
+        * { box-sizing: border-box; }
+        
+        html {
+            font-size: 16px;
+            font-family: var(--font-family-base);
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            scroll-behavior: smooth;
+        }
+
+        body { margin: 0; padding: 0; }
+
+        /* --- LAYOUT --- */
+        header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #005F61 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 { margin: 0; font-size: 1.8rem; font-weight: 700; }
+        .subtitle { opacity: 0.9; margin-top: 0.5rem; font-size: 1rem; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0.8rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 80px;
+            z-index: 99;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            color: var(--color-slate-500);
+            font-weight: 500;
+            transition: all var(--duration-normal);
+        }
+
+        nav button:hover { background-color: var(--color-bg-1); color: var(--color-primary); }
+        nav button.active { background-color: var(--color-primary); color: white; }
+
+        .progress-bar {
+            height: 5px;
+            background: var(--color-primary);
+            width: 0%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 101;
+            transition: width 0.3s;
+        }
+
+        /* --- SECTIONS --- */
+        section { display: none; animation: fadeIn 0.4s ease-out; margin-bottom: 3rem; }
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- CARDS & CONTENT --- */
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        h2 { color: var(--color-text); border-bottom: 2px solid var(--color-primary); padding-bottom: 0.5rem; display: inline-block; }
+        h3 { color: var(--color-primary); margin-top: 0; }
+
+        /* --- EXPANDABLES --- */
+        .expandable {
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background: var(--color-surface);
+        }
+
+        .expandable-header {
+            padding: 1rem;
+            background: var(--color-bg-1);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .expandable.error-type .expandable-header {
+            background: var(--color-bg-error);
+            border-left: 5px solid var(--color-error);
+            color: var(--color-error);
+        }
+
+        .expandable-header:hover { background: var(--color-secondary-hover); }
+
+        .expandable-content {
+            padding: 0 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s;
+            background: var(--color-surface);
+        }
+
+        .expandable-content.open {
+            padding: 1rem;
+            max-height: 1000px; /* Arbitrary large height */
+        }
+
+        /* --- CODE BLOCKS --- */
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: var(--font-family-mono);
+            border-left: 4px solid var(--color-primary);
+        }
+        code {
+            background: rgba(0,0,0,0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: var(--font-family-mono);
+            font-size: 0.9em;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: filter 0.2s;
+            text-align: center;
+        }
+        .btn:hover { filter: brightness(110%); }
+        .btn-full { width: 100%; margin-top: 1rem; }
+        .btn-secondary { background: var(--color-slate-500); }
+
+        /* --- INTERACTIVE ELEMENTS --- */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: var(--color-bg-2);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+        }
+        .checklist-item.checked { background: #dcfce7; color: #14532d; }
+        .checklist-item input { margin-right: 1rem; transform: scale(1.2); }
+
+        .console-game {
+            background: #000;
+            color: #0f0;
+            padding: 1rem;
+            font-family: var(--font-family-mono);
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+        }
+        .console-error { color: #ff5555; margin-bottom: 1rem; }
+        .console-option {
+            display: block;
+            border: 1px solid #333;
+            color: #ccc;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+        }
+        .console-option:hover { background: #333; }
+
+        /* --- UTILS --- */
+        .badge {
+            background: var(--color-warning);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            vertical-align: middle;
+        }
+        .diagram-box {
+            text-align: center;
+            padding: 1rem;
+            background: var(--color-bg-2);
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+            font-style: italic;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--color-slate-500);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--color-border);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <header>
+        <h1>🔌 The Hardware Handshake</h1>
+        <div class="subtitle">Connecting Arduino & ESP32 to the Digital World</div>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" onclick="showSection('intro')">1. Start Here</button>
+        <button class="nav-btn" onclick="showSection('drivers')">2. Drivers</button>
+        <button class="nav-btn" onclick="showSection('board-setup')">3. Board Setup</button>
+        <button class="nav-btn" onclick="showSection('upload')">4. Uploading</button>
+        <button class="nav-btn" onclick="showSection('monitor')">5. Serial Tools</button>
+        <button class="nav-btn" onclick="showSection('troubleshoot')">6. Troubleshoot</button>
+        <button class="nav-btn" onclick="showSection('wrapup')">7. Wrap-Up</button>
+    </nav>
+
+    <div class="container">
+
+        <!-- SECTION 1: INTRO -->
+        <section id="intro" class="active">
+            <div class="card">
+                <h2>🤝 The "Handshake"</h2>
+                <p>Welcome, Engineer. Your code is trapped inside your computer. To make a robot move, blink, or sense, you must build a bridge between your computer (the Brain) and the Microcontroller (the Body).</p>
+                <div class="diagram-box">
+                    [ Computer ]  <==== USB CABLE ====>  [ Arduino/ESP32 ]
+                </div>
+                <p><strong>Check your gear:</strong></p>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <input type="checkbox"> I have my Arduino Uno OR ESP32 board.
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <input type="checkbox"> I have a <strong>DATA</strong> USB cable (not just a charging cable!).
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <input type="checkbox"> Arduino IDE 2.0+ is installed on my computer.
+                </div>
+            </div>
+            <button class="btn btn-full" onclick="showSection('drivers')">I have my gear. Let's Connect &rarr;</button>
+        </section>
+
+        <!-- SECTION 2: DRIVERS -->
+        <section id="drivers">
+            <h2>🛠️ Step 0: The Translators (Drivers)</h2>
+            <div class="card" style="border-left: 5px solid var(--color-warning);">
+                <h3>⚠️ Crucial Step for "Clone" Boards</h3>
+                <p>Official Arduinos work instantly. But if you have a blue/black generic board (like most ESP32s or cheap Unos), you usually need a <strong>Driver</strong>.</p>
+                <p>Think of the Driver as a translator. Without it, your computer sees the board but doesn't speak its language.</p>
+                
+                <div class="expandable">
+                    <div class="expandable-header" onclick="toggleExpand(this)">
+                        How do I know if I need a driver?
+                        <span>▼</span>
+                    </div>
+                    <div class="expandable-content">
+                        <p>1. Plug your board in.<br>
+                        2. Open Arduino IDE.<br>
+                        3. Look at the "Select Board/Port" dropdown at the top.<br>
+                        4. <strong>If you see "Unknown Device" or NO new port appears, you need a driver.</strong></p>
+                    </div>
+                </div>
+
+                <div class="expandable">
+                    <div class="expandable-header" onclick="toggleExpand(this)">
+                        Download Links (CH340 / CP210x)
+                        <span>▼</span>
+                    </div>
+                    <div class="expandable-content">
+                        <p>Most clone boards use the <strong>CH340</strong> chip. Some ESP32s use <strong>CP210x</strong>.</p>
+                        <ul>
+                            <li><a href="https://sparks.gogo.co.nz/ch340.html" target="_blank">Download CH340 Driver (Win/Mac)</a></li>
+                            <li><a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank">Download CP210x Driver</a></li>
+                        </ul>
+                        <p><em>Install, then <strong>RESTART</strong> your computer.</em></p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-full" onclick="showSection('board-setup')">Drivers Installed? Next &rarr;</button>
+        </section>
+
+        <!-- SECTION 3: BOARD SETUP -->
+        <section id="board-setup">
+            <h2>⚙️ Step 1: Teaching the IDE</h2>
+            <p>The Arduino IDE assumes you are using an Arduino Uno. If you are using an ESP32, you must teach it about your new hardware.</p>
+
+            <!-- TABBED INTERFACE LOGIC SIMULATED WITH EXPANDABLES -->
+            <div class="expandable">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    🔵 I am using an ARDUINO UNO
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p>Good news! You don't need to install anything extra.</p>
+                    <ol>
+                        <li>Plug in your board.</li>
+                        <li>Go to <strong>Tools > Board > Arduino AVR Boards > Arduino Uno</strong>.</li>
+                        <li>Go to <strong>Tools > Port</strong> and select the one that says "Arduino Uno" or "USB Serial".</li>
+                    </ol>
+                                    </div>
+            </div>
+
+            <div class="expandable">
+                <div class="expandable-header" style="background:rgba(230, 129, 97, 0.2);" onclick="toggleExpand(this)">
+                    ⚫ I am using an ESP32 <span class="badge">Requires Setup</span>
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>1. Add the URL:</strong><br>
+                    Go to <em>File > Preferences</em>. Look for "Additional Board Manager URLs". Paste this exactly:</p>
+                    <code>https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json</code>
+                    
+                    <p><strong>2. Install the Definition:</strong><br>
+                    Go to <em>Tools > Board > Boards Manager</em> (or click the board icon on the left).<br>
+                    Search for <strong>"esp32"</strong> (by Espressif Systems). Click <strong>INSTALL</strong>.</p>
+                    
+                    <p><strong>3. Select the Board:</strong><br>
+                    Now go to <em>Tools > Board > esp32 > DOIT ESP32 DEVKIT V1</em> (this is the most common student board).</p>
+                </div>
+            </div>
+
+            <button class="btn btn-full" onclick="showSection('upload')">Board Selected? Let's Upload &rarr;</button>
+        </section>
+
+        <!-- SECTION 4: UPLOADING -->
+        <section id="upload">
+            <h2>🚀 Step 2: The Upload Process</h2>
+            
+            <div class="card">
+                <h3>The "Blink" Test</h3>
+                <p>We never start with complex code. We start with "Blink" to prove the connection works.</p>
+                <ol>
+                    <li>File > Examples > 01.Basics > Blink.</li>
+                    <li>Click the <strong>Checkmark (Verify)</strong> button first. This checks for spelling errors.</li>
+                    <li>Click the <strong>Arrow (Upload)</strong> button.</li>
+                </ol>
+                
+                <div class="console-game">
+                    <div class="console-error" id="uploadStatus">Waiting for upload...</div>
+                </div>
+                
+                <div class="expandable">
+                    <div class="expandable-header" onclick="toggleExpand(this)">
+                        🔥 ESP32 Specific: The "Boot" Button Trick
+                        <span>▼</span>
+                    </div>
+                    <div class="expandable-content">
+                        <p>If you see <code>Connecting........_____.....</code> and it fails:</p>
+                        <p>Some ESP32s need permission to accept code.
+                        <ol>
+                            <li>Hold down the physical <strong>BOOT</strong> button on the board.</li>
+                            <li>Click Upload in the IDE.</li>
+                            <li>When you see "Connecting...", RELEASE the button.</li>
+                        </ol>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📚 Installing Libraries</h3>
+                <p>Need to control a servo or a screen? You need a library.</p>
+                <p><strong>The Icon:</strong> Click the "Books" icon on the left sidebar (Library Manager).</p>
+                <p><strong>Search:</strong> Type "Servo" or "DHT11".</p>
+                <p><strong>Install:</strong> Click Install. It's that easy. Never download ZIP files unless you absolutely have to.</p>
+            </div>
+
+            <button class="btn btn-full" onclick="showSection('monitor')">Next: Seeing Data &rarr;</button>
+        </section>
+
+        <!-- SECTION 5: SERIAL TOOLS -->
+        <section id="monitor">
+            <h2>📊 Serial Monitor vs. Plotter</h2>
+            <p>Your board can talk back to you. But how do you want to listen?</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <!-- Card 1 -->
+                <div class="card">
+                    <h3>1. Serial Monitor (The Text)</h3>
+                    <p>Use this for debugging text messages.</p>
+                    <pre>Serial.begin(9600);
+Serial.println("System Ready");
+Serial.print("Temp: ");
+Serial.println(24);</pre>
+                    <p><strong>Output:</strong><br>System Ready<br>Temp: 24</p>
+                    <p><em>Access: Magnifying glass icon (top right).</em></p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="card" style="border-top: 4px solid var(--color-warning);">
+                    <h3>2. Serial Plotter (The Graph)</h3>
+                    <p>Use this for sensors (light, pulse, temp) to see waves.</p>
+                    <pre>Serial.begin(9600);
+// ONLY print numbers!
+Serial.println(sensorValue);</pre>
+                    <p><strong>Output:</strong><br>A beautiful live graph line.</p>
+                    <p><em>Access: Tools > Serial Plotter.</em></p>
+                </div>
+            </div>
+
+            <div class="card" style="background: var(--color-bg-2);">
+                <h3>⚠️ The Golden Rule of Serial</h3>
+                <p><strong>Baud Rate Match:</strong> If your code says <code>Serial.begin(9600)</code>, your monitor window MUST say <strong>9600 baud</strong> in the bottom right corner.</p>
+                <p>If they don't match, you will see alien text: <code>??</code></p>
+            </div>
+
+            <button class="btn btn-full" onclick="showSection('troubleshoot')">Troubleshoot Errors &rarr;</button>
+        </section>
+
+        <!-- SECTION 6: TROUBLESHOOTING GUIDE -->
+        <section id="troubleshoot">
+            <h2>🕵️ Troubleshooting & Common Errors</h2>
+            <p>Don't panic! Engineering is mostly fixing things that are broken. Find your error message below.</p>
+            
+            <!-- Error 1: Port not found -->
+            <div class="expandable error-type">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    ❌ Error: "Port Not Found" / Port is Greyed Out
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Symptoms:</strong> You plug in the board, but "Tools > Port" is grey or empty.</p>
+                    <p><strong>The Fixes (Try in order):</strong></p>
+                    <ol>
+                        <li><strong>The Cable:</strong> 50% of USB cables are "Charge Only". Get a thick cable that transmits Data.</li>
+                        <li><strong>The Driver:</strong> If you use a generic/clone board, install the <a href="https://sparks.gogo.co.nz/ch340.html" target="_blank">CH340 Driver</a>.</li>
+                        <li><strong>The USB Port:</strong> Try a different physical USB port on your laptop.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Error 2: ESP32 Failed Connect -->
+            <div class="expandable error-type">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    ❌ Error: "Failed to connect to ESP32: Timed out..."
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Symptoms:</strong> The console shows <code>Connecting........_____....._____</code> and then fails.</p>
+                    <p><strong>The Fix:</strong> The ESP32 is shy.</p>
+                    <ol>
+                        <li>Hold down the <strong>BOOT</strong> button on the ESP32 board.</li>
+                        <li>Click Upload.</li>
+                        <li>Wait for the text <code>Connecting...</code></li>
+                        <li>Release the button.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Error 3: Compilation Error -->
+            <div class="expandable error-type">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    ❌ Error: "exit status 1" / Compilation Error
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Symptoms:</strong> The code won't even try to upload. It fails immediately.</p>
+                    <p><strong>The Fixes:</strong></p>
+                    <ul>
+                        <li><strong>Syntax:</strong> Did you miss a semicolon <code>;</code> or a curly bracket <code>}</code>?</li>
+                        <li><strong>Board Selection:</strong> Did you select "Arduino Uno" but you are using an ESP32? The code for one won't always work on the other.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Error 4: Serial Monitor Garbage -->
+            <div class="expandable error-type">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    ❌ Error: "⸮⸮⸮⸮" (Alien Text in Serial Monitor)
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Symptoms:</strong> You expect text, but you get weird symbols.</p>
+                    <p><strong>The Fix:</strong> Baud Rate Mismatch.</p>
+                    <p>Look at your code: <code>Serial.begin(9600);</code></p>
+                    <p>Look at the Serial Monitor (bottom right corner dropdown): Make sure it also says <strong>9600 baud</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Error 5: Port Busy -->
+            <div class="expandable error-type">
+                <div class="expandable-header" onclick="toggleExpand(this)">
+                    ❌ Error: "Access is denied" / "Port Busy"
+                    <span>▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Symptoms:</strong> You can't upload because the port is "in use".</p>
+                    <p><strong>The Fix:</strong></p>
+                    <ul>
+                        <li>Do you have <strong>Cura</strong> (3D Printing software) open? It hogs COM ports. Close it.</li>
+                        <li>Do you have two Arduino windows open? Close the Serial Monitor in the other window.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:2rem;">
+                <h3>Quiz: Test Your Troubleshooting Skills</h3>
+                <div class="console-game">
+                    <span style="color:white;">Arduino IDE Output:</span><br><br>
+                    <span class="console-error" id="quizQuestion">Error: COM Port not found / Port greyed out.</span>
+                </div>
+                
+                <div id="quizOptions">
+                    <button class="btn btn-secondary btn-full" onclick="checkAnswer(0)">Reinstall Arduino IDE</button>
+                    <button class="btn btn-secondary btn-full" onclick="checkAnswer(1)">Install CH340/CP210x Driver & Check Cable</button>
+                    <button class="btn btn-secondary btn-full" onclick="checkAnswer(2)">Buy a new computer</button>
+                </div>
+                <div id="quizFeedback" style="margin-top:1rem; font-weight:bold;"></div>
+            </div>
+
+            <button class="btn btn-full" onclick="showSection('wrapup')">Finish Class &rarr;</button>
+        </section>
+
+        <!-- SECTION 7: WRAP UP -->
+        <section id="wrapup">
+            <h2>📝 Reflection & Save</h2>
+            
+            <div class="card">
+                <h3>Session Reflection</h3>
+                <p>What was the hardest part of connecting your board today?</p>
+                <textarea id="reflection" style="width:100%; height:100px; padding:10px; border-radius:8px; border:1px solid #ccc;"></textarea>
+                
+                <p>Which board did you use today?</p>
+                <select id="boardChoice" style="padding:10px; width:100%;">
+                    <option>Arduino Uno</option>
+                    <option>ESP32</option>
+                    <option>Other</option>
+                </select>
+                
+                <button class="btn btn-full" onclick="saveData()">💾 Save Progress</button>
+                <p id="saveMsg" style="text-align:center; color: var(--color-success); display:none; margin-top:10px;">Progress Saved!</p>
+            </div>
+
+            <div class="card" style="background: linear-gradient(135deg, #00979D, #005F61); color: white;">
+                <h3>🏅 Connection Established!</h3>
+                <p>You have completed the Hardware Handshake. Your computer and microcontroller are now speaking the same language.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Class Resources | Arduino & ESP32 Fundamentals</p>
+        <p><a href="#" onclick="toggleDarkMode()" style="color:var(--color-primary);">Toggle Dark Mode</a></p>
+    </footer>
+
+    <script>
+        // --- NAVIGATION LOGIC ---
+        function showSection(id) {
+            // Hide all
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            // Show target
+            document.getElementById(id).classList.add('active');
+            
+            // Highlight nav
+            const navBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick').includes(id));
+            if(navBtn) navBtn.classList.add('active');
+            
+            // Update Progress Bar
+            updateProgressBar();
+            
+            // Scroll to top
+            window.scrollTo(0,0);
+        }
+
+        function updateProgressBar() {
+            const sections = document.querySelectorAll('section');
+            let activeIndex = 0;
+            sections.forEach((s, index) => {
+                if(s.classList.contains('active')) activeIndex = index;
+            });
+            const percent = ((activeIndex + 1) / sections.length) * 100;
+            document.getElementById('progressBar').style.width = percent + '%';
+        }
+
+        // --- INTERACTIVE ELEMENTS ---
+        function toggleCheck(el) {
+            el.classList.toggle('checked');
+            const box = el.querySelector('input');
+            box.checked = !box.checked;
+        }
+
+        function toggleExpand(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('open');
+            const icon = header.querySelector('span');
+            icon.textContent = content.classList.contains('open') ? '▲' : '▼';
+        }
+
+        // --- QUIZ LOGIC ---
+        const quizData = [
+            {
+                q: "Error: COM Port not found / Port greyed out.",
+                options: ["Reinstall Arduino IDE", "Install CH340/CP210x Driver & Check Cable", "Buy a new computer"],
+                correct: 1,
+                feedback: "Correct! If the port is missing, it's usually a missing driver or a 'charge-only' USB cable."
+            },
+            {
+                q: "Output on Serial Monitor is: ??",
+                options: ["Your board is broken", "The code is wrong", "Baud Rate mismatch"],
+                correct: 2,
+                feedback: "Correct! If Serial.begin(9600) is in code, the Monitor MUST be set to 9600."
+            }
+        ];
+        let quizIndex = 0;
+
+        function checkAnswer(optionIndex) {
+            const feedbackEl = document.getElementById('quizFeedback');
+            const currentQuiz = quizData[quizIndex];
+            
+            if(optionIndex === currentQuiz.correct) {
+                feedbackEl.style.color = 'var(--color-success)';
+                feedbackEl.textContent = currentQuiz.feedback;
+                // Simple logic to go to next question if available
+                if(quizIndex < quizData.length - 1) {
+                    quizIndex++;
+                    setTimeout(() => {
+                        document.getElementById('quizQuestion').textContent = quizData[quizIndex].q;
+                        const btns = document.querySelectorAll('#quizOptions button');
+                        btns[0].textContent = quizData[quizIndex].options[0];
+                        btns[1].textContent = quizData[quizIndex].options[1];
+                        btns[2].textContent = quizData[quizIndex].options[2];
+                        feedbackEl.textContent = "";
+                    }, 2000);
+                }
+            } else {
+                feedbackEl.style.color = 'var(--color-error)';
+                feedbackEl.textContent = "Not quite. Try another solution logic.";
+            }
+        }
+
+        // --- SAVE LOGIC ---
+        function saveData() {
+            const data = {
+                reflection: document.getElementById('reflection').value,
+                board: document.getElementById('boardChoice').value,
+                date: new Date().toLocaleDateString()
+            };
+            localStorage.setItem('arduino_guide_progress', JSON.stringify(data));
+            
+            const msg = document.getElementById('saveMsg');
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 3000);
+        }
+
+        // --- DARK MODE ---
+        function toggleDarkMode() {
+            const isDark = document.body.style.getPropertyValue('--color-background') === '#1e293b';
+            if(!isDark) {
+                // Manual override for demo (usually handled by CSS media query, but this forces it)
+                document.documentElement.style.setProperty('--color-background', '#1e293b');
+                document.documentElement.style.setProperty('--color-surface', '#334155');
+                document.documentElement.style.setProperty('--color-text', '#f1f5f9');
+            } else {
+                document.documentElement.style.removeProperty('--color-background');
+                document.documentElement.style.removeProperty('--color-surface');
+                document.documentElement.style.removeProperty('--color-text');
+            }
+        }
+
+        // Init
+        updateProgressBar();
+    </script>
+</body>
+</html>
