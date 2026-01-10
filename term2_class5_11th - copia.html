@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 3: Visualizing Engineering Data</title>
+    <style>
+        :root {
+            --primary: #0ea5e9; /* Visualization Blue */
+            --secondary: #10b981; /* Success Green */
+            --accent: #f59e0b; /* Alert Orange */
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --text-main: #334155;
+            --bg-body: #ffffff;
+            --bg-card: #f1f5f9;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #38bdf8;
+            --secondary: #34d399;
+            --accent: #fbbf24;
+            --danger: #f87171;
+            --dark: #f8fafc;
+            --light: #0f172a;
+            --text-main: #e2e8f0;
+            --bg-body: #020617;
+            --bg-card: #1e293b;
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: var(--text-main); background-color: var(--bg-body); margin: 0; padding-bottom: 80px; }
+
+        /* Navigation */
+        header { background: var(--dark); color: var(--bg-body); padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
+        .nav-controls { display: flex; gap: 1rem; align-items: center; }
+        .progress-container { width: 150px; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s; }
+        button.theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 20px; cursor: pointer; }
+
+        /* Layout */
+        main { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        section { display: none; animation: fadeIn 0.5s ease-in-out; margin-bottom: 3rem; }
+        section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Components */
+        h1, h2, h3 { color: var(--primary); }
+        .card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; border-left: 5px solid var(--primary); }
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn:hover { filter: brightness(110%); transform: translateY(-1px); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-success { background: var(--secondary); color:white; }
+        .btn-download { background: #334155; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-size: 0.9rem; display: inline-block; margin-top: 10px; }
+        .instruction-box { background: #e0f2fe; border-left: 5px solid #0284c7; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px; color: #0c4a6e; }
+        [data-theme="dark"] .instruction-box { background: #0c4a6e; border-left-color: #38bdf8; color: #e0f2fe; }
+
+        /* Messy Data Game */
+        .messy-table { width: 100%; border-collapse: collapse; background: white; color: black; box-shadow: var(--shadow); }
+        .messy-table td, .messy-table th { border: 1px solid #ccc; padding: 10px; text-align: left; position: relative; }
+        .error-spot { border: 2px dashed transparent; cursor: pointer; }
+        .error-spot:hover { border-color: var(--danger); background: rgba(239, 68, 68, 0.1); }
+        .error-found { background: #fee2e2; border: 2px solid var(--danger); }
+        .fixed-data { background: #dcfce7; color: #166534; font-weight: bold; }
+
+        /* Chart Simulator */
+        .chart-sim-container { display: grid; grid-template-columns: 3fr 2fr; gap: 1rem; }
+        .sheet-view { background: white; color: black; padding: 0; border-radius: 8px; border: 1px solid #ccc; overflow: hidden; height: 350px; display:flex; flex-direction:column; }
+        
+        /* Grid Layout for Big Data */
+        .excel-grid { display: grid; grid-template-columns: 50px 1fr 1fr 1fr 1fr 1fr 1fr; font-family: 'Consolas', monospace; font-size: 0.8rem; overflow-y: auto; height: 100%; }
+        .excel-cell { border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; padding: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+        .excel-header { background: #f1f5f9; font-weight: bold; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #cbd5e1; }
+        .excel-row-num { background: #f1f5f9; font-weight: bold; text-align: center; color: #64748b; border-right: 2px solid #cbd5e1; position: sticky; left: 0; }
+        
+        .col-selected { background-color: rgba(14, 165, 233, 0.2) !important; }
+        .row-hidden { display: none; } /* For filtering */
+
+        /* Toolbar */
+        .excel-toolbar { background: #f8fafc; padding: 10px; border-bottom: 1px solid #ccc; display: flex; gap: 10px; align-items: center; }
+        .filter-select { padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.8rem; }
+
+        /* Preview */
+        .chart-preview { background: var(--bg-body); border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; height: 250px; border-radius: 8px; text-align: center; padding: 1rem; }
+        
+        /* Feedback */
+        .feedback { margin-top: 10px; font-weight: bold; padding: 10px; border-radius: 6px; display: none; }
+        .feedback.correct { background: #dcfce7; color: #166534; }
+        .feedback.incorrect { background: #fee2e2; color: #991b1b; }
+
+        /* Accordion */
+        .accordion { cursor: pointer; padding: 15px; width: 100%; border: none; text-align: left; outline: none; transition: 0.4s; background-color: rgba(0,0,0,0.05); font-weight: bold; border-radius: 4px; margin-bottom: 5px; }
+        .active-acc, .accordion:hover { background-color: var(--primary); color: white; }
+        .panel { padding: 15px; display: none; background-color: var(--bg-card); overflow: hidden; border-left: 2px solid var(--primary); }
+
+        /* Footer */
+        .nav-footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 1rem; display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.1); z-index: 999; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size: 1.5rem;">📊</span>
+        <div>
+            <div style="font-weight:bold; font-size: 1.1rem;">Electric Car Project</div>
+            <div style="font-size: 0.8rem; opacity: 0.8;">Class 3: Visualization & Big Data</div>
+        </div>
+    </div>
+    <div class="nav-controls">
+        <div style="text-align: right; font-size: 0.8rem;">
+            <span>Class Progress</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+    </div>
+</header>
+
+<main>
+
+    <!-- SECTION 1: OPENING HOOK -->
+    <section id="section-1" class="active">
+        <div class="card" style="text-align:center; background: linear-gradient(135deg, var(--dark), var(--primary)); color: white;">
+            <h1>The Messy Data Detective</h1>
+            <p>A previous intern submitted this budget sheet. It's a disaster. Can you spot the 3 critical errors preventing analysis?</p>
+        </div>
+
+        <div class="card">
+            <h3>🔍 Crime Scene: The Bad Spreadsheet</h3>
+            <p>Click on the cells that look "unprofessional" or broken.</p>
+            
+            <table class="messy-table">
+                <thead>
+                    <tr style="background:#f1f5f9; font-weight:bold;">
+                        <th>Item</th>
+                        <th>Cost</th>
+                        <th>Date Bought</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Motor A</td>
+                        <td class="error-spot" onclick="fixData(this, '$15.00')">15</td>
+                        <td>12/05/2025</td>
+                        <td>OK</td>
+                    </tr>
+                    <tr>
+                        <td class="error-spot" onclick="fixData(this, 'Battery')">battery pack</td>
+                        <td>$12.50</td>
+                        <td>13/05/2025</td>
+                        <td>OK</td>
+                    </tr>
+                    <tr>
+                        <td>Wheel Set</td>
+                        <td>$5.00</td>
+                        <td class="error-spot" onclick="fixData(this, '14/05/2025')">45426</td>
+                        <td>OK</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="detective-score" style="margin-top:10px; font-weight:bold;">Errors Found: 0 / 3</div>
+            <div id="detective-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: OBJECTIVES -->
+    <section id="section-2">
+        <h2>🎯 Today's Mission Objectives</h2>
+        <div class="card">
+            <h3>Cognitive Goals</h3>
+            <ul>
+                <li><strong>Big Data Management:</strong> Handle large datasets (50+ rows) using filters and sorting.</li>
+                <li><strong>Scatter Plots:</strong> Create charts that compare two numerical variables (e.g., Mass vs. Velocity).</li>
+                <li><strong>Conditional Formatting:</strong> Highlight outliers in large datasets instantly.</li>
+            </ul>
+        </div>
+        <div class="instruction-box">
+            <strong>Big Deliverable:</strong> You will download a real 50-row telemetry dataset and extract specific engineering insights.
+        </div>
+    </section>
+
+    <!-- SECTION 3: CONCEPTS -->
+    <section id="section-3">
+        <h2>🧠 Concept Download: The Art of Data</h2>
+
+        <!-- Conditional Formatting -->
+        <div class="card">
+            <h3>1. Conditional Formatting</h3>
+            <p>Changing the color of a cell based on its value. It makes data "speak".</p>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                <div style="background:var(--bg-body); padding:1rem; border-radius:8px; border:1px solid #ccc;">
+                    <h4>🚦 Traffic Lights</h4>
+                    <p>Good for status:</p>
+                    <span style="background:#dcfce7; color:#166534; padding:2px 5px; border-radius:4px;">Under Budget</span>
+                    <span style="background:#fee2e2; color:#991b1b; padding:2px 5px; border-radius:4px;">Over Budget</span>
+                </div>
+                <div style="background:var(--bg-body); padding:1rem; border-radius:8px; border:1px solid #ccc;">
+                    <h4>📊 Data Bars</h4>
+                    <p>Good for comparing costs visually inside the cell.</p>
+                    <div style="background:#e0f2fe; width:100%; border:1px solid #ccc; margin-bottom:5px;"><div style="background:#0ea5e9; width:80%; height:15px;"></div></div>
+                    <div style="background:#e0f2fe; width:100%; border:1px solid #ccc;"><div style="background:#0ea5e9; width:40%; height:15px;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Types -->
+        <div class="card" style="border-left-color: var(--accent);">
+            <h3>2. Chart Selection Strategy</h3>
+            <p>Choosing the wrong chart loses marks in IGCSE.</p>
+            
+            <button class="accordion">🥧 Pie Chart</button>
+            <div class="panel">
+                <p><strong>Use when:</strong> Showing parts of a whole (Total = 100%).</p>
+                <p><strong>Example:</strong> Budget breakdown (Motor vs Battery vs Wheels).</p>
+                <p><strong>Rule:</strong> Never use if you have more than 6 categories.</p>
+            </div>
+
+            <button class="accordion">📊 Column/Bar Chart</button>
+            <div class="panel">
+                <p><strong>Use when:</strong> Comparing different items side-by-side.</p>
+                <p><strong>Example:</strong> Cost of Design A vs. Design B vs. Design C.</p>
+            </div>
+
+            <button class="accordion">📈 Scatter Plot (IGCSE Focus)</button>
+            <div class="panel">
+                <p><strong>Use when:</strong> Comparing TWO numerical variables to find a relationship (correlation).</p>
+                <p><strong>Example:</strong> Does <strong>Mass</strong> (X) affect <strong>Max Speed</strong> (Y)?</p>
+                <p><strong>Rule:</strong> Do NOT use a Line Chart for this. Line charts assume equal intervals (time).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: LAB A (FORMATTING) -->
+    <section id="section-4">
+        <h2>🛠️ Lab A: The Conditional Logic Test</h2>
+        
+        <div class="instruction-box">
+            <strong>Task:</strong> You need to highlight any component that costs <strong>more than $20.00</strong> in RED.
+            <br>
+            Write the <strong>Conditional Formatting Rule</strong> logic below.
+        </div>
+
+        <div class="card">
+            <h3>Rule Builder Simulator</h3>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <span>Format cells where:</span>
+                <select id="cf-col" class="btn-outline" style="padding:5px;">
+                    <option value="">Select Column...</option>
+                    <option value="Item">Item Name</option>
+                    <option value="Cost">Cost ($)</option>
+                </select>
+                <select id="cf-op" class="btn-outline" style="padding:5px;">
+                    <option value="">Operator...</option>
+                    <option value=">">Greater Than (>)</option>
+                    <option value="<">Less Than (<)</option>
+                    <option value="=">Equals (=)</option>
+                </select>
+                <input type="number" id="cf-val" placeholder="Value" style="padding:5px; width:80px;">
+                <button class="btn" onclick="checkCF()">Apply Rule</button>
+            </div>
+            
+            <div style="margin-top:1rem; border:1px solid #ccc; padding:10px; border-radius:8px;">
+                <table class="messy-table" id="cf-table">
+                    <tr><th>Item</th><th>Cost ($)</th></tr>
+                    <tr id="row1"><td>High-End Motor</td><td>$25.00</td></tr>
+                    <tr id="row2"><td>Standard Battery</td><td>$12.00</td></tr>
+                    <tr id="row3"><td>Carbon Chassis</td><td>$30.00</td></tr>
+                    <tr id="row4"><td>Plastic Wheels</td><td>$4.00</td></tr>
+                </table>
+            </div>
+            <div id="cf-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: LAB B (BIG DATA) -->
+    <section id="section-5">
+        <h2>🛠️ Lab B: The Telemetry Challenge</h2>
+        
+        <div class="card" style="background:#f0f9ff; border-left:5px solid #0369a1;">
+            <h3>📂 Source File: car_fleet_telemetry.csv</h3>
+            <p>This dataset contains 50 test runs from different teams. Your job is to extract specific insights.</p>
+            <a href="https://drive.google.com/file/d/1Sb8JTKMkhaDWjCUMI1dDDWceubYZHRO-/view?usp=sharing" class="btn-download">⬇️ Download CSV Dataset</a>
+        </div>
+
+        <div class="instruction-box">
+            <strong>The Mission:</strong>
+            <ol>
+                <li><strong>Filter:</strong> Display ONLY data for Team <strong>"Nitro"</strong>.</li>
+                <li><strong>Select Data:</strong> Select the <strong>Mass_kg</strong> (Col D) and <strong>Max_Velocity_ms</strong> (Col E) columns.</li>
+                <li><strong>Chart:</strong> Create a Scatter Plot to see if heavy cars are slower.</li>
+            </ol>
+            <em>Hint: In real Excel, you filter first, then hold Ctrl/Cmd to select non-adjacent columns.</em>
+        </div>
+
+        <div class="card" style="border-left-color: var(--danger);">
+            <h3>Big Data Dashboard Simulator</h3>
+            
+            <div class="chart-sim-container">
+                <!-- Excel Simulator -->
+                <div class="sheet-view">
+                    <!-- Toolbar -->
+                    <div class="excel-toolbar">
+                        <span>Filter Team:</span>
+                        <select id="team-filter" class="filter-select" onchange="applyFilter()">
+                            <option value="All">Show All Teams</option>
+                            <option value="Nitro">Nitro</option>
+                            <option value="Titan">Titan</option>
+                            <option value="Green_Tech">Green_Tech</option>
+                        </select>
+                        <span style="color:#64748b; font-size:0.8rem; margin-left:auto;">50 Rows Loaded</span>
+                    </div>
+
+                    <!-- Grid -->
+                    <div class="excel-grid" id="bigDataGrid">
+                        <!-- Headers -->
+                        <div class="excel-cell excel-row-num"></div>
+                        <div class="excel-cell excel-header" onclick="selectCol('B')">B (Car)</div>
+                        <div class="excel-cell excel-header" onclick="selectCol('C')">C (Team)</div>
+                        <div class="excel-cell excel-header" onclick="selectCol('D')">D (Mass)</div>
+                        <div class="excel-cell excel-header" onclick="selectCol('E')">E (Vel)</div>
+                        <div class="excel-cell excel-header" onclick="selectCol('F')">F (Energy)</div>
+                        <div class="excel-cell excel-header" onclick="selectCol('G')">G (Wear)</div>
+
+                        <!-- Rows Generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Controls & Preview -->
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div class="chart-preview" id="bd-chart-display">
+                        <span style="color:#94a3b8;">Chart Area<br>(Select Data first)</span>
+                    </div>
+                    
+                    <label><strong>Chart Type:</strong></label>
+                    <select id="bd-chart-type" class="filter-select" style="width:100%;">
+                        <option value="">Select...</option>
+                        <option value="Column">Column Chart</option>
+                        <option value="Pie">Pie Chart</option>
+                        <option value="Scatter">Scatter Plot</option>
+                    </select>
+
+                    <button class="btn" onclick="generateBigChart()">Generate Analysis</button>
+                </div>
+            </div>
+            <div id="bd-feedback" class="feedback"></div>
+        </div>
+
+        <!-- CCQ 2 -->
+        <div class="ccq-container" style="background:#fff7ed; border:1px solid #fed7aa; padding:1rem; border-radius:8px; margin-top:1rem;">
+            <h4>🤔 Critical Thinking</h4>
+            <p>Why use a Scatter Plot for Mass vs. Velocity?</p>
+            <textarea id="ccq2-text" style="width:100%; padding:8px; border-radius:4px;" placeholder="Because..."></textarea>
+            <button class="btn btn-sm btn-outline" style="margin-top:5px;" onclick="checkCCQ2()">Submit</button>
+            <div id="ccq-2-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: GRADE 1 CHECKLIST -->
+    <section id="section-6">
+        <h2>📝 Grade 1: Budget Project Checklist</h2>
+        <div class="card" style="background:#f0fdf4; border-left:5px solid #16a34a;">
+            <h3>Ready for Submission?</h3>
+            <p>Verify your Excel file against these criteria before uploading to the LMS.</p>
+            
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <label><input type="checkbox"> <strong>Formulas:</strong> Used SUM for totals (no manual addition).</label>
+                <label><input type="checkbox"> <strong>Logic:</strong> Used IF to show "Over/Under Budget".</label>
+                <label><input type="checkbox"> <strong>Formatting:</strong> All costs have Currency format ($).</label>
+                <label><input type="checkbox"> <strong>Charts:</strong> Created 1 Pie Chart (Breakdown) & 1 Column Chart (Comparison).</label>
+                <label><input type="checkbox"> <strong>Titles:</strong> All charts have clear titles and axis labels.</label>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: WRAP UP -->
+    <section id="section-7">
+        <h2>🏁 Wrap-Up & Reflection</h2>
+        <div class="card">
+            <h3>3-2-1 Data Check</h3>
+            <form id="wrapupForm" onsubmit="saveWrapup(event)">
+                <label>3 formatting tools you used today:</label>
+                <input type="text" style="width:100%; padding:5px; margin-bottom:10px;">
+                
+                <label>2 reasons why we use charts instead of tables:</label>
+                <input type="text" style="width:100%; padding:5px; margin-bottom:10px;">
+                
+                <label>1 question about the Grade 1 assignment:</label>
+                <input type="text" style="width:100%; padding:5px; margin-bottom:10px;">
+                
+                <button type="submit" class="btn btn-success">Save Reflection</button>
+            </form>
+            <div id="wrapupFeedback" class="feedback"></div>
+        </div>
+    </section>
+
+</main>
+
+<div class="nav-footer">
+    <button class="btn btn-outline" id="prevBtn" onclick="changeSection(-1)" disabled>Previous</button>
+    <div style="font-weight:bold; align-self:center;" id="stepIndicator">Step 1/7</div>
+    <button class="btn" id="nextBtn" onclick="changeSection(1)">Next Step</button>
+</div>
+
+<script>
+    /* --- STATE --- */
+    let currentSection = 1;
+    const totalSections = 7;
+    const sectionTitles = ["Hook", "Objectives", "Concepts", "Lab A (Format)", "Lab B (Big Data)", "Checklist", "Wrap-Up"];
+    let selectedCols = [];
+
+    /* --- INIT --- */
+    document.addEventListener('DOMContentLoaded', () => {
+        updateUI();
+        renderBigData(); // Populate the 50-row simulator
+        
+        // Accordion
+        const acc = document.getElementsByClassName("accordion");
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active-acc");
+                const panel = this.nextElementSibling;
+                panel.style.display = panel.style.display === "block" ? "none" : "block";
+            });
+        }
+    });
+
+    /* --- BIG DATA SIMULATOR LOGIC --- */
+    // Simulating 50 rows of data
+    const teams = ["Nitro", "Titan", "Green_Tech", "Standard", "Sun_Run", "Skidmarks", "Future_Labs", "Dollar_Gen"];
+    const cars = ["Speedster", "Heavy_Lifter", "Eco_Glider", "Balanced_Prime", "Solar_Flare", "Drift_King", "Quantum_Spin", "Budget_Build"];
+    
+    function renderBigData() {
+        const grid = document.getElementById('bigDataGrid');
+        // Clear existing rows (keep headers)
+        // Note: Headers are indices 0-6. 
+        
+        for (let i = 1; i <= 50; i++) {
+            const team = teams[i % 8];
+            const car = cars[i % 8];
+            const mass = (0.3 + (Math.random() * 0.5)).toFixed(2);
+            const vel = (2.0 + (Math.random() * 3.0)).toFixed(1);
+            const energy = Math.floor(80 + Math.random() * 100);
+            const wear = Math.floor(Math.random() * 50);
+
+            // Row Number
+            const rowNum = document.createElement('div');
+            rowNum.className = 'excel-cell excel-row-num';
+            rowNum.innerText = i;
+            rowNum.dataset.team = team; // For filtering
+            grid.appendChild(rowNum);
+
+            // Data Cells
+            const data = [car, team, mass, vel, energy, wear];
+            data.forEach((val, idx) => {
+                const cell = document.createElement('div');
+                cell.className = `excel-cell col-${['B','C','D','E','F','G'][idx]}`; // Assign col class for styling
+                cell.innerText = val;
+                cell.dataset.team = team; // For filtering
+                grid.appendChild(cell);
+            });
+        }
+    }
+
+    function applyFilter() {
+        const team = document.getElementById('team-filter').value;
+        const allCells = document.querySelectorAll('.excel-cell'); // Includes row nums and data
+        
+        // Very basic visual filtering simulation
+        // In reality, grid layout makes hiding specific cells hard without hiding row containers
+        // So we will just dim the non-matches or alert
+        
+        if (team === 'All') {
+             // Reset visibility logic (simplified for this grid demo)
+             alert("Showing all 50 rows.");
+        } else {
+             alert(`Filtered View: Showing only ${team} rows.`);
+        }
+    }
+
+    function selectCol(col) {
+        const header = document.querySelector(`.excel-header:nth-child(${col.charCodeAt(0) - 64})`); // Very rough mapping
+        
+        if(selectedCols.includes(col)) {
+            selectedCols = selectedCols.filter(c => c !== col);
+            // Visual toggle (mock)
+        } else {
+            selectedCols.push(col);
+        }
+        
+        // Highlight logic
+        document.querySelectorAll(`.col-${col}`).forEach(el => {
+            el.classList.toggle('col-selected');
+        });
+        
+        console.log(selectedCols);
+    }
+
+    function generateBigChart() {
+        const team = document.getElementById('team-filter').value;
+        const type = document.getElementById('bd-chart-type').value;
+        const fb = document.getElementById('bd-feedback');
+        const preview = document.getElementById('bd-chart-display');
+
+        // Requirements: Filter=Nitro, Cols=D&E (Mass/Vel), Type=Scatter
+        const hasNitro = (team === "Nitro");
+        const hasCols = (selectedCols.includes('D') && selectedCols.includes('E') && selectedCols.length === 2);
+        const isScatter = (type === "Scatter");
+
+        if (hasNitro && hasCols && isScatter) {
+            preview.innerHTML = `<div style="text-align:center;">
+                <h4>Mass vs Velocity (Nitro)</h4>
+                <div style="border-left:2px solid #333; border-bottom:2px solid #333; height:150px; width:200px; position:relative; margin:auto;">
+                    <span style="position:absolute; bottom:20px; left:30px; font-size:20px;">●</span>
+                    <span style="position:absolute; bottom:80px; left:50px; font-size:20px;">●</span>
+                    <span style="position:absolute; bottom:120px; left:10px; font-size:20px;">●</span>
+                    <span style="position:absolute; bottom:60px; left:120px; font-size:20px;">●</span>
+                </div>
+            </div>`;
+            fb.style.display = 'block';
+            fb.innerText = "Excellent Analysis! You filtered the noise, selected the physics variables, and chose the correct chart to show correlation.";
+            fb.className = 'feedback correct';
+        } else {
+            preview.innerHTML = "❌ Setup Error";
+            fb.style.display = 'block';
+            fb.className = 'feedback incorrect';
+            
+            let msg = "Check your setup: ";
+            if (!hasNitro) msg += "Did you filter for 'Nitro'? ";
+            if (!hasCols) msg += "Did you select ONLY Mass (D) and Velocity (E)? ";
+            if (!isScatter) msg += "Is Scatter Plot selected? ";
+            fb.innerText = msg;
+        }
+    }
+
+    /* --- NAV & BASICS --- */
+    function changeSection(dir) {
+        document.getElementById(`section-${currentSection}`).classList.remove('active');
+        currentSection += dir;
+        document.getElementById(`section-${currentSection}`).classList.add('active');
+        updateUI();
+        window.scrollTo(0, 0);
+    }
+
+    function updateUI() {
+        document.getElementById('prevBtn').disabled = currentSection === 1;
+        document.getElementById('nextBtn').innerText = currentSection === totalSections ? "Finish" : "Next Step";
+        if (currentSection === totalSections) {
+             document.getElementById('nextBtn').onclick = () => alert("Class 3 Completed! Good luck on your assignment.");
+        } else {
+             document.getElementById('nextBtn').onclick = () => changeSection(1);
+        }
+        const percent = ((currentSection - 1) / (totalSections - 1)) * 100;
+        document.getElementById('progressBar').style.width = `${percent}%`;
+        document.getElementById('stepIndicator').innerText = `Step ${currentSection}/${totalSections}: ${sectionTitles[currentSection-1]}`;
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    }
+
+    /* --- HOOK: MESSY DATA --- */
+    let foundErrors = 0;
+    function fixData(el, fix) {
+        if(el.classList.contains('fixed-data')) return; // Already fixed
+        el.innerText = fix;
+        el.classList.remove('error-spot');
+        el.classList.add('fixed-data');
+        foundErrors++;
+        document.getElementById('detective-score').innerText = `Errors Found: ${foundErrors} / 3`;
+        if(foundErrors === 3) {
+            const fb = document.getElementById('detective-feedback');
+            fb.style.display = 'block';
+            fb.innerText = "Great eye! Inconsistent data breaks formulas. Always clean first.";
+            fb.className = 'feedback correct';
+        }
+    }
+
+    /* --- LAB A: CONDITIONAL FORMATTING --- */
+    function checkCF() {
+        const col = document.getElementById('cf-col').value;
+        const op = document.getElementById('cf-op').value;
+        const val = document.getElementById('cf-val').value;
+        const fb = document.getElementById('cf-feedback');
+
+        if(col === 'Cost' && op === '>' && val == 20) {
+            document.getElementById('row1').style.backgroundColor = '#fee2e2';
+            document.getElementById('row1').style.color = '#991b1b';
+            document.getElementById('row3').style.backgroundColor = '#fee2e2';
+            document.getElementById('row3').style.color = '#991b1b';
+            fb.style.display = 'block';
+            fb.innerText = "Correct! The High-End Motor and Chassis are flagged.";
+            fb.className = 'feedback correct';
+        } else {
+            document.getElementById('row1').style.backgroundColor = '';
+            document.getElementById('row3').style.backgroundColor = '';
+            fb.style.display = 'block';
+            fb.innerText = "Not quite. Target 'Cost' > 20.";
+            fb.className = 'feedback incorrect';
+        }
+    }
+
+    function checkCCQ2() {
+        const txt = document.getElementById('ccq2-text').value.toLowerCase();
+        const fb = document.getElementById('ccq-2-feedback');
+        fb.style.display = 'block';
+        if(txt.includes('relationship') || txt.includes('correlation') || txt.includes('pattern') || txt.includes('trend')) {
+            fb.innerText = "Correct. Scatter plots show how one variable (Mass) affects another (Speed).";
+            fb.className = 'feedback correct';
+        } else {
+            fb.innerText = "Think about relationship. Does adding mass change the speed? We are looking for a pattern between two numbers.";
+            fb.className = 'feedback incorrect';
+        }
+    }
+
+    function saveWrapup(e) {
+        e.preventDefault();
+        const fb = document.getElementById('wrapupFeedback');
+        fb.style.display = 'block';
+        fb.innerText = "Reflection Saved. You are ready to build your Grade 1 Dashboard!";
+        fb.className = 'feedback correct';
+    }
+
+</script>
+</body>
+</html>

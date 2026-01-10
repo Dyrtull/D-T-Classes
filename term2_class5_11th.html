@@ -3,631 +3,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 3: Visualizing Engineering Data</title>
+    <title>Week 1: Excel Bootcamp | Solar Car Project</title>
     <style>
         :root {
-            --primary: #0ea5e9; /* Visualization Blue */
-            --secondary: #10b981; /* Success Green */
-            --accent: #f59e0b; /* Alert Orange */
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
             --danger: #ef4444;
-            --dark: #0f172a;
-            --light: #f8fafc;
-            --text-main: #334155;
-            --bg-body: #ffffff;
-            --bg-card: #f1f5f9;
-            --border-radius: 12px;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         [data-theme="dark"] {
-            --primary: #38bdf8;
+            --primary: #3b82f6;
+            --primary-dark: #60a5fa;
             --secondary: #34d399;
             --accent: #fbbf24;
-            --danger: #f87171;
-            --dark: #f8fafc;
-            --light: #0f172a;
-            --text-main: #e2e8f0;
-            --bg-body: #020617;
-            --bg-card: #1e293b;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #94a3b8;
+            --border: #334155;
         }
 
-        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: var(--text-main); background-color: var(--bg-body); margin: 0; padding-bottom: 80px; }
+        * { box-sizing: border-box; transition: all 0.2s ease; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 80px; }
 
         /* Navigation */
-        header { background: var(--dark); color: var(--bg-body); padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
-        .nav-controls { display: flex; gap: 1rem; align-items: center; }
-        .progress-container { width: 150px; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s; }
-        button.theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 20px; cursor: pointer; }
+        nav {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-brand { font-weight: 800; font-size: 1.25rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+        .progress-bar-container { width: 150px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--secondary); width: 0%; }
 
         /* Layout */
-        main { max-width: 1000px; margin: 0 auto; padding: 2rem; }
-        section { display: none; animation: fadeIn 0.5s ease-in-out; margin-bottom: 3rem; }
+        main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        section { 
+            background: var(--surface); 
+            padding: 2.5rem; 
+            border-radius: var(--radius); 
+            margin-bottom: 2rem; 
+            box-shadow: var(--shadow);
+            display: none; 
+            animation: slideUp 0.4s ease-out;
+        }
         section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Components */
-        h1, h2, h3 { color: var(--primary); }
-        .card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; border-left: 5px solid var(--primary); }
-        .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; }
-        .btn:hover { filter: brightness(110%); transform: translateY(-1px); }
+        h1 { color: var(--primary); margin: 0 0 1.5rem 0; font-size: 2.2rem; }
+        h2 { color: var(--text); border-left: 5px solid var(--accent); padding-left: 1rem; margin-top: 2rem; }
+        .subtitle { color: var(--text-light); font-size: 1.1rem; margin-top: -1rem; margin-bottom: 2rem; }
+
+        /* UI Elements */
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-        .btn-success { background: var(--secondary); color:white; }
-        .btn-download { background: #334155; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-size: 0.9rem; display: inline-block; margin-top: 10px; }
-        .instruction-box { background: #e0f2fe; border-left: 5px solid #0284c7; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px; color: #0c4a6e; }
-        [data-theme="dark"] .instruction-box { background: #0c4a6e; border-left-color: #38bdf8; color: #e0f2fe; }
+        .btn-tool { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; font-size: 0.9rem; }
+        .btn-tool:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-tool.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* Messy Data Game */
-        .messy-table { width: 100%; border-collapse: collapse; background: white; color: black; box-shadow: var(--shadow); }
-        .messy-table td, .messy-table th { border: 1px solid #ccc; padding: 10px; text-align: left; position: relative; }
-        .error-spot { border: 2px dashed transparent; cursor: pointer; }
-        .error-spot:hover { border-color: var(--danger); background: rgba(239, 68, 68, 0.1); }
-        .error-found { background: #fee2e2; border: 2px solid var(--danger); }
-        .fixed-data { background: #dcfce7; color: #166534; font-weight: bold; }
-
-        /* Chart Simulator */
-        .chart-sim-container { display: grid; grid-template-columns: 3fr 2fr; gap: 1rem; }
-        .sheet-view { background: white; color: black; padding: 0; border-radius: 8px; border: 1px solid #ccc; overflow: hidden; height: 350px; display:flex; flex-direction:column; }
+        /* Section 1: Messy Warehouse Hook */
+        .csv-preview {
+            font-family: 'Courier New', monospace;
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .csv-preview::before {
+            content: "RAW DATA - DO NOT EDIT";
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #333;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+        }
         
-        /* Grid Layout for Big Data */
-        .excel-grid { display: grid; grid-template-columns: 50px 1fr 1fr 1fr 1fr 1fr 1fr; font-family: 'Consolas', monospace; font-size: 0.8rem; overflow-y: auto; height: 100%; }
-        .excel-cell { border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; padding: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
-        .excel-header { background: #f1f5f9; font-weight: bold; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #cbd5e1; }
-        .excel-row-num { background: #f1f5f9; font-weight: bold; text-align: center; color: #64748b; border-right: 2px solid #cbd5e1; position: sticky; left: 0; }
+        /* Section 3: Video Companion Link */
+        .video-link {
+            text-decoration: none;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .video-link:hover { text-decoration: underline; color: var(--primary-dark); }
+
+        /* Section 4: Workshop Instructions */
+        .workshop-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .workshop-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .workshop-list {
+            padding-left: 1.2rem;
+            margin: 0;
+        }
+        .workshop-list li {
+            margin-bottom: 0.5rem;
+        }
+        .warning-box {
+            background: #fff1f2;
+            border: 1px solid #fda4af;
+            color: #be123c;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
         
-        .col-selected { background-color: rgba(14, 165, 233, 0.2) !important; }
-        .row-hidden { display: none; } /* For filtering */
+        /* Video cards */
+        .timestamp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .timestamp-card { 
+            background: var(--bg); 
+            padding: 1rem; 
+            border-radius: 8px; 
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .timestamp-card:hover { border-color: var(--primary); background: rgba(37, 99, 235, 0.05); }
+        .ts-time { font-weight: 800; color: var(--primary); font-size: 1.1rem; }
+        .ts-desc { font-size: 0.9rem; color: var(--text-light); margin-top: 0.2rem; }
 
-        /* Toolbar */
-        .excel-toolbar { background: #f8fafc; padding: 10px; border-bottom: 1px solid #ccc; display: flex; gap: 10px; align-items: center; }
-        .filter-select { padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.8rem; }
-
-        /* Preview */
-        .chart-preview { background: var(--bg-body); border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; height: 250px; border-radius: 8px; text-align: center; padding: 1rem; }
-        
-        /* Feedback */
-        .feedback { margin-top: 10px; font-weight: bold; padding: 10px; border-radius: 6px; display: none; }
-        .feedback.correct { background: #dcfce7; color: #166534; }
-        .feedback.incorrect { background: #fee2e2; color: #991b1b; }
-
-        /* Accordion */
-        .accordion { cursor: pointer; padding: 15px; width: 100%; border: none; text-align: left; outline: none; transition: 0.4s; background-color: rgba(0,0,0,0.05); font-weight: bold; border-radius: 4px; margin-bottom: 5px; }
-        .active-acc, .accordion:hover { background-color: var(--primary); color: white; }
-        .panel { padding: 15px; display: none; background-color: var(--bg-card); overflow: hidden; border-left: 2px solid var(--primary); }
 
         /* Footer */
-        .nav-footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 1rem; display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.1); z-index: 999; }
-
+        .sticky-footer {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--surface);
+            padding: 1rem 2rem;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <div style="display:flex; align-items:center; gap:10px;">
-        <span style="font-size: 1.5rem;">📊</span>
-        <div>
-            <div style="font-weight:bold; font-size: 1.1rem;">Electric Car Project</div>
-            <div style="font-size: 0.8rem; opacity: 0.8;">Class 3: Visualization & Big Data</div>
-        </div>
+<nav>
+    <div class="nav-brand">
+        <span>📊</span> Excel Bootcamp
     </div>
-    <div class="nav-controls">
-        <div style="text-align: right; font-size: 0.8rem;">
-            <span>Class Progress</span>
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
         </div>
-        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+        <button onclick="toggleTheme()" class="btn-tool" style="border-radius: 50%; padding: 0.5rem;">🌙</button>
     </div>
-</header>
+</nav>
 
 <main>
-
-    <!-- SECTION 1: OPENING HOOK -->
-    <section id="section-1" class="active">
-        <div class="card" style="text-align:center; background: linear-gradient(135deg, var(--dark), var(--primary)); color: white;">
-            <h1>The Messy Data Detective</h1>
-            <p>A previous intern submitted this budget sheet. It's a disaster. Can you spot the 3 critical errors preventing analysis?</p>
-        </div>
-
-        <div class="card">
-            <h3>🔍 Crime Scene: The Bad Spreadsheet</h3>
-            <p>Click on the cells that look "unprofessional" or broken.</p>
-            
-            <table class="messy-table">
-                <thead>
-                    <tr style="background:#f1f5f9; font-weight:bold;">
-                        <th>Item</th>
-                        <th>Cost</th>
-                        <th>Date Bought</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Motor A</td>
-                        <td class="error-spot" onclick="fixData(this, '$15.00')">15</td>
-                        <td>12/05/2025</td>
-                        <td>OK</td>
-                    </tr>
-                    <tr>
-                        <td class="error-spot" onclick="fixData(this, 'Battery')">battery pack</td>
-                        <td>$12.50</td>
-                        <td>13/05/2025</td>
-                        <td>OK</td>
-                    </tr>
-                    <tr>
-                        <td>Wheel Set</td>
-                        <td>$5.00</td>
-                        <td class="error-spot" onclick="fixData(this, '14/05/2025')">45426</td>
-                        <td>OK</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div id="detective-score" style="margin-top:10px; font-weight:bold;">Errors Found: 0 / 3</div>
-            <div id="detective-feedback" class="feedback"></div>
+    <!-- Section 1: The Hook -->
+    <section id="sec-1" class="active">
+        <h1>The Messy Warehouse</h1>
+        <p class="subtitle">Week 1: Introduction to Spreadsheets</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+            <div>
+                <h3>🚨 The Problem</h3>
+                <p>We have 200 parts arriving for your Solar Car. The supplier sent us the inventory list, but it's a disaster. It's a raw <strong>CSV (Comma Separated Values)</strong> file.</p>
+                <p>If I asked you to find the <strong>Total Value</strong> of this inventory right now, you'd need a calculator and 5 minutes.</p>
+                <p><strong>Goal:</strong> By the end of this class, you'll do it in 2 seconds.</p>
+            </div>
+            <div class="csv-preview">
+                ID,Item,Qty,Price,Loc<br>
+                M-01,Motor N20,20,5.50,A1<br>
+                P-05,Solar Panel 5V,20,3.25,A2<br>
+                B-09,Li-Ion Bat,20,4.00,B1<br>
+                W-02,Wheel Set,40,1.50,C3<br>
+                S-01,Switch,20,0.50,D1
+            </div>
         </div>
     </section>
 
-    <!-- SECTION 2: OBJECTIVES -->
-    <section id="section-2">
-        <h2>🎯 Today's Mission Objectives</h2>
-        <div class="card">
-            <h3>Cognitive Goals</h3>
-            <ul>
-                <li><strong>Big Data Management:</strong> Handle large datasets (50+ rows) using filters and sorting.</li>
-                <li><strong>Scatter Plots:</strong> Create charts that compare two numerical variables (e.g., Mass vs. Velocity).</li>
-                <li><strong>Conditional Formatting:</strong> Highlight outliers in large datasets instantly.</li>
+    <!-- Section 2: Objectives -->
+    <section id="sec-2">
+        <h2>🎯 Learning Objectives</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            <div style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; color: #075985;">
+                <h3>🧠 Cognitive Goals</h3>
+                <ul style="padding-left: 1.2rem;">
+                    <li>Navigate the Excel interface (Rows, Columns, Sheets).</li>
+                    <li>Master basic formatting (Currency, Borders, Wrapping).</li>
+                    <li>Understand <strong>Constants</strong> (typing 500) vs <strong>Formulas</strong> (using =A1*B1).</li>
+                    <li>Use basic functions: <code>SUM</code>, <code>AVERAGE</code>, <code>MAX</code>, <code>MIN</code>.</li>
+                </ul>
+            </div>
+            <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; color: #166534;">
+                <h3>⚡ Success Criteria</h3>
+                <p>By the end of this lesson, you will be able to take a messy inventory list, clean it up, and build a "Smart Total" that updates automatically.</p>
+                <p><strong>Key Concept:</strong> The Auto-Grader is watching! It knows if you cheat by using a calculator.</p>
+            </div>
+            <div style="background: #fff1f2; padding: 1.5rem; border-radius: 8px; color: #9f1239;">
+                <h3>❤️ Social & Emotional Goals</h3>
+                <ul style="padding-left: 1.2rem;">
+                    <li>Develop confidence in tackling complex interdisciplinary projects.</li>
+                    <li>Understand how spreadsheets support real-world engineering and sustainability decisions.</li>
+                    <li>Practice patience and attention to detail when debugging data.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Video Companion -->
+    <section id="sec-3">
+        <h2>
+            <a href="https://www.youtube.com/results?search_query=IGCSE+ICT+0417+Spreadsheets+Part+1+Nicos+Paphitis" target="_blank" class="video-link">
+                📹 Video Tutorial Guide ↗
+            </a>
+        </h2>
+        <p>As you watch the "IGCSE Spreadsheets Part 1" video, pay attention to these key moments. Click a card to mark it as "Mastered".</p>
+        
+        <div class="timestamp-grid">
+            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
+                <div class="ts-time">06:00</div>
+                <div class="ts-desc">Adjusting Columns</div>
+                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Fixing the ###### error by double-clicking column edges.</div>
+            </div>
+            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
+                <div class="ts-time">11:00</div>
+                <div class="ts-desc">Selecting Ranges</div>
+                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Using <strong>Ctrl</strong> to select cells that are not next to each other.</div>
+            </div>
+            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
+                <div class="ts-time">18:00</div>
+                <div class="ts-desc">Basic Math</div>
+                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Start every formula with <strong>=</strong>. Example: <code>=A1+B1</code></div>
+            </div>
+            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
+                <div class="ts-time">27:00</div>
+                <div class="ts-desc">Fill Handle</div>
+                <div style="font-size: 0.8rem; margin-top: 0.5rem;">The small square in the corner that copies formulas down.</div>
+            </div>
+            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
+                <div class="ts-time">42:00</div>
+                <div class="ts-desc">Borders</div>
+                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Making it look professional. Gridlines don't print!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Workshop Instructions -->
+    <section id="sec-4">
+        <h2>🛠️ Week 1 Workshop: Solar Inventory Master Class</h2>
+        <p>Follow these instructions exactly to complete your <code>Week1_Homework.xlsx</code>. This assignment uses an <strong>Auto-Grader</strong>, so precision matters!</p>
+        
+        <div class="warning-box">
+            <strong>🤖 Auto-Grading Warning:</strong>
+            <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                <li>If the instruction says "Red Border", an Orange Border gets 0 points.</li>
+                <li><strong>Formulas Only:</strong> If you type "99" instead of using a formula, you fail that section.</li>
+                <li>Do not merge cells or insert rows unless instructed.</li>
             </ul>
         </div>
-        <div class="instruction-box">
-            <strong>Big Deliverable:</strong> You will download a real 50-row telemetry dataset and extract specific engineering insights.
+
+        <div class="workshop-card">
+            <h3>Part 1: Layout & Formatting (Video 06:00 - 10:00)</h3>
+            <ul class="workshop-list">
+                <li><strong>Open:</strong> <code><a href="https://docs.google.com/spreadsheets/d/1ffwj4oecg8hkImTPuJpEJxaOJSvOD68Z/edit?usp=sharing&ouid=114473330638073035121&rtpof=true&sd=true">Week1_Solar_Inventory.csv</a></code> in Excel.</li>
+                <li><strong>Row 1 Headers:</strong> Select A1:G1. Change Orientation to <strong>90 degrees</strong> (Vertical Text Up). Apply <strong>Wrap Text</strong>.</li>
+                <li><strong>Column Widths:</strong> Double-click boundaries to "Auto-fit" columns A, C, D, E, F, G. Manually adjust Column B to approx <strong>30 units</strong>.</li>
+                <li><strong>Date Format:</strong> Select F2:F11. Change format to <strong>Long Date</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 2: Borders & Visual Style (Video 42:00 - 47:00)</h3>
+            <ul class="workshop-list">
+                <li><strong>Main Borders (A1:G11):</strong> Apply a <strong>Thick Box Border</strong> to the outside. Change Line Color to <span style="color:red; font-weight:bold;">RED</span>.</li>
+                <li><strong>Inside Grid:</strong> Apply <strong>All Borders</strong> (thin) to the inside. Change Line Color to <span style="color:blue; font-weight:bold;">BLUE</span>.</li>
+                <li><strong>Header Style:</strong> Select A1:G1. Fill Color: <span style="background:yellow; padding:0 4px; color:black;">Yellow</span>. Make text <strong>Bold</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 3: Calculations & Fill Handle (Video 18:00 - 27:00)</h3>
+            <ul class="workshop-list">
+                <li><strong>Total Value (Column G):</strong> In G2, enter a formula to calculate the Value (Unit Cost multiplied by Quantity).</li>
+                <li><strong>Constraint:</strong> You MUST use cell references.</li>
+                <li><strong>Fill Handle:</strong> Drag the formula down from G2 to G11.</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 4: Functions & Statistics (Video 25:00 - 33:00)</h3>
+            <p>Locate the summary section starting at Row 13.</p>
+            <ul class="workshop-list">
+                <li><strong>Total Stock (E13):</strong> Use the <code>SUM</code> function to calculate the total items in the Quantity column.</li>
+                <li><strong>Avg Cost (E14):</strong> Use the <code>AVERAGE</code> function to calculate the average of the Unit Costs.</li>
+                <li><strong>Highest Cost (E15):</strong> Use the <code>MAX</code> function to find the highest Unit Cost.</li>
+                <li><strong>Lowest Cost (E16):</strong> Use the <code>MIN</code> function to find the lowest Unit Cost.</li>
+                <li><strong>Price Spread (E17):</strong> Calculate the difference between the Highest and Lowest cost (Max - Min).</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 5: Advanced Formatting (Video 34:00 - 37:00)</h3>
+            <ul class="workshop-list">
+                <li><strong>Non-Contiguous Selection:</strong> Select D2:D11. Hold <strong>Ctrl</strong>. Select G2:G11. Hold <strong>Ctrl</strong>. Select E14:E17.</li>
+                <li><strong>Action:</strong> With all three ranges selected, format as <strong>Currency</strong> ($) with 2 decimal places.</li>
+                <li><strong>Save:</strong> As <code>Week1_Homework_YOURNAME.xlsx</code>.</li>
+            </ul>
         </div>
     </section>
 
-    <!-- SECTION 3: CONCEPTS -->
-    <section id="section-3">
-        <h2>🧠 Concept Download: The Art of Data</h2>
-
-        <!-- Conditional Formatting -->
-        <div class="card">
-            <h3>1. Conditional Formatting</h3>
-            <p>Changing the color of a cell based on its value. It makes data "speak".</p>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
-                <div style="background:var(--bg-body); padding:1rem; border-radius:8px; border:1px solid #ccc;">
-                    <h4>🚦 Traffic Lights</h4>
-                    <p>Good for status:</p>
-                    <span style="background:#dcfce7; color:#166534; padding:2px 5px; border-radius:4px;">Under Budget</span>
-                    <span style="background:#fee2e2; color:#991b1b; padding:2px 5px; border-radius:4px;">Over Budget</span>
-                </div>
-                <div style="background:var(--bg-body); padding:1rem; border-radius:8px; border:1px solid #ccc;">
-                    <h4>📊 Data Bars</h4>
-                    <p>Good for comparing costs visually inside the cell.</p>
-                    <div style="background:#e0f2fe; width:100%; border:1px solid #ccc; margin-bottom:5px;"><div style="background:#0ea5e9; width:80%; height:15px;"></div></div>
-                    <div style="background:#e0f2fe; width:100%; border:1px solid #ccc;"><div style="background:#0ea5e9; width:40%; height:15px;"></div></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Chart Types -->
-        <div class="card" style="border-left-color: var(--accent);">
-            <h3>2. Chart Selection Strategy</h3>
-            <p>Choosing the wrong chart loses marks in IGCSE.</p>
-            
-            <button class="accordion">🥧 Pie Chart</button>
-            <div class="panel">
-                <p><strong>Use when:</strong> Showing parts of a whole (Total = 100%).</p>
-                <p><strong>Example:</strong> Budget breakdown (Motor vs Battery vs Wheels).</p>
-                <p><strong>Rule:</strong> Never use if you have more than 6 categories.</p>
-            </div>
-
-            <button class="accordion">📊 Column/Bar Chart</button>
-            <div class="panel">
-                <p><strong>Use when:</strong> Comparing different items side-by-side.</p>
-                <p><strong>Example:</strong> Cost of Design A vs. Design B vs. Design C.</p>
-            </div>
-
-            <button class="accordion">📈 Scatter Plot (IGCSE Focus)</button>
-            <div class="panel">
-                <p><strong>Use when:</strong> Comparing TWO numerical variables to find a relationship (correlation).</p>
-                <p><strong>Example:</strong> Does <strong>Mass</strong> (X) affect <strong>Max Speed</strong> (Y)?</p>
-                <p><strong>Rule:</strong> Do NOT use a Line Chart for this. Line charts assume equal intervals (time).</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 4: LAB A (FORMATTING) -->
-    <section id="section-4">
-        <h2>🛠️ Lab A: The Conditional Logic Test</h2>
+    <!-- Section 5: Concept Check -->
+    <section id="sec-5">
+        <h2>✅ Quick Check</h2>
         
-        <div class="instruction-box">
-            <strong>Task:</strong> You need to highlight any component that costs <strong>more than $20.00</strong> in RED.
-            <br>
-            Write the <strong>Conditional Formatting Rule</strong> logic below.
+        <div style="margin-bottom: 1.5rem;">
+            <p><strong>1. Why do cells sometimes show <code>######</code>?</strong></p>
+            <button class="btn-outline" style="width: 100%; text-align: left; margin-bottom: 0.5rem;" onclick="checkQuiz(this, true)">The column is too narrow to show the number.</button>
+            <button class="btn-outline" style="width: 100%; text-align: left;" onclick="checkQuiz(this, false)">It is a calculation error.</button>
         </div>
 
-        <div class="card">
-            <h3>Rule Builder Simulator</h3>
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                <span>Format cells where:</span>
-                <select id="cf-col" class="btn-outline" style="padding:5px;">
-                    <option value="">Select Column...</option>
-                    <option value="Item">Item Name</option>
-                    <option value="Cost">Cost ($)</option>
-                </select>
-                <select id="cf-op" class="btn-outline" style="padding:5px;">
-                    <option value="">Operator...</option>
-                    <option value=">">Greater Than (>)</option>
-                    <option value="<">Less Than (<)</option>
-                    <option value="=">Equals (=)</option>
-                </select>
-                <input type="number" id="cf-val" placeholder="Value" style="padding:5px; width:80px;">
-                <button class="btn" onclick="checkCF()">Apply Rule</button>
-            </div>
-            
-            <div style="margin-top:1rem; border:1px solid #ccc; padding:10px; border-radius:8px;">
-                <table class="messy-table" id="cf-table">
-                    <tr><th>Item</th><th>Cost ($)</th></tr>
-                    <tr id="row1"><td>High-End Motor</td><td>$25.00</td></tr>
-                    <tr id="row2"><td>Standard Battery</td><td>$12.00</td></tr>
-                    <tr id="row3"><td>Carbon Chassis</td><td>$30.00</td></tr>
-                    <tr id="row4"><td>Plastic Wheels</td><td>$4.00</td></tr>
-                </table>
-            </div>
-            <div id="cf-feedback" class="feedback"></div>
+        <div style="margin-bottom: 1.5rem;">
+            <p><strong>2. Which key do you hold to select cells that are NOT next to each other (e.g., A1 and C1)?</strong></p>
+            <button class="btn-outline" style="width: 100%; text-align: left; margin-bottom: 0.5rem;" onclick="checkQuiz(this, false)">Shift</button>
+            <button class="btn-outline" style="width: 100%; text-align: left;" onclick="checkQuiz(this, true)">Ctrl (or Cmd on Mac)</button>
         </div>
     </section>
 
-    <!-- SECTION 5: LAB B (BIG DATA) -->
-    <section id="section-5">
-        <h2>🛠️ Lab B: The Telemetry Challenge</h2>
+    <!-- Section 6: Wrap Up -->
+    <section id="sec-6">
+        <h2>🏁 Wrap Up & Submission</h2>
         
-        <div class="card" style="background:#f0f9ff; border-left:5px solid #0369a1;">
-            <h3>📂 Source File: car_fleet_telemetry.csv</h3>
-            <p>This dataset contains 50 test runs from different teams. Your job is to extract specific insights.</p>
-            <a href="https://drive.google.com/file/d/1Sb8JTKMkhaDWjCUMI1dDDWceubYZHRO-/view?usp=sharing" class="btn-download">⬇️ Download CSV Dataset</a>
-        </div>
-
-        <div class="instruction-box">
-            <strong>The Mission:</strong>
-            <ol>
-                <li><strong>Filter:</strong> Display ONLY data for Team <strong>"Nitro"</strong>.</li>
-                <li><strong>Select Data:</strong> Select the <strong>Mass_kg</strong> (Col D) and <strong>Max_Velocity_ms</strong> (Col E) columns.</li>
-                <li><strong>Chart:</strong> Create a Scatter Plot to see if heavy cars are slower.</li>
-            </ol>
-            <em>Hint: In real Excel, you filter first, then hold Ctrl/Cmd to select non-adjacent columns.</em>
-        </div>
-
-        <div class="card" style="border-left-color: var(--danger);">
-            <h3>Big Data Dashboard Simulator</h3>
+        <div style="background: #f0fdf4; padding: 2rem; border-radius: 8px; border-left: 5px solid var(--secondary); text-align: center;">
+            <h3 style="color: var(--secondary); margin-top: 0;">🚀 Mission Accomplished!</h3>
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">You have completed the Week 1 Digital Textbook.</p>
             
-            <div class="chart-sim-container">
-                <!-- Excel Simulator -->
-                <div class="sheet-view">
-                    <!-- Toolbar -->
-                    <div class="excel-toolbar">
-                        <span>Filter Team:</span>
-                        <select id="team-filter" class="filter-select" onchange="applyFilter()">
-                            <option value="All">Show All Teams</option>
-                            <option value="Nitro">Nitro</option>
-                            <option value="Titan">Titan</option>
-                            <option value="Green_Tech">Green_Tech</option>
-                        </select>
-                        <span style="color:#64748b; font-size:0.8rem; margin-left:auto;">50 Rows Loaded</span>
-                    </div>
-
-                    <!-- Grid -->
-                    <div class="excel-grid" id="bigDataGrid">
-                        <!-- Headers -->
-                        <div class="excel-cell excel-row-num"></div>
-                        <div class="excel-cell excel-header" onclick="selectCol('B')">B (Car)</div>
-                        <div class="excel-cell excel-header" onclick="selectCol('C')">C (Team)</div>
-                        <div class="excel-cell excel-header" onclick="selectCol('D')">D (Mass)</div>
-                        <div class="excel-cell excel-header" onclick="selectCol('E')">E (Vel)</div>
-                        <div class="excel-cell excel-header" onclick="selectCol('F')">F (Energy)</div>
-                        <div class="excel-cell excel-header" onclick="selectCol('G')">G (Wear)</div>
-
-                        <!-- Rows Generated by JS -->
-                    </div>
-                </div>
-
-                <!-- Controls & Preview -->
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    <div class="chart-preview" id="bd-chart-display">
-                        <span style="color:#94a3b8;">Chart Area<br>(Select Data first)</span>
-                    </div>
-                    
-                    <label><strong>Chart Type:</strong></label>
-                    <select id="bd-chart-type" class="filter-select" style="width:100%;">
-                        <option value="">Select...</option>
-                        <option value="Column">Column Chart</option>
-                        <option value="Pie">Pie Chart</option>
-                        <option value="Scatter">Scatter Plot</option>
-                    </select>
-
-                    <button class="btn" onclick="generateBigChart()">Generate Analysis</button>
-                </div>
-            </div>
-            <div id="bd-feedback" class="feedback"></div>
-        </div>
-
-        <!-- CCQ 2 -->
-        <div class="ccq-container" style="background:#fff7ed; border:1px solid #fed7aa; padding:1rem; border-radius:8px; margin-top:1rem;">
-            <h4>🤔 Critical Thinking</h4>
-            <p>Why use a Scatter Plot for Mass vs. Velocity?</p>
-            <textarea id="ccq2-text" style="width:100%; padding:8px; border-radius:4px;" placeholder="Because..."></textarea>
-            <button class="btn btn-sm btn-outline" style="margin-top:5px;" onclick="checkCCQ2()">Submit</button>
-            <div id="ccq-2-feedback" class="feedback"></div>
-        </div>
-    </section>
-
-    <!-- SECTION 6: GRADE 1 CHECKLIST -->
-    <section id="section-6">
-        <h2>📝 Grade 1: Budget Project Checklist</h2>
-        <div class="card" style="background:#f0fdf4; border-left:5px solid #16a34a;">
-            <h3>Ready for Submission?</h3>
-            <p>Verify your Excel file against these criteria before uploading to the LMS.</p>
-            
-            <div style="display:flex; flex-direction:column; gap:10px;">
-                <label><input type="checkbox"> <strong>Formulas:</strong> Used SUM for totals (no manual addition).</label>
-                <label><input type="checkbox"> <strong>Logic:</strong> Used IF to show "Over/Under Budget".</label>
-                <label><input type="checkbox"> <strong>Formatting:</strong> All costs have Currency format ($).</label>
-                <label><input type="checkbox"> <strong>Charts:</strong> Created 1 Pie Chart (Breakdown) & 1 Column Chart (Comparison).</label>
-                <label><input type="checkbox"> <strong>Titles:</strong> All charts have clear titles and axis labels.</label>
+            <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); text-align: left;">
+                <h4 style="margin-top: 0; display: flex; align-items: center; gap: 0.5rem;">
+                    ⚠️ Important Submission Reminder
+                </h4>
+                <p>You must submit your completed <strong>Week1_Homework_YOURNAME.xlsx</strong> file before the next class.</p>
+                <p>Please check the specific delivery date and time on the <strong>Phidias</strong> platform to avoid late penalties.</p>
+                <p><em>Remember: The Auto-Grader checks your formulas, borders, and colors exactly!</em></p>
             </div>
         </div>
-    </section>
-
-    <!-- SECTION 7: WRAP UP -->
-    <section id="section-7">
-        <h2>🏁 Wrap-Up & Reflection</h2>
-        <div class="card">
-            <h3>3-2-1 Data Check</h3>
-            <form id="wrapupForm" onsubmit="saveWrapup(event)">
-                <label>3 formatting tools you used today:</label>
-                <input type="text" style="width:100%; padding:5px; margin-bottom:10px;">
-                
-                <label>2 reasons why we use charts instead of tables:</label>
-                <input type="text" style="width:100%; padding:5px; margin-bottom:10px;">
-                
-                <label>1 question about the Grade 1 assignment:</label>
-                <input type="text" style="width:100%; padding:5px; margin-bottom:10px;">
-                
-                <button type="submit" class="btn btn-success">Save Reflection</button>
-            </form>
-            <div id="wrapupFeedback" class="feedback"></div>
-        </div>
+        
+        <button class="btn-primary" onclick="finishLesson()" style="width: 100%; justify-content: center; margin-top: 2rem;">Finish Lesson</button>
     </section>
 
 </main>
 
-<div class="nav-footer">
-    <button class="btn btn-outline" id="prevBtn" onclick="changeSection(-1)" disabled>Previous</button>
-    <div style="font-weight:bold; align-self:center;" id="stepIndicator">Step 1/7</div>
-    <button class="btn" id="nextBtn" onclick="changeSection(1)">Next Step</button>
+<div class="sticky-footer">
+    <button class="btn-outline" id="prevBtn" onclick="navigate(-1)" disabled>← Back</button>
+    <span style="font-weight: bold; color: var(--text);" id="pageIndicator">Step 1 of 6</span>
+    <button class="btn-primary" id="nextBtn" onclick="navigate(1)">Next Step →</button>
 </div>
 
 <script>
-    /* --- STATE --- */
-    let currentSection = 1;
-    const totalSections = 7;
-    const sectionTitles = ["Hook", "Objectives", "Concepts", "Lab A (Format)", "Lab B (Big Data)", "Checklist", "Wrap-Up"];
-    let selectedCols = [];
+    // --- State Management ---
+    const sections = ['sec-1', 'sec-2', 'sec-3', 'sec-4', 'sec-5', 'sec-6'];
+    let currentStep = 0;
 
-    /* --- INIT --- */
-    document.addEventListener('DOMContentLoaded', () => {
+    // --- Navigation ---
+    function navigate(dir) {
+        const currentSection = document.getElementById(sections[currentStep]);
+        
+        // Hide current
+        currentSection.classList.remove('active');
+        setTimeout(() => currentSection.style.display = 'none', 300); // Wait for animation
+
+        // Update index
+        currentStep += dir;
+        if (currentStep < 0) currentStep = 0;
+        if (currentStep >= sections.length) currentStep = sections.length - 1;
+
+        // Show new
+        const newSection = document.getElementById(sections[currentStep]);
+        newSection.style.display = 'block';
+        setTimeout(() => newSection.classList.add('active'), 10);
+
         updateUI();
-        renderBigData(); // Populate the 50-row simulator
-        
-        // Accordion
-        const acc = document.getElementsByClassName("accordion");
-        for (let i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active-acc");
-                const panel = this.nextElementSibling;
-                panel.style.display = panel.style.display === "block" ? "none" : "block";
-            });
-        }
-    });
-
-    /* --- BIG DATA SIMULATOR LOGIC --- */
-    // Simulating 50 rows of data
-    const teams = ["Nitro", "Titan", "Green_Tech", "Standard", "Sun_Run", "Skidmarks", "Future_Labs", "Dollar_Gen"];
-    const cars = ["Speedster", "Heavy_Lifter", "Eco_Glider", "Balanced_Prime", "Solar_Flare", "Drift_King", "Quantum_Spin", "Budget_Build"];
-    
-    function renderBigData() {
-        const grid = document.getElementById('bigDataGrid');
-        // Clear existing rows (keep headers)
-        // Note: Headers are indices 0-6. 
-        
-        for (let i = 1; i <= 50; i++) {
-            const team = teams[i % 8];
-            const car = cars[i % 8];
-            const mass = (0.3 + (Math.random() * 0.5)).toFixed(2);
-            const vel = (2.0 + (Math.random() * 3.0)).toFixed(1);
-            const energy = Math.floor(80 + Math.random() * 100);
-            const wear = Math.floor(Math.random() * 50);
-
-            // Row Number
-            const rowNum = document.createElement('div');
-            rowNum.className = 'excel-cell excel-row-num';
-            rowNum.innerText = i;
-            rowNum.dataset.team = team; // For filtering
-            grid.appendChild(rowNum);
-
-            // Data Cells
-            const data = [car, team, mass, vel, energy, wear];
-            data.forEach((val, idx) => {
-                const cell = document.createElement('div');
-                cell.className = `excel-cell col-${['B','C','D','E','F','G'][idx]}`; // Assign col class for styling
-                cell.innerText = val;
-                cell.dataset.team = team; // For filtering
-                grid.appendChild(cell);
-            });
-        }
     }
 
-    function applyFilter() {
-        const team = document.getElementById('team-filter').value;
-        const allCells = document.querySelectorAll('.excel-cell'); // Includes row nums and data
-        
-        // Very basic visual filtering simulation
-        // In reality, grid layout makes hiding specific cells hard without hiding row containers
-        // So we will just dim the non-matches or alert
-        
-        if (team === 'All') {
-             // Reset visibility logic (simplified for this grid demo)
-             alert("Showing all 50 rows.");
-        } else {
-             alert(`Filtered View: Showing only ${team} rows.`);
-        }
-    }
+    function nextSection() { navigate(1); }
 
-    function selectCol(col) {
-        const header = document.querySelector(`.excel-header:nth-child(${col.charCodeAt(0) - 64})`); // Very rough mapping
+    function updateUI() {
+        document.getElementById('prevBtn').disabled = currentStep === 0;
+        document.getElementById('nextBtn').disabled = currentStep === sections.length - 1;
+        document.getElementById('pageIndicator').innerText = `Step ${currentStep + 1} of ${sections.length}`;
         
-        if(selectedCols.includes(col)) {
-            selectedCols = selectedCols.filter(c => c !== col);
-            // Visual toggle (mock)
-        } else {
-            selectedCols.push(col);
-        }
-        
-        // Highlight logic
-        document.querySelectorAll(`.col-${col}`).forEach(el => {
-            el.classList.toggle('col-selected');
-        });
-        
-        console.log(selectedCols);
-    }
-
-    function generateBigChart() {
-        const team = document.getElementById('team-filter').value;
-        const type = document.getElementById('bd-chart-type').value;
-        const fb = document.getElementById('bd-feedback');
-        const preview = document.getElementById('bd-chart-display');
-
-        // Requirements: Filter=Nitro, Cols=D&E (Mass/Vel), Type=Scatter
-        const hasNitro = (team === "Nitro");
-        const hasCols = (selectedCols.includes('D') && selectedCols.includes('E') && selectedCols.length === 2);
-        const isScatter = (type === "Scatter");
-
-        if (hasNitro && hasCols && isScatter) {
-            preview.innerHTML = `<div style="text-align:center;">
-                <h4>Mass vs Velocity (Nitro)</h4>
-                <div style="border-left:2px solid #333; border-bottom:2px solid #333; height:150px; width:200px; position:relative; margin:auto;">
-                    <span style="position:absolute; bottom:20px; left:30px; font-size:20px;">●</span>
-                    <span style="position:absolute; bottom:80px; left:50px; font-size:20px;">●</span>
-                    <span style="position:absolute; bottom:120px; left:10px; font-size:20px;">●</span>
-                    <span style="position:absolute; bottom:60px; left:120px; font-size:20px;">●</span>
-                </div>
-            </div>`;
-            fb.style.display = 'block';
-            fb.innerText = "Excellent Analysis! You filtered the noise, selected the physics variables, and chose the correct chart to show correlation.";
-            fb.className = 'feedback correct';
-        } else {
-            preview.innerHTML = "❌ Setup Error";
-            fb.style.display = 'block';
-            fb.className = 'feedback incorrect';
-            
-            let msg = "Check your setup: ";
-            if (!hasNitro) msg += "Did you filter for 'Nitro'? ";
-            if (!hasCols) msg += "Did you select ONLY Mass (D) and Velocity (E)? ";
-            if (!isScatter) msg += "Is Scatter Plot selected? ";
-            fb.innerText = msg;
-        }
-    }
-
-    /* --- NAV & BASICS --- */
-    function changeSection(dir) {
-        document.getElementById(`section-${currentSection}`).classList.remove('active');
-        currentSection += dir;
-        document.getElementById(`section-${currentSection}`).classList.add('active');
-        updateUI();
+        const pct = ((currentStep + 1) / sections.length) * 100;
+        document.getElementById('progressBar').style.width = `${pct}%`;
         window.scrollTo(0, 0);
     }
 
-    function updateUI() {
-        document.getElementById('prevBtn').disabled = currentSection === 1;
-        document.getElementById('nextBtn').innerText = currentSection === totalSections ? "Finish" : "Next Step";
-        if (currentSection === totalSections) {
-             document.getElementById('nextBtn').onclick = () => alert("Class 3 Completed! Good luck on your assignment.");
+    // --- Quiz Logic ---
+    function checkQuiz(btn, isCorrect) {
+        if (isCorrect) {
+            btn.style.background = "var(--secondary)";
+            btn.style.color = "white";
+            btn.innerHTML += " ✅ Correct!";
         } else {
-             document.getElementById('nextBtn').onclick = () => changeSection(1);
+            btn.style.background = "var(--danger)";
+            btn.style.color = "white";
+            btn.innerHTML += " ❌ Try again.";
         }
-        const percent = ((currentSection - 1) / (totalSections - 1)) * 100;
-        document.getElementById('progressBar').style.width = `${percent}%`;
-        document.getElementById('stepIndicator').innerText = `Step ${currentSection}/${totalSections}: ${sectionTitles[currentSection-1]}`;
     }
 
+    // --- Theme & Persistence ---
     function toggleTheme() {
         const body = document.body;
-        body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
     }
 
-    /* --- HOOK: MESSY DATA --- */
-    let foundErrors = 0;
-    function fixData(el, fix) {
-        if(el.classList.contains('fixed-data')) return; // Already fixed
-        el.innerText = fix;
-        el.classList.remove('error-spot');
-        el.classList.add('fixed-data');
-        foundErrors++;
-        document.getElementById('detective-score').innerText = `Errors Found: ${foundErrors} / 3`;
-        if(foundErrors === 3) {
-            const fb = document.getElementById('detective-feedback');
-            fb.style.display = 'block';
-            fb.innerText = "Great eye! Inconsistent data breaks formulas. Always clean first.";
-            fb.className = 'feedback correct';
-        }
+    function finishLesson() {
+        alert("Lesson Complete! Don't forget to submit your Excel file on Phidias.");
+        localStorage.setItem('week1_complete', 'true');
     }
 
-    /* --- LAB A: CONDITIONAL FORMATTING --- */
-    function checkCF() {
-        const col = document.getElementById('cf-col').value;
-        const op = document.getElementById('cf-op').value;
-        const val = document.getElementById('cf-val').value;
-        const fb = document.getElementById('cf-feedback');
-
-        if(col === 'Cost' && op === '>' && val == 20) {
-            document.getElementById('row1').style.backgroundColor = '#fee2e2';
-            document.getElementById('row1').style.color = '#991b1b';
-            document.getElementById('row3').style.backgroundColor = '#fee2e2';
-            document.getElementById('row3').style.color = '#991b1b';
-            fb.style.display = 'block';
-            fb.innerText = "Correct! The High-End Motor and Chassis are flagged.";
-            fb.className = 'feedback correct';
-        } else {
-            document.getElementById('row1').style.backgroundColor = '';
-            document.getElementById('row3').style.backgroundColor = '';
-            fb.style.display = 'block';
-            fb.innerText = "Not quite. Target 'Cost' > 20.";
-            fb.className = 'feedback incorrect';
-        }
-    }
-
-    function checkCCQ2() {
-        const txt = document.getElementById('ccq2-text').value.toLowerCase();
-        const fb = document.getElementById('ccq-2-feedback');
-        fb.style.display = 'block';
-        if(txt.includes('relationship') || txt.includes('correlation') || txt.includes('pattern') || txt.includes('trend')) {
-            fb.innerText = "Correct. Scatter plots show how one variable (Mass) affects another (Speed).";
-            fb.className = 'feedback correct';
-        } else {
-            fb.innerText = "Think about relationship. Does adding mass change the speed? We are looking for a pattern between two numbers.";
-            fb.className = 'feedback incorrect';
-        }
-    }
-
-    function saveWrapup(e) {
-        e.preventDefault();
-        const fb = document.getElementById('wrapupFeedback');
-        fb.style.display = 'block';
-        fb.innerText = "Reflection Saved. You are ready to build your Grade 1 Dashboard!";
-        fb.className = 'feedback correct';
-    }
-
+    // Initialize
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
 </script>
+
 </body>
 </html>

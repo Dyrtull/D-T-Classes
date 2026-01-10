@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 1: Ignition & Spreadsheet Fundamentals</title>
+    <style>
+        :root {
+            --primary: #2563eb; /* Electric Blue */
+            --secondary: #10b981; /* Success Green */
+            --accent: #f59e0b; /* Energy Orange */
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --text-main: #334155;
+            --text-light: #f1f5f9;
+            --bg-body: #ffffff;
+            --bg-card: #f1f5f9;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --secondary: #34d399;
+            --accent: #fbbf24;
+            --danger: #f87171;
+            --dark: #f8fafc;
+            --light: #1e293b;
+            --text-main: #e2e8f0;
+            --text-light: #1e293b;
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: var(--text-main); background-color: var(--bg-body); margin: 0; padding-bottom: 80px; }
+
+        /* Navigation */
+        header { background: var(--dark); color: var(--text-light); padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
+        .nav-controls { display: flex; gap: 1rem; align-items: center; }
+        .progress-container { width: 150px; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s; }
+        button.theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 20px; cursor: pointer; }
+
+        /* Main Layout */
+        main { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        section { display: none; animation: fadeIn 0.5s ease-in-out; margin-bottom: 3rem; }
+        section.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Typography & Components */
+        h1, h2, h3 { color: var(--primary); }
+        .card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; border-left: 5px solid var(--primary); }
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn:hover { filter: brightness(110%); transform: translateY(-1px); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-success { background: var(--secondary); }
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+
+        /* Specific Sections */
+        .brochure-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .brochure-item { background: var(--bg-body); padding: 1rem; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); }
+        
+        /* Interactive Elements */
+        .hook-container { text-align: center; padding: 2rem; background: linear-gradient(135deg, var(--dark), var(--primary)); color: white; border-radius: var(--border-radius); }
+        .spreadsheet-sim { overflow-x: auto; background: white; color: black; border-radius: 8px; padding: 1rem; border: 1px solid #ccc; }
+        table.excel { width: 100%; border-collapse: collapse; font-family: monospace; }
+        table.excel th, table.excel td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; min-width: 60px; }
+        table.excel th { background: #f1f5f9; font-weight: bold; }
+        table.excel td.active-cell { border: 2px solid var(--primary); background: #eff6ff; }
+        input.cell-input { width: 100%; border: none; background: transparent; text-align: center; font-family: monospace; }
+        input.formula-input { width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; color: var(--primary); }
+        input.formula-input:focus { outline: 2px solid var(--accent); }
+        .correct-input { background-color: #dcfce7 !important; border-color: #166534 !important; }
+        .incorrect-input { background-color: #fee2e2 !important; border-color: #991b1b !important; }
+
+        /* CCQ & Feedback */
+        .ccq-container { background: #fff7ed; border: 1px solid #fed7aa; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        [data-theme="dark"] .ccq-container { background: #431407; border-color: #7c2d12; }
+        .feedback { margin-top: 10px; font-weight: bold; padding: 10px; border-radius: 6px; display: none; }
+        .feedback.correct { background: #dcfce7; color: #166534; }
+        .feedback.incorrect { background: #fee2e2; color: #991b1b; }
+
+        /* Vocabulary */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+        .vocab-card { background: var(--bg-card); pading: 1rem; border-radius: 8px; cursor: pointer; text-align: center; padding: 1rem; transition: transform 0.2s; }
+        .vocab-card:hover { transform: scale(1.05); background: var(--primary); color: white; }
+
+        /* Navigation Footer */
+        .nav-footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 1rem; display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.1); z-index: 999; }
+
+        /* Badges */
+        .badge { display: inline-block; padding: 0.25rem 0.5rem; background: var(--accent); color: white; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+
+        /* Accordion */
+        .accordion { cursor: pointer; padding: 18px; width: 100%; border: none; text-align: left; outline: none; font-size: 15px; transition: 0.4s; background-color: var(--bg-card); color: var(--text-main); font-weight: bold; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .active-acc, .accordion:hover { background-color: var(--primary); color: white; }
+        .panel { padding: 0 18px; display: none; background-color: var(--bg-body); overflow: hidden; border: 1px solid rgba(0,0,0,0.1); border-top: none; }
+        
+        /* Quick Check */
+        .quick-check { border-left: 4px solid var(--accent); padding-left: 1rem; margin: 1rem 0; }
+        
+        /* Instruction Box */
+        .instruction-box { background: #e0f2fe; border-left: 5px solid #0ea5e9; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px; }
+        [data-theme="dark"] .instruction-box { background: #0c4a6e; border-left-color: #38bdf8; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size: 1.5rem;">🏎️</span>
+        <div>
+            <div style="font-weight:bold; font-size: 1.1rem;">Electric Car Project</div>
+            <div style="font-size: 0.8rem; opacity: 0.8;">Class 1: Ignition & Spreadsheets</div>
+        </div>
+    </div>
+    <div class="nav-controls">
+        <div style="text-align: right; font-size: 0.8rem;">
+            <span>Class Progress</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+    </div>
+</header>
+
+<main>
+
+    <!-- SECTION 1: OPENING ACTIVITY -->
+    <section id="section-1" class="active">
+        <div class="hook-container">
+            <h1>Ignition Sequence Start</h1>
+            <p>Welcome to the Electric Car Challenge. Before we build, we must calculate.</p>
+        </div>
+        
+        <div class="card" style="margin-top: 2rem;">
+            <h3>🏁 The Opening Race Prediction</h3>
+            <p><strong>Scenario:</strong> Three electric cars are about to race. You only have this snippet of data. Who wins?</p>
+            <div style="display:flex; justify-content:center; gap: 2rem; flex-wrap:wrap; margin: 1rem 0;">
+                <div style="border: 2px solid #ccc; padding: 1rem; border-radius: 8px; width: 200px; text-align:center;">
+                    <h4>Car A</h4>
+                    <p>Voltage: 9V</p>
+                    <p>Weight: 450g</p>
+                </div>
+                <div style="border: 2px solid #ccc; padding: 1rem; border-radius: 8px; width: 200px; text-align:center;">
+                    <h4>Car B</h4>
+                    <p>Voltage: 6V</p>
+                    <p>Weight: 300g</p>
+                </div>
+                <div style="border: 2px solid #ccc; padding: 1rem; border-radius: 8px; width: 200px; text-align:center;">
+                    <h4>Car C</h4>
+                    <p>Voltage: 9V</p>
+                    <p>Weight: 600g</p>
+                </div>
+            </div>
+            <p><em>Use your intuition. Is it raw power (voltage) or lightweight design that wins?</em></p>
+            
+            <form id="hookForm" onsubmit="saveHook(event)">
+                <div style="margin-bottom: 1rem;">
+                    <label><input type="radio" name="prediction" value="A"> Car A (Balanced)</label><br>
+                    <label><input type="radio" name="prediction" value="B"> Car B (Lightweight)</label><br>
+                    <label><input type="radio" name="prediction" value="C"> Car C (High Power/Heavy)</label>
+                </div>
+                <textarea id="hookReason" placeholder="Why did you choose this car? (Your answer will be saved)" style="width:100%; padding:10px; border-radius:8px; margin-bottom:1rem;"></textarea>
+                <button type="submit" class="btn">Lock In Prediction</button>
+            </form>
+            <div id="hookFeedback" class="feedback">Prediction saved! Engineers use data to verify predictions. Today, you get the tools to do exactly that.</div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: PROJECT OVERVIEW (BROCHURE) -->
+    <section id="section-2">
+        <h2>📂 Project Mission Brief</h2>
+        <p class="lead">Over the next 10 weeks, you will step into the shoes of an engineer.</p>
+        
+        <div class="card">
+            <h3>Project Brochure & Roadmap</h3>
+            <div class="brochure-grid">
+                <div class="brochure-item">
+                    <h4>🔧 Design & Build</h4>
+                    <p>Select components (motors, batteries, wheels) considering cost, weight, and efficiency. Build a functional prototype.</p>
+                </div>
+                <div class="brochure-item">
+                    <h4>⏱️ Physics Testing</h4>
+                    <p>Use photogates to measure velocity. Analyze kinetic/potential energy and efficiency using real experimental data.</p>
+                </div>
+                <div class="brochure-item">
+                    <h4>📊 Data Analysis</h4>
+                    <p>Master Excel (SUM, AVERAGE, IF, VLOOKUP) to build budget models, analyze test results, and create professional analytical reports.</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <button class="accordion">📅 Phase 1: Foundation (Weeks 1-3)</button>
+                <div class="panel">
+                    <p><strong>Focus:</strong> Spreadsheet Fundamentals & Car Design.</p>
+                    <ul>
+                        <li>Week 1: Formulas & Intro (Today!)</li>
+                        <li>Week 2: Advanced Functions (VLOOKUP, IF)</li>
+                        <li>Week 3: Budgeting & Visualization (Grade 1)</li>
+                    </ul>
+                </div>
+
+                <button class="accordion">🛠️ Phase 2: Construction (Weeks 4-6)</button>
+                <div class="panel">
+                    <p><strong>Focus:</strong> Building & Measuring.</p>
+                    <ul>
+                        <li>Week 4: Circuit Basics & Assembly</li>
+                        <li>Week 5: Testing Protocols (Grade 2)</li>
+                        <li>Week 6: Real Data Collection</li>
+                    </ul>
+                </div>
+
+                <button class="accordion">📈 Phase 3: Analysis (Weeks 7-10)</button>
+                <div class="panel">
+                    <p><strong>Focus:</strong> Deep Dive & Final Report.</p>
+                    <ul>
+                        <li>Week 7: Complex Analysis (Grade 3)</li>
+                        <li>Week 8: Dashboard Creation</li>
+                        <li>Week 9: Physics Integration</li>
+                        <li>Week 10: Final Project (Grade 4)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: OBJECTIVES -->
+    <section id="section-3">
+        <h2>🎯 Today's Mission Objectives</h2>
+        
+        <div class="card">
+            <h3>Cognitive Objectives</h3>
+            <p>By the end of this class, I will be able to:</p>
+            <ul>
+                <li><strong>Apply</strong> spreadsheet functions (SUM, AVERAGE, MAX, MIN, COUNT) to analyze car component data.</li>
+                <li><strong>Distinguish</strong> between relative and absolute cell references and apply them correctly in a budget model.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border-left-color: var(--secondary);">
+            <h3>Social-Emotional Objectives (SEL)</h3>
+            <ul>
+                <li><strong>Confidence:</strong> I will tackle complex engineering problems using digital tools.</li>
+                <li><strong>Accuracy:</strong> I will appreciate how precise data entry affects engineering decisions.</li>
+            </ul>
+        </div>
+
+        <div class="quick-check">
+            <strong>Success Criteria:</strong> You are successful if you can build a formula that automatically calculates the remaining budget for 3 different car designs using a fixed budget cell.
+        </div>
+    </section>
+
+    <!-- SECTION 4: CONCEPT EXPLORATION -->
+    <section id="section-4">
+        <h2>🧠 Concept Download: Spreadsheet Fundamentals</h2>
+
+        <!-- Concept 1 -->
+        <div class="card">
+            <h3>1. The Language of Cells</h3>
+            <p>Spreadsheets are grids. Every box is a <strong>Cell</strong> with an address (like Battleship).</p>
+            <div style="display:flex; gap:1rem; align-items:center; background:#eee; padding:10px; border-radius:8px; font-family:monospace;">
+                <div style="background:white; padding:5px 10px; border:1px solid #999;">A1</div>
+                <span>= Column A, Row 1</span>
+            </div>
+            <br>
+            <details>
+                <summary class="btn btn-outline" style="width:100%">Formula vs. Function (Click to Expand)</summary>
+                <div style="padding: 10px; background: var(--bg-body); margin-top:10px; border-radius:8px;">
+                    <ul>
+                        <li><strong>Formula:</strong> A manual instruction you write. <br>Example: <code>=A1 + A2</code></li>
+                        <li><strong>Function:</strong> A pre-built command. <br>Example: <code>=SUM(A1:A5)</code></li>
+                    </ul>
+                    <p><em>Note: All math in Excel starts with an equals sign <code>=</code>.</em></p>
+                </div>
+            </details>
+        </div>
+
+        <!-- Concept 2 -->
+        <div class="card">
+            <h3>2. The "Big 5" Engineering Functions</h3>
+            <p>Engineers don't add numbers manually. We use these tools:</p>
+            <div class="vocab-grid">
+                <div class="vocab-card" onclick="speak('Sum. Adds all numbers in a range.')">
+                    <h4>=SUM()</h4>
+                    <p>Adds everything up.<br><em>Total Cost</em></p>
+                </div>
+                <div class="vocab-card" onclick="speak('Average. Calculates the mean value.')">
+                    <h4>=AVERAGE()</h4>
+                    <p>Finds the mean.<br><em>Avg Speed</em></p>
+                </div>
+                <div class="vocab-card" onclick="speak('Max. Finds the largest number.')">
+                    <h4>=MAX()</h4>
+                    <p>Highest value.<br><em>Fastest Trial</em></p>
+                </div>
+                <div class="vocab-card" onclick="speak('Min. Finds the smallest number.')">
+                    <h4>=MIN()</h4>
+                    <p>Lowest value.<br><em>Cheapest Part</em></p>
+                </div>
+                <div class="vocab-card" onclick="speak('Count. Counts cells with numbers.')">
+                    <h4>=COUNT()</h4>
+                    <p>How many items?<br><em>Number of Tests</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Concept 3: The Golden Rule -->
+        <div class="card" style="border-left-color: var(--accent);">
+            <h3>3. The Golden Rule: Relative vs. Absolute</h3>
+            <p>This is where projects fail. Pay attention!</p>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                <div style="background: var(--bg-body); padding:10px; border-radius:8px;">
+                    <h4 style="color: var(--secondary);">Relative Reference (A1)</h4>
+                    <p>"The cell to my left."</p>
+                    <p>When you copy the formula down, <strong>A1 changes to A2</strong>.</p>
+                    <p><em>Use for: Individual car costs.</em></p>
+                </div>
+                <div style="background: var(--bg-body); padding:10px; border-radius:8px;">
+                    <h4 style="color: var(--danger);">Absolute Reference ($A$1)</h4>
+                    <p>"EXACTLY cell A1. Do not move."</p>
+                    <p>The <strong>$</strong> sign acts like an anchor or glue.</p>
+                    <p><em>Use for: The Fixed Budget Limit ($50).</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CCQ 1 -->
+        <div class="ccq-container">
+            <h4>🤔 Concept Check: The Anchor</h4>
+            <p><strong>Negative Check:</strong> If I have a tax rate in cell C1 that applies to ALL car parts, and I write the formula <code>=B5 * C1</code>, then drag it down to B6... will it work correctly?</p>
+            <button class="btn btn-outline" onclick="checkCCQ(1, false)">Yes, Excel is smart.</button>
+            <button class="btn btn-outline" onclick="checkCCQ(1, true)">No, C1 will move to C2.</button>
+            <div id="ccq-1-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: APPLIED PRACTICE (SIMULATOR) -->
+    <section id="section-5">
+        <h2>🛠️ Lab: Component & Fleet Analysis</h2>
+        
+        <!-- Pre-Flight Briefing -->
+        <div class="card" style="border-left-color: var(--accent);">
+            <h3>📚 Pre-Flight Briefing: Ranges & Locks</h3>
+            <p>Before you start the simulator, review these critical concepts:</p>
+            
+            <button class="accordion">1. What is a "Range" like B2:B6?</button>
+            <div class="panel">
+                <p>When we want to calculate a list of items, we don't type <code>=SUM(B2, B3, B4...)</code>.</p>
+                <p>We use a <strong>Range</strong>. A range uses a colon <code>:</code> to mean "everything between".</p>
+                <ul>
+                    <li><code>B2:B6</code> means: "Start at B2, go down to B6, and include everything in between."</li>
+                    <li>This works for SUM, AVERAGE, MAX, MIN, and COUNT.</li>
+                </ul>
+            </div>
+
+            <button class="accordion">2. How to "Lock" a Fee ($G$1)</button>
+            <div class="panel">
+                <p>In the Challenge below, you have a <strong>Sensor Lag Value</strong> in cell <strong>G1</strong>.</p>
+                <p>Every lap needs to add this value.</p>
+                <ul>
+                    <li>If you type <code>=C3 + G1</code> for the first lap, it works.</li>
+                    <li>BUT, if you copy that down for the next lap, Excel changes it to <code>=C4 + G2</code>. <strong>G2 is empty!</strong></li>
+                    <li><strong>Solution:</strong> You must LOCK cell G1 by typing <code>$G$1</code>. This tells Excel: "Always look at G1, no matter what."</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Part A: Basic -->
+        <div class="card">
+            <h3>Part A: Warm Up (Single Car Budget)</h3>
+            <div style="margin-bottom:10px; font-weight:bold; color:var(--danger);">Budget Limit: $50.00 (Stored in Cell E1)</div>
+            
+            <div class="spreadsheet-sim">
+                <table class="excel">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A (Item)</th>
+                            <th>B (Cost)</th>
+                            <th>C (Formula View)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>2</th>
+                            <td>Motor</td>
+                            <td><input type="number" id="costM" value="15.00" class="cell-input" onchange="updateSim()"></td>
+                            <td style="color:#999;">$15.00</td>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <td>Battery</td>
+                            <td><input type="number" id="costB" value="12.00" class="cell-input" onchange="updateSim()"></td>
+                            <td style="color:#999;">$12.00</td>
+                        </tr>
+                        <tr>
+                            <th>4</th>
+                            <td>Wheels</td>
+                            <td><input type="number" id="costW" value="5.50" class="cell-input" onchange="updateSim()"></td>
+                            <td style="color:#999;">$5.50</td>
+                        </tr>
+                        <tr style="background:#f8fafc; font-weight:bold;">
+                            <th>5</th>
+                            <td>TOTAL</td>
+                            <td id="simTotal">$32.50</td>
+                            <td style="color:var(--primary);">
+                                <select id="formulaSelect" onchange="checkSimFormula()" style="width:100%">
+                                    <option value="">Select Formula...</option>
+                                    <option value="wrong">=A2+A3+A4</option>
+                                    <option value="correct">=SUM(B2:B4)</option>
+                                    <option value="wrong2">=COUNT(B2:B4)</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr style="background:#fff7ed;">
+                            <th>6</th>
+                            <td>Remaining</td>
+                            <td id="simRemaining">$17.50</td>
+                            <td style="color:var(--accent);">
+                                <select id="refSelect" onchange="checkSimRef()" style="width:100%">
+                                    <option value="">Select Formula...</option>
+                                    <option value="wrong">=E1 - B5</option>
+                                    <option value="correct">=$E$1 - B5</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="simFeedback" class="feedback"></div>
+        </div>
+
+        <!-- Part B: Extended Challenge -->
+        <div class="card" style="border-left: 5px solid var(--danger);">
+            <h3>Part B: The IGCSE "Lap Time" Challenge</h3>
+            <div class="instruction-box">
+                <strong>Mission:</strong> Real race data is recorded in Minutes and Seconds. You need to convert it to <strong>Total Seconds</strong>.
+                <ol>
+                    <li><strong>Lap 1 (Row 3):</strong> Create a formula to calculate total seconds.</li>
+                    <li><strong>The Math:</strong> (Minutes × 60) + Seconds + Sensor Lag ($G$1).</li>
+                    <li><strong>Requirement:</strong> You must use Relative References for Min/Sec and an Absolute Reference for the Lag.</li>
+                    <li>At the bottom, calculate the lap statistics (Average, Max, Min, Count) on the calculated column (D3:D7).</li>
+                </ol>
+                <em>Example format: =(A1*60)+B1+$C$1</em>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+                <div style="background:#fff7ed; border:1px solid #fdba74; padding:5px 10px; border-radius:4px;">
+                    <strong>Sensor Lag (G1):</strong> 0.05
+                </div>
+            </div>
+
+            <div class="spreadsheet-sim">
+                <table class="excel">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A (Lap)</th>
+                            <th>B (Mins)</th>
+                            <th>C (Secs)</th>
+                            <th>D (Total Seconds)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>3</th>
+                            <td>Lap 1</td>
+                            <td>1</td>
+                            <td>14.48</td>
+                            <td><input type="text" class="formula-input" id="chall-calc" placeholder="Type Formula"></td>
+                        </tr>
+                        <tr>
+                            <th>4</th>
+                            <td>Lap 2</td>
+                            <td>1</td>
+                            <td>12.67</td>
+                            <td style="color:#999; font-style:italic;">(Auto-fill)</td>
+                        </tr>
+                        <tr>
+                            <th>5</th>
+                            <td>Lap 3</td>
+                            <td>1</td>
+                            <td>13.66</td>
+                            <td style="color:#999; font-style:italic;">(Auto-fill)</td>
+                        </tr>
+                        <tr>
+                            <th>6</th>
+                            <td>Lap 4</td>
+                            <td>1</td>
+                            <td>10.21</td>
+                            <td style="color:#999; font-style:italic;">(Auto-fill)</td>
+                        </tr>
+                        <tr>
+                            <th>7</th>
+                            <td>Lap 5</td>
+                            <td>1</td>
+                            <td>10.34</td>
+                            <td style="color:#999; font-style:italic;">(Auto-fill)</td>
+                        </tr>
+                        <!-- Stats Row -->
+                        <tr style="border-top: 2px solid #333;">
+                            <th>8</th>
+                            <td><strong>Stats</strong></td>
+                            <td colspan="3" style="text-align:left; background:#f0f9ff;">
+                                <strong>Lap Statistics (Use Column D range: D3:D7)</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>9</th>
+                            <td>Avg Time</td>
+                            <td colspan="2"><input type="text" class="formula-input" id="chall-avg" placeholder="=AVERAGE(...)"></td>
+                            <td><button class="btn btn-sm btn-outline" onclick="checkChallenge('avg')">Check</button></td>
+                        </tr>
+                        <tr>
+                            <th>10</th>
+                            <td>Slowest</td>
+                            <td colspan="2"><input type="text" class="formula-input" id="chall-max" placeholder="=MAX(...)"></td>
+                            <td><button class="btn btn-sm btn-outline" onclick="checkChallenge('max')">Check</button></td>
+                        </tr>
+                        <tr>
+                            <th>11</th>
+                            <td>Fastest</td>
+                            <td colspan="2"><input type="text" class="formula-input" id="chall-min" placeholder="=MIN(...)"></td>
+                            <td><button class="btn btn-sm btn-outline" onclick="checkChallenge('min')">Check</button></td>
+                        </tr>
+                        <tr>
+                            <th>12</th>
+                            <td>Count</td>
+                            <td colspan="2"><input type="text" class="formula-input" id="chall-count" placeholder="=COUNT(...)"></td>
+                            <td><button class="btn btn-sm btn-outline" onclick="checkChallenge('count')">Check</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top:1rem; display:flex; gap:10px;">
+                <button class="btn" onclick="checkChallenge('calc')">Check Lap 1 Formula</button>
+                <button class="btn btn-outline" onclick="showHint()">Need a Hint?</button>
+            </div>
+            <div id="challengeFeedback" class="feedback"></div>
+        </div>
+
+        <!-- CCQ 2 -->
+        <div class="ccq-container">
+            <h4>🤔 Application Check</h4>
+            <p>Why did we need <code>$G$1</code> for the sensor lag calculation?</p>
+            <textarea id="ccq2-text" style="width:100%; padding:8px; border-radius:4px;" placeholder="Type your reasoning..."></textarea>
+            <button class="btn btn-outline" style="margin-top:5px;" onclick="checkCCQ2()">Check Answer</button>
+            <div id="ccq-2-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: INTERACTIVE ACTIVITY (GAME) -->
+    <section id="section-6">
+        <h2>🎮 Ludic Activity: Function Speed Challenge</h2>
+        <div class="card" style="text-align:center;">
+            <h3>Can you analyze data faster than a pit crew?</h3>
+            <p>Identify the correct function to answer the engineering question.</p>
+            
+            <div id="game-area" style="padding: 2rem; border: 2px dashed var(--primary); margin: 1rem 0; background: var(--bg-body);">
+                <h4 id="game-q">Loading...</h4>
+                <div id="game-options" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:1rem;">
+                    <!-- Buttons generated by JS -->
+                </div>
+            </div>
+            <div id="game-score">Score: 0 / 5</div>
+            <button class="btn" onclick="startGame()">Start Race</button>
+        </div>
+    </section>
+
+    <!-- SECTION 7: VOCABULARY -->
+    <section id="section-7">
+        <h2>📚 Engineering Vocabulary</h2>
+        <p>Click a card to hear the pronunciation and see the definition.</p>
+        <div class="input-group" style="margin-bottom: 1rem;">
+            <input type="text" id="vocabSearch" placeholder="Search terms..." onkeyup="filterVocab()" style="padding:10px; width:100%; border-radius:8px; border:1px solid #ccc;">
+        </div>
+        
+        <div class="vocab-grid" id="vocabGrid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- SECTION 8: WRAP UP -->
+    <section id="section-8">
+        <h2>🏁 Wrap-Up & Reflection</h2>
+        
+        <div class="card">
+            <h3>Knowledge Consolidation: 3-2-1 Reflection</h3>
+            <form id="wrapupForm" onsubmit="saveWrapup(event)">
+                <label><strong>3</strong> things you learned about spreadsheets today:</label>
+                <input type="text" class="cell-input" style="text-align:left; border:1px solid #ccc; margin:5px 0;" required>
+                <input type="text" class="cell-input" style="text-align:left; border:1px solid #ccc; margin:5px 0;" required>
+                <input type="text" class="cell-input" style="text-align:left; border:1px solid #ccc; margin:5px 0;" required>
+                
+                <br><br>
+                <label><strong>2</strong> Excel functions you will use in your car project:</label>
+                <input type="text" class="cell-input" style="text-align:left; border:1px solid #ccc; margin:5px 0;" required>
+                <input type="text" class="cell-input" style="text-align:left; border:1px solid #ccc; margin:5px 0;" required>
+                
+                <br><br>
+                <label><strong>1</strong> Question you still have:</label>
+                <input type="text" class="cell-input" style="text-align:left; border:1px solid #ccc; margin:5px 0;" required>
+                
+                <br><br>
+                <button type="submit" class="btn btn-success">Submit Reflection</button>
+            </form>
+            <div id="wrapupFeedback" class="feedback">Great work! Reflection saved.</div>
+        </div>
+
+        <div class="card" style="background: linear-gradient(135deg, var(--secondary), #059669); color: white;">
+            <h3>🏆 Achievement Unlocked</h3>
+            <p>You have completed Class 1: <strong>Data Rookie</strong></p>
+            <p><em>Next Lesson: We dive into Advanced Functions (VLOOKUP) to automate our design process.</em></p>
+            <div style="font-size:3rem; text-align:center;">🎖️</div>
+        </div>
+    </section>
+
+</main>
+
+<div class="nav-footer">
+    <button class="btn btn-outline" id="prevBtn" onclick="changeSection(-1)" disabled>Previous</button>
+    <div style="font-weight:bold; align-self:center;" id="stepIndicator">Step 1/8</div>
+    <button class="btn" id="nextBtn" onclick="changeSection(1)">Next Step</button>
+</div>
+
+<script>
+    /* --- STATE MANAGEMENT --- */
+    let currentSection = 1;
+    const totalSections = 8;
+    const sectionTitles = [
+        "Ignition", "Project Brief", "Objectives", "Concepts", "Lab Simulator", "Speed Challenge", "Vocabulary", "Wrap-Up"
+    ];
+
+    /* --- INITIALIZATION --- */
+    document.addEventListener('DOMContentLoaded', () => {
+        loadProgress();
+        renderVocab();
+        updateUI();
+        
+        // Accordion Logic
+        const acc = document.getElementsByClassName("accordion");
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active-acc");
+                const panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    });
+
+    /* --- NAVIGATION --- */
+    function changeSection(dir) {
+        // Hide current
+        document.getElementById(`section-${currentSection}`).classList.remove('active');
+        
+        // Update index
+        currentSection += dir;
+        
+        // Show new
+        document.getElementById(`section-${currentSection}`).classList.add('active');
+        
+        // Update UI
+        updateUI();
+        window.scrollTo(0, 0);
+    }
+
+    function updateUI() {
+        // Buttons
+        document.getElementById('prevBtn').disabled = currentSection === 1;
+        document.getElementById('nextBtn').innerText = currentSection === totalSections ? "Finish" : "Next Step";
+        if(currentSection === totalSections) {
+             document.getElementById('nextBtn').onclick = () => alert("Class Completed! Great job.");
+        } else {
+             document.getElementById('nextBtn').onclick = () => changeSection(1);
+        }
+
+        // Progress Bar
+        const percent = ((currentSection - 1) / (totalSections - 1)) * 100;
+        document.getElementById('progressBar').style.width = `${percent}%`;
+        document.getElementById('stepIndicator').innerText = `Step ${currentSection}/${totalSections}: ${sectionTitles[currentSection-1]}`;
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+
+    /* --- ACTIVITIES --- */
+    
+    // 1. Hook
+    function saveHook(e) {
+        e.preventDefault();
+        const feedback = document.getElementById('hookFeedback');
+        feedback.style.display = 'block';
+        feedback.className = 'feedback correct';
+        localStorage.setItem('ecp_c1_hook', 'completed');
+    }
+
+    // 2. Vocabulary Data
+    const vocabList = [
+        { term: "Cell Reference", def: "Address of a cell (e.g., B2)", sp: "Referencia de celda" },
+        { term: "Relative Reference", def: "Address that changes when copied", sp: "Referencia relativa" },
+        { term: "Absolute Reference", def: "Address fixed with $ (e.g., $B$2)", sp: "Referencia absoluta" },
+        { term: "Formula", def: "Manual instruction (=A1+B1)", sp: "Fórmula" },
+        { term: "Function", def: "Built-in command (SUM)", sp: "Función" },
+        { term: "Voltage", def: "Electrical potential (Volts)", sp: "Voltaje" },
+        { term: "Current Draw", def: "Amount of electricity used (Amps)", sp: "Consumo de corriente" }
+    ];
+
+    function renderVocab() {
+        const grid = document.getElementById('vocabGrid');
+        grid.innerHTML = '';
+        vocabList.forEach(v => {
+            const el = document.createElement('div');
+            el.className = 'vocab-card';
+            el.innerHTML = `<h4>${v.term}</h4><p>${v.def}</p><small>${v.sp}</small>`;
+            el.onclick = () => speak(`${v.term}. ${v.def}`);
+            grid.appendChild(el);
+        });
+    }
+
+    function filterVocab() {
+        const q = document.getElementById('vocabSearch').value.toLowerCase();
+        const cards = document.getElementsByClassName('vocab-card');
+        Array.from(cards).forEach(card => {
+            card.style.display = card.innerText.toLowerCase().includes(q) ? 'block' : 'none';
+        });
+    }
+
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            const msg = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(msg);
+        } else {
+            alert("Text-to-speech not supported in this browser.");
+        }
+    }
+
+    /* --- SIMULATOR --- */
+    function updateSim() {
+        const m = parseFloat(document.getElementById('costM').value) || 0;
+        const b = parseFloat(document.getElementById('costB').value) || 0;
+        const w = parseFloat(document.getElementById('costW').value) || 0;
+        const total = m + b + w;
+        document.getElementById('simTotal').innerText = `$${total.toFixed(2)}`;
+        document.getElementById('simRemaining').innerText = `$${(50 - total).toFixed(2)}`;
+    }
+
+    function checkSimFormula() {
+        const val = document.getElementById('formulaSelect').value;
+        const feedback = document.getElementById('simFeedback');
+        feedback.style.display = 'block';
+        
+        if(val === 'correct') {
+            feedback.innerText = "Correct! SUM is more efficient than adding cells individually.";
+            feedback.className = 'feedback correct';
+        } else if (val === 'wrong') {
+            feedback.innerText = "It works, but what if you had 100 parts? SUM is better.";
+            feedback.className = 'feedback incorrect';
+        } else if (val === 'wrong2') {
+             feedback.innerText = "COUNT only tells you '3 items', not the price!";
+            feedback.className = 'feedback incorrect';
+        }
+    }
+
+    function checkSimRef() {
+        const val = document.getElementById('refSelect').value;
+        const feedback = document.getElementById('simFeedback');
+        feedback.style.display = 'block';
+        
+        if(val === 'correct') {
+            feedback.innerText = "Excellent! $E$1 ensures we always compare against the fixed budget.";
+            feedback.className = 'feedback correct';
+        } else {
+            feedback.innerText = "Careful! If you don't use $ signs, dragging the formula will break it.";
+            feedback.className = 'feedback incorrect';
+        }
+    }
+    
+    /* --- PART B CHALLENGE LOGIC --- */
+    function checkChallenge(type) {
+        let input, correct = false, msg = "";
+        const feedback = document.getElementById('challengeFeedback');
+        
+        if (type === 'calc') {
+            // Formula Expected: =(B3*60)+C3+$G$1 (or variations)
+            const val = document.getElementById('chall-calc').value.toUpperCase().replace(/\s/g, '');
+            
+            // Checks
+            const hasMins = val.includes('B3');
+            const hasSecs = val.includes('C3');
+            const hasMult = val.includes('*60');
+            const hasLag = val.includes('$G$1');
+            
+            if(hasMins && hasSecs && hasMult && hasLag) {
+                correct = true;
+                msg = "Perfect! You converted minutes to seconds AND added the locked lag value.";
+                document.getElementById('chall-calc').classList.add('correct-input');
+            } else if (!hasLag) {
+                msg = "You missed the Sensor Lag ($G$1). Remember to lock it!";
+                document.getElementById('chall-calc').classList.add('incorrect-input');
+            } else if (!hasMult) {
+                msg = "Did you convert minutes to seconds? (Multiply by 60)";
+                document.getElementById('chall-calc').classList.add('incorrect-input');
+            } else {
+                msg = "Try again. Structure: (Minutes * 60) + Seconds + $Lag";
+                document.getElementById('chall-calc').classList.add('incorrect-input');
+            }
+        } 
+        else if (type === 'avg') {
+            input = document.getElementById('chall-avg').value.toUpperCase().replace(/\s/g, '');
+            if(input === '=AVERAGE(D3:D7)') { correct = true; msg = "Correct Average!"; document.getElementById('chall-avg').classList.add('correct-input'); } 
+            else msg = "Incorrect. Use =AVERAGE() on the Total Seconds column (D3:D7).";
+        }
+        else if (type === 'max') {
+            input = document.getElementById('chall-max').value.toUpperCase().replace(/\s/g, '');
+            if(input === '=MAX(D3:D7)') { correct = true; msg = "Correct Max!"; document.getElementById('chall-max').classList.add('correct-input'); }
+            else msg = "Incorrect. Use =MAX() on the Total Seconds column (D3:D7).";
+        }
+        else if (type === 'min') {
+            input = document.getElementById('chall-min').value.toUpperCase().replace(/\s/g, '');
+            if(input === '=MIN(D3:D7)') { correct = true; msg = "Correct Min!"; document.getElementById('chall-min').classList.add('correct-input'); }
+            else msg = "Incorrect. Use =MIN() on the Total Seconds column (D3:D7).";
+        }
+        else if (type === 'count') {
+            input = document.getElementById('chall-count').value.toUpperCase().replace(/\s/g, '');
+            if(input.includes('COUNT') && (input.includes('D3:D7'))) { 
+                correct = true; msg = "Correct Count!"; document.getElementById('chall-count').classList.add('correct-input'); 
+            }
+            else msg = "Incorrect. Use =COUNT() on the Total Seconds column (D3:D7).";
+        }
+
+        feedback.style.display = 'block';
+        feedback.innerText = msg;
+        feedback.className = correct ? 'feedback correct' : 'feedback incorrect';
+    }
+
+    function showHint() {
+        const fb = document.getElementById('challengeFeedback');
+        fb.style.display = 'block';
+        fb.innerText = "Hint: To get total seconds:\n1. Multiply Minutes (B3) by 60.\n2. Add Seconds (C3).\n3. Add Locked Lag ($G$1).\nFormat: =(B3*60) + C3 + $G$1";
+        fb.className = 'feedback';
+        fb.style.background = '#e0f2fe';
+        fb.style.color = '#0284c7';
+    }
+
+    /* --- CCQs --- */
+    function checkCCQ(id, isCorrect) {
+        const fb = document.getElementById(`ccq-${id}-feedback`);
+        fb.style.display = 'block';
+        if(isCorrect) {
+            fb.innerText = "Correct! Relative references move with the formula. We need an Absolute reference ($) to fix it.";
+            fb.className = 'feedback correct';
+        } else {
+            fb.innerText = "Incorrect. A relative reference (C1) WILL move down to C2 when you drag the formula.";
+            fb.className = 'feedback incorrect';
+        }
+    }
+
+    function checkCCQ2() {
+        const text = document.getElementById('ccq2-text').value.toLowerCase();
+        const fb = document.getElementById('ccq-2-feedback');
+        fb.style.display = 'block';
+        if(text.includes('fix') || text.includes('move') || text.includes('lock') || text.includes('same cell')) {
+            fb.innerText = "That's right! The $ locks the cell so we always look at the budget limit/fee.";
+            fb.className = 'feedback correct';
+        } else {
+            fb.innerText = "Try again. Think about what happens when we copy the formula to another row.";
+            fb.className = 'feedback incorrect';
+        }
+    }
+
+    /* --- GAME LOGIC --- */
+    const gameQuestions = [
+        { q: "We need the TOTAL cost of all motors.", a: "=SUM()", opts: ["=SUM()", "=MAX()", "=COUNT()"] },
+        { q: "Which car is the FASTEST?", a: "=MAX()", opts: ["=MIN()", "=AVERAGE()", "=MAX()"] },
+        { q: "What is the CHEAPEST battery?", a: "=MIN()", opts: ["=MIN()", "=COUNT()", "=SUM()"] },
+        { q: "How many cars did we test?", a: "=COUNT()", opts: ["=SUM()", "=COUNT()", "=AVERAGE()"] },
+        { q: "What is the typical speed of the group?", a: "=AVERAGE()", opts: ["=MAX()", "=SUM()", "=AVERAGE()"] }
+    ];
+    let gameIdx = 0;
+    let score = 0;
+
+    function startGame() {
+        gameIdx = 0;
+        score = 0;
+        loadGameQuestion();
+    }
+
+    function loadGameQuestion() {
+        if(gameIdx >= gameQuestions.length) {
+            document.getElementById('game-q').innerText = "Race Complete!";
+            document.getElementById('game-options').innerHTML = `Your Score: ${score}/5. ${score > 3 ? 'Podium Finish! 🏆' : 'Back to the pit crew for practice.'}`;
+            return;
+        }
+        const q = gameQuestions[gameIdx];
+        document.getElementById('game-q').innerText = `Lap ${gameIdx+1}: ${q.q}`;
+        document.getElementById('game-score').innerText = `Score: ${score}`;
+        
+        const div = document.getElementById('game-options');
+        div.innerHTML = '';
+        q.opts.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-outline';
+            btn.innerText = opt;
+            btn.onclick = () => checkGame(opt);
+            div.appendChild(btn);
+        });
+    }
+
+    function checkGame(ans) {
+        if(ans === gameQuestions[gameIdx].a) score++;
+        gameIdx++;
+        loadGameQuestion();
+    }
+
+    /* --- WRAP UP --- */
+    function saveWrapup(e) {
+        e.preventDefault();
+        document.getElementById('wrapupFeedback').style.display = 'block';
+        document.getElementById('wrapupFeedback').className = 'feedback correct';
+        localStorage.setItem('ecp_c1_complete', 'true');
+    }
+
+    function loadProgress() {
+        // Basic localStorage check (expandable for full progress tracking)
+        if(localStorage.getItem('ecp_c1_hook')) {
+            // Restore state if needed
+        }
+    }
+</script>
+
+</body>
+</html>

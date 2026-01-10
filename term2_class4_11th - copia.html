@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 2: Design Systems & Logic</title>
+    <style>
+        :root {
+            --primary: #7c3aed; /* Logic Purple */
+            --secondary: #10b981; /* Success Green */
+            --accent: #f59e0b; /* Warning Orange */
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --text-main: #334155;
+            --bg-body: #ffffff;
+            --bg-card: #f8fafc;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #a78bfa;
+            --secondary: #34d399;
+            --accent: #fbbf24;
+            --danger: #f87171;
+            --dark: #f8fafc;
+            --light: #1e293b;
+            --text-main: #e2e8f0;
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: var(--text-main); background-color: var(--bg-body); margin: 0; padding-bottom: 80px; }
+
+        /* Navigation */
+        header { background: var(--dark); color: var(--bg-body); padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
+        .nav-controls { display: flex; gap: 1rem; align-items: center; }
+        .progress-container { width: 150px; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s; }
+        button.theme-toggle { background: none; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 20px; cursor: pointer; }
+
+        /* Layout */
+        main { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+        section { display: none; animation: fadeIn 0.5s ease-in-out; margin-bottom: 3rem; }
+        section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards & Buttons */
+        h1, h2, h3 { color: var(--primary); }
+        .card { background: var(--bg-card); padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--shadow); margin-bottom: 1.5rem; border-left: 5px solid var(--primary); }
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn:hover { filter: brightness(110%); transform: translateY(-1px); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-success { background: var(--secondary); border:none; color:white; }
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+        .btn-download { background: #334155; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-size: 0.9rem; display: inline-block; margin-top: 10px; }
+
+        /* Simulator Styles */
+        .spreadsheet-sim { overflow-x: auto; background: white; color: black; border-radius: 8px; padding: 1rem; border: 1px solid #ccc; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        table.excel { width: 100%; border-collapse: collapse; font-family: 'Consolas', monospace; font-size: 0.9rem; }
+        table.excel th, table.excel td { border: 1px solid #cbd5e1; padding: 8px; text-align: center; min-width: 80px; }
+        table.excel th { background: #f1f5f9; font-weight: bold; color: #334155; }
+        table.excel td.header-col { background: #f1f5f9; font-weight: bold; width: 40px; }
+        
+        /* Input & Validation */
+        input.formula-input { width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-family: 'Consolas', monospace; color: var(--primary); }
+        input.formula-input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+        .correct-input { background-color: #dcfce7 !important; border-color: #166534 !important; color: #166534 !important; }
+        .incorrect-input { background-color: #fee2e2 !important; border-color: #991b1b !important; }
+
+        /* Feedback & Instructions */
+        .instruction-box { background: #e0f2fe; border-left: 5px solid #0ea5e9; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px; color: #0c4a6e; }
+        [data-theme="dark"] .instruction-box { background: #0c4a6e; border-left-color: #38bdf8; color: #e0f2fe; }
+        .feedback { margin-top: 10px; font-weight: bold; padding: 10px; border-radius: 6px; display: none; }
+        .feedback.correct { background: #dcfce7; color: #166534; }
+        .feedback.incorrect { background: #fee2e2; color: #991b1b; }
+
+        /* Concept Visuals */
+        .concept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .syntax-block { background: #1e293b; color: #a5f3fc; padding: 1rem; border-radius: 8px; font-family: monospace; overflow-x: auto; margin: 0.5rem 0; }
+        .param { color: #fcd34d; font-weight: bold; } /* Argument */
+        .func { color: #c084fc; font-weight: bold; } /* Function Name */
+
+        /* Accordion */
+        .accordion { cursor: pointer; padding: 15px; width: 100%; border: none; text-align: left; outline: none; transition: 0.4s; background-color: rgba(0,0,0,0.05); font-weight: bold; border-radius: 4px; margin-bottom: 5px; }
+        .active-acc, .accordion:hover { background-color: var(--primary); color: white; }
+        .panel { padding: 15px; display: none; background-color: var(--bg-card); overflow: hidden; border-left: 2px solid var(--primary); }
+
+        /* Footer */
+        .nav-footer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 1rem; display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.1); z-index: 999; }
+
+        /* Tables for Data */
+        .ref-table { font-size: 0.8rem; margin-bottom: 1rem; width: 100%; border: 1px solid #ccc; }
+        .ref-table th { background: #334155; color: white; padding: 5px; }
+        .ref-table td { border: 1px solid #ccc; padding: 4px; text-align: center; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size: 1.5rem;">🧠</span>
+        <div>
+            <div style="font-weight:bold; font-size: 1.1rem;">Electric Car Project</div>
+            <div style="font-size: 0.8rem; opacity: 0.8;">Class 2: Design Systems & Logic</div>
+        </div>
+    </div>
+    <div class="nav-controls">
+        <div style="text-align: right; font-size: 0.8rem;">
+            <span>Logic Upload</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+    </div>
+</header>
+
+<main>
+
+    <!-- SECTION 1: OPENING HOOK -->
+    <section id="section-1" class="active">
+        <div class="card" style="text-align:center; background: linear-gradient(135deg, var(--dark), var(--primary)); color: white;">
+            <h1>The Manual Labor Trap</h1>
+            <p>Imagine you have a catalog of 5,000 car parts. Your boss asks: "Is this specific motor compatible with this battery?"</p>
+        </div>
+
+        <div class="card">
+            <h3>😰 The Challenge</h3>
+            <p>Find the <strong>Voltage</strong> of the "Titanium X" motor in the table below manually. Then check if it matches the "PowerPack A" battery (6V).</p>
+            
+            <div style="height: 150px; overflow-y: scroll; border: 1px solid #ccc; margin-bottom: 1rem;">
+                <table class="ref-table">
+                    <tr><th>Motor Name</th><th>Voltage</th><th>Cost</th></tr>
+                    <tr><td>Standard Eco</td><td>3V</td><td>$5</td></tr>
+                    <tr><td>Speedster V1</td><td>6V</td><td>$10</td></tr>
+                    <tr><td>Titanium X</td><td>9V</td><td>$25</td></tr>
+                    <tr><td>Mini Beast</td><td>3V</td><td>$4</td></tr>
+                    <tr><td>Mega Torque</td><td>12V</td><td>$30</td></tr>
+                </table>
+            </div>
+
+            <p><strong>Is Titanium X compatible with a 6V battery?</strong></p>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button class="btn btn-outline" onclick="checkHook(false)">Yes, compatible</button>
+                <button class="btn btn-outline" onclick="checkHook(true)">No, Voltage Mismatch</button>
+            </div>
+            <div id="hook-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: OBJECTIVES -->
+    <section id="section-2">
+        <h2>🎯 Today's Mission Objectives</h2>
+        <div class="card">
+            <h3>Cognitive Goals</h3>
+            <ul>
+                <li><strong>Master VLOOKUP:</strong> Automate data retrieval so you never have to search manually again.</li>
+                <li><strong>Logic Gates (IF):</strong> Teach Excel to make decisions (Compatible vs. Incompatible).</li>
+                <li><strong>Nested Logic:</strong> Combine tools (IF inside IF) for complex engineering checks.</li>
+            </ul>
+        </div>
+        <div class="instruction-box">
+            <strong>Success Criteria:</strong> You will build a "Matrix Validator" that looks up car efficiency scores by dynamically changing the column it looks at based on the configuration.
+        </div>
+    </section>
+
+    <!-- SECTION 3: CONCEPTS -->
+    <section id="section-3">
+        <h2>🧠 Concept Download: The Logic Engine</h2>
+
+        <!-- VLOOKUP Concept -->
+        <div class="card">
+            <h3>1. The Scout: VLOOKUP</h3>
+            <p><strong>Definition:</strong> "Vertical Lookup". It searches for an ID in the first column of a list and returns information from that row.</p>
+            
+            <div class="syntax-block">
+                =VLOOKUP(<span class="param">What_ID</span>, <span class="param">Where_Table</span>, <span class="param">Column_Number</span>, <span class="param">FALSE</span>)
+            </div>
+            
+            <div class="concept-grid">
+                <div>
+                    <h4>Anatomy:</h4>
+                    <ol>
+                        <li><strong>Lookup_Value:</strong> The ID you have (e.g., "M1").</li>
+                        <li><strong>Table_Array:</strong> The catalog range (e.g., A2:D100).</li>
+                        <li><strong>Col_Index:</strong> Which column has the answer? (1, 2, 3...).</li>
+                        <li><strong>Range_Lookup:</strong> Always type <strong>FALSE</strong> for exact matches.</li>
+                    </ol>
+                </div>
+                <div style="background:var(--bg-body); padding:10px; border-radius:8px; border:1px solid #ccc;">
+                    <h4>Visual Aid:</h4>
+                    <p>👀 <strong>Look Down</strong> Column 1 for ID.<br>
+                    👉 <strong>Look Across</strong> to Column 3.<br>
+                    ✅ <strong>Return</strong> value.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- IF Concept -->
+        <div class="card" style="border-left-color: var(--accent);">
+            <h3>2. The Judge: IF Statement</h3>
+            <p><strong>Definition:</strong> Checks a condition. If TRUE, does one thing. If FALSE, does another.</p>
+            
+            <div class="syntax-block">
+                =IF(<span class="param">Condition</span>, <span class="param">Value_If_True</span>, <span class="param">Value_If_False</span>)
+            </div>
+            
+            <p><strong>Engineering Example:</strong><br>
+            <code>=IF(Voltage=9, "Compatible", "Danger")</code></p>
+        </div>
+
+        <!-- CCQ 1 -->
+        <div class="ccq-container">
+            <h4>🤔 Concept Check: The False Flag</h4>
+            <p>Why is it critical to use <code>FALSE</code> at the end of a VLOOKUP for part numbers?</p>
+            <details>
+                <summary class="btn btn-sm btn-outline">Check Answer</summary>
+                <p class="feedback correct" style="display:block; margin-top:5px;">Because part IDs (like M1 vs M10) must match exactly. If you omit FALSE, Excel might give you a "close enough" match, which is dangerous in engineering!</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- SECTION 4: SIMULATOR (PART A) -->
+    <section id="section-4">
+        <h2>🛠️ Lab A: The Automated Scout</h2>
+        
+        <div class="instruction-box">
+            <strong>Task:</strong> Use <code>VLOOKUP</code> to automatically find the <strong>Voltage</strong> and <strong>Cost</strong> for the selected Motor ID.
+            <br>
+            <strong>Reference Table (Range A2:D5):</strong>
+            <table class="ref-table" style="width:auto; display:inline-block; vertical-align:top; margin-top:5px;">
+                <tr><th>ID (Col 1)</th><th>Name (Col 2)</th><th>Volt (Col 3)</th><th>Cost (Col 4)</th></tr>
+                <tr><td>M1</td><td>Eco</td><td>3</td><td>$5</td></tr>
+                <tr><td>M2</td><td>Fast</td><td>6</td><td>$10</td></tr>
+                <tr><td>M3</td><td>Turbo</td><td>9</td><td>$15</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>Design Sheet</h3>
+            <div class="spreadsheet-sim">
+                <table class="excel">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A (Part ID)</th>
+                            <th>B (Name)</th>
+                            <th>C (Voltage)</th>
+                            <th>D (Cost)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="header-col">10</td>
+                            <td>M2</td>
+                            <td style="color:#999; font-style:italic;">Fast</td>
+                            <td><input type="text" class="formula-input" id="sim-vlookup-volt" placeholder="=VLOOKUP(...)"></td>
+                            <td><input type="text" class="formula-input" id="sim-vlookup-cost" placeholder="=VLOOKUP(...)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top:10px;">
+                <button class="btn" onclick="checkLabA()">Verify VLOOKUPs</button>
+                <button class="btn btn-outline" onclick="showHintA()">Hint</button>
+            </div>
+            <div id="lab-a-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: SIMULATOR (PART B - IGCSE CHALLENGE) -->
+    <section id="section-5">
+        <h2>🛠️ Lab B: The Matrix Challenge (IGCSE Level)</h2>
+        
+        <div class="card" style="background:#f0f9ff; border-left:5px solid #0369a1;">
+            <h3>📂 Source File: car_efficiency_matrix.csv</h3>
+            <p>For this challenge, we use a large external CSV file (25 rows: M101 to M125). Columns change based on configuration.</p>
+            <p><strong>Table Structure (Range A2:E26):</strong></p>
+            <ul style="list-style:none; padding-left:0; font-family:monospace;">
+                <li>Col 1: Motor ID (M101 - M125)</li>
+                <li>Col 2: Motor Name</li>
+                <li>Col 3: "Eco" Score</li>
+                <li>Col 4: "Sport" Score</li>
+                <li>Col 5: "Pro" Score</li>
+            </ul>
+            <!-- Placeholder for download as requested -->
+            <a href="https://drive.google.com/file/d/1DP3wDU2H0EZYJap6fabKhsy3uFzutT35/view?usp=sharing" class="btn-download">⬇️ Download car_efficiency_matrix.csv (25 Rows)</a>
+        </div>
+
+        <div class="instruction-box">
+            <strong>Mission:</strong> Retrieve the Efficiency Score for Motor <strong>M115</strong> (Row 16).
+            <br>
+            <strong>The Twist:</strong> The column number depends on the <strong>Configuration</strong> in cell B16.
+            <ul>
+                <li>If Config is "Eco", look in <strong>Col 3</strong>.</li>
+                <li>If Config is "Sport", look in <strong>Col 4</strong>.</li>
+                <li>If Config is "Pro", look in <strong>Col 5</strong>.</li>
+            </ul>
+            <strong>Solution Strategy:</strong> Nest <code>IF</code> statements <em>inside</em> the Column Index number of your VLOOKUP.
+            <br>
+            <em>Example Logic: VLOOKUP(ID, Table, IF(Config="Eco", 3, IF(Config="Sport", 4, 5)), FALSE)</em>
+        </div>
+
+        <div class="card" style="border-left-color: var(--danger);">
+            <h3>Matrix Lookup Tool</h3>
+            <div class="spreadsheet-sim">
+                <table class="excel">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>A (Motor ID)</th>
+                            <th>B (Config)</th>
+                            <th>C (Efficiency Score)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="header-col">16</td>
+                            <td>M115</td>
+                            <td>
+                                <select id="config-select" style="border:none; background:transparent;">
+                                    <option value="Eco">Eco</option>
+                                    <option value="Sport">Sport</option>
+                                    <option value="Pro">Pro</option>
+                                </select>
+                            </td>
+                            <td><input type="text" class="formula-input" id="sim-matrix" placeholder="=VLOOKUP(..., IF(...), ...)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top:10px;">
+                <button class="btn" onclick="checkLabB()">Verify Matrix Logic</button>
+                <button class="btn btn-outline" onclick="showHintB()">Hint</button>
+            </div>
+            <div id="lab-b-feedback" class="feedback"></div>
+        </div>
+
+        <!-- CCQ 2 -->
+        <div class="ccq-container">
+            <h4>🤔 Logic Check</h4>
+            <p>Why do we put the IF statement in the 3rd position of the VLOOKUP?</p>
+            <textarea id="ccq2-text" style="width:100%; padding:8px; border-radius:4px;" placeholder="Type reasoning..."></textarea>
+            <button class="btn btn-sm btn-outline" style="margin-top:5px;" onclick="checkCCQ2()">Submit</button>
+            <div id="ccq-2-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: SYNTAX SCRAMBLE -->
+    <section id="section-6">
+        <h2>🎮 Ludic Activity: Syntax Scramble</h2>
+        <div class="card">
+            <h3>Repair the Broken Code</h3>
+            <p>The engineering bot is malfunctioning. It outputted this scrambled VLOOKUP formula. Which one is correct for finding a <strong>Price</strong> (Col 4) based on <strong>ID</strong> (A2)?</p>
+            
+            <div style="display:grid; gap:10px;">
+                <button class="btn btn-outline" onclick="checkGame(1)" style="text-transform:none; text-align:left;">A) =VLOOKUP(A2, Table, FALSE, 4)</button>
+                <button class="btn btn-outline" onclick="checkGame(2)" style="text-transform:none; text-align:left;">B) =VLOOKUP(Table, A2, 4, FALSE)</button>
+                <button class="btn btn-outline" onclick="checkGame(3)" style="text-transform:none; text-align:left;">C) =VLOOKUP(A2, Table, 4, FALSE)</button>
+            </div>
+            <div id="game-feedback" class="feedback"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: VOCABULARY -->
+    <section id="section-7">
+        <h2>📚 Engineering Vocabulary</h2>
+        <div class="input-group" style="margin-bottom: 1rem;">
+            <input type="text" id="vocabSearch" placeholder="Search terms..." onkeyup="filterVocab()" class="formula-input">
+        </div>
+        <div class="vocab-grid" id="vocabGrid"></div>
+    </section>
+
+    <!-- SECTION 8: WRAP UP -->
+    <section id="section-8">
+        <h2>🏁 Wrap-Up & Reflection</h2>
+        <div class="card">
+            <h3>3-2-1 Logic Check</h3>
+            <form id="wrapupForm" onsubmit="saveWrapup(event)">
+                <label>3 situations where you would use VLOOKUP:</label>
+                <input type="text" class="formula-input" style="margin-bottom:10px;">
+                
+                <label>2 things that happen if you forget <code>FALSE</code>:</label>
+                <input type="text" class="formula-input" style="margin-bottom:10px;">
+                
+                <label>1 function you found most difficult today:</label>
+                <input type="text" class="formula-input" style="margin-bottom:10px;">
+                
+                <button type="submit" class="btn btn-success">Save & Finish</button>
+            </form>
+            <div id="wrapupFeedback" class="feedback"></div>
+        </div>
+    </section>
+
+</main>
+
+<div class="nav-footer">
+    <button class="btn btn-outline" id="prevBtn" onclick="changeSection(-1)" disabled>Previous</button>
+    <div style="font-weight:bold; align-self:center;" id="stepIndicator">Step 1/8</div>
+    <button class="btn" id="nextBtn" onclick="changeSection(1)">Next Step</button>
+</div>
+
+<script>
+    /* --- STATE --- */
+    let currentSection = 1;
+    const totalSections = 8;
+    const sectionTitles = ["Hook", "Objectives", "Concepts", "Lab A", "Lab B", "Game", "Vocab", "Wrap-Up"];
+
+    /* --- INIT --- */
+    document.addEventListener('DOMContentLoaded', () => {
+        renderVocab();
+        updateUI();
+        
+        // Accordion
+        const acc = document.getElementsByClassName("accordion");
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active-acc");
+                const panel = this.nextElementSibling;
+                panel.style.display = panel.style.display === "block" ? "none" : "block";
+            });
+        }
+    });
+
+    /* --- NAV --- */
+    function changeSection(dir) {
+        document.getElementById(`section-${currentSection}`).classList.remove('active');
+        currentSection += dir;
+        document.getElementById(`section-${currentSection}`).classList.add('active');
+        updateUI();
+        window.scrollTo(0, 0);
+    }
+
+    function updateUI() {
+        document.getElementById('prevBtn').disabled = currentSection === 1;
+        document.getElementById('nextBtn').innerText = currentSection === totalSections ? "Finish" : "Next Step";
+        if (currentSection === totalSections) {
+             document.getElementById('nextBtn').onclick = () => alert("Class 2 Completed!");
+        } else {
+             document.getElementById('nextBtn').onclick = () => changeSection(1);
+        }
+        const percent = ((currentSection - 1) / (totalSections - 1)) * 100;
+        document.getElementById('progressBar').style.width = `${percent}%`;
+        document.getElementById('stepIndicator').innerText = `Step ${currentSection}/${totalSections}: ${sectionTitles[currentSection-1]}`;
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    }
+
+    /* --- ACTIVITIES --- */
+    function checkHook(isCorrect) {
+        const fb = document.getElementById('hook-feedback');
+        fb.style.display = 'block';
+        if(isCorrect) {
+            fb.innerText = "Correct! Titanium X is 9V, Battery is 6V. Mismatch! Manually checking is slow and risky. Let's fix that.";
+            fb.className = 'feedback correct';
+        } else {
+            fb.innerText = "Dangerous Error! Titanium X is 9V. Connecting it to a 6V system might fail. Manual checking led to this error.";
+            fb.className = 'feedback incorrect';
+        }
+    }
+
+    function checkLabA() {
+        const volt = document.getElementById('sim-vlookup-volt').value.toUpperCase().replace(/\s/g, '');
+        const cost = document.getElementById('sim-vlookup-cost').value.toUpperCase().replace(/\s/g, '');
+        const fb = document.getElementById('lab-a-feedback');
+        let msg = "";
+        let allGood = true;
+
+        // Check Voltage Formula: =VLOOKUP(A10, A2:D5, 3, FALSE)
+        if(volt.includes('VLOOKUP') && volt.includes('A10') && volt.includes('3') && volt.includes('FALSE')) {
+            document.getElementById('sim-vlookup-volt').classList.add('correct-input');
+        } else {
+            allGood = false;
+            document.getElementById('sim-vlookup-volt').classList.add('incorrect-input');
+        }
+
+        // Check Cost Formula: =VLOOKUP(A10, A2:D5, 4, FALSE)
+        if(cost.includes('VLOOKUP') && cost.includes('A10') && cost.includes('4') && cost.includes('FALSE')) {
+            document.getElementById('sim-vlookup-cost').classList.add('correct-input');
+        } else {
+            allGood = false;
+            document.getElementById('sim-vlookup-cost').classList.add('incorrect-input');
+        }
+
+        fb.style.display = 'block';
+        if(allGood) {
+            fb.innerText = "Perfect! You successfully retrieved Voltage (Col 3) and Cost (Col 4).";
+            fb.className = 'feedback correct';
+        } else {
+            fb.innerText = "Check your syntax. Did you select A10 as lookup value? Did you use 'FALSE' for exact match? Voltage is Col 3, Cost is Col 4.";
+            fb.className = 'feedback incorrect';
+        }
+    }
+
+    function showHintA() {
+        alert("Syntax: =VLOOKUP(Lookup_Value, Table_Array, Col_Index_Num, FALSE)\n\nLookup Value = A10\nTable = A2:D5\nColumn = 3 for Voltage, 4 for Cost.");
+    }
+
+    function checkLabB() {
+        // LAB B Logic: VLOOKUP with Nested IF for column index
+        // Target: VLOOKUP(A16, Range, IF(B16="Eco",3,IF(B16="Sport",4,5)), FALSE)
+        
+        const input = document.getElementById('sim-matrix').value.toUpperCase().replace(/\s/g, '');
+        const fb = document.getElementById('lab-b-feedback');
+        let allGood = false;
+        
+        // Key elements to check:
+        // 1. Starts with VLOOKUP
+        // 2. Uses A16 (new ID row)
+        // 3. Contains IF(B16="ECO" or similar
+        // 4. Ends with FALSE
+        
+        const hasVlookup = input.startsWith('=VLOOKUP(');
+        const hasID = input.includes('A16');
+        const hasNestedIF = input.includes('IF(') && (input.includes('B16="ECO"') || input.includes('B16="SPORT"'));
+        const hasFalse = input.includes('FALSE');
+        
+        if (hasVlookup && hasID && hasNestedIF && hasFalse) {
+            allGood = true;
+            document.getElementById('sim-matrix').classList.add('correct-input');
+        } else {
+            document.getElementById('sim-matrix').classList.add('incorrect-input');
+        }
+
+        fb.style.display = 'block';
+        if(allGood) {
+            fb.innerText = "Outstanding! You built a dynamic matrix lookup using Nested IFs inside VLOOKUP.";
+            fb.className = 'feedback correct';
+        } else {
+            fb.innerText = "Complexity check failed. \n1. Start with =VLOOKUP(A16, ...\n2. For the column number, type: IF(B16=\"Eco\", 3, IF(B16=\"Sport\", 4, 5))\n3. End with ..., FALSE)";
+            fb.className = 'feedback incorrect';
+        }
+    }
+    
+    function showHintB() {
+         alert("Your Formula Structure:\n\n=VLOOKUP( A16, Table_Range, COLUMN_LOGIC, FALSE )\n\nReplace COLUMN_LOGIC with:\nIF(B16=\"Eco\", 3, IF(B16=\"Sport\", 4, 5))");
+    }
+
+    function checkCCQ2() {
+        const txt = document.getElementById('ccq2-text').value.toLowerCase();
+        const fb = document.getElementById('ccq-2-feedback');
+        fb.style.display = 'block';
+        if(txt.includes('column') || txt.includes('index') || txt.includes('which') || txt.includes('change')) {
+            fb.innerText = "Correct! The 3rd position controls which column we read. The IF statement changes this number dynamically.";
+            fb.className = 'feedback correct';
+        } else {
+            fb.innerText = "Think about the VLOOKUP syntax: (ID, Table, Column#, Match). The IF statement returns a number (3, 4, or 5). Where does that number belong?";
+            fb.className = 'feedback incorrect';
+        }
+    }
+
+    function checkGame(opt) {
+        const fb = document.getElementById('game-feedback');
+        fb.style.display = 'block';
+        if(opt === 3) {
+            fb.innerText = "Correct! Value -> Table -> Column -> FALSE.";
+            fb.className = 'feedback correct';
+        } else {
+            fb.innerText = "Syntax Error. Remember: What, Where, Which Column, Exact Match.";
+            fb.className = 'feedback incorrect';
+        }
+    }
+
+    function saveWrapup(e) {
+        e.preventDefault();
+        const fb = document.getElementById('wrapupFeedback');
+        fb.style.display = 'block';
+        fb.innerText = "Reflection Saved. You are ready for Week 3: Data Visualization!";
+        fb.className = 'feedback correct';
+    }
+
+    /* --- VOCAB --- */
+    const vocabList = [
+        { t: "VLOOKUP", d: "Vertical Lookup. Searches first column of a range.", s: "BuscarV" },
+        { t: "IF Statement", d: "Checks a condition (True/False).", s: "Función SI" },
+        { t: "Nested Function", d: "A function inside another function.", s: "Función anidada" },
+        { t: "Lookup Table", d: "The reference data (catalog) you search in.", s: "Matriz de búsqueda" },
+        { t: "Condition", d: "The test (e.g., A1 > 10).", s: "Prueba lógica" },
+        { t: "Argument", d: "The data pieces inside the parentheses ( ).", s: "Argumento" }
+    ];
+
+    function renderVocab() {
+        const grid = document.getElementById('vocabGrid');
+        grid.innerHTML = '';
+        vocabList.forEach(v => {
+            const el = document.createElement('div');
+            el.className = 'vocab-card';
+            el.style.cssText = "background:var(--bg-card); padding:1rem; border-radius:8px; text-align:center; cursor:pointer; border:1px solid rgba(0,0,0,0.1);";
+            el.innerHTML = `<h4>${v.t}</h4><p>${v.d}</p><small style='color:var(--primary)'>${v.s}</small>`;
+            el.onclick = () => speak(`${v.t}. ${v.d}`);
+            grid.appendChild(el);
+        });
+    }
+
+    function filterVocab() {
+        const q = document.getElementById('vocabSearch').value.toLowerCase();
+        const cards = document.getElementById('vocabGrid').children;
+        Array.from(cards).forEach(c => {
+            c.style.display = c.innerText.toLowerCase().includes(q) ? 'block' : 'none';
+        });
+    }
+
+    function speak(txt) {
+        if('speechSynthesis' in window) {
+            window.speechSynthesis.speak(new SpeechSynthesisUtterance(txt));
+        }
+    }
+
+</script>
+</body>
+</html>

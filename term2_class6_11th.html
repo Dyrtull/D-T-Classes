@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Logic & Lookups | Solar Car Project</title>
+    <style>
+        :root {
+            --primary: #7c3aed; /* Purple for Logic/Code theme */
+            --primary-dark: #5b21b6;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #8b5cf6;
+            --primary-dark: #a78bfa;
+            --secondary: #34d399;
+            --accent: #fbbf24;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-light: #94a3b8;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; transition: all 0.2s ease; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 80px; }
+
+        /* Navigation */
+        nav {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-brand { font-weight: 800; font-size: 1.25rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+        .progress-bar-container { width: 150px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--secondary); width: 0%; }
+
+        /* Layout */
+        main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        section { 
+            background: var(--surface); 
+            padding: 2.5rem; 
+            border-radius: var(--radius); 
+            margin-bottom: 2rem; 
+            box-shadow: var(--shadow);
+            display: none; 
+            animation: slideUp 0.4s ease-out;
+        }
+        section.active { display: block; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { color: var(--primary); margin: 0 0 1.5rem 0; font-size: 2.2rem; }
+        h2 { color: var(--text); border-left: 5px solid var(--accent); padding-left: 1rem; margin-top: 2rem; }
+        .subtitle { color: var(--text-light); font-size: 1.1rem; margin-top: -1rem; margin-bottom: 2rem; }
+
+        /* UI Elements */
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-tool { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; font-size: 0.9rem; }
+        .btn-tool:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-tool.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Section 1: Broken Spreadsheet Hook */
+        .spreadsheet-sim {
+            font-family: 'Segoe UI', sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1.5rem 0;
+            background: white;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+        .spreadsheet-sim th, .spreadsheet-sim td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .spreadsheet-sim th { background: #f3f4f6; font-weight: bold; }
+        .ref-box {
+            border: 2px dashed #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            display: inline-block;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        .locked-ref-box {
+            border: 2px solid #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            color: #065f46;
+        }
+
+        /* Section 3: Video Companion Link */
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.2s;
+        }
+        .link-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .link-icon {
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Section 4: Workshop Instructions */
+        .workshop-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .workshop-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .workshop-list {
+            padding-left: 1.2rem;
+            margin: 0;
+        }
+        .workshop-list li {
+            margin-bottom: 0.5rem;
+        }
+        .warning-box {
+            background: #fff1f2;
+            border: 1px solid #fda4af;
+            color: #be123c;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        /* Interactive Toggle for Hook */
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        /* Footer */
+        .sticky-footer {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--surface);
+            padding: 1rem 2rem;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-brand">
+        <span>🤖</span> Logic & Lookups
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <button onclick="toggleTheme()" class="btn-tool" style="border-radius: 50%; padding: 0.5rem;">🌙</button>
+    </div>
+</nav>
+
+<main>
+    <!-- Section 1: The Hook -->
+    <section id="sec-1" class="active">
+        <h1>The Broken Spreadsheet</h1>
+        <p class="subtitle">Week 2: Automating Decisions</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+            <div>
+                <h3>🚨 Why did it break?</h3>
+                <p>We are trying to look up prices for our Solar Car parts. The lookup table is in the blue box at the bottom.</p>
+                <p>When we drag the formula down without "locking" it, the blue box moves down too! Look at what happens to Row 4 (Wheel Set).</p>
+                <p><strong>Goal:</strong> Learn to use the <code>$</code> sign (Absolute Reference) to lock the box in place.</p>
+                
+                <div class="switch-container">
+                    <span>Lock the Table ($)?</span>
+                    <button id="btn-lock" class="btn-outline" onclick="toggleLock()">No (Relative)</button>
+                </div>
+            </div>
+            
+            <div id="sim-container">
+                <!-- Simulation Table -->
+                <table class="spreadsheet-sim">
+                    <tr><th>ID</th><th>Item</th><th>Price Formula</th></tr>
+                    <tr><td>M-01</td><td>Motor</td><td class="formula-cell">=VLOOKUP(A2, <span class="ref-box">A8:B10</span>, 2, 0)</td></tr>
+                    <tr><td>P-05</td><td>Panel</td><td class="formula-cell">=VLOOKUP(A3, <span class="ref-box" style="transform: translateY(20px);">A9:B11</span>, 2, 0)</td></tr>
+                    <tr style="background: #fee2e2;"><td>W-02</td><td>Wheel</td><td class="formula-cell" style="color:red; font-weight:bold;">#N/A (Broken!)</td></tr>
+                </table>
+                <div style="margin-top: 1rem; padding: 0.5rem; border: 2px solid #2563eb; border-radius: 4px; background: #eff6ff; color: #1e3a8a; position: relative;" id="lookup-table">
+                    <strong>Lookup Table (A8:B10)</strong><br>
+                    M-01: $5.00<br>
+                    P-05: $3.50<br>
+                    W-02: $1.50
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Objectives -->
+    <section id="sec-2">
+        <h2>🎯 Learning Objectives</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            <div style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; color: #075985;">
+                <h3>🧠 Cognitive Goals</h3>
+                <ul style="padding-left: 1.2rem;">
+                    <li>Master <strong>VLOOKUP</strong> for finding vertical data (prices).</li>
+                    <li>Understand <strong>HLOOKUP</strong> for horizontal data (shipping rates).</li>
+                    <li>Apply <strong>IF Statements</strong> for basic logic (Budget Approval).</li>
+                    <li><strong>Crucial Skill:</strong> Locking table ranges with Absolute References (<code>$</code>).</li>
+                </ul>
+            </div>
+            <div style="background: #fff1f2; padding: 1.5rem; border-radius: 8px; color: #9f1239;">
+                <h3>❤️ Social & Emotional Goals</h3>
+                <ul style="padding-left: 1.2rem;">
+                    <li>Practice patience and systematic debugging when formulas fail.</li>
+                    <li>Develop collaborative problem-solving skills (helping neighbors debug).</li>
+                    <li>Understand that "breaking" code/formulas is a normal part of the engineering process.</li>
+                </ul>
+            </div>
+            <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; color: #166534;">
+                <h3>⚡ Success Criteria</h3>
+                <p>By the end of this lesson, you will create an "Automated Procurement System" that fills in prices and shipping costs automatically based on a simple ID code.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Video Companion & Source Files -->
+    <section id="sec-3">
+        <h2>📹 Tutorial & Source Files</h2>
+        <p>This week, you will follow a guided walkthrough. You need to download the files and perform the steps on your own computer.</p>
+        
+        <div style="margin-bottom: 2rem;">
+            <a href="https://drive.google.com/drive/folders/1f54RVBrZRU1dA7q6gmPHSPeLn6bFr1dV?usp=sharing" target="_blank" class="link-card">
+                <div class="link-icon">📂</div>
+                <div>
+                    <strong>Step 1: Download Source Files</strong>
+                    <div style="font-size: 0.9rem; color: var(--text-light);">Click to open the Google Drive folder. Download the CSV and Excel files.</div>
+                </div>
+            </a>
+
+            <a href="https://www.youtube.com/watch?v=bWCdtFCXpfI" target="_blank" class="link-card">
+                <div class="link-icon">📺</div>
+                <div>
+                    <strong>Step 2: Watch & Follow Along</strong>
+                    <div style="font-size: 0.9rem; color: var(--text-light);">Open the video and the Excel file you downloaded. Follow the steps exactly.</div>
+                </div>
+            </a>
+        </div>
+
+        <div style="background: #fffbeb; padding: 1rem; border-left: 4px solid #f59e0b; border-radius: 4px;">
+            <strong>⚠️ Important:</strong> You must <strong>SAVE</strong> the file you work on while watching the video. You will need to submit this "Solved Paper" along with your workshop.
+        </div>
+    </section>
+
+    <!-- Section 4: Workshop Instructions -->
+    <section id="sec-4">
+        <h2>🛠️ Week 2 Workshop: The Automated Procurement System</h2>
+        <p>Follow these instructions exactly to complete your <code>Week2_Homework.xlsx</code>. This uses an <strong>Auto-Grader</strong>, so pay attention to the warnings!</p>
+        
+        <div class="warning-box">
+            <strong>🤖 Auto-Grading Warning:</strong>
+            <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+                <li><strong>Absolute References:</strong> If you do not lock your table arrays (e.g., <code>$A$15:$D$19</code>), you fail this section.</li>
+                <li><strong>No Manual Entry:</strong> Do not type "Solar Panel". You MUST use VLOOKUP.</li>
+                <li><strong>Precision:</strong> Follow the column instructions exactly.</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 1: Setup & Ranges</h3>
+            <ul class="workshop-list">
+                <li><strong>Open:</strong> <code>Week2_Solar_Procurement.csv</code>.</li>
+                <li><strong>Adjust Layout:</strong> Auto-fit all column widths.</li>
+                <li><strong>Identify Ranges:</strong> Locate the <strong>Component Database</strong> (starts at A14) and the <strong>Shipping Rates</strong> table (starts at B21).</li>
+                <li><strong>Formatting:</strong> Make Row 2 headers <strong>Bold</strong> and <span style="color:blue; font-weight:bold;">Blue</span>. Apply a Thin Border to the main Order Form (A2:I12).</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 2: Vertical Lookup (VLOOKUP)</h3>
+            <ul class="workshop-list">
+                <li><strong>Description Lookup (Column D):</strong> In cell D3, write a VLOOKUP formula to find the <strong>Item Name</strong> based on the Component Code (B3).
+                    <ul>
+                        <li><em>Table Array:</em> Use the Component Database range ($A$14:$E$18). <strong>CRITICAL:</strong> Use Absolute References ($).</li>
+                        <li><em>Column Index:</em> The Item Name is in column 2.</li>
+                        <li><em>Range Lookup:</em> FALSE (Exact Match).</li>
+                    </ul>
+                </li>
+                <li><strong>Unit Price Lookup (Column E):</strong> In cell E3, use VLOOKUP to find the <strong>Unit Price</strong> from the same database. Lock the table array!</li>
+                <li><strong>Drag:</strong> Drag both formulas down to Row 12.</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 3: Calculations & Logic (IF)</h3>
+            <ul class="workshop-list">
+                <li><strong>Total Cost (Column F):</strong> In F3, calculate <strong>Quantity * Unit Price</strong>. Drag down.</li>
+                <li><strong>Budget Check (Column G):</strong> We have a rule: Orders over <strong>$50.00</strong> require "Approval". Others are "Auto".</li>
+                <li>In cell G3, enter an <strong>IF statement</strong>:
+                    <ul>
+                        <li><em>Logical Test:</em> Is Total Cost (F3) greater than 50?</li>
+                        <li><em>Value if True:</em> "Approval"</li>
+                        <li><em>Value if False:</em> "Auto"</li>
+                    </ul>
+                </li>
+                <li>Drag down.</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 4: Horizontal Lookup (HLOOKUP)</h3>
+            <ul class="workshop-list">
+                <li><strong>Shipping Cost (Column I):</strong> The Shipping Class is in Column H (A, B, or C). The costs are in the horizontal table at the bottom.</li>
+                <li>In cell I3, write an <strong>HLOOKUP formula</strong>.
+                    <ul>
+                        <li><em>Lookup Value:</em> The Shipping Class (H3).</li>
+                        <li><em>Table Array:</em> The Shipping Rates table range ($B$21:$D$22). <strong>CRITICAL:</strong> Use Absolute References ($).</li>
+                        <li><em>Row Index:</em> The cost is in row 2.</li>
+                        <li><em>Range Lookup:</em> FALSE.</li>
+                    </ul>
+                </li>
+                <li>Drag down.</li>
+            </ul>
+        </div>
+
+        <div class="workshop-card">
+            <h3>Part 5: Formatting & Finalizing</h3>
+            <ul class="workshop-list">
+                <li><strong>Currency:</strong> Format Columns E, F, and I as <strong>Currency</strong> ($) with 2 decimal places.</li>
+                <li><strong>Conditional Formatting:</strong> Highlight the <strong>Budget Check</strong> column (G3:G12).
+                    <ul>
+                        <li>Apply a Rule: If text contains "Approval", fill with <span style="background:red; color:white; padding: 0 4px;">Red background and White text</span>.</li>
+                    </ul>
+                </li>
+                <li><strong>Save:</strong> As <code>Week2_Homework_YOURNAME.xlsx</code>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 5: Wrap Up & Submission -->
+    <section id="sec-5">
+        <h2>🏁 Wrap Up & Submission</h2>
+        
+        <div style="background: #f0fdf4; padding: 2rem; border-radius: 8px; border-left: 5px solid var(--secondary); text-align: center;">
+            <h3 style="color: var(--secondary); margin-top: 0;">🚀 Submission Checklist</h3>
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">For this week, you must submit <strong>TWO</strong> files on Phidias.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: left;">
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <h4 style="margin-top: 0;">📄 File 1: The Workshop</h4>
+                    <p>The automated procurement file you just built.</p>
+                    <div style="font-family: monospace; background: #f3f4f6; padding: 4px; border-radius: 4px; font-size: 0.9rem;">Week2_Homework_YOURNAME.xlsx</div>
+                </div>
+                
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                    <h4 style="margin-top: 0;">🎥 File 2: The Video Practice</h4>
+                    <p>The "Solved Paper" you created by following the YouTube video step-by-step.</p>
+                    <div style="font-family: monospace; background: #f3f4f6; padding: 4px; border-radius: 4px; font-size: 0.9rem;">Solved_Paper_YOURNAME.xlsx</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: left; background: white; padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                 <strong>📅 Reminder:</strong> Check Phidias for the exact deadline. Late submissions may be penalized.
+            </div>
+        </div>
+        
+        <button class="btn-primary" onclick="finishLesson()" style="width: 100%; justify-content: center; margin-top: 2rem;">Finish Lesson</button>
+    </section>
+
+</main>
+
+<div class="sticky-footer">
+    <button class="btn-outline" id="prevBtn" onclick="navigate(-1)" disabled>← Back</button>
+    <span style="font-weight: bold; color: var(--text);" id="pageIndicator">Step 1 of 5</span>
+    <button class="btn-primary" id="nextBtn" onclick="navigate(1)">Next Step →</button>
+</div>
+
+<script>
+    // --- State Management ---
+    const sections = ['sec-1', 'sec-2', 'sec-3', 'sec-4', 'sec-5'];
+    let currentStep = 0;
+    let isLocked = false;
+
+    // --- Navigation ---
+    function navigate(dir) {
+        const currentSection = document.getElementById(sections[currentStep]);
+        
+        currentSection.classList.remove('active');
+        setTimeout(() => currentSection.style.display = 'none', 300);
+
+        currentStep += dir;
+        if (currentStep < 0) currentStep = 0;
+        if (currentStep >= sections.length) currentStep = sections.length - 1;
+
+        const newSection = document.getElementById(sections[currentStep]);
+        newSection.style.display = 'block';
+        setTimeout(() => newSection.classList.add('active'), 10);
+
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('prevBtn').disabled = currentStep === 0;
+        document.getElementById('nextBtn').disabled = currentStep === sections.length - 1;
+        document.getElementById('pageIndicator').innerText = `Step ${currentStep + 1} of ${sections.length}`;
+        
+        const pct = ((currentStep + 1) / sections.length) * 100;
+        document.getElementById('progressBar').style.width = `${pct}%`;
+        window.scrollTo(0, 0);
+    }
+
+    // --- Hook Simulation Logic ---
+    function toggleLock() {
+        isLocked = !isLocked;
+        const btn = document.getElementById('btn-lock');
+        const cells = document.querySelectorAll('.formula-cell');
+        const refBoxes = document.querySelectorAll('.ref-box');
+        
+        if (isLocked) {
+            btn.innerText = "Yes (Absolute $)";
+            btn.style.background = "var(--secondary)";
+            btn.style.color = "white";
+            btn.style.borderColor = "var(--secondary)";
+            
+            // Fix Formulas
+            cells[0].innerHTML = '=VLOOKUP(A2, <span class="ref-box locked-ref-box">$A$8:$B$10</span>, 2, 0)';
+            cells[1].innerHTML = '=VLOOKUP(A3, <span class="ref-box locked-ref-box">$A$8:$B$10</span>, 2, 0)';
+            cells[2].innerHTML = '=VLOOKUP(A4, <span class="ref-box locked-ref-box">$A$8:$B$10</span>, 2, 0) <span style="color:var(--secondary); font-weight:bold;">✔ Correct!</span>';
+            cells[2].style.background = "#dcfce7";
+            
+        } else {
+            btn.innerText = "No (Relative)";
+            btn.style.background = "transparent";
+            btn.style.color = "var(--primary)";
+            btn.style.borderColor = "var(--primary)";
+            
+            // Break Formulas
+            cells[0].innerHTML = '=VLOOKUP(A2, <span class="ref-box">A8:B10</span>, 2, 0)';
+            cells[1].innerHTML = '=VLOOKUP(A3, <span class="ref-box" style="transform: translateY(20px);">A9:B11</span>, 2, 0)';
+            cells[2].innerHTML = '=VLOOKUP(A4, <span class="ref-box" style="transform: translateY(40px);">A10:B12</span>, 2, 0) <span style="color:red; font-weight:bold;">#N/A (Broken!)</span>';
+            cells[2].style.background = "#fee2e2";
+        }
+    }
+
+    // --- Theme & Persistence ---
+    function toggleTheme() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+
+    function finishLesson() {
+        alert("Class 2 Complete! You are now ready to tackle the Phidias assignment.");
+        localStorage.setItem('week2_complete', 'true');
+    }
+
+    // Initialize
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+</script>
+
+</body>
+</html>

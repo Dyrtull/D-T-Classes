@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Robotic Car - Assembly Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            padding: 10px;
+            background: #f8f9ff;
+            border-left: 5px solid #667eea;
+        }
+        .safety-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .safety-box h3 {
+            color: #856404;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        .step {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+        }
+        .step-number {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .step h3 {
+            display: inline-block;
+            color: #28a745;
+            margin: 0;
+            vertical-align: middle;
+        }
+        .diagram {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .component-box {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .solar { background: #ffc107; color: #333; }
+        .tp4056 { background: #17a2b8; color: white; }
+        .battery { background: #28a745; color: white; }
+        .motor { background: #dc3545; color: white; }
+        .switch { background: #6c757d; color: white; }
+        .circuit-flow {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            line-height: 2;
+            overflow-x: auto;
+        }
+        .tips-box {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .tips-box h4 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            font-size: 18px;
+            margin-right: 10px;
+            color: #667eea;
+        }
+        .tools-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .tool-item {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #ced4da;
+        }
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .spanish {
+            color: #6c757d;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Solar Robotic Car Assembly Guide 🌞</h1>
+        <p style="text-align: center; color: #6c757d; font-size: 18px;">
+            IGCSE ICT 0417 - Term 2 Project<br>
+            <span class="spanish">Guía de Ensamblaje del Carro Robótico Solar</span>
+        </p>
+
+        <div class="safety-box">
+            <h3>⚠️ Safety First - Seguridad Primero</h3>
+            <ul>
+                <li><span class="warning">NEVER</span> short circuit the battery (don't touch + and - together)</li>
+                <li>Handle batteries gently - no puncturing, crushing, or exposing to heat</li>
+                <li>Ask teacher for help if you see sparks, smell burning, or components get hot</li>
+                <li>Keep small parts away from mouth - choking hazard</li>
+                <li>Work in a clean, organized space</li>
+                <li class="spanish">NUNCA causes un cortocircuito en la batería / Maneja las baterías con cuidado</li>
+            </ul>
+        </div>
+
+        <h2>📦 Components Checklist - Lista de Componentes</h2>
+        <p>Before starting, verify you have all parts. Check off each item:</p>
+        
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Quantity</th>
+                <th>Description / Spanish</th>
+                <th>✓</th>
+            </tr>
+            <tr>
+                <td><span class="component-box solar">Solar Panel</span></td>
+                <td>1</td>
+                <td>5V 200-250mA panel / Panel Solar</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class="component-box tp4056">TP4056 Module</span></td>
+                <td>1</td>
+                <td>Charging module with red/blue LEDs / Módulo de carga</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class="component-box battery">3.7V Battery</span></td>
+                <td>1</td>
+                <td>Li-ion rechargeable ~2000mAh / Batería recargable</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class="component-box motor">Yellow Motor</span></td>
+                <td>1</td>
+                <td>Geared DC motor / Motor con reductor</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class="component-box switch">Slide Switch</span></td>
+                <td>1</td>
+                <td>On/Off switch / Interruptor</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Wheels</td>
+                <td>4</td>
+                <td>Yellow wheels with tires / Ruedas amarillas</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Chassis Parts</td>
+                <td>2-4</td>
+                <td>Laser-cut acrylic pieces / Piezas de acrílico</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>M3 Screws & Nuts</td>
+                <td>8-10</td>
+                <td>Small screws for mounting / Tornillos pequeños</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Jumper Wires</td>
+                <td>4-6</td>
+                <td>Pre-soldered wires / Cables de conexión</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <h2>🔧 Tools Needed - Herramientas Necesarias</h2>
+        <div class="tools-list">
+            <div class="tool-item">
+                <strong>Small Screwdriver</strong><br>
+                <span class="spanish">Destornillador pequeño</span>
+            </div>
+            <div class="tool-item">
+                <strong>Wire Strippers</strong><br>
+                <span class="spanish">Pelacables</span><br>
+                (if needed)
+            </div>
+            <div class="tool-item">
+                <strong>Tape/Velcro</strong><br>
+                <span class="spanish">Cinta/Velcro</span><br>
+                (for securing battery)
+            </div>
+            <div class="tool-item">
+                <strong>Ruler</strong><br>
+                <span class="spanish">Regla</span><br>
+                (for alignment)
+            </div>
+        </div>
+
+        <h2>🔌 Understanding the Circuit - Entendiendo el Circuito</h2>
+        
+        <div class="diagram">
+            <h4>System Overview / Vista General del Sistema</h4>
+            <div class="circuit-flow">
+<strong>SOLAR PANEL</strong> (captures sunlight / captura luz solar)
+    ↓
+<strong>TP4056 MODULE</strong> (manages charging / gestiona la carga)
+    ↓ ↕ (stores/releases energy)
+<strong>BATTERY</strong> (energy storage / almacenamiento de energía)
+    ↓
+<strong>SWITCH</strong> (on/off control / control encendido/apagado)
+    ↓
+<strong>MOTOR</strong> (converts to motion / convierte a movimiento)
+    ↓
+<strong>WHEELS</strong> (car moves! / ¡el carro se mueve!)
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>💡 How It Works:</strong> The solar panel converts sunlight into electricity. The TP4056 safely charges the battery. When you flip the switch, stored energy flows from the battery to the motor, making your car move!
+            <br><br>
+            <span class="spanish"><strong>Cómo Funciona:</strong> El panel solar convierte la luz del sol en electricidad. El TP4056 carga la batería de forma segura. Cuando activas el interruptor, la energía almacenada fluye de la batería al motor, ¡haciendo que tu carro se mueva!</span>
+        </div>
+
+        <h2>🔨 Assembly Steps - Pasos de Ensamblaje</h2>
+
+        <div class="step">
+            <h3><span class="step-number">1</span> Prepare Your Workspace</h3>
+            <p><span class="spanish">Prepara tu Espacio de Trabajo</span></p>
+            <ul>
+                <li>Clear table or desk surface</li>
+                <li>Organize all components in groups</li>
+                <li>Have tools ready and accessible</li>
+                <li>Keep instruction sheet visible</li>
+            </ul>
+            <div class="tips-box">
+                <h4>💡 Pro Tip:</h4>
+                Use small containers or paper cups to organize screws and small parts so they don't roll away!
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">2</span> Mount the Motor to Chassis</h3>
+            <p><span class="spanish">Monta el Motor al Chasis</span></p>
+            <ul>
+                <li>Locate the motor mounting holes on your base plate (usually rear center)</li>
+                <li>Position yellow motor so output shaft faces toward the rear</li>
+                <li>Insert M3 screws through chassis into motor mounting holes</li>
+                <li>Tighten nuts on opposite side - <span class="warning">not too tight!</span> (you'll crack the acrylic)</li>
+                <li>Verify motor is secure but can still be adjusted slightly</li>
+            </ul>
+            <div class="diagram">
+                <svg width="300" height="150" viewBox="0 0 300 150">
+                    <!-- Base plate -->
+                    <rect x="50" y="30" width="200" height="100" fill="#e0e0e0" stroke="#333" stroke-width="2"/>
+                    <!-- Motor -->
+                    <rect x="120" y="70" width="60" height="40" fill="#ffd54f" stroke="#333" stroke-width="2" rx="3"/>
+                    <circle cx="150" cy="90" r="8" fill="#ff6f00"/>
+                    <text x="150" y="95" text-anchor="middle" font-size="10" fill="white">M</text>
+                    <!-- Mounting screws -->
+                    <circle cx="130" cy="80" r="4" fill="#666"/>
+                    <circle cx="170" cy="80" r="4" fill="#666"/>
+                    <circle cx="130" cy="100" r="4" fill="#666"/>
+                    <circle cx="170" cy="100" r="4" fill="#666"/>
+                    <!-- Label -->
+                    <text x="150" y="20" text-anchor="middle" font-size="14" font-weight="bold">Motor Position</text>
+                </svg>
+            </div>
+            <div class="note">
+                <strong>Check:</strong> Motor shaft should point toward the back of the car. If it points sideways, your car will have trouble moving straight!
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">3</span> Install Axles and Wheels</h3>
+            <p><span class="spanish">Instala los Ejes y las Ruedas</span></p>
+            <ul>
+                <li>Locate the axle slots (rectangular openings on sides of chassis)</li>
+                <li>Insert axle rods through slots - they should slide freely but not wobble</li>
+                <li>If axles are too loose, add small piece of tape to increase diameter</li>
+                <li>Push wheels onto axle ends until they click or are firmly seated</li>
+                <li>Spin wheels - they should rotate smoothly without rubbing chassis</li>
+                <li>All four wheels should touch the ground at same height</li>
+            </ul>
+            <div class="tips-box">
+                <h4>💡 Troubleshooting:</h4>
+                <strong>Car veers to one side?</strong> Check that wheels are aligned straight and rotate freely. Bent axle or misaligned wheel is common cause.
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">4</span> Position and Secure Battery</h3>
+            <p><span class="spanish">Posiciona y Asegura la Batería</span></p>
+            <ul>
+                <li>Find flat area on chassis for battery (usually center, near motor)</li>
+                <li><span class="warning">Important:</span> Battery should be low and centered for stability</li>
+                <li>Use velcro strips, zip ties, or tape to secure battery firmly</li>
+                <li>Battery must NOT move when car is shaken - secure it well!</li>
+                <li>Leave wires accessible for connection to TP4056</li>
+            </ul>
+            <div class="note">
+                <strong>Weight Distribution:</strong> Battery is heaviest component. Position it centrally over the axles for best balance and straight-line performance.
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">5</span> Mount TP4056 Charging Module</h3>
+            <p><span class="spanish">Monta el Módulo de Carga TP4056</span></p>
+            <ul>
+                <li>Position TP4056 near battery (close connections = less resistance)</li>
+                <li>Module should be mounted so LED indicators are visible from top/side</li>
+                <li>Use M3 screws through mounting holes OR use double-sided tape</li>
+                <li>Ensure module is stable - it will be connected/disconnected for charging</li>
+                <li><strong>Identify ports:</strong>
+                    <ul>
+                        <li><strong>IN+ / IN-</strong> (input from solar panel)</li>
+                        <li><strong>B+ / B-</strong> (battery connection)</li>
+                        <li><strong>OUT+ / OUT-</strong> (output to motor circuit)</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="diagram">
+                <svg width="350" height="180" viewBox="0 0 350 180">
+                    <!-- TP4056 module -->
+                    <rect x="100" y="40" width="150" height="100" fill="#17a2b8" stroke="#333" stroke-width="2" rx="5"/>
+                    <!-- LEDs -->
+                    <circle cx="130" cy="70" r="8" fill="#ff0000"/>
+                    <text x="130" y="90" text-anchor="middle" font-size="10" fill="white">Red</text>
+                    <circle cx="170" cy="70" r="8" fill="#0000ff"/>
+                    <text x="170" y="90" text-anchor="middle" font-size="10" fill="white">Blue</text>
+                    <!-- Connection points -->
+                    <rect x="105" y="115" width="30" height="15" fill="#ffc107" stroke="#333"/>
+                    <text x="120" y="127" text-anchor="middle" font-size="9">IN+/-</text>
+                    <rect x="160" y="115" width="30" height="15" fill="#28a745" stroke="#333"/>
+                    <text x="175" y="127" text-anchor="middle" font-size="9">B+/-</text>
+                    <rect x="215" y="115" width="30" height="15" fill="#dc3545" stroke="#333"/>
+                    <text x="230" y="127" text-anchor="middle" font-size="9">OUT</text>
+                    <!-- Labels -->
+                    <text x="175" y="30" text-anchor="middle" font-size="14" font-weight="bold">TP4056 Module</text>
+                    <text x="175" y="160" text-anchor="middle" font-size="11">Red LED = Charging</text>
+                    <text x="175" y="175" text-anchor="middle" font-size="11">Blue LED = Fully Charged</text>
+                </svg>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">6</span> Connect Battery to TP4056</h3>
+            <p><span class="spanish">Conecta la Batería al TP4056</span></p>
+            <ul>
+                <li><span class="warning">CRITICAL:</span> Match polarity correctly! Red = + (positive), Black = - (negative)</li>
+                <li>Connect battery <strong>RED (+)</strong> wire to TP4056 <strong>B+</strong></li>
+                <li>Connect battery <strong>BLACK (-)</strong> wire to TP4056 <strong>B-</strong></li>
+                <li>Connections should be firm - gently tug to verify</li>
+                <li>If using screw terminals: tighten screws after inserting wires</li>
+                <li>If pre-soldered: wires may have JST connectors - push firmly until they click</li>
+            </ul>
+            <div class="safety-box">
+                <h3>⚠️ STOP! Double-Check:</h3>
+                <ul>
+                    <li>Red battery wire goes to B+ (positive)</li>
+                    <li>Black battery wire goes to B- (negative)</li>
+                    <li>If you reverse these, you could damage the module!</li>
+                    <li><strong>Before proceeding, ask teacher to verify connections</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">7</span> Attach Solar Panel Mount</h3>
+            <p><span class="spanish">Adjunta el Soporte del Panel Solar</span></p>
+            <ul>
+                <li>If using separate solar mount plate: attach to chassis with side brackets using M3 screws</li>
+                <li>Mount should elevate solar panel above other components</li>
+                <li>Angle can be adjustable (best for experiments!) or fixed at ~30-45°</li>
+                <li>Ensure mount is stable - solar panel will add weight</li>
+                <li>Leave access to TP4056 for wire connections</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">8</span> Mount Solar Panel</h3>
+            <p><span class="spanish">Monta el Panel Solar</span></p>
+            <ul>
+                <li>Position solar panel on mount facing upward</li>
+                <li>Secure with screws through panel mounting holes (if available)</li>
+                <li>OR use strong double-sided tape if no mounting holes</li>
+                <li>Panel should be stable but positioned for easy adjustment</li>
+                <li>Wire connections should reach TP4056 without pulling tight</li>
+            </ul>
+            <div class="note">
+                <strong>Solar Panel Orientation:</strong> The dark/blue side captures sunlight. This should face UP. The back side (usually white/silver) faces down toward chassis.
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">9</span> Connect Solar Panel to TP4056</h3>
+            <p><span class="spanish">Conecta el Panel Solar al TP4056</span></p>
+            <ul>
+                <li>Connect solar panel <strong>RED (+)</strong> wire to TP4056 <strong>IN+</strong></li>
+                <li>Connect solar panel <strong>BLACK (-)</strong> wire to TP4056 <strong>IN-</strong></li>
+                <li>Verify polarity markings on solar panel (often printed on back)</li>
+                <li>Secure connections - they'll be connected/disconnected during experiments</li>
+            </ul>
+            <div class="tips-box">
+                <h4>💡 Testing Tip:</h4>
+                After connecting solar panel, hold car under bright light or sunlight. The RED LED on TP4056 should light up, indicating charging is happening!
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">10</span> Install the Switch</h3>
+            <p><span class="spanish">Instala el Interruptor</span></p>
+            <ul>
+                <li>Position switch where it's easy to reach (side or top of car)</li>
+                <li>Mount switch using screws or strong adhesive</li>
+                <li>Switch will control power flow from TP4056 to motor</li>
+                <li>Label switch positions: ON and OFF (use marker or label maker)</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">11</span> Wire the Motor Circuit</h3>
+            <p><span class="spanish">Cablea el Circuito del Motor</span></p>
+            <p><strong>This is the final electrical connection - follow carefully!</strong></p>
+            
+            <h4>Circuit Diagram / Diagrama del Circuito:</h4>
+            <div class="circuit-flow">
+TP4056 OUT+ (red wire) → Switch middle terminal
+Switch output terminal → Motor + (red/positive wire)
+Motor - (black/negative wire) → TP4056 OUT- (black wire)
+            </div>
+
+            <ul>
+                <li><strong>Connection 1:</strong> TP4056 OUT+ to switch middle/common terminal</li>
+                <li><strong>Connection 2:</strong> Switch output terminal to motor positive (+) wire</li>
+                <li><strong>Connection 3:</strong> Motor negative (-) wire to TP4056 OUT-</li>
+                <li>Verify all connections are secure</li>
+                <li>Wires should be organized - not tangled or loose</li>
+            </ul>
+
+            <div class="note">
+                <strong>Understanding the Switch:</strong> The switch acts like a gate. When ON, it allows electricity to flow from battery → motor. When OFF, the gate closes and motor stops. This lets you control when car moves without disconnecting wires!
+            </div>
+        </div>
+
+        <div class="step">
+            <h3><span class="step-number">12</span> Final Testing & Verification</h3>
+            <p><span class="spanish">Prueba Final y Verificación</span></p>
+            
+            <h4>✅ Pre-Test Checklist:</h4>
+            <ul class="checklist">
+                <li>All screws tightened (but not over-tightened)</li>
+                <li>Battery firmly secured and won't shift</li>
+                <li>All wires connected to correct terminals</li>
+                <li>No loose wires touching each other</li>
+                <li>Wheels spin freely without rubbing</li>
+                <li>Solar panel facing upward</li>
+                <li>TP4056 LEDs visible</li>
+                <li>Switch accessible and labeled</li>
+            </ul>
+
+            <h4>🔋 Charging Test:</h4>
+            <ol>
+                <li>Ensure switch is OFF</li>
+                <li>Place car in bright sunlight (or under strong lamp)</li>
+                <li>Observe TP4056: <strong>RED LED should light up</strong> (charging)</li>
+                <li>Wait 10-15 minutes</li>
+                <li>If battery is full, <strong>BLUE LED</strong> will light (or red will turn off)</li>
+                <li><strong>If no LEDs light:</strong> Check solar panel connections</li>
+            </ol>
+
+            <h4>🚗 Motor Test:</h4>
+            <ol>
+                <li>Place car on flat surface (NOT edge of table!)</li>
+                <li>Flip switch to ON position</li>
+                <li><strong>Motor should run and wheels should turn</strong></li>
+                <li>Car should move forward in relatively straight line</li>
+                <li>If motor doesn't run:
+                    <ul>
+                        <li>Check battery has charge (try charging longer)</li>
+                        <li>Verify all connections secure</li>
+                        <li>Check switch is working</li>
+                        <li>Ask teacher to test with multimeter</li>
+                    </ul>
+                </li>
+                <li>If car veers badly: adjust wheel alignment or check motor mounting</li>
+            </ol>
+        </div>
+
+        <h2>🎨 Customization & Decoration</h2>
+        <div class="tips-box">
+            <h4>Make It Your Own!</h4>
+            <p>Now that your car is functional, personalize it:</p>
+            <ul>
+                <li><strong>Team Name/Number:</strong> Use markers or label maker</li>
+                <li><strong>Aerodynamic Nose:</strong> Add curved front piece (optional, cut from acrylic)</li>
+                <li><strong>Side Panels:</strong> Design and laser-cut decorative sides</li>
+                <li><strong>Color Scheme:</strong> Paint acrylic parts (ask teacher first - some paints don't work on acrylic)</li>
+                <li><strong>Weight Reduction:</strong> Cut strategic holes in chassis (careful not to weaken structure)</li>
+                <li><strong>Flag or Antenna:</strong> Add identifying marker visible from distance</li>
+            </ul>
+        </div>
+
+        <h2>📊 Documentation Requirements</h2>
+        <p>For your Grade 2 submission, you must document:</p>
+        <ul>
+            <li><strong>Photos:</strong> Take pictures of each major assembly step</li>
+            <li><strong>Component List:</strong> List all parts used with quantities</li>
+            <li><strong>Design Modifications:</strong> Note any changes from standard template</li>
+            <li><strong>Challenges Encountered:</strong> What problems did you face? How did you solve them?</li>
+            <li><strong>Final Specifications:</strong>
+                <ul>
+                    <li>Total mass (weigh completed car)</li>
+                    <li>Dimensions (length × width × height)</li>
+                    <li>Component costs (total budget used)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>🔧 Troubleshooting Common Issues</h2>
+        
+        <table>
+            <tr>
+                <th>Problem</th>
+                <th>Possible Cause</th>
+                <th>Solution</th>
+            </tr>
+            <tr>
+                <td>Motor doesn't run</td>
+                <td>Battery not charged</td>
+                <td>Charge 15-20 min in bright sunlight</td>
+            </tr>
+            <tr>
+                <td>Motor doesn't run</td>
+                <td>Loose wire connection</td>
+                <td>Check all connections, tighten screws</td>
+            </tr>
+            <tr>
+                <td>Motor doesn't run</td>
+                <td>Switch not working</td>
+                <td>Test switch with multimeter or replace</td>
+            </tr>
+            <tr>
+                <td>Solar panel not charging</td>
+                <td>Wrong polarity</td>
+                <td>Verify red→IN+, black→IN-</td>
+            </tr>
+            <tr>
+                <td>Solar panel not charging</td>
+                <td>Not enough light</td>
+                <td>Need direct sunlight or very bright lamp</td>
+            </tr>
+            <tr>
+                <td>Car veers left/right</td>
+                <td>Wheels misaligned</td>
+                <td>Adjust wheel positions, ensure axles straight</td>
+            </tr>
+            <tr>
+                <td>Car veers left/right</td>
+                <td>Uneven friction</td>
+                <td>Check wheels spin freely, add lubricant</td>
+            </tr>
+            <tr>
+                <td>Car very slow</td>
+                <td>Too heavy</td>
+                <td>Remove unnecessary weight, optimize design</td>
+            </tr>
+            <tr>
+                <td>Car very slow</td>
+                <td>Battery low charge</td>
+                <td>Charge longer before testing</td>
+            </tr>
+            <tr>
+                <td>Wheels don't turn</td>
+                <td>Axle binding</td>
+                <td>Loosen chassis screws slightly, realign</td>
+            </tr>
+            <tr>
+                <td>Battery getting hot</td>
+                <td>Short circuit!</td>
+                <td><span class="warning">DISCONNECT IMMEDIATELY</span> - ask teacher</td>
+            </tr>
+        </table>
+
+        <h2>🌟 Quality Standards - Before Submitting</h2>
+        
+        <div class="checklist">
+            <li><strong>Structural:</strong> Car is stable, all parts firmly attached</li>
+            <li><strong>Electrical:</strong> All connections secure, no loose wires</li>
+            <li><strong>Functional:</strong> Motor runs when switch is ON, stops when OFF</li>
+            <li><strong>Charging:</strong> Red LED lights when in sunlight</li>
+            <li><strong>Performance:</strong> Car moves in generally straight line</li>
+            <li><strong>Safety:</strong> No exposed sharp edges or loose small parts</li>
+            <li><strong>Aesthetic:</strong> Clean appearance, organized wires</li>
+            <li><strong>Documentation:</strong> Assembly photos and notes complete</li>
+            <li><strong>Labeling:</strong> Team name clearly visible</li>
+            <li><strong>Measurements:</strong> Mass, dimensions recorded</li>
+        </div>
+
+        <h2>🚀 Next Steps - Data Collection</h2>
+        <p>Once your car passes teacher inspection, you'll move to the testing phase:</p>
+        <ul>
+            <li><strong>Week 6:</strong> Outdoor charging experiments (record charging times)</li>
+            <li><strong>Week 6-7:</strong> Indoor performance testing (velocity measurements)</li>
+            <li><strong>Week 8-10:</strong> Data analysis in Excel using your collected results</li>
+        </ul>
+
+        <div class="tips-box" style="background: #d4edda; border-color: #28a745;">
+            <h4>🎉 Congratulations!</h4>
+            <p>You've built a functional solar-powered robotic car! This vehicle will generate real experimental data that you'll analyze using advanced Excel techniques. Your engineering work directly supports your ICT learning goals.</p>
+            <p class="spanish">¡Felicitaciones! Has construido un carro robótico funcional alimentado por energía solar. Este vehículo generará datos experimentales reales que analizarás usando técnicas avanzadas de Excel.</p>
+        </div>
+
+        <hr style="margin: 30px 0; border: none; border-top: 2px solid #667eea;">
+        
+        <div style="text-align: center; color: #6c757d; padding: 20px;">
+            <p><strong>Assembly Guide Version 1.0</strong><br>
+            IGCSE ICT 0417 - Solar Robotic Car Project<br>
+            For questions or issues, ask your teacher</p>
+            <p class="spanish">Para preguntas o problemas, consulta a tu profesor</p>
+        </div>
+    </div>
+</body>
+</html>
