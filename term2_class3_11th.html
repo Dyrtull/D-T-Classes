@@ -417,35 +417,9 @@
         </div>
     </section>
 
-    <!-- SECTION 3: IMPORTED OBJECTIVES (FROM SOURCE FILE) -->
+    <!-- SECTION 3: CONCEPT EXPLORATION -->
     <section id="section-3">
-        <h2>3. Mission Objectives</h2>
-        
-        <div class="card">
-            <h3>Cognitive Objectives</h3>
-            <p>By the end of this class, I will be able to:</p>
-            <ul>
-                <li><strong>Apply</strong> spreadsheet functions (SUM, AVERAGE, MAX, MIN, COUNT) to analyze car component data.</li>
-                <li><strong>Distinguish</strong> between relative and absolute cell references and apply them correctly in a budget model.</li>
-            </ul>
-        </div>
-
-        <div class="card" style="border-left-color: var(--secondary);">
-            <h3>Social-Emotional Objectives (SEL)</h3>
-            <ul>
-                <li><strong>Confidence:</strong> I will tackle complex engineering problems using digital tools.</li>
-                <li><strong>Accuracy:</strong> I will appreciate how precise data entry affects engineering decisions.</li>
-            </ul>
-        </div>
-
-        <div class="warning-box">
-            <strong>Success Criteria:</strong> You are successful if you can build a formula that automatically calculates the remaining budget for 3 different car designs using a fixed budget cell.
-        </div>
-    </section>
-
-    <!-- SECTION 4: CONCEPT EXPLORATION (Was Section 3) -->
-    <section id="section-4">
-        <h2>4. Concept Exploration: The Anatomy of a Spreadsheet</h2>
+        <h2>3. Concept Exploration: The Anatomy of a Spreadsheet</h2>
         <p>Click the cards to reveal definitions.</p>
         
         <div class="card-grid">
@@ -509,9 +483,9 @@
         </div>
     </section>
 
-    <!-- SECTION 5: APPLIED EXAMPLES (Was Section 4) -->
-    <section id="section-5">
-        <h2>5. Applied Example: Part 2 - The Procurement Challenge (Guided Practice)</h2>
+    <!-- SECTION 4: APPLIED EXAMPLES -->
+    <section id="section-4">
+        <h2>4. Applied Example: Part 2 - The Procurement Challenge (Guided Practice)</h2>
         <div class="warning-box">
             <p><strong>🛑 MANDATORY IGCSE REQUIREMENT:</strong> You must complete this activity in <strong>Microsoft Excel</strong>. Google Sheets is NOT allowed in the exam.</p>
         </div>
@@ -564,9 +538,9 @@
         </div>
     </section>
 
-    <!-- SECTION 6: INTERACTIVE PRACTICE (Was Section 5) -->
-    <section id="section-6">
-        <h2>6. Interactive Activity: Operator Match</h2>
+    <!-- SECTION 5: INTERACTIVE PRACTICE -->
+    <section id="section-5">
+        <h2>5. Interactive Activity: Operator Match</h2>
         <p>Drag the math symbol to its Excel equivalent.</p>
         
         <div class="draggable-container">
@@ -592,9 +566,9 @@
         <p id="dragFeedback" class="feedback"></p>
     </section>
 
-    <!-- SECTION 7: PRACTICE & CCQs (Was Section 6) -->
-    <section id="section-7">
-        <h2>7. Practice Exercises & Part 3: The Formula Relay Race</h2>
+    <!-- SECTION 6: PRACTICE & CCQs -->
+    <section id="section-6">
+        <h2>6. Practice Exercises & Part 3: The Formula Relay Race</h2>
         <p>Complete the formula challenges. Answer the Concept Checking Questions (CCQs) correctly to proceed.</p>
 
         <!-- CCQ 1: Yes/No -->
@@ -652,18 +626,18 @@
 
     </section>
 
-    <!-- SECTION 8: VOCABULARY (Was Section 7) -->
-    <section id="section-8">
-        <h2>8. Vocabulary Vault</h2>
+    <!-- SECTION 7: VOCABULARY -->
+    <section id="section-7">
+        <h2>7. Vocabulary Vault</h2>
         <input type="text" id="vocabSearch" onkeyup="filterVocab()" placeholder="Search terms...">
         <div class="vocab-list" id="vocabList">
             <!-- Populated by JS -->
         </div>
     </section>
 
-    <!-- SECTION 9: HOMEWORK (Was Section 8) -->
-    <section id="section-9">
-        <h2>9. Part 4: Homework - Laboratory Budget & Shipping Logic</h2>
+    <!-- SECTION 8: HOMEWORK -->
+    <section id="section-8">
+        <h2>8. Part 4: Homework - Laboratory Budget & Shipping Logic</h2>
         <div class="warning-box">
             <p><strong>📅 Due:</strong> Before Next Class. <strong>Format:</strong> .xlsx (Microsoft Excel).</p>
         </div>
@@ -699,9 +673,9 @@
         </div>
     </section>
 
-    <!-- SECTION 10: WRAP-UP (Was Section 9) -->
-    <section id="section-10">
-        <h2>10. Wrap-Up & Reflection</h2>
+    <!-- SECTION 9: WRAP-UP -->
+    <section id="section-9">
+        <h2>9. Wrap-Up & Reflection</h2>
         
         <!-- Objective Check -->
         <div style="margin-bottom: 2rem;">
@@ -743,14 +717,14 @@
 
 <nav class="bottom-nav">
     <button class="btn-outline" id="prevBtn" onclick="changeSection(-1)">Previous</button>
-    <span id="navInfo" style="align-self:center;">Step 1 of 10</span>
+    <span id="navInfo" style="align-self:center;">Step 1 of 9</span>
     <button class="btn" id="nextBtn" onclick="changeSection(1)">Next</button>
 </nav>
 
 <script>
     // --- STATE MANAGEMENT ---
     let currentSection = 1;
-    const totalSections = 10;
+    const totalSections = 9;
     const vocabulary = [
         { term: "Cell Reference", def: "The coordinates of a cell (e.g., A1)." },
         { term: "Formula", def: "A mathematical equation used to calculate a value. Must start with =." },
@@ -770,8 +744,8 @@
 
     // --- NAVIGATION ---
     function changeSection(dir) {
-        // Validation logic - Updated to check Section 7 (Practice)
-        if (dir === 1 && currentSection === 7 && !ccq2Passed) {
+        // Validation logic - Updated to check Section 6 (Practice)
+        if (dir === 1 && currentSection === 6 && !ccq2Passed) {
             alert("Please complete the practice exercises and check your understanding first!");
             return;
         }
@@ -955,7 +929,7 @@
 
         // Show bridge and confetti
         document.getElementById('bridge').style.display = "block";
-        document.querySelector('#section-10 .btn').style.display = "none";
+        document.querySelector('#section-9 .btn').style.display = "none";
         triggerConfetti();
     }
 
