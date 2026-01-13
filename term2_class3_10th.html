@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 2.2: Pulleys & Efficiency | Interactive Textbook</title>
+    <!-- MathJax for LaTeX Rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #7c3aed; /* Purple for Pulleys */
+            --primary-dark: #5b21b6;
+            --secondary: #ec4899; /* Pink accent */
+            --accent: #f59e0b;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --danger: #ef4444;
+            --success: #10b981;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] {
+            --primary: #8b5cf6;
+            --primary-dark: #a78bfa;
+            --secondary: #f472b6;
+            --accent: #fbbf24;
+            --dark: #f9fafb;
+            --light: #1f2937;
+            --white: #111827;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            color: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* --- Header & Nav --- */
+        header {
+            background-color: var(--white);
+            padding: 1rem 5%;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area h1 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .logo-area span {
+            font-size: 0.85rem;
+            color: #6b7280;
+            display: block;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .progress-container {
+            width: 150px;
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .progress-container { display: block; }
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        /* --- Layout --- */
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        h3 { color: var(--dark); margin-top: 1.5rem; }
+
+        /* --- Components --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .card {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            background-color: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- Opening Activity Specifics --- */
+        .lab-bench {
+            background: #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pulley-demo-container {
+            display: flex;
+            justify-content: space-around;
+            height: 300px;
+            margin-bottom: 1rem;
+        }
+
+        .system-col {
+            width: 40%;
+            position: relative;
+            border-bottom: 4px solid #94a3b8;
+        }
+
+        .rope-slider-container {
+            margin: 1rem auto;
+            max-width: 400px;
+        }
+
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* Pulley SVG Styles */
+        .pulley-wheel {
+            fill: #64748b;
+            stroke: #334155;
+            stroke-width: 2;
+        }
+        
+        .rope-line {
+            stroke: #d97706;
+            stroke-width: 4;
+            fill: none;
+        }
+
+        .weight-box {
+            fill: var(--primary);
+            stroke: var(--primary-dark);
+            stroke-width: 2;
+        }
+
+        /* --- Simulation Specifics --- */
+        .sim-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .sim-controls {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .sim-visual {
+            flex: 1;
+            min-width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .rotating-pulley {
+            transform-origin: center;
+            animation: spin linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .belt {
+            stroke: #374151;
+            stroke-width: 4;
+            stroke-dasharray: 10, 5;
+            fill: none;
+            animation: beltMove linear infinite;
+        }
+
+        @keyframes beltMove {
+            to { stroke-dashoffset: -15; }
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* --- Quiz/CCQ Styles --- */
+        .question-card {
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ccq-badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: var(--light);
+            border: 1px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .option-btn:hover { border-color: var(--primary); background: white; }
+        
+        .option-btn.correct {
+            background-color: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        /* --- Concept Map --- */
+        .concept-map-container {
+            height: 450px;
+            position: relative;
+            background: var(--light);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .map-node {
+            position: absolute;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 2;
+            text-align: center;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+        
+        .map-node:hover { transform: scale(1.1); }
+
+        /* --- Wrap Up --- */
+        .reflection-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        .nav-footer {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: var(--white);
+            padding: 1rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 600px) {
+            .sim-container { flex-direction: column; }
+            .pulley-demo-container { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <h1>IGCSE Design & Technology</h1>
+        <span>Week 2 | Class 2.2: Pulleys & Efficiency</span>
+    </div>
+    <div class="nav-controls">
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <span id="timeEstimator">Est. 90 min</span>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+    </div>
+</header>
+
+<main>
+    <!-- 1. Intro -->
+    <section id="sec-intro" class="active">
+        <h2>Welcome to Class 2.2</h2>
+        <p class="lead">Today we move from Levers to Pulleys. We will discover why machines are never 100% efficient and how to calculate speed changes.</p>
+        
+        <div class="card-grid">
+            <div class="card">
+                <h3>Cognitive Goals</h3>
+                <ul>
+                    <li>Define <strong>Velocity Ratio (VR)</strong>.</li>
+                    <li>Calculate VR and Output Speed for pulleys.</li>
+                    <li>Calculate <strong>Efficiency</strong> ($ \eta $).</li>
+                    <li>Identify sources of energy loss.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Key Question</h3>
+                <p>If I design a machine to lift 100kg with 10N of force, why do I actually need 12N in the real world?</p>
+            </div>
+        </div>
+        <br>
+        <button class="btn" onclick="nextSection()">Start Opening Lab</button>
+    </section>
+
+    <!-- 2. Opening Activity -->
+    <section id="sec-opening">
+        <h2>Opening Activity: The Mystery Pulley</h2>
+        <p>Use the slider below to pull the rope. Watch how the weight moves in System A vs. System B.</p>
+
+        <div class="lab-bench">
+            <div class="pulley-demo-container">
+                <!-- System A: Fixed (1:1) -->
+                <div class="system-col">
+                    <h4>System A (Fixed)</h4>
+                    <svg width="100%" height="100%" viewBox="0 0 100 200">
+                        <line x1="50" y1="20" x2="50" y2="50" stroke="#333" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="15" class="pulley-wheel"/>
+                        <!-- Rope -->
+                        <path id="ropeA" d="M35 150 L35 50 A15 15 0 0 1 65 50 L65 150" class="rope-line" fill="none"/>
+                        <!-- Weight -->
+                        <rect id="weightA" x="20" y="150" width="30" height="30" class="weight-box"/>
+                        <!-- Hand/Pull -->
+                        <circle id="handA" cx="65" cy="150" r="5" fill="red"/>
+                    </svg>
+                </div>
+                <!-- System B: Movable (2:1) -->
+                <div class="system-col">
+                    <h4>System B (Movable)</h4>
+                    <svg width="100%" height="100%" viewBox="0 0 100 200">
+                        <!-- Fixed point -->
+                        <line x1="35" y1="20" x2="35" y2="150" stroke="#333" stroke-width="2"/> <!-- Fixed rope end actually attaches to ceiling -->
+                        <!-- Let's simplify visual: Rope goes Ceiling -> Pulley -> Hand -->
+                        <path id="ropeB" d="M35 20 L35 150 A15 15 0 0 0 65 150 L65 50" class="rope-line" fill="none"/>
+                        <circle id="pulleyB" cx="50" cy="150" r="15" class="pulley-wheel"/>
+                        <rect id="weightB" x="35" y="165" width="30" height="30" class="weight-box"/>
+                        <circle id="handB" cx="65" cy="50" r="5" fill="red"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="rope-slider-container">
+                <label>Pull the rope (Distance): <span id="pullDist">0</span> m</label>
+                <input type="range" id="ropeInput" min="0" max="100" value="0" oninput="updateMysteryPulley()">
+            </div>
+            <p id="demoFeedback" style="font-weight: bold; min-height: 1.5rem;">Pull the rope to see what happens!</p>
+        </div>
+
+        <div class="card" id="mysteryReveal" style="margin-top: 1rem; display: none;">
+            <h3>Observations</h3>
+            <p><strong>System A:</strong> You pulled 1m, weight went up 1m. <br><em>No advantage. Just changed direction.</em></p>
+            <p><strong>System B:</strong> You pulled 2m, weight went up only 1m. <br><em>You traded distance to gain force!</em></p>
+            <button class="btn" onclick="nextSection()">Learn the Concepts</button>
+        </div>
+    </section>
+
+    <!-- 3. Concepts -->
+    <section id="sec-concepts">
+        <h2>Concept Exploration</h2>
+        
+        <div class="tabs" style="margin-bottom: 1rem;">
+            <button class="btn btn-outline" onclick="showTab('tab-vr')">Velocity Ratio (VR)</button>
+            <button class="btn btn-outline" onclick="showTab('tab-sim')">Pulley Simulator</button>
+            <button class="btn btn-outline" onclick="showTab('tab-eff')">Efficiency</button>
+        </div>
+
+        <!-- VR Tab -->
+        <div id="tab-vr">
+            <h3>Velocity Ratio (VR)</h3>
+            <div class="alert">
+                <strong>Definition:</strong> The distance the EFFORT moves divided by the distance the LOAD moves.
+            </div>
+            <p>$$VR = \frac{\text{Distance moved by Effort}}{\text{Distance moved by Load}}$$</p>
+            
+            <h4>For Belt & Pulley Systems:</h4>
+            <p>When connecting motors, we use the diameter:</p>
+            <p>$$VR = \frac{\text{Diameter of Driven Pulley}}{\text{Diameter of Driver Pulley}}$$</p>
+            <p>$$Output Speed = \frac{\text{Input Speed}}{VR}$$</p>
+            <p class="small"><em>"Driven" is the output (big pulley). "Driver" is the motor (small pulley).</em></p>
+        </div>
+
+        <!-- Simulator Tab -->
+        <div id="tab-sim" class="hidden">
+            <h3>Interactive Pulley Designer</h3>
+            <p>Change the diameters to see how speed changes.</p>
+            
+            <div class="sim-container">
+                <div class="sim-controls">
+                    <div class="input-group">
+                        <label>Driver Diameter (mm) - [Motor]:</label>
+                        <input type="number" id="simDriver" value="50" oninput="updateSim()">
+                    </div>
+                    <div class="input-group">
+                        <label>Driven Diameter (mm) - [Output]:</label>
+                        <input type="number" id="simDriven" value="150" oninput="updateSim()">
+                    </div>
+                    <div class="input-group">
+                        <label>Motor Speed (RPM):</label>
+                        <input type="number" id="simSpeed" value="200" oninput="updateSim()">
+                    </div>
+                    <div class="card" style="margin-top: 1rem; background: var(--dark); color: white;">
+                        <p><strong>VR:</strong> <span id="simVR">3.00</span></p>
+                        <p><strong>Output Speed:</strong> <span id="simOutput">66.7</span> RPM</p>
+                    </div>
+                </div>
+                
+                <div class="sim-visual">
+                    <svg id="simSvg" width="300" height="200">
+                        <!-- Connecting Belt -->
+                        <path id="simBelt" class="belt" d="M50 50 L200 50" stroke="black" stroke-width="2" />
+                        
+                        <!-- Driver -->
+                        <g id="grpDriver" transform="translate(60, 100)">
+                            <circle id="svgDriver" r="25" fill="#94a3b8" stroke="#475569" stroke-width="3"/>
+                            <line x1="0" y1="-25" x2="0" y2="25" stroke="#475569" stroke-width="2"/>
+                            <line x1="-25" y1="0" x2="25" y2="0" stroke="#475569" stroke-width="2"/>
+                            <text y="40" text-anchor="middle" font-size="12">Driver</text>
+                        </g>
+
+                        <!-- Driven -->
+                        <g id="grpDriven" transform="translate(220, 100)">
+                            <circle id="svgDriven" r="75" fill="#e2e8f0" stroke="#475569" stroke-width="3"/>
+                            <line x1="0" y1="-75" x2="0" y2="75" stroke="#475569" stroke-width="2"/>
+                            <line x1="-75" y1="0" x2="75" y2="0" stroke="#475569" stroke-width="2"/>
+                            <text y="90" text-anchor="middle" font-size="12">Driven</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Efficiency Tab -->
+        <div id="tab-eff" class="hidden">
+            <h3>Efficiency: Reality vs. Theory</h3>
+            <p>We calculated VR = 2, so we <em>should</em> get 2x force. But in reality, we might only get 1.8x. Where did the energy go?</p>
+            
+            <div class="card-grid">
+                <div class="card" style="border-left-color: var(--danger);">
+                    <h4>Sources of Loss</h4>
+                    <ul>
+                        <li><strong>Friction:</strong> Bearings rubbing.</li>
+                        <li><strong>Heat:</strong> Created by friction.</li>
+                        <li><strong>Sound:</strong> Noise is lost energy.</li>
+                        <li><strong>Bending:</strong> Rope stretching.</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-left-color: var(--success);">
+                    <h4>The Formula</h4>
+                    <p>$$Efficiency (\%) = \frac{\text{Actual MA}}{\text{Velocity Ratio}} \times 100$$</p>
+                    <p>Real machines are usually 85% - 95% efficient.</p>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top:1rem;">
+                <h4>Efficiency Calculator</h4>
+                <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+                    <div style="flex:1">
+                        <label>Velocity Ratio (Theory):</label>
+                        <input type="number" id="effVR" class="reflection-input" value="4">
+                    </div>
+                    <div style="flex:1">
+                        <label>Actual MA (Measured):</label>
+                        <input type="number" id="effMA" class="reflection-input" value="3.5">
+                    </div>
+                </div>
+                <button class="btn" onclick="calcEfficiency()">Calculate</button>
+                <p id="effResult" style="font-weight:bold; margin-top:0.5rem;"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Practice & CCQs -->
+    <section id="sec-practice">
+        <h2>Practice & Concept Checks</h2>
+        <p>Complete these questions to unlock the Wrap-Up section. Look for the <span class="ccq-badge">CONCEPT CHECK</span> badges.</p>
+        <div id="quiz-area">
+            <!-- Injected by JS -->
+        </div>
+        <div id="feedback-area" class="alert hidden"></div>
+    </section>
+
+    <!-- 5. Synthesis -->
+    <section id="sec-synthesis">
+        <h2>Synthesis: Concept Map</h2>
+        <p>Explore the connections. Click "PULLEYS" to begin.</p>
+        <div class="concept-map-container" id="conceptMap">
+            <svg id="map-lines" width="100%" height="100%" style="position:absolute; top:0; left:0; pointer-events:none;"></svg>
+            
+            <div class="map-node" id="node-root" style="top:45%; left:45%; background:var(--dark);" onclick="revealMap()">PULLEYS</div>
+            
+            <div class="map-node hidden" id="node-vr" style="top:20%; left:20%;">Velocity Ratio (VR)</div>
+            <div class="map-node hidden" id="node-ma" style="top:20%; left:70%;">Mechanical Advantage</div>
+            <div class="map-node hidden" id="node-eff" style="top:70%; left:20%;">Efficiency</div>
+            <div class="map-node hidden" id="node-loss" style="top:70%; left:70%;">Friction/Losses</div>
+        </div>
+    </section>
+
+    <!-- 6. Homework -->
+    <section id="sec-homework">
+        <h2>Extension & Homework</h2>
+        <p><strong>Assignment:</strong> Velocity Ratio & Efficiency Calculations. (Due next class)</p>
+        
+        <div class="card">
+            <h3>Part A: VR Practice</h3>
+            <p><strong>Problem 1:</strong> Motor has 200mm driver pulley, 800mm driven pulley. Speed 50 rpm.</p>
+            <ol>
+                <li>Calculate VR ($VR = \frac{Driven}{Driver}$)</li>
+                <li>Calculate Output Speed ($Out = \frac{In}{VR}$)</li>
+            </ol>
+            
+            <p><strong>Problem 3 (Challenge):</strong> You need 100 rpm output. Motor is 400 rpm. Driver is 100 mm.</p>
+            <ul>
+                <li>What VR do you need?</li>
+                <li>What diameter should the driven pulley be?</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Part B: Efficiency</h3>
+            <p><strong>Problem 1:</strong> System has VR = 3. You apply 100N effort to lift 280N load.</p>
+            <ol>
+                <li>Calculate Actual MA ($MA = \frac{Load}{Effort}$)</li>
+                <li>Calculate Efficiency ($\frac{MA}{VR} \times 100$)</li>
+                <li>What % was wasted?</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- 7. Wrap Up -->
+    <section id="sec-wrapup">
+        <h2>Wrap-Up & Closure</h2>
+        
+        <div class="card">
+            <h3>The Efficiency Challenge</h3>
+            <p>A machine has VR = 4. We measured Actual MA = 3.2.</p>
+            <p>Efficiency = $ \frac{3.2}{4} \times 100 = 80\% $</p>
+            <p><strong>Question:</strong> Where did the 20% go?</p>
+            <input type="text" class="reflection-input" placeholder="Type your answer (e.g., heat, sound...)" id="lossInput">
+        </div>
+
+        <div class="card">
+            <h3>3-2-1 Reflection</h3>
+            <label>3 things learned:</label>
+            <textarea id="ref3" class="reflection-input" rows="2"></textarea>
+            <label>2 sources of energy loss:</label>
+            <textarea id="ref2" class="reflection-input" rows="1"></textarea>
+            <label>1 question remaining:</label>
+            <textarea id="ref1" class="reflection-input" rows="1"></textarea>
+        </div>
+
+        <button class="btn" onclick="finishLesson()" style="width:100%;">Complete Lesson</button>
+        
+        <div id="completion-msg" class="alert alert-success hidden" style="margin-top:1rem; text-align:center;">
+            <h3>🎉 Class 2.2 Complete!</h3>
+            <p>Great work today. Don't forget the homework!</p>
+        </div>
+    </section>
+
+    <!-- 8. Vocab -->
+    <section id="sec-vocab">
+        <h2>Vocabulary</h2>
+        <input type="text" id="vocabSearch" class="reflection-input" placeholder="Filter terms..." onkeyup="filterVocab()">
+        <br><br>
+        <div class="card-grid" id="vocabGrid">
+            <!-- JS -->
+        </div>
+    </section>
+
+</main>
+
+<nav class="nav-footer">
+    <button class="btn btn-outline" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+    <span id="navTitle" style="font-weight:bold; color:var(--primary);">Intro</span>
+    <button class="btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+</nav>
+
+<script>
+    /* --- DATA & STATE --- */
+    const sections = ['sec-intro', 'sec-opening', 'sec-concepts', 'sec-practice', 'sec-synthesis', 'sec-homework', 'sec-vocab', 'sec-wrapup'];
+    let currentIdx = 0;
+    
+    const questions = [
+        {
+            text: "Calculate Output Speed: Input = 200 rpm, VR = 4.",
+            options: ["800 rpm", "50 rpm", "100 rpm"],
+            correct: 1,
+            feedback: "Correct! Speed decreases by factor of 4 (200 / 4 = 50).",
+            type: "practice"
+        },
+        {
+            text: "CONCEPT CHECK: If VR = 1 (Fixed Pulley), does it make the load lighter?",
+            options: ["Yes, half the effort", "No, effort equals load", "Yes, but only if rope is long"],
+            correct: 1,
+            badge: "Yes/No Check",
+            feedback: "Correct. VR=1 means you only change direction, not force.",
+            type: "ccq"
+        },
+        {
+            text: "CONCEPT CHECK: Can a machine ever be 100% efficient?",
+            options: ["Yes, if built perfectly", "No, friction always exists", "Only in vacuum"],
+            correct: 1,
+            badge: "Negative Check",
+            feedback: "Correct. Friction and heat losses are unavoidable in the real world.",
+            type: "ccq"
+        },
+        {
+            text: "If the Driver pulley (motor) is smaller than the Driven pulley, the output will be:",
+            options: ["Faster but weaker", "Slower but stronger", "Same speed"],
+            correct: 1,
+            badge: "Comparison",
+            feedback: "Correct. Small driver -> Big driven = Slower Speed (but more Torque).",
+            type: "ccq"
+        }
+    ];
+
+    const vocab = [
+        {t: "Velocity Ratio (VR)", d: "Ratio of distance effort moves to distance load moves."},
+        {t: "Efficiency", d: "Percentage of input energy converted to useful output work."},
+        {t: "Driver Pulley", d: "The pulley attached to the motor (Input)."},
+        {t: "Driven Pulley", d: "The pulley connected to the machine (Output)."},
+        {t: "Friction", d: "Resistance encountered when surfaces rub, causing energy loss."}
+    ];
+
+    /* --- INIT --- */
+    window.onload = () => {
+        loadData();
+        renderQuiz();
+        renderVocab();
+        updateUI();
+        updateSim(); // Init sim visuals
+    };
+
+    /* --- NAVIGATION --- */
+    function navigate(dir) {
+        saveData();
+        
+        // CCQ Gate
+        if (dir === 1 && sections[currentIdx] === 'sec-practice') {
+            const unsolved = questions.some(q => q.type === 'ccq' && !q.solved);
+            if(unsolved) {
+                alert("Please answer all Concept Check questions correctly first.");
+                return;
+            }
+        }
+
+        const next = currentIdx + dir;
+        if(next >= 0 && next < sections.length) {
+            document.getElementById(sections[currentIdx]).classList.remove('active');
+            currentIdx = next;
+            document.getElementById(sections[currentIdx]).classList.add('active');
+            window.scrollTo(0,0);
+            updateUI();
+        }
+    }
+
+    function nextSection() { navigate(1); }
+
+    function updateUI() {
+        document.getElementById('prevBtn').disabled = currentIdx === 0;
+        document.getElementById('nextBtn').style.display = currentIdx === sections.length-1 ? 'none' : 'block';
+        
+        // Progress Bar
+        const pct = ((currentIdx+1)/sections.length)*100;
+        document.getElementById('progressBar').style.width = pct + "%";
+        
+        // Title
+        const title = document.querySelector(`#${sections[currentIdx]} h2`).innerText;
+        document.getElementById('navTitle').innerText = title;
+    }
+
+    function showTab(id) {
+        ['tab-vr','tab-sim','tab-eff'].forEach(t => document.getElementById(t).classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    /* --- OPENING ACTIVITY: Mystery Pulley --- */
+    function updateMysteryPulley() {
+        const val = document.getElementById('ropeInput').value; // 0 to 100
+        const dist = (val/50).toFixed(1); // 0 to 2.0m approx scale
+        document.getElementById('pullDist').innerText = dist;
+
+        // Visuals
+        // System A (1:1): Pull 100px -> Weight up 100px
+        const moveA = val * 1.5; // Scale for SVG pixels
+        document.getElementById('handA').setAttribute('cy', 150 + moveA); // Hand goes down
+        document.getElementById('weightA').setAttribute('y', 150 - moveA); // Weight goes up
+        
+        // System B (2:1): Pull 100px -> Weight up 50px
+        const moveB = moveA / 2;
+        // Hand moves full distance (simulated by path change or point)
+        // Weight moves half
+        document.getElementById('pulleyB').setAttribute('cy', 150 - moveB);
+        document.getElementById('weightB').setAttribute('y', 165 - moveB);
+        // Hand visual in B is static in this simple svg, but slider implies pull
+        
+        if (val > 80) {
+            document.getElementById('mysteryReveal').style.display = 'block';
+            document.getElementById('demoFeedback').innerText = "Look! System B's weight moved LESS, but it was easier to pull.";
+        }
+    }
+
+    /* --- SIMULATOR LOGIC --- */
+    function updateSim() {
+        const driverD = parseFloat(document.getElementById('simDriver').value) || 50;
+        const drivenD = parseFloat(document.getElementById('simDriven').value) || 150;
+        const speedIn = parseFloat(document.getElementById('simSpeed').value) || 200;
+
+        const vr = drivenD / driverD;
+        const speedOut = speedIn / vr;
+
+        document.getElementById('simVR').innerText = vr.toFixed(2);
+        document.getElementById('simOutput').innerText = speedOut.toFixed(1);
+
+        // SVG Updates
+        // Limit radii visual to not break SVG
+        const scale = 0.5; 
+        let r1 = driverD * scale;
+        let r2 = drivenD * scale;
+        // Cap max size
+        if(r1 > 40) r1 = 40; 
+        if(r2 > 70) r2 = 70;
+
+        const d1 = document.getElementById('svgDriver');
+        const d2 = document.getElementById('svgDriven');
+        d1.setAttribute('r', r1);
+        d2.setAttribute('r', r2);
+
+        // Animation Speeds (in s per revolution)
+        // Base: 200rpm = ~3.3 rps = 0.3s
+        // CSS animation-duration = 60 / RPM
+        const dur1 = (60 / speedIn);
+        const dur2 = (60 / speedOut);
+
+        document.getElementById('grpDriver').style.animation = `spin ${dur1}s linear infinite`;
+        document.getElementById('grpDriven').style.animation = `spin ${dur2}s linear infinite`;
+    }
+
+    function calcEfficiency() {
+        const vr = parseFloat(document.getElementById('effVR').value);
+        const ma = parseFloat(document.getElementById('effMA').value);
+        if(vr && ma) {
+            const eff = (ma/vr)*100;
+            document.getElementById('effResult').innerText = `Efficiency = ${eff.toFixed(1)}%`;
+        }
+    }
+
+    /* --- QUIZ --- */
+    function renderQuiz() {
+        const area = document.getElementById('quiz-area');
+        area.innerHTML = questions.map((q, i) => `
+            <div class="question-card" id="q${i}">
+                ${q.type==='ccq' ? `<span class="ccq-badge">${q.badge}</span>` : ''}
+                <p><strong>${i+1}. ${q.text}</strong></p>
+                ${q.options.map((opt, oi) => `
+                    <button class="option-btn" onclick="checkAns(${i}, ${oi})">${opt}</button>
+                `).join('')}
+                <p class="feedback hidden" id="fb${i}"></p>
+            </div>
+        `).join('');
+    }
+
+    function checkAns(qi, oi) {
+        const q = questions[qi];
+        const fb = document.getElementById(`fb${qi}`);
+        const card = document.getElementById(`q${qi}`);
+        const btns = card.querySelectorAll('.option-btn');
+        
+        btns.forEach(b => b.classList.remove('correct', 'incorrect'));
+        
+        if(oi === q.correct) {
+            btns[oi].classList.add('correct');
+            fb.innerText = q.feedback;
+            fb.style.color = "var(--success)";
+            q.solved = true;
+        } else {
+            btns[oi].classList.add('incorrect');
+            fb.innerText = "Try again.";
+            fb.style.color = "var(--danger)";
+        }
+        fb.classList.remove('hidden');
+    }
+
+    /* --- CONCEPT MAP --- */
+    function revealMap() {
+        const nodes = document.querySelectorAll('.map-node.hidden');
+        const root = document.getElementById('node-root');
+        
+        nodes.forEach(n => n.classList.remove('hidden'));
+        
+        setTimeout(drawLines, 100);
+    }
+
+    function drawLines() {
+        const svg = document.getElementById('map-lines');
+        svg.innerHTML = '';
+        const root = document.getElementById('node-root').getBoundingClientRect();
+        const container = document.getElementById('conceptMap').getBoundingClientRect();
+        
+        const rx = root.left + root.width/2 - container.left;
+        const ry = root.top + root.height/2 - container.top;
+
+        document.querySelectorAll('.map-node:not(#node-root)').forEach(node => {
+            const rect = node.getBoundingClientRect();
+            const nx = rect.left + rect.width/2 - container.left;
+            const ny = rect.top + rect.height/2 - container.top;
+            
+            const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+            line.setAttribute('x1', rx); line.setAttribute('y1', ry);
+            line.setAttribute('x2', nx); line.setAttribute('y2', ny);
+            line.setAttribute('stroke', '#cbd5e1');
+            line.setAttribute('stroke-width', 2);
+            svg.appendChild(line);
+        });
+    }
+
+    /* --- VOCAB --- */
+    function renderVocab() {
+        const grid = document.getElementById('vocabGrid');
+        grid.innerHTML = vocab.map(v => `
+            <div class="card" style="padding:1rem; cursor:pointer;" title="${v.d}">
+                <strong>${v.t}</strong>
+                <p style="font-size:0.9rem; color:#666;">${v.d}</p>
+            </div>
+        `).join('');
+    }
+
+    function filterVocab() {
+        const q = document.getElementById('vocabSearch').value.toLowerCase();
+        // Simple re-render or hide/show logic could go here
+        // For brevity, simple filter:
+        const cards = document.querySelectorAll('#vocabGrid .card');
+        cards.forEach(c => {
+            const txt = c.innerText.toLowerCase();
+            c.style.display = txt.includes(q) ? 'block' : 'none';
+        });
+    }
+
+    /* --- STORAGE --- */
+    function saveData() {
+        const data = {
+            ref3: document.getElementById('ref3').value,
+            idx: currentIdx,
+            solved: questions.filter(q=>q.solved).length
+        };
+        localStorage.setItem('class22_progress', JSON.stringify(data));
+    }
+
+    function loadData() {
+        const d = JSON.parse(localStorage.getItem('class22_progress'));
+        if(d) {
+            document.getElementById('ref3').value = d.ref3 || '';
+            // restore section?
+        }
+    }
+
+    function finishLesson() {
+        document.getElementById('completion-msg').classList.remove('hidden');
+        saveData();
+        document.getElementById('completion-msg').scrollIntoView({behavior:'smooth'});
+    }
+
+    function toggleTheme() {
+        const b = document.body;
+        if(b.getAttribute('data-theme')) b.removeAttribute('data-theme');
+        else b.setAttribute('data-theme','dark');
+    }
+
+    window.addEventListener('resize', drawLines);
+</script>
+
+</body>
+</html>
