@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 6: Iron Man Arc Reactor - Expansion & Power</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-hue: 190; /* Cyan/Arc Reactor Blue */
+            --primary: hsl(var(--primary-hue), 100%, 50%);
+            --primary-dim: hsl(var(--primary-hue), 80%, 30%);
+            --secondary: #ff4500; /* Warning/Orange */
+            --bg-dark: #0a0e17;
+            --bg-card: #151d2b;
+            --text-main: #e6f1ff;
+            --text-muted: #8b9bb4;
+            --success: #00ff9d;
+            --danger: #ff003c;
+            --code-bg: #1e1e1e;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-code: 'Consolas', 'Monaco', monospace;
+            --radius: 8px;
+            --shadow: 0 4px 20px rgba(0, 238, 255, 0.15);
+        }
+
+        [data-theme="light"] {
+            --bg-dark: #f0f4f8;
+            --bg-card: #ffffff;
+            --text-main: #1a202c;
+            --text-muted: #4a5568;
+            --primary: #0077cc;
+            --primary-dim: #e6f7ff;
+            --code-bg: #f5f5f5;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* --- UTILITIES --- */
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .hidden { display: none !important; }
+        .btn {
+            background: var(--primary-dim);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        .btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+        .btn-copy { position: absolute; top: 10px; right: 10px; z-index: 10; }
+        
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-right: 5px; }
+        .tag-red { background: rgba(255, 0, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .tag-blue { background: rgba(0, 238, 255, 0.1); color: var(--primary); border: 1px solid var(--primary); }
+
+        /* --- HEADER & NAV --- */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--primary-dim);
+            z-index: 1000;
+            padding: 10px 0;
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .arc-icon {
+            width: 24px; height: 24px; border: 2px solid var(--primary); border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary); position: relative;
+        }
+        .arc-icon::after {
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 8px; height: 8px; background: var(--primary); border-radius: 50%;
+        }
+        .progress-bar { height: 4px; background: #333; width: 100%; position: absolute; bottom: 0; left: 0; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s; }
+        
+        .nav-menu {
+            position: fixed; top: 60px; right: -280px; width: 280px; height: 100vh;
+            background: var(--bg-card); border-left: 1px solid var(--primary-dim);
+            padding: 20px; transition: right 0.3s; overflow-y: auto; z-index: 1001;
+        }
+        .nav-menu.active { right: 0; }
+        .nav-link { display: block; padding: 12px; color: var(--text-main); text-decoration: none; border-bottom: 1px solid #333; }
+        .nav-link:hover { color: var(--primary); padding-left: 15px; }
+        
+        /* --- SECTIONS --- */
+        section { margin-bottom: 60px; scroll-margin-top: 80px; opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        section.visible { opacity: 1; transform: translateY(0); }
+        h1, h2, h3 { margin-bottom: 1rem; color: var(--primary); }
+        .card { background: var(--bg-card); padding: 25px; border-radius: var(--radius); margin-bottom: 20px; border: 1px solid #333; position: relative; }
+        
+        /* --- TABLES --- */
+        .tech-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95rem; }
+        .tech-table th, .tech-table td { border: 1px solid #444; padding: 10px; text-align: left; }
+        .tech-table th { background: rgba(0, 238, 255, 0.1); color: var(--primary); }
+        .tech-table tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+
+        /* --- CODE BLOCKS --- */
+        .code-container { position: relative; margin: 15px 0; }
+        pre {
+            background: var(--code-bg); color: #d4d4d4; padding: 15px;
+            border-radius: var(--radius); overflow-x: auto; font-family: var(--font-code);
+            border: 1px solid #444; font-size: 0.9rem;
+        }
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .number { color: #b5cea8; }
+
+        /* --- INTERACTIVE ELEMENTS --- */
+        .scenario-box {
+            border: 2px solid var(--secondary); background: rgba(255, 69, 0, 0.1);
+            text-align: center; padding: 30px;
+        }
+        .capacitor-img {
+            width: 100px; height: 150px; background: #333; border-radius: 10px;
+            margin: 20px auto; position: relative; border: 2px solid #555;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; color: #fff;
+        }
+        .capacitor-img::before { content: '-'; position: absolute; left: 5px; top: 10px; font-size: 2rem; color: #ccc; }
+        .explosion-anim { animation: shake 0.5s infinite; background: #ff0000 !important; box-shadow: 0 0 50px #ff0000; }
+        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+
+        /* --- WIRING GAME --- */
+        .wiring-game {
+            background: #222; border-radius: var(--radius); padding: 20px;
+            position: relative; min-height: 400px; display: flex; justify-content: space-between;
+        }
+        .component-column { display: flex; flex-direction: column; gap: 40px; width: 40%; }
+        .wire-node {
+            width: 20px; height: 20px; background: #555; border-radius: 50%;
+            cursor: crosshair; position: relative; margin: 10px 0; border: 2px solid #fff;
+        }
+        .wire-node:hover { transform: scale(1.2); background: var(--primary); }
+        .wire-node::after { content: attr(data-label); position: absolute; left: 30px; top: -5px; color: #fff; width: 120px; font-size: 0.8rem; }
+        .wire-node.right::after { left: auto; right: 30px; text-align: right; }
+
+        /* --- ACCORDIONS for INSTRUCTIONS --- */
+        .accordion-header {
+            background: rgba(255,255,255,0.05); padding: 15px; cursor: pointer;
+            border-radius: var(--radius); margin-bottom: 5px; border: 1px solid #333;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .accordion-header:hover { background: rgba(0, 238, 255, 0.1); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; padding: 0 15px; }
+        .accordion-content.open { max-height: 2000px; padding-bottom: 15px; }
+
+        /* --- CCQ MODAL --- */
+        .ccq-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 2000;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ccq-content {
+            background: var(--bg-card); padding: 40px; border-radius: var(--radius);
+            max-width: 500px; width: 90%; border: 2px solid var(--primary); text-align: center;
+        }
+
+        .toast {
+            position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: var(--radius);
+            color: #fff; transform: translateY(100px); transition: transform 0.3s;
+            z-index: 3000; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .toast.show { transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .wiring-game { flex-direction: column; gap: 20px; }
+            .component-column { width: 100%; flex-direction: row; justify-content: center; flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <!-- HEADER -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <div class="arc-icon"></div>
+                <span>STARK <span style="font-weight: 300;">LABS</span> | Week 6</span>
+            </div>
+            <div>
+                <button class="btn" onclick="toggleTheme()" id="themeBtn">Light Mode</button>
+                <button class="btn" onclick="toggleMenu()">☰ Menu</button>
+            </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+    </header>
+
+    <!-- NAVIGATION MENU -->
+    <div class="nav-menu" id="navMenu">
+        <h3>Mission Control</h3>
+        <a href="#intro" class="nav-link" onclick="toggleMenu()">1. Safety Check</a>
+        <a href="#objectives" class="nav-link" onclick="toggleMenu()">2. Objectives</a>
+        <a href="#station1" class="nav-link" onclick="toggleMenu()">3. Station 1: Hardware</a>
+        <a href="#station2" class="nav-link" onclick="toggleMenu()">4. Station 2: Display</a>
+        <a href="#station3" class="nav-link" onclick="toggleMenu()">5. Station 3: Reactor Core</a>
+        <a href="#design" class="nav-link" onclick="toggleMenu()">6. Station 4: Design</a>
+        <a href="#vocab" class="nav-link" onclick="toggleMenu()">7. Database</a>
+        <a href="#wrapup" class="nav-link" onclick="toggleMenu()">8. Debrief</a>
+    </div>
+
+    <div class="container">
+
+        <!-- SECTION 2: OPENING ACTIVITY -->
+        <section id="intro" class="visible">
+            <h2><span style="color:var(--secondary)">⚠</span> Safety Protocol: The Capacitor Challenge</h2>
+            <div class="card scenario-box">
+                <p><strong>Scenario:</strong> You are about to power up your NeoPixel ring. You hold a 1000µF capacitor. It has a grey stripe with "-" symbols.</p>
+                <div id="capacitor" class="capacitor-img">
+                    1000µF<br>Capacitor
+                </div>
+                <p>Where do you connect the leg on the STRIPED side?</p>
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                    <button class="btn" onclick="checkCapacitor('5v')">To 5V Rail (Red)</button>
+                    <button class="btn" onclick="checkCapacitor('gnd')">To GND Rail (Black)</button>
+                </div>
+                <div id="cap-feedback" style="margin-top: 20px; font-weight: bold; min-height: 24px;"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: OBJECTIVES -->
+        <section id="objectives">
+            <h2>Mission Objectives</h2>
+            <div class="card">
+                <p><strong>By the end of this session, you will be able to:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>🔧 <strong>Hardware:</strong> Correctly seat the ESP32 on the Expansion Board.</li>
+                    <li>💡 <strong>Wiring:</strong> Connect TM1637 (Display) and NeoPixel Ring with correct polarity.</li>
+                    <li>💻 <strong>Code:</strong> Upload sketches to control 7-segment displays and RGB LEDs.</li>
+                    <li>🎨 <strong>Design:</strong> Plan the Arc Reactor enclosure and light diffusion.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- STATION 1: HARDWARE SETUP -->
+        <section id="station1">
+            <h2>Station 1: Expansion Board Setup</h2>
+            <div class="card">
+                <h3>Hardware Installation</h3>
+                <p>The GPIO expansion board transforms the ESP32 into a professional prototyping platform. It provides continuous power rails (5V, 3.3V, GND) just like a breadboard, but more reliable.</p>
+                
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>▶ Step-by-Step Installation Guide</span>
+                    <span>▼</span>
+                </div>
+                <div class="accordion-content">
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>Power OFF:</strong> Disconnect USB from ESP32.</li>
+                        <li><strong>Inspect:</strong> Check for bent pins on the ESP32.</li>
+                        <li><strong>Align:</strong> Match ESP32 Pin 1 with the board's Pin 1 marker.</li>
+                        <li><strong>Seat:</strong> Press down gently but firmly. It should "click" into place.</li>
+                        <li><strong>Verify:</strong> No pins should be visible outside the socket.</li>
+                    </ol>
+                    <div style="margin-top: 15px; padding: 10px; border: 1px solid var(--primary); background: rgba(0,238,255,0.05);">
+                        <strong>⚡ Multimeter Check:</strong>
+                        <ul>
+                            <li>5V Rail: Should read 4.9V - 5.1V</li>
+                            <li>3.3V Rail: Should read 3.2V - 3.4V</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATION 2: TM1637 DISPLAY -->
+        <section id="station2">
+            <h2>Station 2: The Time Display (TM1637)</h2>
+            
+            <div class="card">
+                <h3>1. Wiring Schematic</h3>
+                <p>Connect the display using the expansion board rails.</p>
+                <table class="tech-table">
+                    <thead><tr><th>TM1637 Pin</th><th>Expansion Board</th><th>Wire Color</th><th>Function</th></tr></thead>
+                    <tbody>
+                        <tr><td>VCC</td><td>5V Rail</td><td>Red</td><td>Power</td></tr>
+                        <tr><td>GND</td><td>GND Rail</td><td>Black</td><td>Ground</td></tr>
+                        <tr><td>CLK</td><td>GPIO 18</td><td>Yellow</td><td>Clock Signal</td></tr>
+                        <tr><td>DIO</td><td>GPIO 19</td><td>Green</td><td>Data Signal</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>2. Virtual Workbench (Practice)</h3>
+                <p class="text-muted">Simulate the connections before using real wires.</p>
+                <div class="wiring-game" id="wireGame">
+                    <div class="component-column">
+                        <h4 style="text-align: center; color: var(--text-muted);">TM1637 Display</h4>
+                        <div class="wire-node" data-label="VCC (Power)" onclick="startWire('vcc', this)"></div>
+                        <div class="wire-node" data-label="GND (Ground)" onclick="startWire('gnd', this)"></div>
+                        <div class="wire-node" data-label="CLK (Clock)" onclick="startWire('clk', this)"></div>
+                        <div class="wire-node" data-label="DIO (Data)" onclick="startWire('dio', this)"></div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <button class="btn btn-sm" onclick="resetWiring()">Reset</button>
+                    </div>
+                    <div class="component-column" style="align-items: flex-end;">
+                        <h4 style="text-align: center; color: var(--text-muted); width: 100%;">Expansion Board</h4>
+                        <div class="wire-node right" data-label="5V Rail" onclick="endWire('5v', this)"></div>
+                        <div class="wire-node right" data-label="GND Rail" onclick="endWire('gnd', this)"></div>
+                        <div class="wire-node right" data-label="GPIO 18" onclick="endWire('18', this)"></div>
+                        <div class="wire-node right" data-label="GPIO 19" onclick="endWire('19', this)"></div>
+                    </div>
+                </div>
+                <div id="wiringFeedback" style="text-align: center; font-weight: bold; margin-top: 10px;"></div>
+            </div>
+
+            <div class="card">
+                <h3>3. The Code</h3>
+                <p><strong>Library Required:</strong> <code>TM1637Display</code> by Avishay Orpaz.</p>
+                <div class="code-container">
+                    <button class="btn btn-copy btn-sm" onclick="copyCode('code1')">Copy Code</button>
+                    <pre id="code1">
+<span class="comment">/* TM1637 Display Test with Expansion Board */</span>
+#include &lt;TM1637Display.h&gt;
+
+<span class="comment">// Define pins matching expansion board GPIO</span>
+#define CLK_PIN 18 <span class="comment">// GPIO 18</span>
+#define DIO_PIN 19 <span class="comment">// GPIO 19</span>
+
+<span class="comment">// Create display object</span>
+TM1637Display display(CLK_PIN, DIO_PIN);
+
+void setup() {
+    Serial.begin(115200);
+    <span class="comment">// 0x0f is max brightness, 0x00 is off</span>
+    display.setBrightness(0x0f); 
+    display.showNumberDec(8888); <span class="comment">// Test pattern</span>
+    delay(2000);
+}
+
+void loop() {
+    <span class="comment">// Count from 0 to 9999</span>
+    for (int i = 0; i <= 9999; i++) {
+        display.showNumberDec(i);
+        delay(50); <span class="comment">// Speed of counting</span>
+    }
+}
+</pre>
+                </div>
+                <div style="margin-top: 15px;">
+                    <h4>🚀 Challenge Tasks</h4>
+                    <p><strong>Level 1:</strong> Change brightness to 50% (Hint: Use 0x07).</p>
+                    <p><strong>Level 2:</strong> Make the display count down from 100 to 0.</p>
+                </div>
+            </div>
+            
+            <button class="btn" style="width: 100%; margin-bottom: 20px;" onclick="triggerCCQ(3)">Wait! Screen is blank? (Debug Check)</button>
+        </section>
+
+        <!-- STATION 3: NEOPIXEL RING -->
+        <section id="station3">
+            <h2>Station 3: Reactor Core (NeoPixels)</h2>
+            
+            <div class="card">
+                <h3>1. Power & Logic Wiring</h3>
+                <p><span class="tag tag-red">CRITICAL</span> Ensure capacitor polarity is correct!</p>
+                <table class="tech-table">
+                    <thead><tr><th>Component Pin</th><th>Expansion Board</th><th>Via Component</th></tr></thead>
+                    <tbody>
+                        <tr><td>5V</td><td>5V Rail</td><td>Direct</td></tr>
+                        <tr><td>GND</td><td>GND Rail</td><td>Direct</td></tr>
+                        <tr><td>DIN (Data In)</td><td>GPIO 16</td><td>Through 470Ω Resistor</td></tr>
+                        <tr><td>Capacitor (+)</td><td>5V Rail</td><td>Long Leg</td></tr>
+                        <tr><td>Capacitor (-)</td><td>GND Rail</td><td>Short Leg (Striped)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>2. The Code</h3>
+                <p><strong>Library Required:</strong> <code>Adafruit NeoPixel</code> by Adafruit.</p>
+                <div class="code-container">
+                    <button class="btn btn-copy btn-sm" onclick="copyCode('code2')">Copy Code</button>
+                    <pre id="code2">
+<span class="comment">/* NeoPixel Ring Test */</span>
+#include &lt;Adafruit_NeoPixel.h&gt;
+
+#define LED_PIN 16
+#define LED_COUNT 16
+
+<span class="comment">// Init NeoPixel object</span>
+Adafruit_NeoPixel ring(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+void setup() {
+    ring.begin();
+    ring.show(); <span class="comment">// Initialize all pixels to 'off'</span>
+    ring.setBrightness(50); <span class="comment">// Set brightness to ~20% (Save power)</span>
+}
+
+void loop() {
+    <span class="comment">// Arc Reactor CYAN Color Wipe</span>
+    colorWipe(ring.Color(0, 255, 255), 50); 
+    delay(1000);
+    
+    <span class="comment">// Turn off</span>
+    colorWipe(ring.Color(0, 0, 0), 50);
+    delay(500);
+}
+
+<span class="comment">// Fill strip pixels one after another with a color</span>
+void colorWipe(uint32_t color, int wait) {
+    for(int i = 0; i < ring.numPixels(); i++) {
+        ring.setPixelColor(i, color);
+        ring.show();
+        delay(wait);
+    }
+}
+</pre>
+                </div>
+                <div style="margin-top: 15px;">
+                    <h4>🚀 Challenge Tasks</h4>
+                    <p><strong>Level 1:</strong> Change color to Iron Man Red (255, 0, 0).</p>
+                    <p><strong>Level 2:</strong> Create a "Breathing" effect (fade brightness up and down).</p>
+                    <p class="text-muted" style="font-size: 0.9rem;">Hint for Breathing: Use a loop to change brightness from 0 to 255.</p>
+                </div>
+            </div>
+
+            <button class="btn" style="width: 100%;" onclick="triggerCCQ(1)">Can I use the 3.3V pin for this? (Check)</button>
+        </section>
+
+        <!-- STATION 4: DESIGN -->
+        <section id="design">
+            <h2>Station 4: Reactor Design & Planning</h2>
+            <div class="card">
+                <h3>Design Brief</h3>
+                <p>Complete the following in your Engineering Notebook:</p>
+                <form id="designForm">
+                    <div style="margin-bottom: 15px;">
+                        <label><strong>1. Core Color Choice:</strong></label><br>
+                        <select class="btn btn-sm" style="margin-top: 5px; background: #000; color: #fff;">
+                            <option>Movie Cyan (Classic)</option>
+                            <option>Stark Red</option>
+                            <option>Purple</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label><strong>2. Enclosure Material:</strong></label><br>
+                        <input type="checkbox"> 3D Printed (Recommended)<br>
+                        <input type="checkbox"> Laser Cut Acrylic<br>
+                        <input type="checkbox"> Cardboard Prototype
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label><strong>3. Copper Coils:</strong></label><br>
+                        <input type="number" style="padding: 5px; width: 60px;" value="8"> coils wrapping the ring.
+                    </div>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Deliverables Checklist</h3>
+                <ul style="list-style: none;">
+                    <li><input type="checkbox"> Expansion board seated & voltages checked</li>
+                    <li><input type="checkbox"> TM1637 displaying numbers</li>
+                    <li><input type="checkbox"> NeoPixel ring lighting up (Cyan)</li>
+                    <li><input type="checkbox"> Wiring diagram drawn in notebook</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- VOCABULARY -->
+        <section id="vocab">
+            <h2>Stark Database (Vocabulary)</h2>
+            <input type="text" id="vocabSearch" placeholder="Search protocol..." style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #333; background: #000; color: #fff; margin-bottom: 15px;" onkeyup="filterVocab()">
+            <div class="card" id="vocabList">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- WRAP UP -->
+        <section id="wrapup">
+            <h2>Mission Debrief</h2>
+            <div class="card">
+                <h3>3-2-1 Reflection</h3>
+                <div class="reflection-grid">
+                    <div>
+                        <label>3 Things you learned:</label>
+                        <textarea class="form-control" id="ref3" rows="3" style="width:100%; padding: 10px; margin-bottom: 10px; background: #111; color: #fff; border: 1px solid #333;"></textarea>
+                    </div>
+                    <div>
+                        <label>2 Interesting facts:</label>
+                        <textarea class="form-control" id="ref2" rows="3" style="width:100%; padding: 10px; margin-bottom: 10px; background: #111; color: #fff; border: 1px solid #333;"></textarea>
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <label>1 Question you still have:</label>
+                        <textarea class="form-control" id="ref1" rows="2" style="width:100%; padding: 10px; background: #111; color: #fff; border: 1px solid #333;"></textarea>
+                    </div>
+                </div>
+                <button class="btn" style="margin-top: 15px; width: 100%; justify-content: center;" onclick="saveReflection()">Save Mission Report</button>
+            </div>
+            <div class="card" style="margin-top: 20px; text-align: center;">
+                <h3>Mission Complete</h3>
+                <p>Next Week: <strong>WiFi Synchronization</strong>.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- CCQ MODAL -->
+    <div id="ccqModal" class="hidden ccq-modal">
+        <div class="ccq-content">
+            <h3 id="ccqTitle">Systems Check</h3>
+            <p id="ccqText" style="margin: 20px 0; font-size: 1.2rem;"></p>
+            <button class="btn" onclick="closeCCQ()">Acknowledge</button>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="toast">Data Saved</div>
+
+    <script>
+        // --- STATE MANAGEMENT ---
+        const gameState = {
+            theme: localStorage.getItem('theme') || 'dark',
+            progress: 0,
+            wiring: { vcc: null, gnd: null, clk: null, dio: null }
+        };
+
+        const vocabData = [
+            { term: "Expansion Board", def: "A PCB that breaks out microcontroller pins into organized rails (5V, 3.3V, GND) for easier prototyping." },
+            { term: "GPIO", def: "General Purpose Input/Output. Pins used to send/receive digital signals." },
+            { term: "Rail", def: "A continuous conductive strip providing power or ground to multiple connection points." },
+            { term: "Capacitor", def: "Stores electrical energy to smooth power spikes. Essential for protecting NeoPixels." },
+            { term: "Polarity", def: "The direction of current flow. Critical for components like Capacitors and LEDs." },
+            { term: "TM1637", def: "A 4-digit 7-segment display module that uses only 2 data pins (CLK, DIO)." },
+            { term: "NeoPixel", def: "Addressable RGB LEDs (WS2812B) where each LED can be controlled individually." },
+            { term: "Debouncing", def: "Filtering out signal noise from mechanical switches or touch sensors." }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTheme();
+            initScrollObserver();
+            renderVocab();
+            loadProgress();
+        });
+
+        function toggleTheme() {
+            gameState.theme = gameState.theme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', gameState.theme);
+            applyTheme();
+        }
+
+        function applyTheme() {
+            document.body.setAttribute('data-theme', gameState.theme);
+            document.getElementById('themeBtn').textContent = gameState.theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+        }
+
+        function toggleMenu() { document.getElementById('navMenu').classList.toggle('active'); }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function initScrollObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        updateProgress();
+                    }
+                });
+            }, { threshold: 0.2 });
+            document.querySelectorAll('section').forEach(s => observer.observe(s));
+        }
+
+        function updateProgress() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        }
+
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('open');
+            header.querySelector('span:last-child').textContent = content.classList.contains('open') ? '▲' : '▼';
+        }
+
+        function copyCode(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => showToast("Code Copied to Clipboard!"));
+        }
+
+        // --- ACTIVITIES ---
+        function checkCapacitor(choice) {
+            const fb = document.getElementById('cap-feedback');
+            const cap = document.getElementById('capacitor');
+            if (choice === 'gnd') {
+                fb.textContent = "✅ CORRECT! Striped side is Negative (-).";
+                fb.style.color = "var(--success)";
+                cap.classList.remove('explosion-anim');
+            } else {
+                fb.textContent = "💥 BOOM! Polarity reversed!";
+                fb.style.color = "var(--danger)";
+                cap.classList.add('explosion-anim');
+            }
+        }
+
+        // Wiring Game Logic
+        let selectedSource = null;
+        function startWire(type, el) {
+            document.querySelectorAll('.wire-node').forEach(n => n.style.borderColor = '#fff');
+            selectedSource = { type, el };
+            el.style.borderColor = 'var(--primary)';
+        }
+        function endWire(dest, el) {
+            if (!selectedSource) return;
+            const correctMap = { 'vcc': '5v', 'gnd': 'gnd', 'clk': '18', 'dio': '19' };
+            const fb = document.getElementById('wiringFeedback');
+            if (correctMap[selectedSource.type] === dest) {
+                fb.textContent = "Connection Secure ✔️"; fb.style.color = "var(--success)";
+                el.style.backgroundColor = "var(--success)";
+                selectedSource.el.style.backgroundColor = "var(--success)";
+                gameState.wiring[selectedSource.type] = true;
+                if(Object.values(gameState.wiring).every(v => v)) showToast("All Wiring Verified!");
+            } else {
+                fb.textContent = "Connection Mismatch ❌"; fb.style.color = "var(--danger)";
+                el.style.backgroundColor = "var(--danger)";
+                setTimeout(() => el.style.backgroundColor = "#555", 500);
+            }
+            selectedSource = null;
+        }
+        function resetWiring() {
+            gameState.wiring = { vcc: null, gnd: null, clk: null, dio: null };
+            document.querySelectorAll('.wire-node').forEach(n => { n.style.backgroundColor = '#555'; n.style.borderColor = '#fff'; });
+            document.getElementById('wiringFeedback').textContent = "";
+        }
+
+        // CCQ Logic
+        function triggerCCQ(id) {
+            const modal = document.getElementById('ccqModal');
+            const title = document.getElementById('ccqTitle');
+            const text = document.getElementById('ccqText');
+            modal.classList.remove('hidden');
+
+            if (id === 1) { // Power Logic
+                title.textContent = "Critical Warning ⚠️"; title.style.color = "var(--danger)";
+                text.textContent = "NO! 16 LEDs x 60mA = 960mA. The ESP32 3.3V pin maxes out at ~150mA. You will burn out the regulator. Always use the 5V Rail.";
+            } else if (id === 3) { // Display Debug
+                title.textContent = "Debug Hint 🔍"; title.style.color = "var(--primary)";
+                text.textContent = "Check your GPIO definitions. Did you plug CLK into 18 and DIO into 19? Does the code match the physical wire?";
+            }
+        }
+        function closeCCQ() { document.getElementById('ccqModal').classList.add('hidden'); }
+
+        // Vocab
+        function renderVocab() {
+            const list = document.getElementById('vocabList');
+            list.innerHTML = vocabData.map(v => `
+                <div class="vocab-item">
+                    <div><span class="vocab-term">${v.term}</span><p class="text-muted" style="font-size:0.9rem;">${v.def}</p></div>
+                    <button class="btn btn-sm" onclick="speak('${v.term}')">🔊</button>
+                </div>`).join('');
+        }
+        function filterVocab() {
+            const term = document.getElementById('vocabSearch').value.toLowerCase();
+            document.querySelectorAll('.vocab-item').forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(term) ? 'flex' : 'none';
+            });
+        }
+        function speak(text) { window.speechSynthesis.speak(new SpeechSynthesisUtterance(text)); }
+
+        // Storage
+        function saveReflection() {
+            const data = {
+                learn: document.getElementById('ref3').value,
+                fact: document.getElementById('ref2').value,
+                quest: document.getElementById('ref1').value,
+            };
+            localStorage.setItem('arcReflection', JSON.stringify(data));
+            showToast("Reflection Saved");
+        }
+        function loadProgress() {
+            const ref = JSON.parse(localStorage.getItem('arcReflection'));
+            if(ref) {
+                document.getElementById('ref3').value = ref.learn || '';
+                document.getElementById('ref2').value = ref.fact || '';
+                document.getElementById('ref1').value = ref.quest || '';
+            }
+        }
+    </script>
+</body>
+</html>

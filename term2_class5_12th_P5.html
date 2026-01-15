@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 6: ESP32 Advanced ADC & UV Calibration</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #ec4899;
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --text-light: #1e293b;
+            --text-dark: #e2e8f0;
+            --card-light: #ffffff;
+            --card-dark: #1e293b;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Defaults */
+        body.dark-mode {
+            --bg-current: var(--bg-dark);
+            --text-current: var(--text-dark);
+            --card-current: var(--card-dark);
+            --border-current: #334155;
+        }
+
+        /* Light Mode Defaults */
+        body {
+            --bg-current: var(--bg-light);
+            --text-current: var(--text-light);
+            --card-current: var(--card-light);
+            --border-current: #e2e8f0;
+            
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-current);
+            color: var(--text-current);
+            line-height: 1.6;
+            transition: var(--transition);
+            margin: 0;
+            padding-bottom: 80px; /* Space for bottom nav if needed, currently using side/top */
+        }
+
+        /* --- Layout & Navigation --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-current);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            border: 1px solid var(--border-current);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            margin: 0 2rem;
+            background: #e2e8f0;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* --- Typography & Cards --- */
+        h1, h2, h3 { color: var(--text-current); }
+        
+        .section-card {
+            background: var(--card-current);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-current);
+            opacity: 0.95;
+        }
+        
+        .section-title {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- Interactive Elements --- */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        .interactive-box {
+            border: 2px dashed var(--primary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: rgba(79, 70, 229, 0.05);
+            margin: 1rem 0;
+        }
+
+        /* --- Opening Activity Specifics --- */
+        .hook-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .scenario-card {
+            background: var(--card-current);
+            border: 1px solid var(--border-current);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .scenario-card:hover { border-color: var(--primary); transform: scale(1.02); }
+        .scenario-card.selected { border-color: var(--success); background: rgba(34, 197, 94, 0.1); }
+
+        /* --- Concept Cards --- */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            height: 250px;
+            cursor: pointer;
+        }
+        
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .flip-card-front { background-color: var(--card-current); color: var(--text-current); border: 1px solid var(--border-current); }
+        .flip-card-back { background-color: var(--primary); color: white; transform: rotateY(180deg); }
+
+        /* --- Code Blocks --- */
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* --- Concept Checking & Quiz --- */
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            text-align: left;
+            border: 1px solid var(--border-current);
+            border-radius: 8px;
+            background: var(--card-current);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .quiz-option:hover { background: rgba(79, 70, 229, 0.1); }
+        .quiz-option.correct { background: rgba(34, 197, 94, 0.2); border-color: var(--success); }
+        .quiz-option.incorrect { background: rgba(239, 68, 68, 0.2); border-color: var(--danger); }
+
+        .ccq-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .ccq-content {
+            background: var(--card-current);
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--primary);
+        }
+
+        /* --- Wrap Up --- */
+        .reflection-input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-current);
+            background: var(--bg-current);
+            color: var(--text-current);
+            margin-bottom: 1rem;
+        }
+
+        /* --- Vocabulary --- */
+        .vocab-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .vocab-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-current);
+            cursor: pointer;
+        }
+        .vocab-item:hover { background: rgba(79, 70, 229, 0.05); }
+
+        /* --- Notification/Toast --- */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2000;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .nav-bar { flex-direction: column; gap: 1rem; }
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="light-mode">
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1 style="margin:0;">🌞 Sun Exposure Bracelet: Week 6</h1>
+            <p style="opacity: 0.9; margin-top: 0.5rem;">ESP32 Advanced ADC & Sensor Calibration</p>
+            <div style="margin-top: 1rem; font-size: 0.9rem;">
+                <span>⏱️ Est. Time: 90 mins</span> | 
+                <span>📊 Difficulty: ⭐⭐⭐⭐⭐</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation & Progress -->
+    <div class="container">
+        <nav class="nav-bar">
+            <button class="theme-toggle" onclick="toggleTheme()">🌙/☀️ Mode</button>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div style="font-weight: bold;" id="progressText">0%</div>
+        </nav>
+
+        <!-- Section 2: Opening Activity (Mandatory) -->
+        <section id="opening" class="section-card">
+            <div class="section-title">
+                <h2>⚡ Opening Activity: The Invisible Danger</h2>
+            </div>
+            <div class="interactive-box">
+                <p><strong>Scenario:</strong> You have your new UV sensor bracelet. You are standing inside a modern office building with large glass windows on a sunny day.</p>
+                <p class="question">How much UV radiation do you think reaches your wrist through the glass compared to standing outside in the shade?</p>
+                
+                <div class="hook-grid">
+                    <div class="scenario-card" onclick="selectPrediction(this, 'glass_blocks')">
+                        <h3>🛡️ Glass Blocks It All</h3>
+                        <p>UV Index: 0</p>
+                        <small>Glass is a solid barrier.</small>
+                    </div>
+                    <div class="scenario-card" onclick="selectPrediction(this, 'glass_same_shade')">
+                        <h3>⚖️ Same as Shade</h3>
+                        <p>UV Index: ~2-3</p>
+                        <small>Similar to being under a tree.</small>
+                    </div>
+                    <div class="scenario-card" onclick="selectPrediction(this, 'glass_dangerous')">
+                        <h3>⚠️ Still Dangerous</h3>
+                        <p>UV Index: ~5+</p>
+                        <small>Sunlight is still bright.</small>
+                    </div>
+                </div>
+                
+                <div id="hook-feedback" style="display:none; margin-top:1.5rem; padding:1rem; border-left: 4px solid var(--primary); background: rgba(79, 70, 229, 0.1);">
+                    <p><strong>Interesting prediction!</strong> We'll discover the exact answer in our calibration phase. <br><em>Hint: Glass blocks UVB (sunburn) but transmits UVA (aging). Your sensor sees both!</em></p>
+                    <button class="btn" onclick="saveHook(); scrollToSection('objectives')">Lock Prediction & Continue</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Learning Objectives -->
+        <section id="objectives" class="section-card" style="display:none;">
+            <div class="section-title">
+                <h2>🎯 Learning Objectives</h2>
+            </div>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 10px;">
+                    <span>🧠</span> 
+                    <span><strong>Cognitive:</strong> By the end of this class, I will be able to <em>configure the ESP32's ADC1</em> and <em>implement a piecewise linear calibration</em> algorithm to convert raw sensor data into accurate UV Index values.</span>
+                </li>
+                <li style="margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 10px;">
+                    <span>❤️</span> 
+                    <span><strong>Social-Emotional:</strong> I will practice <em>situational awareness</em> regarding UV safety and <em>collaborate</em> to gather reliable sensor data.</span>
+                </li>
+                <li style="margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 10px;">
+                    <span>🔙</span> 
+                    <span><strong>Prior Knowledge:</strong> Recall that the ESP32 is 3.3V logic (unlike the 5V Arduino Uno) and has much higher resolution (12-bit vs 10-bit).</span>
+                </li>
+            </ul>
+            <button class="btn" onclick="completeSection('objectives'); scrollToSection('concepts')">Let's Dive In</button>
+        </section>
+
+        <!-- Section 4: Concept Exploration -->
+        <section id="concepts" class="section-card" style="display:none;">
+            <div class="section-title">
+                <h2>📚 Concept Exploration: ESP32 & ADC</h2>
+            </div>
+            
+            <p>The ESP32 is a beast compared to the Arduino Nano, but it has quirks. Let's explore the key differences.</p>
+            
+            <div class="concept-grid">
+                <!-- Card 1 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h3>ESP32 vs Nano ADC</h3>
+                            <p>Tap to reveal specs</p>
+                            <div style="font-size: 3rem;">📊</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Resolution</h3>
+                            <p><strong>Nano:</strong> 10-bit (0-1023)<br><strong>ESP32:</strong> 12-bit (0-4095)</p>
+                            <p><em>4x more precision!</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h3>The WiFi Conflict</h3>
+                            <p>Why use ADC1 only?</p>
+                            <div style="font-size: 3rem;">📶</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>ADC2 Limitations</h3>
+                            <p>ADC2 pins (GPIO 4, 12-15, etc.) are <strong>disabled</strong> when WiFi is active.</p>
+                            <p><em>Always use ADC1 (GPIO 32-39) for sensors.</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h3>Non-Linearity</h3>
+                            <p>It's not a straight line.</p>
+                            <div style="font-size: 3rem;">📉</div>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Calibration Needed</h3>
+                            <p>ESP32 ADCs are noisy and non-linear at edges.</p>
+                            <p>We use <strong>eFuse calibration</strong> and <strong>Multisampling</strong> to fix this.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="interactive-box" style="margin-top: 2rem;">
+                <h3>🧠 Quick Check: ADC Pin Selection</h3>
+                <p>Which GPIO pin is SAFE to use for the UV sensor if we want to use WiFi later?</p>
+                <div id="concept-quiz">
+                    <button class="quiz-option" onclick="checkConcept(this, false, 'GPIO 4 is on ADC2. WiFi will kill the signal!')">GPIO 4</button>
+                    <button class="quiz-option" onclick="checkConcept(this, true, 'Correct! GPIO 34 is on ADC1 (Input Only) and safe from WiFi.')">GPIO 34</button>
+                    <button class="quiz-option" onclick="checkConcept(this, false, 'GPIO 12 is a strapping pin AND on ADC2. Double trouble.')">GPIO 12</button>
+                </div>
+            </div>
+            
+            <button class="btn" style="margin-top: 1rem;" onclick="completeSection('concepts'); scrollToSection('examples')">Next: The Code</button>
+        </section>
+
+        <!-- Section 5: Applied Examples -->
+        <section id="examples" class="section-card" style="display:none;">
+            <div class="section-title">
+                <h2>💻 Applied Examples: Reading the Sensor</h2>
+            </div>
+            
+            <p>To get accurate readings, we can't just use <code>analogRead()</code>. We need the <code>esp_adc_cal</code> library to handle the reference voltage.</p>
+
+            <div class="tabs">
+                <button class="btn btn-outline" onclick="showCode('setup')">1. Setup Phase</button>
+                <button class="btn btn-outline" onclick="showCode('loop')">2. Loop & Average</button>
+            </div>
+
+            <div id="code-setup" style="margin-top: 1rem;">
+                <h3>Configuration (Inside Setup)</h3>
+<pre><code class="language-cpp">#include "esp_adc_cal.h"
+
+#define UV_PIN 34          // ADC1 Channel 6
+#define ADC_ATTEN ADC_11db // Range 0-3.3V
+
+void setup() {
+  // Configure width to 12-bit (0-4095)
+  adc1_config_width(ADC_WIDTH_BIT_12);
+  
+  // Configure attenuation for 3.3V range
+  adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN);
+  
+  // Characterize ADC using eFuse (Factory calibration)
+  esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN, ADC_WIDTH_BIT_12, 1100, &adc_chars);
+}</code></pre>
+                <p><small><strong>Why 11db?</strong> This attenuation extends the input range to roughly 3.3V, matching our sensor output.</small></p>
+            </div>
+
+            <div id="code-loop" style="display:none; margin-top: 1rem;">
+                <h3>Reading & Averaging (Inside Loop)</h3>
+<pre><code class="language-cpp">void loop() {
+  uint32_t adc_reading = 0;
+  
+  // Multisampling: Read 64 times to reduce noise
+  for (int i = 0; i < 64; i++) {
+    adc_reading += adc1_get_raw(ADC1_CHANNEL_6);
+  }
+  adc_reading /= 64;
+
+  // Convert raw reading to Voltage (mV) using calibration
+  uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, &adc_chars);
+  
+  Serial.print("Voltage: ");
+  Serial.println(voltage);
+}</code></pre>
+                <p><small><strong>Why 64 samples?</strong> The ESP32 ADC is noisy. Averaging smooths out the "jitter" in the signal.</small></p>
+            </div>
+
+            <button class="btn" style="margin-top: 1rem;" onclick="completeSection('examples'); scrollToSection('activities')">Code Understood. Practice Time!</button>
+        </section>
+
+        <!-- Section 6 & 7: Interactive Activities & Practice -->
+        <section id="activities" class="section-card" style="display:none;">
+            <div class="section-title">
+                <h2>🛠️ Activity: The Calibration Protocol</h2>
+            </div>
+            
+            <p>The UV sensor isn't perfect. We need to build a "Lookup Table" based on real-world conditions.</p>
+
+            <div class="interactive-box">
+                <h3>Simulate the Calibration</h3>
+                <p>Drag the slider to match the environment voltage found in the datasheet/guide.</p>
+                
+                <label for="calSlider">Voltage Reading (V): <span id="valDisplay">0.00</span>V</label>
+                <input type="range" id="calSlider" min="0" max="3.3" step="0.05" value="0" style="width: 100%; margin: 10px 0;" oninput="updateSimulation(this.value)">
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <div id="sim-indoor" class="sim-state">🏠 Indoor (0V)</div>
+                    <div id="sim-shade" class="sim-state">🌳 Shade (0.5V)</div>
+                    <div id="sim-sun" class="sim-state">☀️ Direct Sun (2.7V)</div>
+                </div>
+
+                <p id="sim-feedback" style="margin-top: 1rem; font-weight: bold; color: var(--primary);">Move slider to test...</p>
+            </div>
+
+            <!-- MANDATORY CONCEPT CHECKING QUESTIONS -->
+            <div id="ccq-section" style="margin-top: 2rem;">
+                <h3>🛑 Concept Checkpoint</h3>
+                <p>You cannot proceed without verifying these critical safety and technical concepts.</p>
+                
+                <div id="ccq-container">
+                    <!-- CCQs injected via JS -->
+                </div>
+            </div>
+
+            <button id="btn-post-practice" class="btn" style="margin-top: 1rem;" disabled onclick="completeSection('activities'); scrollToSection('synthesis')">Finish Practice</button>
+        </section>
+
+        <!-- Section 8: Synthesis -->
+        <section id="synthesis" class="section-card" style="display:none;">
+            <div class="section-title">
+                <h2>🔗 Synthesis: Piecewise Interpolation</h2>
+            </div>
+            <p>We don't have a single formula. We use <code>if/else</code> logic to map voltages to UV Index.</p>
+            
+            <div style="background: #1e1e1e; color: #fff; padding: 1rem; border-radius: 8px; font-family: monospace;">
+                float getUVIndex(float v) {<br>
+                &nbsp;&nbsp;if (v < 0.20) return 0; // Indoor<br>
+                &nbsp;&nbsp;if (v < 0.50) return map(v, 0.2, 0.5, 0, 2); // Low<br>
+                &nbsp;&nbsp;if (v < 2.50) return map(v, 0.5, 2.5, 2, 11); // High<br>
+                &nbsp;&nbsp;return 12; // Extreme<br>
+                }
+            </div>
+
+            <p style="margin-top:1rem;">This creates a curve that fits our specific sensor data points perfectly.</p>
+            <button class="btn" onclick="completeSection('synthesis'); scrollToSection('wrapup')">Go to Wrap Up</button>
+        </section>
+
+        <!-- Section 9: Wrap Up (Mandatory) -->
+        <section id="wrapup" class="section-card" style="display:none;">
+            <div class="section-title">
+                <h2>🏁 Wrap-Up & Reflection</h2>
+            </div>
+
+            <!-- A. Knowledge Consolidation -->
+            <div class="interactive-box">
+                <h3>3-2-1 Reflection</h3>
+                <div class="reflection-group">
+                    <label>3 things I learned about ESP32 ADCs:</label>
+                    <textarea class="reflection-input" id="ref-3" rows="3"></textarea>
+                </div>
+                <div class="reflection-group">
+                    <label>2 things I found interesting about UV sensors:</label>
+                    <textarea class="reflection-input" id="ref-2" rows="2"></textarea>
+                </div>
+                <div class="reflection-group">
+                    <label>1 question I still have:</label>
+                    <textarea class="reflection-input" id="ref-1" rows="1"></textarea>
+                </div>
+                <button class="btn" onclick="saveReflection()">Save Reflection</button>
+            </div>
+
+            <!-- B. Objective Confirmation -->
+            <div style="margin: 2rem 0;">
+                <h3>Did we meet our goals?</h3>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <label><input type="checkbox" id="goal1"> I can explain why we use ADC1 over ADC2.</label>
+                    <label><input type="checkbox" id="goal2"> I understand why we need calibration (noise/linearity).</label>
+                    <label><input type="checkbox" id="goal3"> I know the safety procedure for sun testing.</label>
+                </div>
+            </div>
+
+            <!-- D. Bridge to Next Lesson -->
+            <div class="interactive-box" style="border-color: var(--secondary);">
+                <h3>🔮 Next Week: Making it Visual</h3>
+                <p>Now that we have the data, how do we show it? Next class we will integrate the <strong>OLED Display</strong> or <strong>LED Ring</strong> and start designing the 3D printed case.</p>
+            </div>
+
+            <div id="completion-badge" style="display:none; text-align: center; margin-top: 2rem;">
+                <div style="font-size: 4rem;">🏆</div>
+                <h3>Week 6 Complete!</h3>
+                <p>Great job mastering the analog world.</p>
+            </div>
+        </section>
+
+        <!-- Section 11: Vocabulary -->
+        <section id="vocab" class="section-card">
+            <div class="section-title">
+                <h2>📖 Vocabulary</h2>
+            </div>
+            <input type="text" id="vocabSearch" placeholder="Search terms..." class="reflection-input" onkeyup="filterVocab()">
+            <div class="vocab-list" id="vocabList">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Action Saved!</div>
+
+    <!-- CCQ Modal -->
+    <div id="ccqModal" class="ccq-modal">
+        <div class="ccq-content">
+            <h3 id="modalTitle">Question</h3>
+            <p id="modalText">Text</p>
+            <div id="modalOptions"></div>
+            <p id="modalFeedback" style="margin-top:1rem; font-weight:bold;"></p>
+            <button class="btn" id="modalCloseBtn" style="display:none; margin-top:1rem;" onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        // --- State Management ---
+        const state = {
+            progress: 0,
+            completedSections: new Set(),
+            hookSelection: null,
+            ccqScore: 0
+        };
+
+        const vocabulary = [
+            { term: "ADC", def: "Analog-to-Digital Converter. Converts continuous analog voltage into discrete digital numbers." },
+            { term: "Resolution", def: "The precision of the ADC. ESP32 is 12-bit (0-4095), while Arduino Nano is 10-bit (0-1023)." },
+            { term: "Attenuation", def: "Scaling down the input voltage. Required on ESP32 to read voltages higher than 1.1V (up to 3.3V)." },
+            { term: "eFuse", def: "One-time programmable memory in the ESP32 chip that stores factory calibration data to correct reading errors." },
+            { term: "Linearity", def: "How directly proportional the ADC output is to the input. ESP32 is non-linear at very low (<0.1V) and high voltages." },
+            { term: "Interpolation", def: "Estimating values between known data points. We use Piecewise Linear Interpolation for the UV curve." },
+            { term: "GPIO", def: "General Purpose Input/Output pins. Used to connect sensors and actuators." },
+            { term: "SAR", def: "Successive Approximation Register. The type of ADC architecture used in the ESP32." }
+        ];
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            renderVocab();
+            setupCCQs();
+            updateProgressUI();
+        });
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        // --- Navigation & Progress ---
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            el.style.display = 'block';
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function completeSection(id) {
+            if (!state.completedSections.has(id)) {
+                state.completedSections.add(id);
+                state.progress += 15; // Rough increment
+                if (state.progress > 100) state.progress = 100;
+                saveProgress();
+                updateProgressUI();
+            }
+        }
+
+        function updateProgressUI() {
+            document.getElementById('progressBar').style.width = `${state.progress}%`;
+            document.getElementById('progressText').innerText = `${Math.round(state.progress)}%`;
+        }
+
+        function saveProgress() {
+            localStorage.setItem('esp32ClassProgress', JSON.stringify({
+                progress: state.progress,
+                sections: Array.from(state.completedSections)
+            }));
+        }
+
+        function loadProgress() {
+            const saved = JSON.parse(localStorage.getItem('esp32ClassProgress'));
+            if (saved) {
+                state.progress = saved.progress;
+                state.completedSections = new Set(saved.sections);
+                // Ideally, re-open completed sections, but for flow, we start fresh or specific logic
+                saved.sections.forEach(sec => document.getElementById(sec).style.display = 'block');
+            }
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // --- Specific Interactions ---
+
+        // Opening Hook
+        function selectPrediction(el, type) {
+            document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            state.hookSelection = type;
+            document.getElementById('hook-feedback').style.display = 'block';
+        }
+
+        function saveHook() {
+            localStorage.setItem('hookSelection', state.hookSelection);
+            completeSection('opening');
+            showToast("Prediction Saved!");
+        }
+
+        // Code Tabs
+        function showCode(type) {
+            document.getElementById('code-setup').style.display = type === 'setup' ? 'block' : 'none';
+            document.getElementById('code-loop').style.display = type === 'loop' ? 'block' : 'none';
+        }
+
+        // Concept Quiz
+        function checkConcept(btn, isCorrect, msg) {
+            if (isCorrect) {
+                btn.classList.add('correct');
+                showToast(msg);
+            } else {
+                btn.classList.add('incorrect');
+                showToast(msg);
+            }
+        }
+
+        // Simulation
+        function updateSimulation(val) {
+            const v = parseFloat(val);
+            document.getElementById('valDisplay').innerText = v.toFixed(2);
+            const fb = document.getElementById('sim-feedback');
+            
+            document.querySelectorAll('.sim-state').forEach(el => el.style.opacity = '0.3');
+
+            if (v < 0.2) {
+                fb.innerText = "Current State: Indoor/Dark. Sensor noise dominates.";
+                fb.style.color = "gray";
+                document.getElementById('sim-indoor').style.opacity = '1';
+            } else if (v >= 0.4 && v <= 0.6) {
+                fb.innerText = "Current State: Shade. Significant UV but safe for short periods.";
+                fb.style.color = "orange";
+                document.getElementById('sim-shade').style.opacity = '1';
+            } else if (v > 2.5) {
+                fb.innerText = "Current State: DIRECT SUN. High UV Index! Limit exposure.";
+                fb.style.color = "red";
+                document.getElementById('sim-sun').style.opacity = '1';
+            } else {
+                fb.innerText = "Current State: Transition/Window.";
+                fb.style.color = "var(--text-current)";
+            }
+        }
+
+        // --- Concept Checking Questions (CCQs) ---
+        const ccqData = [
+            {
+                q: "Can this process happen without calibrating each individual sensor?",
+                type: "yesno",
+                correct: "No",
+                feedback: "Correct! Sensors have a ±15% manufacturing tolerance, so generic formulas fail."
+            },
+            {
+                q: "Why does the 'setup' step come before the 'loop'?",
+                type: "wh",
+                options: ["To run continuously", "To configure the ADC hardware once", "To read the sensor"],
+                correct: 1, // index
+                feedback: "Exactly. Hardware configuration (attenuation, width) only needs to happen once."
+            },
+            {
+                q: "If we changed the attenuation to 0db, what would happen to our UV reading?",
+                type: "app",
+                options: ["It would be more accurate", "It would saturate (max out) at 1.1V", "It would break the sensor"],
+                correct: 1,
+                feedback: "Right. 0db only reads up to 1.1V. Sunlight generates ~2.8V, so we'd miss all the data!"
+            }
+        ];
+
+        let currentCCQ = 0;
+
+        function setupCCQs() {
+            const container = document.getElementById('ccq-container');
+            container.innerHTML = ''; // Clear
+
+            ccqData.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.className = "btn btn-outline";
+                btn.style.margin = "5px";
+                btn.innerText = `Question ${index + 1}`;
+                btn.onclick = () => openCCQ(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function openCCQ(index) {
+            currentCCQ = index;
+            const q = ccqData[index];
+            document.getElementById('modalTitle').innerText = "Concept Check";
+            document.getElementById('modalText').innerText = q.q;
+            document.getElementById('modalFeedback').innerText = "";
+            document.getElementById('modalCloseBtn').style.display = "none";
+            
+            const opts = document.getElementById('modalOptions');
+            opts.innerHTML = '';
+
+            if (q.type === 'yesno') {
+                ['Yes', 'No'].forEach(opt => {
+                    const b = document.createElement('button');
+                    b.className = 'quiz-option';
+                    b.innerText = opt;
+                    b.onclick = () => resolveCCQ(opt === q.correct);
+                    opts.appendChild(b);
+                });
+            } else {
+                q.options.forEach((opt, i) => {
+                    const b = document.createElement('button');
+                    b.className = 'quiz-option';
+                    b.innerText = opt;
+                    b.onclick = () => resolveCCQ(i === q.correct);
+                    opts.appendChild(b);
+                });
+            }
+            
+            document.getElementById('ccqModal').style.display = 'flex';
+        }
+
+        function resolveCCQ(isCorrect) {
+            const feedback = document.getElementById('modalFeedback');
+            const btn = document.getElementById('modalCloseBtn');
+            const q = ccqData[currentCCQ];
+
+            if (isCorrect) {
+                feedback.innerText = "✅ " + q.feedback;
+                feedback.style.color = "var(--success)";
+                state.ccqScore++;
+                checkAllCCQsDone();
+            } else {
+                feedback.innerText = "❌ Incorrect. Try again.";
+                feedback.style.color = "var(--danger)";
+            }
+            btn.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('ccqModal').style.display = 'none';
+        }
+
+        function checkAllCCQsDone() {
+            // Simple logic: if user attempts all (in a real app, track specific IDs)
+            if (state.ccqScore >= 1) { // Threshold for demo
+                document.getElementById('btn-post-practice').disabled = false;
+            }
+        }
+
+        // --- Reflection & Wrap Up ---
+        function saveReflection() {
+            const ref = {
+                learned: document.getElementById('ref-3').value,
+                interesting: document.getElementById('ref-2').value,
+                question: document.getElementById('ref-1').value,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('esp32Reflection', JSON.stringify(ref));
+            completeSection('wrapup');
+            document.getElementById('completion-badge').style.display = 'block';
+            showToast("Reflection Saved! Class Complete.");
+        }
+
+        // --- Vocabulary Search ---
+        function renderVocab() {
+            const list = document.getElementById('vocabList');
+            list.innerHTML = vocabulary.map(v => `
+                <div class="vocab-item" onclick="speak('${v.term}')">
+                    <strong>${v.term}</strong>: ${v.def} 🔊
+                </div>
+            `).join('');
+        }
+
+        function filterVocab() {
+            const term = document.getElementById('vocabSearch').value.toLowerCase();
+            const filtered = vocabulary.filter(v => 
+                v.term.toLowerCase().includes(term) || v.def.toLowerCase().includes(term)
+            );
+            const list = document.getElementById('vocabList');
+            list.innerHTML = filtered.map(v => `
+                <div class="vocab-item" onclick="speak('${v.term}')">
+                    <strong>${v.term}</strong>: ${v.def} 🔊
+                </div>
+            `).join('');
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+    </script>
+</body>
+</html>

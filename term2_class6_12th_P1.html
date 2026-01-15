@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Pet Feeder: Week 7 WiFi Mastery</title>
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --secondary: #64748b;
+            --accent: #06b6d4;
+            --bg: #ffffff;
+            --text: #1e293b;
+            --card-bg: #f8fafc;
+            --success: #10b981;
+            --error: #ef4444;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --text: #f1f5f9;
+            --card-bg: #1e293b;
+            --primary: #a78bfa;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 60px;
+            transition: var(--transition);
+        }
+
+        /* Navigation & Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text); 
+            font-weight: 500; 
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 999;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            display: none;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* UI Elements */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .btn-secondary { background: var(--secondary); color: white; }
+
+        .card {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin: 1rem 0;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+
+        /* Custom Interactivity */
+        .opening-activity {
+            border-left: 5px solid var(--accent);
+            padding: 1rem;
+            background: #ecfeff;
+            color: #164e63;
+        }
+
+        .diff-tag {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+        .diff-basic { background: #dcfce7; color: #166534; }
+        .diff-int { background: #fef9c3; color: #854d0e; }
+        .diff-adv { background: #fee2e2; color: #991b1b; }
+
+        .code-block {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .ccq-box {
+            background: #eff6ff;
+            border: 2px dashed var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        /* Nav Controls */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        /* Vocabulary Section */
+        .vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .vocab-item { 
+            cursor: pointer; 
+            padding: 10px; 
+            background: var(--bg); 
+            border-radius: 5px; 
+            border: 1px solid #ddd;
+        }
+
+        /* Phone Simulator */
+        .phone-mockup {
+            width: 280px;
+            height: 500px;
+            background: #000;
+            border-radius: 30px;
+            padding: 10px;
+            margin: 20px auto;
+            border: 4px solid #333;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-header {
+            background: #7c3aed;
+            color: white;
+            padding: 15px 5px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .phone-content {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            .nav-links { display: none; }
+            header { padding: 0 1rem; }
+            .vocab-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-weight: bold; font-size: 1.2rem;">📶 IoT Feeder Hub</div>
+    <div class="nav-links">
+        <a href="#" onclick="showSection(1)">Hook</a>
+        <a href="#" onclick="showSection(3)">Server Logic</a>
+        <a href="#" onclick="showSection(5)">Enhanced UI</a>
+        <a href="#" onclick="showSection(6)">Review</a>
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        <span id="time-indicator" style="font-size: 0.8rem; color: var(--secondary);">⏳ 90m</span>
+        <button onclick="toggleTheme()" class="btn btn-secondary" style="padding: 5px 10px;">🌓</button>
+    </div>
+</header>
+
+<div class="progress-container">
+    <div id="progress-bar"></div>
+</div>
+
+<div class="container">
+
+    <!-- 1. Opening Activity -->
+    <section id="sec-1" class="active">
+        <span class="diff-tag diff-basic">Opening (5-10 min)</span>
+        <h1>The Coffee Shop Crisis</h1>
+        <div class="opening-activity">
+            <p><strong>Scenario:</strong> You're 5 miles away at a coffee shop. You realize you forgot to feed your pet. You take out your phone and open a web link. </p>
+            <p><em>"How does a click on your phone screen magically turn a motor in your living room?"</em></p>
+        </div>
+        
+        <div class="card">
+            <h3>Quick Diagnostic Poll:</h3>
+            <p>To access your ESP32 Feeder from your phone, what is the most critical piece of information you need?</p>
+            <div class="grid">
+                <button class="btn btn-secondary" onclick="saveOpening('ssid')">Name of the WiFi</button>
+                <button class="btn btn-secondary" onclick="saveOpening('ip')">The ESP32 IP Address</button>
+                <button class="btn btn-secondary" onclick="saveOpening('mac')">The MAC Address</button>
+            </div>
+            <div id="opening-feedback" style="margin-top: 1rem; font-weight: 500;"></div>
+        </div>
+
+        <div class="nav-controls">
+            <div></div>
+            <button class="btn btn-primary" onclick="showSection(2)">Explore Objectives →</button>
+        </div>
+    </section>
+
+    <!-- 2. Learning Objectives -->
+    <section id="sec-2">
+        <h1>Learning Objectives</h1>
+        <p><em>Mager's Model: Outcome-Based Learning</em></p>
+        
+        <h3>Cognitive Objectives</h3>
+        <ul>
+            <li><strong>Performance:</strong> You will <strong>implement</strong> a functional Web Server using the <code>WebServer.h</code> library.</li>
+            <li><strong>Condition:</strong> Using an ESP32 connected to a 2.4GHz network.</li>
+            <li><strong>Criterion:</strong> The web interface must successfully trigger the servo and display an updated "Total Feeds" count without crashing.</li>
+        </ul>
+
+        <div class="card" style="border-left: 4px solid var(--accent);">
+            <h3>Social-Emotional Goals</h3>
+            <p>Build <strong>Technological Empathy</strong>: Understanding how user interfaces (buttons, colors) impact the ease of use for pet owners, especially in urgent situations.</p>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(1)">← Back</button>
+            <button class="btn btn-primary" onclick="showSection(3)">Concepts: Server & Client →</button>
+        </div>
+    </section>
+
+    <!-- 3. Concept Exploration -->
+    <section id="sec-3">
+        <h1>How IoT Web Servers Work</h1>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>The ESP32 is a Server <span class="diff-tag diff-basic">Basic</span></h3>
+                <p>A "Server" is just a device that <strong>waits</strong> for requests. When your phone (the Client) asks for the "home page", the ESP32 sends a block of HTML text.</p>
+            </div>
+            
+            <div class="card">
+                <h3>The IP Address <span class="diff-tag diff-int">Intermediate</span></h3>
+                <p>Every device on WiFi has a unique address (like <code>192.168.1.15</code>). You type this into your browser to find your feeder.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>WiFi Stability & Power <span class="diff-tag diff-adv">Advanced</span></h3>
+            <p>WiFi communication uses <strong>radio bursts</strong> that pull high current. If your power supply is weak, the WiFi will drop. The expansion board's power rails are vital here!</p>
+            
+            <div class="ccq-box">
+                <strong>CCQ:</strong> "Can you access the feeder if your phone is on Cellular data and the ESP32 is on home WiFi?"
+                <button class="btn btn-secondary" style="font-size: 0.8rem;" onclick="toggleCCQ(1)">Check Answer</button>
+                <p id="ccq-1" style="display:none; font-size: 0.9rem; margin-top: 10px; color: var(--primary);">
+                    <strong>Not by default.</strong> Both must be on the <em>same local network</em> because the 192.168.x.x address is "private" to your house router.
+                </p>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(2)">← Back</button>
+            <button class="btn btn-primary" onclick="showSection(4)">Code Analysis →</button>
+        </div>
+    </section>
+
+    <!-- 4. Applied Example: Basic Server -->
+    <section id="sec-4">
+        <h1>Building the Base Code</h1>
+        <p>This code transforms your ESP32 into a simple website host.</p>
+        
+        <div class="code-block">
+            <pre>
+#include &lt;WiFi.h&gt;
+#include &lt;WebServer.h&gt;
+
+WebServer server(80); // Standard HTTP port
+
+void handleRoot() {
+  String html = "&lt;h1&gt;Pet Feeder&lt;/h1&gt;";
+  html += "&lt;a href='/feed'&gt;&lt;button&gt;FEED&lt;/button&gt;&lt;/a&gt;";
+  server.send(200, "text/html", html);
+}
+
+void setup() {
+  WiFi.begin("YourSSID", "Password");
+  server.on("/", handleRoot);
+  server.begin();
+}
+            </pre>
+        </div>
+
+        <div class="card">
+            <h3>Visual Simulator</h3>
+            <p>Click "Feed" in this simulated phone to see how the ESP32 handles the request:</p>
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="phone-header">192.168.1.45</div>
+                    <div class="phone-content" id="sim-content">
+                        <h3>🐾 Pet Feeder</h3>
+                        <p>Status: Ready</p>
+                        <p>Total Feeds: <span id="sim-count">0</span></p>
+                        <button class="btn btn-primary" onclick="simulateDispense()">FEED NOW</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(3)">← Back</button>
+            <button class="btn btn-primary" onclick="showSection(5)">Enhanced Features →</button>
+        </div>
+    </section>
+
+    <!-- 5. Interactive Activities: Portions & LEDs -->
+    <section id="sec-5">
+        <h1>Differentiated Control: Portions</h1>
+        <p>One size doesn't fit all pets. We can use <strong>URL Arguments</strong> to change timing.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Portion Logic <span class="diff-tag diff-int">Intermediate</span></h3>
+                <p><code>/feed?size=small</code> -> 0.5s open time</p>
+                <p><code>/feed?size=large</code> -> 2.0s open time</p>
+            </div>
+            <div class="card">
+                <h3>Status LEDs <span class="diff-tag diff-adv">Advanced</span></h3>
+                <p>Use the expansion board to wire LEDs:</p>
+                <ul>
+                    <li>🟢 Green: WiFi Connected</li>
+                    <li>🟡 Yellow: Dispensing...</li>
+                    <li>🔴 Red: Disconnected</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ccq-box">
+            <h3>Practice CCQ: Logic Checking</h3>
+            <p>If the user requests a 'small' portion, which line of code is most correct?</p>
+            <button class="btn btn-secondary" onclick="checkCCQ(2, 'A')">A. delay(500);</button>
+            <button class="btn btn-secondary" onclick="checkCCQ(2, 'B')">B. delay(2000);</button>
+            <p id="ccq-2-feedback" style="margin-top:10px;"></p>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(4)">← Back</button>
+            <button class="btn btn-primary" onclick="showSection(6)">Self-Assessment →</button>
+        </div>
+    </section>
+
+    <!-- 6. Wrap-Up & Closure -->
+    <section id="sec-6">
+        <h1>Week 7 Mastery Review</h1>
+        
+        <div class="card">
+            <h3>Knowledge Consolidation</h3>
+            <p><strong>One-Sentence Summary:</strong> Distill today's lesson into a single sentence about how the Web Server works.</p>
+            <textarea id="reflect-summary" style="width:100%; height:80px; padding:10px; border-radius:8px; border:1px solid #ddd;" placeholder="The phone sends an HTTP request to the ESP32 IP address..."></textarea>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Objective Confirmation</h3>
+                <label><input type="checkbox" id="obj-1"> I can explain the IP address role.</label><br>
+                <label><input type="checkbox" id="obj-2"> I can update WiFi credentials in code.</label><br>
+                <label><input type="checkbox" id="obj-3"> I can use arguments to change timing.</label>
+            </div>
+            <div class="card">
+                <h3>How confident do you feel?</h3>
+                <select id="conf-level" onchange="updateConfidence(this.value)" style="width:100%; padding:10px;">
+                    <option value="none">Choose...</option>
+                    <option value="green">Confident (Green)</option>
+                    <option value="yellow">Need Review (Yellow)</option>
+                    <option value="red">Need Help (Red)</option>
+                </select>
+                <div id="conf-msg" style="margin-top:10px; font-weight:bold;"></div>
+            </div>
+        </div>
+
+        <div class="card" style="background: #fdf2f8; border: 2px solid #db2777; color: #9d174d; text-align:center;">
+            <h3>🏆 Achievement: Remote Controller</h3>
+            <p>You have bridged the physical and digital worlds! Your pet can now be fed from anywhere in the house via WiFi.</p>
+            <p><strong>Next Week:</strong> We add an <strong>RTC (Real-Time Clock)</strong> so the feeder works even if you're asleep!</p>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(5)">← Back</button>
+            <button class="btn btn-primary" onclick="finishLesson()">Save & Complete Lesson</button>
+        </div>
+    </section>
+
+    <!-- Vocabulary Reference -->
+    <div class="card" style="margin-top: 50px;">
+        <h3>📘 Week 7 Vocabulary</h3>
+        <input type="text" id="vocab-search" placeholder="Search terms..." onkeyup="filterVocab()" style="width:100%; padding:10px; margin-bottom:15px; border-radius:5px;">
+        <div class="vocab-grid" id="vocab-list">
+            <div class="vocab-item" onclick="speak('Client')"><strong>Client:</strong> The device requesting info (Phone/PC).</div>
+            <div class="vocab-item" onclick="speak('Server')"><strong>Server:</strong> The device providing info (ESP32).</div>
+            <div class="vocab-item" onclick="speak('IP Address')"><strong>IP Address:</strong> Unique identifier on a network.</div>
+            <div class="vocab-item" onclick="speak('RSSI')"><strong>RSSI:</strong> WiFi Signal Strength indicator.</div>
+            <div class="vocab-item" onclick="speak('HTTP 200')"><strong>HTTP 200:</strong> Status code meaning "Success/OK".</div>
+            <div class="vocab-item" onclick="speak('Argument')"><strong>Argument:</strong> Extra info passed in a URL.</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let currentSection = 1;
+    const totalSections = 6;
+    let feeds = 0;
+
+    window.onload = () => {
+        loadData();
+        updateProgress();
+    };
+
+    function showSection(num) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(`sec-${num}`).classList.add('active');
+        currentSection = num;
+        window.scrollTo(0,0);
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const percent = ((currentSection - 1) / (totalSections - 1)) * 100;
+        document.getElementById('progress-bar').style.width = percent + '%';
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+
+    function saveOpening(choice) {
+        localStorage.setItem('w7_opening', choice);
+        const fb = document.getElementById('opening-feedback');
+        if(choice === 'ip') {
+            fb.innerText = "🎯 Correct! Without the IP, your phone has no idea which 'house' to visit on the network.";
+            fb.style.color = "var(--success)";
+        } else {
+            fb.innerText = "Close! But without the specific IP Address, you can't find the feeder on the network.";
+            fb.style.color = "var(--error)";
+        }
+    }
+
+    function simulateDispense() {
+        feeds++;
+        document.getElementById('sim-count').innerText = feeds;
+        const content = document.getElementById('sim-content');
+        const oldHtml = content.innerHTML;
+        content.innerHTML = "<h3>⚙️ Dispensing...</h3><p>Servo is moving at 13...</p>";
+        setTimeout(() => {
+            content.innerHTML = oldHtml;
+            document.getElementById('sim-count').innerText = feeds;
+        }, 1500);
+    }
+
+    function toggleCCQ(num) {
+        const el = document.getElementById(`ccq-${num}`);
+        el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function checkCCQ(q, choice) {
+        const fb = document.getElementById(`ccq-${q}-feedback`);
+        if(choice === 'A') {
+            fb.innerText = "✅ Correct! 500ms = 0.5 seconds, which is a 'small' opening time.";
+            fb.style.color = "var(--success)";
+        } else {
+            fb.innerText = "❌ No, 2000ms is 2 seconds (Large portion). Try again!";
+            fb.style.color = "var(--error)";
+        }
+    }
+
+    function updateConfidence(val) {
+        const msg = document.getElementById('conf-msg');
+        if(val === 'green') {
+            msg.innerText = "Awesome! You're ready to build.";
+            msg.style.color = "var(--success)";
+        } else if(val === 'yellow') {
+            msg.innerText = "No worries! Check the 'Troubleshooting' section.";
+            msg.style.color = "var(--accent)";
+        } else if(val === 'red') {
+            msg.innerText = "Let's call the teacher over for a 1-on-1!";
+            msg.style.color = "var(--error)";
+        }
+    }
+
+    function filterVocab() {
+        const term = document.getElementById('vocab-search').value.toLowerCase();
+        const items = document.querySelectorAll('.vocab-item');
+        items.forEach(i => {
+            i.style.display = i.innerText.toLowerCase().includes(term) ? "block" : "none";
+        });
+    }
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(msg);
+    }
+
+    function finishLesson() {
+        localStorage.setItem('w7_summary', document.getElementById('reflect-summary').value);
+        alert("Progress Saved! Well done, Engineer.");
+        location.reload();
+    }
+
+    function loadData() {
+        const sum = localStorage.getItem('w7_summary');
+        if(sum) document.getElementById('reflect-summary').value = sum;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 6: Smart Pill Container & RTC Integration</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --text-light: #1f2937;
+            --text-dark: #f9fafb;
+            --bg-light: #ffffff;
+            --bg-dark: #111827;
+            --card-light: #ffffff;
+            --card-dark: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            margin: 0;
+            padding: 0;
+        }
+
+        body.light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Navigation */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        #progress-bar-container {
+            width: 100px;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        button.theme-toggle {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Layout */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1rem 1rem 4rem 1rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background-color: var(--card-light);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        body.dark-mode section {
+            background-color: var(--card-dark);
+        }
+
+        h1, h2, h3 {
+            color: var(--primary);
+        }
+
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+            color: #60a5fa;
+        }
+
+        /* Interactive Elements */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.1s, background-color 0.2s;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Opening Activity */
+        .hook-container {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .scenario-box {
+            background: rgba(0,0,0,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        /* Objectives */
+        .objective-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .obj-card {
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Concepts */
+        .concept-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        body.dark-mode .concept-card {
+            border-color: #374151;
+        }
+
+        .concept-header {
+            background-color: rgba(59, 130, 246, 0.1);
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .concept-body {
+            padding: 1rem;
+            display: none;
+        }
+
+        .concept-body.active {
+            display: block;
+        }
+
+        .diagram {
+            width: 100%;
+            max-width: 600px;
+            margin: 1rem auto;
+            border: 2px dashed #cbd5e1;
+            padding: 1rem;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        /* Code Block */
+        pre {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-annotation {
+            color: #98c379;
+            font-style: italic;
+        }
+
+        /* Comparison Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        body.dark-mode th, body.dark-mode td {
+            border-bottom: 1px solid #4b5563;
+        }
+        
+        th {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Quizzes & CCQs */
+        .quiz-container, .ccq-container {
+            background-color: rgba(245, 158, 11, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .option-btn {
+            background: white;
+            border: 1px solid #d1d5db;
+            padding: 0.5rem;
+            text-align: left;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        body.dark-mode .option-btn {
+            background: #374151;
+            border-color: #4b5563;
+            color: white;
+        }
+
+        .option-btn:hover {
+            background: #f3f4f6;
+        }
+        
+        body.dark-mode .option-btn:hover {
+            background: #4b5563;
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Wiring Activity */
+        .wiring-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1rem 0;
+            user-select: none;
+        }
+
+        .component-box {
+            border: 2px solid var(--text-light);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        body.dark-mode .component-box {
+            border-color: var(--text-dark);
+        }
+
+        .pin {
+            display: block;
+            margin: 0.5rem 0;
+            padding: 0.25rem;
+            background: #ddd;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        body.dark-mode .pin {
+            background: #4b5563;
+        }
+        
+        .pin.selected {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .pin.connected {
+            background: var(--secondary);
+            color: white;
+            cursor: default;
+        }
+
+        /* Wrap Up */
+        .reflection-area textarea {
+            width: 100%;
+            height: 100px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        body.dark-mode .reflection-area textarea {
+            background: #374151;
+            color: white;
+            border-color: #4b5563;
+        }
+
+        /* Vocabulary Modal */
+        #vocab-modal {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: 200;
+        }
+
+        #vocab-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            background: var(--card-light);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            padding: 1rem;
+            overflow-y: auto;
+            display: none;
+            z-index: 200;
+        }
+        
+        body.dark-mode #vocab-panel {
+            background: var(--card-dark);
+        }
+
+        .vocab-item {
+            border-bottom: 1px solid #eee;
+            padding: 0.5rem 0;
+        }
+
+        .vocab-term {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+    </style>
+</head>
+<body class="light-mode">
+
+<header>
+    <div>
+        <strong>Week 6: Smart Pill Container</strong>
+    </div>
+    <div class="nav-controls">
+        <div id="progress-bar-container" title="Lesson Progress">
+            <div id="progress-bar"></div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙/☀️</button>
+    </div>
+</header>
+
+<main>
+
+    <!-- 1. OPENING ACTIVITY -->
+    <section id="opening-activity">
+        <h2>⏱️ The Timekeeper's Challenge</h2>
+        <div class="hook-container">
+            <h3>Scenario: "The Memory Wipe"</h3>
+            <p>You are building a Smart Pill Container to help your grandmother remember her medicine. You program it perfectly using an Arduino.</p>
+            <div class="scenario-box">
+                <p><em>One night, there is a thunderstorm and the power goes out for 10 seconds. When the power returns, the pill container thinks it is 00:00:00 (Midnight). The 8:00 AM alarm never goes off.</em></p>
+            </div>
+            <p><strong>Question:</strong> Why did the microcontroller forget the time, but the cheap alarm clock on her bedside table didn't?</p>
+            
+            <div id="hook-interaction">
+                <textarea id="hook-answer" placeholder="Type your prediction here..." style="width: 100%; padding: 10px; border-radius: 5px; margin-top: 10px;"></textarea>
+                <br><br>
+                <button class="btn" onclick="submitHook()">Submit Prediction</button>
+            </div>
+            
+            <div id="hook-reveal" class="hidden">
+                <p><strong>The Answer:</strong> The alarm clock has a battery backup and a specialized chip called an <strong>RTC (Real-Time Clock)</strong>. Standard microcontrollers (like Arduino or ESP32) lose their "sense of time" when power is cut because their time is stored in volatile memory (RAM).</p>
+                <p>Today, we will fix this by adding a "brain" dedicated solely to time: the <strong>DS3231 RTC</strong>.</p>
+                <button class="btn btn-secondary" onclick="unlockSection('objectives')">Start Lesson</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. LEARNING OBJECTIVES -->
+    <section id="objectives" class="hidden">
+        <h2>🎯 Learning Objectives</h2>
+        <div class="objective-grid">
+            <div class="obj-card">
+                <h3>Cognitive</h3>
+                <ul>
+                    <li>Identify the advantages of ESP32 over Arduino (3.3V logic, Wifi/BT).</li>
+                    <li>Explain the function of the DS3231 RTC module.</li>
+                    <li>Wire an I2C circuit correctly (SDA/SCL).</li>
+                </ul>
+            </div>
+            <div class="obj-card">
+                <h3>Social-Emotional</h3>
+                <ul>
+                    <li>Demonstrate patience during troubleshooting.</li>
+                    <li>Collaborate to verify pin connections before powering up.</li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top: 1rem;"><strong>Success Criteria:</strong> By the end of this lesson, you will see the correct real-world time printing in the Serial Monitor, persisting even after you unplug the USB.</p>
+        <button class="btn" onclick="unlockSection('concepts')">Continue to Concepts</button>
+    </section>
+
+    <!-- 3. CONCEPT EXPLORATION -->
+    <section id="concepts" class="hidden">
+        <h2>📚 Concept Exploration</h2>
+        
+        <!-- Accordion 1 -->
+        <div class="concept-card">
+            <div class="concept-header" onclick="toggleAccordion(this)">
+                1. The Brain: ESP32 vs. Arduino
+                <span>▼</span>
+            </div>
+            <div class="concept-body">
+                <p>For this project, we are upgrading from the classic Arduino Uno to the <strong>ESP32 (30-pin)</strong>. Why?</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Arduino Uno</th>
+                            <th>ESP32</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Processor Speed</td>
+                            <td>16 MHz</td>
+                            <td><strong>240 MHz (Dual Core)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Voltage Logic</td>
+                            <td>5V</td>
+                            <td><strong>3.3V</strong> (Careful!)</td>
+                        </tr>
+                        <tr>
+                            <td>Memory (Flash)</td>
+                            <td>32 KB</td>
+                            <td><strong>4 MB</strong> (Huge difference)</td>
+                        </tr>
+                        <tr>
+                            <td>Connectivity</td>
+                            <td>None</td>
+                            <td><strong>WiFi + Bluetooth</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="ccq-container">
+                    <p><strong>Quick Check:</strong> Since the ESP32 uses 3.3V logic, what might happen if you connect a 5V sensor directly to a non-protected pin?</p>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkConcept(this, false, 'It would work faster.')">It would work faster.</button>
+                        <button class="option-btn" onclick="checkConcept(this, true, 'Correct! 5V can fry the delicate 3.3V pins of the ESP32.')">It could damage the chip.</button>
+                        <button class="option-btn" onclick="checkConcept(this, false, 'Nothing, they are compatible.')">Nothing, they are compatible.</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accordion 2 -->
+        <div class="concept-card">
+            <div class="concept-header" onclick="toggleAccordion(this)">
+                2. The Timekeeper: DS3231 RTC
+                <span>▼</span>
+            </div>
+            <div class="concept-body">
+                <p>The <strong>DS3231</strong> is a highly accurate Real-Time Clock module.</p>
+                <ul>
+                    <li><strong>Battery:</strong> Uses a CR2032 coin cell to keep time for years without external power.</li>
+                    <li><strong>Accuracy:</strong> Uses a Temperature Compensated Crystal Oscillator (TCXO) to stay accurate within ~1 minute per year.</li>
+                    <li><strong>Communication:</strong> Uses the <strong>I2C Protocol</strong>.</li>
+                </ul>
+                <div class="diagram">
+                    [ESP32] <==== I2C Bus ====> [DS3231]<br>
+                    SDA (Data) ---------------- SDA<br>
+                    SCL (Clock) ---------------- SCL<br>
+                    <br>
+                    Address: 0x68
+                </div>
+            </div>
+        </div>
+
+        <!-- Accordion 3 -->
+        <div class="concept-card">
+            <div class="concept-header" onclick="toggleAccordion(this)">
+                3. The Language: I2C Protocol
+                <span>▼</span>
+            </div>
+            <div class="concept-body">
+                <p>I2C (Inter-Integrated Circuit) allows multiple devices to talk using just two wires:</p>
+                <ol>
+                    <li><strong>SDA (Serial Data):</strong> The line where data is sent back and forth.</li>
+                    <li><strong>SCL (Serial Clock):</strong> The line that pulses to keep the data synchronized.</li>
+                </ol>
+                <p>On our ESP32 30-pin board:</p>
+                <ul>
+                    <li><strong>SDA</strong> is usually <strong>GPIO 21</strong></li>
+                    <li><strong>SCL</strong> is usually <strong>GPIO 22</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="btn" style="margin-top:1rem;" onclick="unlockSection('applied-examples')">Go to Wiring & Code</button>
+    </section>
+
+    <!-- 4. APPLIED EXAMPLES -->
+    <section id="applied-examples" class="hidden">
+        <h2>🛠️ Wiring & Coding</h2>
+        
+        <h3>Step 1: The Connections</h3>
+        <p>Follow this exact mapping for the "Week 6" lab station:</p>
+        <div class="diagram" style="text-align: left; padding-left: 2rem;">
+            <strong>DS3231 VCC</strong> -> ESP32 3.3V (Pin 1)<br>
+            <strong>DS3231 GND</strong> -> ESP32 GND (Pin 9/15/30)<br>
+            <strong>DS3231 SDA</strong> -> ESP32 GPIO 21 (Pin 14)<br>
+            <strong>DS3231 SCL</strong> -> ESP32 GPIO 22 (Pin 11)
+        </div>
+
+        <h3>Step 2: The Logic (Code)</h3>
+        <p>We use the <code>RTClib</code> library. Here is how we initialize the time <strong>only once</strong>.</p>
+        
+        <pre>
+#include &lt;Wire.h&gt;
+#include &lt;RTClib.h&gt;
+
+RTC_DS3231 rtc;
+
+void setup() {
+  Serial.begin(115200);
+  
+  if (!rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    while (1);
+  }
+
+  // CRITICAL LINE BELOW
+  // This sets the RTC to the date & time this sketch was compiled
+  rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); 
+}
+
+void loop() {
+  DateTime now = rtc.now();
+  Serial.print(now.hour());
+  Serial.print(":");
+  Serial.println(now.minute());
+  delay(1000);
+}
+        </pre>
+        <p class="code-annotation">⚠️ Warning: If you don't comment out the `rtc.adjust` line and re-upload, the clock will reset to the compile time every time the board restarts!</p>
+
+        <button class="btn" onclick="unlockSection('practice-activity')">Start Practice</button>
+    </section>
+
+    <!-- 5. INTERACTIVE PRACTICE (With CCQs) -->
+    <section id="practice-activity" class="hidden">
+        <h2>⚡ Practice & Troubleshooting</h2>
+
+        <!-- Activity A: Virtual Wiring -->
+        <div style="margin-bottom: 2rem;">
+            <h3>Activity A: Virtual Wiring Check</h3>
+            <p>Click a pin on the ESP32, then click the matching pin on the DS3231 to connect them.</p>
+            <div class="wiring-area">
+                <div class="component-box" id="esp32-box">
+                    <h4>ESP32</h4>
+                    <span class="pin" onclick="selectPin(this, '3.3V')">3.3V (Power)</span>
+                    <span class="pin" onclick="selectPin(this, 'GND')">GND (Ground)</span>
+                    <span class="pin" onclick="selectPin(this, '21')">GPIO 21 (SDA)</span>
+                    <span class="pin" onclick="selectPin(this, '22')">GPIO 22 (SCL)</span>
+                </div>
+                <div class="component-box" id="rtc-box">
+                    <h4>DS3231</h4>
+                    <span class="pin" onclick="selectPin(this, 'SCL')">SCL</span>
+                    <span class="pin" onclick="selectPin(this, 'SDA')">SDA</span>
+                    <span class="pin" onclick="selectPin(this, 'VCC')">VCC</span>
+                    <span class="pin" onclick="selectPin(this, 'GND')">GND</span>
+                </div>
+            </div>
+            <div id="wiring-feedback" class="feedback"></div>
+        </div>
+
+        <!-- CCQ 1 (Mandatory) -->
+        <div class="ccq-container" id="ccq-1" style="display:none;">
+            <h4>Concept Check 1</h4>
+            <p><strong>Wh- Question:</strong> Why do we connect SDA to GPIO 21 and SCL to GPIO 22 on this specific board?</p>
+            <div class="options-grid">
+                <button class="option-btn" onclick="answerCCQ(1, false, 'Incorrect. 3.3V is power, not data.')">Because they are the 3.3V pins.</button>
+                <button class="option-btn" onclick="answerCCQ(1, true, 'Correct! These are the default hardware I2C pins for the ESP32.')">Because those are the default hardware I2C pins.</button>
+                <button class="option-btn" onclick="answerCCQ(1, false, 'Incorrect. Any pin can be software I2C, but these are hardware optimized.')">It was a random choice.</button>
+            </div>
+        </div>
+
+        <!-- Activity B: Troubleshooting -->
+        <div id="troubleshoot-activity" class="hidden" style="margin-top: 2rem;">
+            <h3>Activity B: The "Time Traveler" Bug</h3>
+            <p>You upload your code. You open the Serial Monitor. It says:</p>
+            <pre>2000/01/01 00:00:00</pre>
+            <p>What is the most likely cause?</p>
+            <div class="options-grid">
+                <button class="option-btn" onclick="checkTroubleshoot(false)">The ESP32 is broken.</button>
+                <button class="option-btn" onclick="checkTroubleshoot(true)">The RTC battery is dead or the time hasn't been set yet.</button>
+                <button class="option-btn" onclick="checkTroubleshoot(false)">The WiFi is disconnected.</button>
+            </div>
+            <div id="trouble-feedback" class="feedback"></div>
+        </div>
+        
+        <!-- CCQ 2 (Mandatory) -->
+        <div class="ccq-container hidden" id="ccq-2">
+            <h4>Concept Check 2</h4>
+            <p><strong>Negative Check:</strong> Would it be correct to say that the code `rtc.adjust(...)` should be left inside the `void loop()`?</p>
+            <div class="options-grid">
+                <button class="option-btn" onclick="answerCCQ(2, false, 'Think again. The loop runs thousands of times a second.')">Yes, so the time stays accurate.</button>
+                <button class="option-btn" onclick="answerCCQ(2, true, 'Correct! If in the loop, it would reset the time constantly.')">No, it would constantly reset the time to the past.</button>
+            </div>
+        </div>
+
+        <button id="finish-practice-btn" class="btn hidden" style="margin-top: 1rem;" onclick="unlockSection('synthesis')">Finish Practice</button>
+    </section>
+
+    <!-- 6. SYNTHESIS -->
+    <section id="synthesis" class="hidden">
+        <h2>🧩 Knowledge Synthesis</h2>
+        <p>Review the flow of data in our Smart Pill Container project:</p>
+        <div class="diagram">
+            [Power Source] -> [ESP32] -> [3.3V Rail] -> [DS3231 VCC]<br>
+            [DS3231] -> (Time Data via I2C) -> [ESP32 Code]<br>
+            [ESP32 Code] -> (Logic Check) -> [Trigger Alarm?]
+        </div>
+        <p>Next week, we will add the <strong>Output</strong> logic (LEDs and Vibration Motors) based on the time data we just retrieved.</p>
+        
+        <button class="btn" onclick="unlockSection('wrap-up')">Proceed to Wrap-Up</button>
+    </section>
+
+    <!-- 7. WRAP UP -->
+    <section id="wrap-up" class="hidden">
+        <h2>🚀 Wrap-Up & Closure</h2>
+        
+        <!-- Objective Confirmation -->
+        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+            <h3>Self-Check</h3>
+            <label style="display:block; margin: 5px 0;">
+                <input type="checkbox" id="obj-check-1"> I can explain why we use an RTC instead of just `delay()`.
+            </label>
+            <label style="display:block; margin: 5px 0;">
+                <input type="checkbox" id="obj-check-2"> I can wire SDA and SCL correctly.
+            </label>
+            <label style="display:block; margin: 5px 0;">
+                <input type="checkbox" id="obj-check-3"> I successfully displayed the time in Serial Monitor.
+            </label>
+        </div>
+
+        <!-- 3-2-1 Reflection -->
+        <div class="reflection-area" style="margin-top: 1rem;">
+            <h3>3-2-1 Reflection</h3>
+            <p><strong>3</strong> things I learned today:</p>
+            <textarea id="ref-3"></textarea>
+            
+            <p><strong>2</strong> terms I found interesting (e.g., I2C, Baud Rate):</p>
+            <textarea id="ref-2"></textarea>
+            
+            <p><strong>1</strong> question I still have about the project:</p>
+            <textarea id="ref-1"></textarea>
+        </div>
+
+        <div style="margin-top: 2rem; text-align: center;">
+            <h3>Great Job, Engineer! 🎓</h3>
+            <p>Your pill container now has a sense of time. Next lesson: <strong>Making it Shine & Buzz</strong>.</p>
+            <button class="btn btn-secondary" onclick="saveProgress()">Save Reflection & Finish</button>
+            <p id="save-msg" style="color: green; margin-top: 10px; opacity: 0; transition: opacity 0.5s;">Progress Saved!</p>
+        </div>
+    </section>
+
+</main>
+
+<!-- Floating Vocab Button -->
+<div id="vocab-modal" onclick="toggleVocab()">
+    📖
+</div>
+<div id="vocab-panel">
+    <h3>Vocabulary</h3>
+    <input type="text" placeholder="Search..." onkeyup="filterVocab()" id="vocab-search" style="width: 100%; padding: 5px; margin-bottom: 10px;">
+    <div id="vocab-list">
+        <!-- Populated by JS -->
+    </div>
+</div>
+
+<script>
+    /* State Management */
+    let currentSection = 0;
+    const sections = ['opening-activity', 'objectives', 'concepts', 'applied-examples', 'practice-activity', 'synthesis', 'wrap-up'];
+    
+    // Wiring Logic Data
+    let selectedSource = null;
+    let connections = {
+        '3.3V': 'VCC',
+        'GND': 'GND',
+        '21': 'SDA',
+        '22': 'SCL'
+    };
+    let completedConnections = 0;
+
+    // Vocabulary Data
+    const vocabulary = [
+        { term: "ESP32", def: "A powerful microcontroller with WiFi/Bluetooth, acting as the brain of our project." },
+        { term: "RTC", def: "Real-Time Clock. A module (DS3231) that keeps track of time using a battery." },
+        { term: "I2C", def: "Inter-Integrated Circuit. A communication protocol using 2 wires: SDA and SCL." },
+        { term: "SDA", def: "Serial Data. The line where information travels in I2C." },
+        { term: "SCL", def: "Serial Clock. The line that keeps data synchronized in I2C." },
+        { term: "GPIO", def: "General Purpose Input/Output pins on the microcontroller." },
+        { term: "Baud Rate", def: "The speed of communication (e.g., 115200) for the Serial Monitor." },
+        { term: "VCC", def: "Voltage Common Collector. The positive power connection (3.3V)." }
+    ];
+
+    /* Initialization */
+    window.onload = function() {
+        loadVocab();
+        loadProgress(); 
+        // Removed updateProgressBar() call here as it was undefined and logic is handled in loadProgress or separate function
+    };
+
+    /* Theme Toggle */
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        document.body.classList.toggle('light-mode');
+        try {
+            localStorage.setItem('theme', document.body.className);
+        } catch(e) { console.log('Storage unavailable'); }
+    }
+
+    /* Navigation & Progress */
+    function unlockSection(id) {
+        const el = document.getElementById(id);
+        if(!el) return;
+        
+        el.classList.remove('hidden');
+        setTimeout(() => el.scrollIntoView({behavior: 'smooth', block: 'start'}), 100);
+        
+        const index = sections.indexOf(id);
+        if(index > -1) {
+            // Update progress bar
+            updateProgressBar(index);
+        }
+        
+        saveProgressState(id);
+    }
+    
+    function updateProgressBar(index) {
+        const percent = ((index + 1) / sections.length) * 100;
+        document.getElementById('progress-bar').style.width = percent + '%';
+    }
+
+    /* Opening Activity */
+    function submitHook() {
+        const answerEl = document.getElementById('hook-answer');
+        if (!answerEl) return;
+        
+        const answer = answerEl.value;
+        if(answer.length > 2) {
+            document.getElementById('hook-interaction').classList.add('hidden');
+            document.getElementById('hook-reveal').classList.remove('hidden');
+            try {
+                localStorage.setItem('hookResponse', answer);
+            } catch(e) { console.log('Storage unavailable'); }
+        } else {
+            alert("Please type a short prediction (at least 3 characters)!");
+        }
+    }
+
+    /* Concept Accordion */
+    function toggleAccordion(header) {
+        const body = header.nextElementSibling;
+        body.classList.toggle('active');
+        const arrow = header.querySelector('span');
+        arrow.textContent = body.classList.contains('active') ? '▲' : '▼';
+    }
+
+    function checkConcept(btn, isCorrect, feedback) {
+        if(isCorrect) {
+            btn.style.background = "#d1fae5";
+            btn.style.borderColor = "#065f46";
+            alert(feedback);
+        } else {
+            btn.style.background = "#fee2e2";
+            btn.style.borderColor = "#991b1b";
+            alert(feedback);
+        }
+    }
+
+    /* Wiring Activity */
+    function selectPin(el, pinName) {
+        if (el.classList.contains('connected')) return;
+
+        // Visual selection
+        if (selectedSource) {
+            selectedSource.el.classList.remove('selected');
+        }
+        
+        el.classList.add('selected');
+        selectedSource = { el: el, name: pinName };
+
+        // Check against waiting logic (simplified for UI: just waiting for 2 clicks)
+        // Ideally, we check if this is the second click of a pair
+        // For this implementation, we need to know if the user clicked Source then Dest
+        // Let's implement a simpler "Hold one, click other" logic
+        
+        const allSelected = document.querySelectorAll('.pin.selected');
+        if (allSelected.length === 2) {
+            // Check match
+            const pin1 = allSelected[0].textContent.split(' ')[0]; // Extract pin name
+            const pin2 = allSelected[1].textContent.split(' ')[0];
+            
+            // Clean up text content for matching
+            const p1Key = pin1.replace('GPIO', '').trim();
+            const p2Key = pin2.replace('GPIO', '').trim();
+            
+            // Allow reverse matching
+            let valid = false;
+            
+            // Check logic manually for the 4 pairs
+            const text1 = allSelected[0].innerText;
+            const text2 = allSelected[1].innerText;
+
+            if (checkPair(text1, text2)) {
+                valid = true;
+            }
+
+            if (valid) {
+                document.getElementById('wiring-feedback').innerHTML = "<span style='color:green'>Correct Connection!</span>";
+                allSelected.forEach(p => {
+                    p.classList.remove('selected');
+                    p.classList.add('connected');
+                });
+                completedConnections++;
+                if(completedConnections === 4) {
+                    document.getElementById('wiring-feedback').innerHTML = "<strong>System Wired! Moving to Logic Check...</strong>";
+                    setTimeout(() => { document.getElementById('ccq-1').style.display = 'block'; }, 1000);
+                }
+            } else {
+                document.getElementById('wiring-feedback').innerHTML = "<span style='color:red'>Invalid Connection. Try again.</span>";
+                allSelected.forEach(p => p.classList.remove('selected'));
+                selectedSource = null;
+            }
+        }
+    }
+
+    function checkPair(t1, t2) {
+        // Normalize
+        const str = t1 + t2;
+        if ((str.includes('3.3V') && str.includes('VCC'))) return true;
+        if ((str.includes('GND') && str.includes('GND'))) return true;
+        if ((str.includes('21') && str.includes('SDA'))) return true;
+        if ((str.includes('22') && str.includes('SCL'))) return true;
+        return false;
+    }
+
+    /* CCQ & Practice Logic */
+    function answerCCQ(id, isCorrect, feedback) {
+        if(isCorrect) {
+            alert(feedback);
+            // Logic to reveal next part
+            if(id === 1) {
+                document.getElementById('troubleshoot-activity').classList.remove('hidden');
+            }
+            if(id === 2) {
+                document.getElementById('finish-practice-btn').classList.remove('hidden');
+            }
+        } else {
+            alert(feedback);
+        }
+    }
+
+    function checkTroubleshoot(isCorrect) {
+        const fb = document.getElementById('trouble-feedback');
+        if(isCorrect) {
+            fb.className = "feedback correct";
+            fb.textContent = "Correct! The RTC resets to default (usually year 2000) if the battery is dead or it hasn't been set.";
+            document.getElementById('ccq-2').classList.remove('hidden');
+        } else {
+            fb.className = "feedback incorrect";
+            fb.textContent = "Not quite. Check the other components.";
+        }
+    }
+
+    /* Vocabulary System */
+    function loadVocab() {
+        const list = document.getElementById('vocab-list');
+        vocabulary.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'vocab-item';
+            div.innerHTML = `<div class="vocab-term">${item.term}</div><div>${item.def}</div>`;
+            list.appendChild(div);
+        });
+    }
+
+    function toggleVocab() {
+        const panel = document.getElementById('vocab-panel');
+        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function filterVocab() {
+        const input = document.getElementById('vocab-search').value.toLowerCase();
+        const items = document.getElementsByClassName('vocab-item');
+        for (let i = 0; i < items.length; i++) {
+            const term = items[i].getElementsByClassName('vocab-term')[0].innerText.toLowerCase();
+            if (term.includes(input)) {
+                items[i].style.display = "";
+            } else {
+                items[i].style.display = "none";
+            }
+        }
+    }
+
+    /* Persistence */
+    function saveProgressState(lastSectionId) {
+        try {
+            localStorage.setItem('lastSection', lastSectionId);
+        } catch(e) { console.log('Storage unavailable'); }
+    }
+
+    function saveProgress() {
+        const ref3 = document.getElementById('ref-3').value;
+        const ref2 = document.getElementById('ref-2').value;
+        const ref1 = document.getElementById('ref-1').value;
+        
+        const data = {
+            date: new Date().toISOString(),
+            ref3, ref2, ref1
+        };
+        
+        try {
+            localStorage.setItem('smartPillLessonData', JSON.stringify(data));
+            const msg = document.getElementById('save-msg');
+            msg.style.opacity = 1;
+        } catch(e) { 
+            alert("Progress saved locally (Note: localStorage may be disabled).");
+        }
+    }
+
+    function loadProgress() {
+        try {
+            // Theme
+            const theme = localStorage.getItem('theme');
+            if(theme) document.body.className = theme;
+
+            // Restore Hook
+            const hook = localStorage.getItem('hookResponse');
+            if(hook) {
+                document.getElementById('hook-answer').value = hook;
+                document.getElementById('hook-interaction').classList.add('hidden');
+                document.getElementById('hook-reveal').classList.remove('hidden');
+                // Auto unlock objectives if hook was done
+                document.getElementById('objectives').classList.remove('hidden');
+            }
+            
+            // Restore Section Position
+            const lastSection = localStorage.getItem('lastSection');
+            if (lastSection) {
+                 const index = sections.indexOf(lastSection);
+                 if (index > 0) {
+                     // Unlock everything up to this point
+                     for(let i=0; i<=index; i++) {
+                         document.getElementById(sections[i]).classList.remove('hidden');
+                     }
+                     updateProgressBar(index);
+                 }
+            }
+        } catch(e) {
+            console.log('Storage unavailable or access denied');
+        }
+    }
+
+    /* Text-to-Speech for Accessibility (Vocab) */
+    // Simple implementation can be added to vocab items click event if requested.
+</script>
+
+</body>
+</html>

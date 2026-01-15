@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Pet Feeder: Week 6 Mastery</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --accent: #f59e0b;
+            --bg: #ffffff;
+            --text: #1e293b;
+            --card-bg: #f8fafc;
+            --success: #22c55e;
+            --error: #ef4444;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --text: #f1f5f9;
+            --card-bg: #1e293b;
+            --primary: #60a5fa;
+        }
+
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 60px;
+            transition: var(--transition);
+        }
+
+        /* Navigation & Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text); 
+            font-weight: 500; 
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 999;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            display: none;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* UI Elements */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .btn-secondary { background: var(--secondary); color: white; }
+
+        .card {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin: 1rem 0;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+
+        /* Custom Interactivity */
+        .opening-mystery {
+            border-left: 5px solid var(--accent);
+            padding: 1rem;
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .diff-tag {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+        .diff-basic { background: #dcfce7; color: #166534; }
+        .diff-int { background: #fef9c3; color: #854d0e; }
+        .diff-adv { background: #fee2e2; color: #991b1b; }
+
+        .code-block {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .ccq-box {
+            background: #eff6ff;
+            border: 2px dashed var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        /* Navigation Buttons */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        /* Vocabulary Section */
+        .vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .vocab-item { 
+            cursor: pointer; 
+            padding: 10px; 
+            background: var(--bg); 
+            border-radius: 5px; 
+            border: 1px solid #ddd;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 600px) {
+            .nav-links { display: none; }
+            header { padding: 0 1rem; }
+            .vocab-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-weight: bold; font-size: 1.2rem;">🐾 IoT Feeder Academy</div>
+    <div class="nav-links">
+        <a href="#" onclick="showSection(1)">Start</a>
+        <a href="#" onclick="showSection(4)">Concepts</a>
+        <a href="#" onclick="showSection(7)">Practice</a>
+        <a href="#" onclick="showSection(9)">Wrap-up</a>
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        <span id="time-indicator" style="font-size: 0.8rem; color: var(--secondary);">⏳ 90m</span>
+        <button onclick="toggleTheme()" class="btn btn-secondary" style="padding: 5px 10px;">🌓</button>
+    </div>
+</header>
+
+<div class="progress-container">
+    <div id="progress-bar"></div>
+</div>
+
+<div class="container">
+
+    <!-- 1. Opening Activity -->
+    <section id="sec-1" class="active">
+        <span class="diff-tag diff-basic">Opening (5-10 min)</span>
+        <h1>The "Stranded Pet" Challenge</h1>
+        <div class="opening-mystery">
+            <p><strong>Scenario:</strong> You've suddenly been asked to stay at a robotics competition for 2 extra days. Your cat, "Circuit," is at home. You have an ESP32, a servo motor, and a plastic container. </p>
+            <p><em>"How would you ensure Circuit gets exactly 50g of food at 8 AM every day?"</em></p>
+        </div>
+        
+        <div class="card">
+            <h3>Predict the Mechanism:</h3>
+            <p>Which mechanical movement is most reliable for dry kibble?</p>
+            <div class="grid">
+                <button class="btn btn-secondary" onclick="saveOpening('rotation')">🔄 Rotating Gate</button>
+                <button class="btn btn-secondary" onclick="saveOpening('slide')">↔️ Sliding Door</button>
+                <button class="btn btn-secondary" onclick="saveOpening('tip')">📐 Tipping Cup</button>
+            </div>
+            <div id="opening-feedback" style="margin-top: 1rem; font-style: italic;"></div>
+        </div>
+
+        <div class="nav-controls">
+            <div></div>
+            <button class="btn btn-primary" onclick="showSection(2)">Continue to Objectives →</button>
+        </div>
+    </section>
+
+    <!-- 2. Learning Objectives -->
+    <section id="sec-2">
+        <h1>Learning Objectives</h1>
+        <p><em>Based on Mager's Model of Instructional Objectives</em></p>
+        
+        <h3>Cognitive Goals</h3>
+        <ul>
+            <li><strong>Performance:</strong> Given an ESP32 and an expansion board, you will <strong>wire</strong> a servo motor and a manual button correctly.</li>
+            <li><strong>Condition:</strong> Using the <code>ESP32Servo</code> library in Arduino IDE.</li>
+            <li><strong>Criterion:</strong> The servo must move to 90° upon button press and return to 0° with 100% repeatability.</li>
+        </ul>
+
+        <div class="card" style="border-left: 4px solid var(--primary);">
+            <h3>Social-Emotional Goals</h3>
+            <p>Develop <strong>Persistence</strong> through iteration: Recognizing that your first mechanical prototype will likely jam, and using that data to improve the design.</p>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(1)">← Back</button>
+            <button class="btn btn-primary" onclick="showSection(3)">Concept Exploration →</button>
+        </div>
+    </section>
+
+    <!-- 3. Concept Exploration -->
+    <section id="sec-3">
+        <h1>The "Brain" & The "Muscle"</h1>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>The Expansion Board <span class="diff-tag diff-basic">Basic</span></h3>
+                <p>Why not a breadboard? Breadboards get messy with 5V power. The expansion board provides <strong>dedicated power rails</strong> and stable headers for the ESP32.</p>
+                <button class="btn btn-secondary" onclick="toggleDetails('exp-board')">Show Pin Mapping</button>
+                <div id="exp-board" style="display:none; margin-top:10px;">
+                    <small>GPIO 13 (Signal) | 5V (Red) | GND (Black)</small>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>The Servo (SG90) <span class="diff-tag diff-int">Intermediate</span></h3>
+                <p>Unlike DC motors that spin forever, servos move to a <strong>specific angle</strong> using PWM (Pulse Width Modulation).</p>
+                <input type="range" min="0" max="180" value="0" id="servo-sim" oninput="updateServoSim(this.value)">
+                <p>Current Angle: <span id="angle-val">0</span>°</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Food Flow Dynamics <span class="diff-tag diff-adv">Advanced</span></h3>
+            <p>Dry kibble behaves like a granular fluid. If your opening is < 2x the size of the kibble, it will <strong>arch</strong> and jam. </p>
+            <div class="ccq-box">
+                <strong>CCQ:</strong> Why do we use a servo to "gate" gravity rather than "push" the food?
+                <button class="btn btn-secondary" style="font-size: 0.8rem;" onclick="toggleCCQ(1)">Check Reason</button>
+                <p id="ccq-1" style="display:none; font-size: 0.9rem; margin-top: 10px; color: var(--primary);">Because gravity is free energy! The servo only needs enough torque to move a light flap, not lift the weight of all the food.</p>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(2)">← Back</button>
+            <button class="btn btn-primary" onclick="showSection(4)">Code & Logic →</button>
+        </div>
+    </section>
+
+    <!-- 4. Code & Practical Case -->
+    <section id="sec-4">
+        <h1>Writing the Control Logic</h1>
+        <div class="code-block">
+            <pre>
+#include &lt;ESP32Servo.h&gt;
+
+Servo feeder;
+const int buttonPin = 4;
+const int servoPin = 13;
+
+void setup() {
+  feeder.attach(servoPin);
+  pinMode(buttonPin, INPUT_PULLUP);
+  feeder.write(0); // Close gate
+}
+
+void loop() {
+  if (digitalRead(buttonPin) == LOW) {
+    feeder.write(90); // Open
+    delay(1000);      // Wait
+    feeder.write(0);  // Close
+  }
+}
+            </pre>
+        </div>
+
+        <div class="card">
+            <h3>Step-by-Step Practical Case</h3>
+            <ol>
+                <li>Mount ESP32 into Expansion Board (Align USB port).</li>
+                <li>Connect Servo: Red(5V), Brown(GND), Orange(Pin 13).</li>
+                <li>Connect Button: Leg 1(Pin 4), Leg 2(GND).</li>
+                <li>Upload code and test *without* food first.</li>
+            </ol>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(3)">← Back</button>
+            <button class="btn btn-primary" onclick="showSection(5)">Practice Lab →</button>
+        </div>
+    </section>
+
+    <!-- 5. Practice Lab & CCQs -->
+    <section id="sec-5">
+        <h1>Practice & Concept Checking</h1>
+        
+        <div id="practice-bank">
+            <div class="card">
+                <h3>Question 1: The Pull-up Mystery</h3>
+                <p>In the code, we use <code>INPUT_PULLUP</code>. Does the button signal go <strong>HIGH</strong> or <strong>LOW</strong> when pressed?</p>
+                <button class="btn btn-secondary" onclick="checkAnswer(1, 'LOW')">LOW</button>
+                <button class="btn btn-secondary" onclick="checkAnswer(1, 'HIGH')">HIGH</button>
+                <p id="ans-1" style="margin-top:10px;"></p>
+            </div>
+
+            <div class="ccq-box">
+                <h3>CCQ: Negative Checking</h3>
+                <p>Would it be correct to say that the Servo motor can spin 360 degrees continuously for this project?</p>
+                <button class="btn btn-secondary" onclick="checkCCQ(2, false)">No</button>
+                <button class="btn btn-secondary" onclick="checkCCQ(2, true)">Yes</button>
+                <p id="ccq-2-feedback"></p>
+            </div>
+
+            <div class="card">
+                <h3>Question 3: Power Distribution</h3>
+                <p>If the servo jitters or vibrates without moving, what is the most likely culprit?</p>
+                <select id="q3-select" onchange="checkQ3(this.value)">
+                    <option value="">Select an answer...</option>
+                    <option value="code">Code Syntax Error</option>
+                    <option value="power">Insufficient Current/Voltage</option>
+                    <option value="gravity">Gravity is too strong</option>
+                </select>
+                <p id="q3-feedback"></p>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(4)">← Back</button>
+            <button class="btn btn-primary" onclick="showSection(6)">Self-Assessment →</button>
+        </div>
+    </section>
+
+    <!-- 6. Wrap-Up & Reflection -->
+    <section id="sec-6">
+        <h1>Lesson Wrap-Up</h1>
+        
+        <div class="card">
+            <h3>3-2-1 Reflection</h3>
+            <p>What are <strong>3</strong> things you learned today?</p>
+            <textarea id="reflect-3" class="w-full" style="width:100%; border-radius:8px; padding:10px;" placeholder="1. Expansion boards... 2. ..."></textarea>
+            
+            <p>What is <strong>1</strong> question you still have?</p>
+            <input type="text" id="reflect-1" style="width:100%; border-radius:8px; padding:10px;" placeholder="I wonder how the RTC works...">
+        </div>
+
+        <div class="card">
+            <h3>Objective Checklist</h3>
+            <label><input type="checkbox" id="obj-1"> I can wire an expansion board correctly.</label><br>
+            <label><input type="checkbox" id="obj-2"> I understand the PWM signal for servos.</label><br>
+            <label><input type="checkbox" id="obj-3"> My mechanical prototype dispenses food.</label>
+        </div>
+
+        <div class="opening-mystery" style="background: #ecfdf5; border-color: #10b981; color: #065f46;">
+            <h3>🌟 Achievement Unlocked: Mechanical Pioneer</h3>
+            <p>You have successfully completed the Week 6 electronics and mechanical foundation. Next week: <strong>WiFi Connectivity!</strong></p>
+        </div>
+
+        <div class="nav-controls">
+            <button class="btn btn-secondary" onclick="showSection(5)">← Back</button>
+            <button class="btn btn-primary" onclick="finishLesson()">Submit & Close Session</button>
+        </div>
+    </section>
+
+    <!-- Vocabulary Section (Floating/Side) -->
+    <div class="card" id="vocab-section">
+        <h3>📖 Interactive Vocabulary</h3>
+        <input type="text" id="vocab-search" placeholder="Search terms..." onkeyup="filterVocab()" style="width:100%; padding:8px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc;">
+        <div class="vocab-grid" id="vocab-list">
+            <div class="vocab-item" onclick="speak('GPIO')"><strong>GPIO:</strong> General Purpose Input Output.</div>
+            <div class="vocab-item" onclick="speak('PWM')"><strong>PWM:</strong> Pulse Width Modulation (Control signal).</div>
+            <div class="vocab-item" onclick="speak('Torque')"><strong>Torque:</strong> Rotational force of the motor.</div>
+            <div class="vocab-item" onclick="speak('Jitter')"><strong>Jitter:</strong> Unwanted small vibrations.</div>
+            <div class="vocab-item" onclick="speak('Prototype')"><strong>Prototype:</strong> An initial version for testing.</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // State Management
+    let currentSection = 1;
+    const totalSections = 6;
+    
+    // Initial Load
+    window.onload = () => {
+        loadProgress();
+        updateProgress();
+    };
+
+    function showSection(num) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(`sec-${num}`).classList.add('active');
+        currentSection = num;
+        window.scrollTo(0,0);
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const percent = ((currentSection - 1) / (totalSections - 1)) * 100;
+        document.getElementById('progress-bar').style.width = percent + '%';
+    }
+
+    // Interactive Features
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+
+    function saveOpening(choice) {
+        localStorage.setItem('opening_choice', choice);
+        const feedback = {
+            'rotation': 'Solid choice! Rotating gates are simple and handle jams well.',
+            'slide': 'A bit more friction, but great for precise portions!',
+            'tip': 'Advanced! Make sure your cup is weighted correctly.'
+        };
+        document.getElementById('opening-feedback').innerText = "Saved: " + feedback[choice];
+    }
+
+    function updateServoSim(val) {
+        document.getElementById('angle-val').innerText = val;
+    }
+
+    function toggleDetails(id) {
+        const el = document.getElementById(id);
+        el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleCCQ(num) {
+        const el = document.getElementById(`ccq-${num}`);
+        el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Quiz Logic
+    function checkAnswer(q, val) {
+        const fb = document.getElementById(`ans-${q}`);
+        if(val === 'LOW') {
+            fb.innerHTML = "✅ Correct! INPUT_PULLUP holds it HIGH (1) normally, and button press pulls it to GND (0).";
+            fb.style.color = "var(--success)";
+        } else {
+            fb.innerHTML = "❌ Try again. Remember how PULLUP works!";
+            fb.style.color = "var(--error)";
+        }
+    }
+
+    function checkCCQ(num, val) {
+        const fb = document.getElementById(`ccq-${num}-feedback`);
+        if(val === false) {
+            fb.innerHTML = "✅ Correct. Standard SG90 servos are limited to 180°. For 360°, we'd need a continuous rotation servo.";
+            fb.style.color = "var(--success)";
+        } else {
+            fb.innerHTML = "❌ Careful! Standard servos only move 0-180 degrees.";
+            fb.style.color = "var(--error)";
+        }
+    }
+
+    function checkQ3(val) {
+        const fb = document.getElementById('q3-feedback');
+        if(val === 'power') {
+            fb.innerHTML = "✅ Spot on! Servos pull 'peak' current when starting to move. Use the 5V rail on the expansion board!";
+            fb.style.color = "var(--success)";
+        } else {
+            fb.innerHTML = "❌ Not quite. Jittering usually means the motor is 'starving' for power.";
+            fb.style.color = "var(--error)";
+        }
+    }
+
+    // Vocabulary Helper
+    function filterVocab() {
+        let input = document.getElementById('vocab-search').value.toLowerCase();
+        let items = document.getElementsByClassName('vocab-item');
+        for (let i = 0; i < items.length; i++) {
+            if (!items[i].innerHTML.toLowerCase().includes(input)) {
+                items[i].style.display = "none";
+            } else {
+                items[i].style.display = "block";
+            }
+        }
+    }
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(msg);
+    }
+
+    // Persistence
+    function loadProgress() {
+        const saved = localStorage.getItem('opening_choice');
+        if(saved) saveOpening(saved);
+        
+        const reflect3 = localStorage.getItem('reflect-3');
+        if(reflect3) document.getElementById('reflect-3').value = reflect3;
+    }
+
+    function finishLesson() {
+        localStorage.setItem('reflect-3', document.getElementById('reflect-3').value);
+        localStorage.setItem('reflect-1', document.getElementById('reflect-1').value);
+        
+        // Show completion message
+        const container = document.querySelector('.container');
+        container.innerHTML = `
+            <div class="card" style="text-align: center; padding: 3rem;">
+                <h1>🎉 Congratulations!</h1>
+                <p>Week 6 Progress Saved. See you in Week 7 for the WiFi Web Server!</p>
+                <button class="btn btn-primary" onclick="location.reload()">Review Lesson</button>
+            </div>
+        `;
+    }
+</script>
+
+</body>
+</html>
