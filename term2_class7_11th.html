@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5: Assembly & Project Management</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+        }
+
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; line-height: 1.6; padding-bottom: 80px; }
+        
+        /* Layout & Typography */
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1, h2, h3 { color: var(--text-main); font-weight: 700; }
+        h1 { font-size: 2rem; }
+        h2 { font-size: 1.5rem; border-left: 5px solid var(--primary); padding-left: 1rem; margin-top: 2rem; }
+        .hidden { display: none !important; }
+
+        /* Navigation */
+        header { position: sticky; top: 0; background: var(--bg-card); border-bottom: 1px solid var(--border); z-index: 1000; padding: 0.5rem 1rem; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; }
+        .progress-container { flex-grow: 1; margin: 0 1rem; background: var(--border); height: 8px; border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s ease; }
+        .nav-btn { background: none; border: 1px solid var(--border); color: var(--text-main); padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        
+        /* Cards & Interactivity */
+        .card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .btn { display: inline-block; background: var(--primary); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; cursor: pointer; border: none; font-weight: 600; margin-top: 10px; }
+        .btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-sm { padding: 5px 10px; font-size: 0.9rem; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .btn-link { background: none; color: var(--primary); border: none; padding: 0; text-decoration: underline; cursor: pointer; }
+        
+        /* Interactive Inputs */
+        input[type="text"], textarea, select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-body); color: var(--text-main); margin-bottom: 10px; font-family: inherit; }
+        
+        /* Table Styles for CSV Preview */
+        .data-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9rem; }
+        .data-table th, .data-table td { border: 1px solid var(--border); padding: 8px; text-align: left; }
+        .data-table th { background: var(--bg-body); font-weight: bold; }
+        .highlight-col { background: rgba(37, 99, 235, 0.1); }
+        
+        /* Opening Hook */
+        .scenario-box { background: rgba(37, 99, 235, 0.1); border-left: 4px solid var(--primary); padding: 15px; margin: 15px 0; }
+        .hint-box { background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--accent); padding: 10px; margin-top: 10px; display: none; }
+        
+        /* Hands-on Images Styles */
+        .instruction-img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-color: #eee; /* Light gray background while loading */
+        }
+
+        /* Station Tabs */
+        .station-tabs { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .station-tab { padding: 8px 15px; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; background: var(--bg-body); flex-grow: 1; text-align: center; font-weight: 600; }
+        .station-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .step-box { border-left: 3px solid var(--secondary); padding-left: 15px; margin-bottom: 20px; }
+        
+        /* Formula Builder */
+        .formula-zone { min-height: 60px; border: 2px dashed var(--border); border-radius: 8px; padding: 10px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; background: var(--bg-body); }
+        .formula-block { background: var(--text-main); color: var(--bg-card); padding: 5px 10px; border-radius: 4px; cursor: move; font-family: monospace; }
+        .formula-options { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        
+        /* Vocab & Accordion */
+        .accordion-header { background: var(--bg-body); padding: 15px; cursor: pointer; font-weight: 600; border-radius: 6px; display: flex; justify-content: space-between; border: 1px solid var(--border); }
+        .accordion-content { display: none; padding: 15px; border: 1px solid var(--border); border-top: none; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; animation: slideDown 0.3s ease; }
+        .accordion-content.active { display: block; }
+
+        /* Concept Map */
+        .concept-map { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin: 20px 0; }
+        .map-node { background: var(--bg-body); border: 2px solid var(--primary); padding: 10px 15px; border-radius: 20px; text-align: center; font-weight: bold; width: 150px; position: relative; }
+        .map-arrow { display: flex; align-items: center; font-size: 1.5rem; color: var(--text-muted); }
+
+        /* Objectives Checklist */
+        .checklist-item { display: flex; align-items: center; gap: 10px; margin: 10px 0; padding: 10px; background: var(--bg-body); border-radius: 6px; }
+        .checklist-item input { width: 20px; height: 20px; cursor: pointer; }
+
+        /* CCQ & Feedback */
+        .feedback-msg { margin-top: 10px; padding: 10px; border-radius: 6px; display: none; }
+        .feedback-correct { background: #dcfce7; color: #166534; display: block; }
+        .feedback-incorrect { background: #fee2e2; color: #991b1b; display: block; }
+
+        /* Keyframes */
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* Mobile Optimization */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .formula-options { flex-direction: column; }
+            .concept-map { flex-direction: column; align-items: center; }
+            .map-arrow { transform: rotate(90deg); margin: 5px 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div>
+        <strong>W5: Car Assembly</strong>
+    </div>
+    <div class="progress-container" role="progressbar" aria-label="Lesson Progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <button class="nav-btn" onclick="toggleTheme()">🌓</button>
+</header>
+
+<main class="container">
+
+    <!-- Section 0: File Downloads (Pre-requisites) -->
+    <section id="resources" class="card">
+        <h2>📂 Class Resources (Downloads)</h2>
+        <p>You will need these files for the hands-on activities. Click to download.</p>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <button class="btn" onclick="downloadCSV('tracking')">📥 Week5_Project_Tracking.csv</button>
+            <button class="btn" onclick="downloadCSV('qc')">📥 Week5_Quality_Control_Data.csv</button>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">*These are generated locally in your browser.</p>
+    </section>
+
+    <!-- Section 1: Opening Activity -->
+    <section id="opening" class="card">
+        <h2>1. The Cost of Poor Documentation</h2>
+        <div class="scenario-box">
+            <p><strong>Scenario:</strong> You are the manager of a Tesla assembly line. A "Robot Arm" task takes 5 minutes. The "Attach Wheels" task takes 10 minutes. However, the wheel team started working before the robot arm was finished.</p>
+            <p><strong>The Result:</strong> The wheels were attached, but now the robot arm can't reach the chassis. The car must be scrapped.</p>
+        </div>
+        
+        <p><strong>Challenge:</strong> Based on the scenario above, what is the core problem?</p>
+        <div id="hook-quiz">
+            <button class="btn btn-outline" onclick="checkHook(this, false)">The workers were too slow.</button>
+            <button class="btn btn-outline" onclick="checkHook(this, true)">Dependency logic failed.</button>
+            <button class="btn btn-outline" onclick="checkHook(this, false)">The parts were defective.</button>
+        </div>
+        <div id="hook-feedback" class="feedback-msg"></div>
+    </section>
+
+    <!-- Section 2: Learning Objectives -->
+    <section id="objectives" class="card hidden">
+        <h2>2. Today's Mission</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <h3>Cognitive Goals</h3>
+                <ul style="list-style-type: '⚡ ';">
+                    <li>Construct <strong>Series</strong> (Motor) & <strong>Parallel</strong> (LED) circuits.</li>
+                    <li>Apply Excel <strong>SUMIF</strong> & <strong>COUNTIF</strong> for data analysis.</li>
+                    <li>Create <strong>Nested IF</strong> formulas for dependency logic.</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Social Goals</h3>
+                <ul style="list-style-type: '🤝 ';">
+                    <li><strong>Resilience:</strong> "Engineering is 60% debugging."</li>
+                    <li><strong>Accountability:</strong> Using data to track team contribution.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Concept Exploration (For Dummies Edition) -->
+    <section id="concepts" class="card hidden">
+        <h2>3. Concept Exploration (Simplified)</h2>
+        <p>Let's break down the hard stuff with simple analogies.</p>
+
+        <!-- Concept 1: Circuits -->
+        <div class="accordion-header" onclick="toggleAccordion('c1')">
+            <span>🔌 Circuit Logic: One-Way vs. Multi-Lane</span>
+            <span>▼</span>
+        </div>
+        <div id="c1" class="accordion-content">
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <h4>Series Circuit (The Motor)</h4>
+                    <p><strong>Analogy:</strong> Think of <em>Old Christmas Lights</em>.</p>
+                    <p>Electricity flows in one single circle. If one bulb breaks (or a switch opens), the path is broken, and <strong>everything stops</strong>.</p>
+                    <p><em>Why use it?</em> Perfect for safety switches. If the switch is OFF, the motor MUST be OFF.</p>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <h4>Parallel Circuit (The LEDs)</h4>
+                    <p><strong>Analogy:</strong> Think of <em>House Lights</em>.</p>
+                    <p>Electricity has "multiple lanes" or branches. You can turn off the kitchen light, but the bedroom light stays ON because it has its own private path to the power.</p>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <a href="https://www.tinkercad.com/learn/circuits" target="_blank" class="btn btn-outline btn-sm">🎥 Watch: Tinkercad Basics</a>
+            </div>
+            <div class="scenario-box">
+                <p><em>Check your understanding:</em> Why do we put the Car Motor on a switch (Series) but the headlights in Parallel?</p>
+                <textarea id="ccq1" placeholder="Type your thought here..."></textarea>
+                <button class="btn" onclick="saveReflection('ccq1')">Save Note</button>
+            </div>
+        </div>
+
+        <!-- Concept 2: Dependency -->
+        <div style="margin-top: 10px;" class="accordion-header" onclick="toggleAccordion('c2')">
+            <span>📊 Excel Logic: The "Socks before Shoes" Rule</span>
+            <span>▼</span>
+        </div>
+        <div id="c2" class="accordion-content">
+            <h4>What is a Dependency?</h4>
+            <p><strong>Analogy:</strong> You cannot put your shoes on before your socks.</p>
+            <ul style="margin: 0; padding-left: 20px;">
+                <li>Task A: Put on Socks.</li>
+                <li>Task B: Put on Shoes.</li>
+            </ul>
+            <p>Task B is <strong>DEPENDENT</strong> on Task A.</p>
+            
+            <h4>How to speak "Excel":</h4>
+            <p>We use the <code>IF</code> function to ask a question.</p>
+            <code style="display:block; background: #333; color: #fff; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                =IF(Socks_Are_Missing, "STOP!", "Put On Shoes")
+            </code>
+            <p>In our project, we check if the Previous Task's Time is empty (<code>""</code>). If it is empty, we shout "BLOCKED".</p>
+            <div style="margin-top: 15px;">
+                <a href="https://support.microsoft.com/en-us/office/if-function-69aed7c9-4e8a-4755-a9bc-aa8bbff73be2" target="_blank" class="btn btn-outline btn-sm">🎥 Watch: Excel IF Function Tutorial</a>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: right; border-top: 1px solid var(--border); padding-top: 15px;">
+            <p style="font-size: 0.9rem; color: var(--text-muted); display: inline-block; margin-right: 10px;">Finished reading?</p>
+            <button class="btn" onclick="unlockNext(3)">Proceed to Assembly Station ➡</button>
+        </div>
+    </section>
+
+    <!-- Section 4: Physical Build (Detail) -->
+    <section id="assembly" class="card hidden">
+        <h2>4. Hands-on Assembly Instructions</h2>
+        <p>This section is your build manual. Select a station below to see the <strong>exact steps</strong>.</p>
+        
+        <div class="station-tabs">
+            <button class="station-tab active" onclick="switchStation(1)">Station 1: Motor (Series)</button>
+            <button class="station-tab" onclick="switchStation(2)">Station 2: Solar (Parallel)</button>
+            <button class="station-tab" onclick="switchStation(3)">Station 3: Mechanical</button>
+        </div>
+
+        <!-- Station 1 -->
+        <div id="station1" class="station-content">
+            <h3>Station 1: The Motor Drive (Series Circuit)</h3>
+            <p><strong>Goal:</strong> Make the motor spin when you flip the switch. If the switch is off, the motor <em>must</em> stop.</p>
+            <p><strong>Important:</strong> We are using a <strong>Mini Breadboard</strong> to fit inside the small car chassis. These boards are tiny, so they usually <strong>do not have the red and blue power rails</strong> down the side. We have to make our own!</p>
+            
+            <div class="step-box">
+                <h4>Step 1: Powering the Mini Breadboard</h4>
+                <p>Take your <strong>3.7V Rechargeable Battery</strong>. It has two wires: Red (+) and Black (-).</p>
+                <div style="background: #fffbeb; border: 1px solid #fcd34d; padding: 10px; border-radius: 6px; margin: 10px 0; font-size: 0.9rem;">
+                    <strong>⚠️ Note:</strong> The image below might show a standard 1.5V battery holder (AA batteries), but YOU will be using the powerful 3.7V rechargeable battery included in your kit. The wiring steps are exactly the same!
+                </div>
+                <p>Since our mini breadboard has no side rails:</p>
+                <ul>
+                    <li>We will pretend the <strong>Top Row (Row 1)</strong> is our Red (+) Rail.</li>
+                    <li>We will pretend the <strong>Bottom Row (Row 17)</strong> is our Black (-) Rail.</li>
+                    <li>Plug the Battery <strong>Red Wire</strong> into any hole in the Top Row.</li>
+                    <li>Plug the Battery <strong>Black Wire</strong> into any hole in the Bottom Row.</li>
+                </ul>
+                
+                <!-- 📷 PASTE IMAGE URL BELOW -->
+                <img src="img/Step 1 - Power the Rails.png" 
+                     alt="Step 1 Power Rails" 
+                     class="instruction-img">
+            </div>
+
+            <div class="step-box">
+                <h4>Step 2: The Safety Switch</h4>
+                <p>Now we add the switch to control the flow of electricity. Remember, a switch creates a "bridge" that we can open or close.</p>
+                <ul>
+                    <li>Insert the Slide Switch into the middle of the board (for example, rows 8, 9, 10).</li>
+                    <li>Take a small jumper wire. Connect one end to your "Top Row" (where the Red battery wire is).</li>
+                    <li>Connect the other end to the <strong>Middle Pin</strong> of the switch. Now power is waiting at the switch!</li>
+                </ul>
+
+                <!-- 📷 PASTE IMAGE URL BELOW -->
+                <img src="img/Step 2 - The Safety Switch.png" 
+                     alt="Step 2 Safety Switch" 
+                     class="instruction-img">
+            </div>
+
+            <div class="step-box">
+                <h4>Step 3: Connect the Motor</h4>
+                <p>Finally, let's give the power somewhere to go.</p>
+                <ul>
+                    <li>Plug the Motor's <strong>Red Wire</strong> into the same row as one of the <strong>Outer Pins</strong> of the switch.</li>
+                    <li>Plug the Motor's <strong>Black Wire</strong> directly into your "Bottom Row" (Ground).</li>
+                    <li><strong>Why?</strong> The electricity goes: Battery (+) &rarr; Switch &rarr; Motor &rarr; Ground (-). A complete circle!</li>
+                </ul>
+
+                <!-- 📷 PASTE IMAGE URL BELOW -->
+                <img src="img/Step 3 - Connect the Motor.png" 
+                     alt="Step 3 Connect Motor" 
+                     class="instruction-img">
+            </div>
+
+            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; border: 1px solid #bae6fd;">
+                <strong>🛑 Stop & Check:</strong> Flip the switch. Does the motor spin? If yes, great job! If not, check if your wires are loose in the breadboard holes.
+            </div>
+            
+            <div style="text-align: right; margin-top: 10px;">
+                <button class="btn" onclick="unlockNext(4)">I finished Station 1 ➡</button>
+            </div>
+        </div>
+
+        <!-- Station 2 -->
+        <div id="station2" class="station-content hidden">
+            <h3>Station 2: Solar Indicators (Parallel Circuit)</h3>
+            <p><strong>Goal:</strong> Make LEDs light up. They represent the car's headlights.</p>
+
+            <div class="step-box">
+                <h4>Step 1: Independent Power</h4>
+                <p>The Solar Panel is separate from the battery pack.</p>
+                <ul>
+                    <li>Plug the Solar Panel Red Wire into an empty row (e.g., Row 20).</li>
+                    <li>Plug the Solar Panel Black Wire into another empty row (e.g., Row 25).</li>
+                </ul>
+
+                <!-- 📷 PASTE IMAGE URL BELOW -->
+                <img src="https://placehold.co/600x400?text=S2+Step+1:+Solar+Power" 
+                     alt="Station 2 Step 1" 
+                     class="instruction-img">
+            </div>
+
+            <div class="step-box">
+                <h4>Step 2: The First LED</h4>
+                <p>LEDs only work one way! Look at the legs.</p>
+                <ul>
+                    <li><strong>Long Leg (+):</strong> Plug into Row 20 (where the Solar Red wire is).</li>
+                    <li><strong>Short Leg (-):</strong> Plug into an empty row (e.g., Row 22).</li>
+                    <li><strong>Resistor:</strong> Bridge the gap! Connect one leg to Row 22, and the other to Row 25 (Solar Black).</li>
+                </ul>
+
+                <!-- 📷 PASTE IMAGE URL BELOW -->
+                <img src="https://placehold.co/600x400?text=S2+Step+2:+LED+Circuit" 
+                     alt="Station 2 Step 2" 
+                     class="instruction-img">
+            </div>
+
+            <div class="step-box">
+                <h4>Step 3: The Second LED (Parallel)</h4>
+                <p>Repeat Step 2 exactly, right next to the first one.</p>
+                <ul>
+                    <li>Because they are side-by-side connected to the same power source, if one burns out, the other stays on!</li>
+                </ul>
+            </div>
+            
+             <div style="text-align: right; margin-top: 10px;">
+                <button class="btn" onclick="unlockNext(4)">I finished Station 2 ➡</button>
+            </div>
+        </div>
+
+        <!-- Station 3 -->
+        <div id="station3" class="station-content hidden">
+            <h3>Station 3: Mechanical Assembly</h3>
+            <p><strong>Goal:</strong> Put it all together on the chassis.</p>
+
+            <div class="step-box">
+                <h4>Step 1: Motor Mounting</h4>
+                <p>Use the T-shaped bracket.</p>
+                <ul>
+                    <li>Slide the bracket through the chassis slot.</li>
+                    <li>Use the long bolts to secure the yellow DC motor. Tighten it well!</li>
+                </ul>
+
+                <!-- 📷 PASTE IMAGE URL BELOW -->
+                <img src="https://placehold.co/600x400?text=S3+Step+1:+Motor+Mount" 
+                     alt="Station 3 Step 1" 
+                     class="instruction-img">
+            </div>
+
+            <div class="step-box">
+                <h4>Step 2: Stick it Down</h4>
+                <p>Electronics hate vibrating around.</p>
+                <ul>
+                    <li>Peel the backing off the breadboard. Stick it to the top center of the chassis.</li>
+                    <li>Use double-sided tape or zip-ties to secure the Battery Pack to the rear.</li>
+                </ul>
+                
+                <!-- 📷 PASTE IMAGE URL BELOW -->
+                <img src="https://placehold.co/600x400?text=S3+Step+2:+Final+Chassis" 
+                     alt="Station 3 Step 2" 
+                     class="instruction-img">
+            </div>
+
+            <div style="background: var(--bg-body); padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <h4>Final Inspection Checklist</h4>
+                <div class="checklist-item">
+                    <input type="checkbox" id="mech1"> <label>Motor is tight (doesn't wiggle).</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="mech2"> <label>Wheels are pressed on fully.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="mech3"> <label>Breadboard is stuck down firmly.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="mech4"> <label>No loose wires dragging on the ground.</label>
+                </div>
+                <button class="btn" onclick="checkMechanical()">Verify Build & Continue</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Applied Examples (Dependency Dashboard) -->
+    <section id="excel-practice" class="card hidden">
+        <h2>5. The Project Management Dashboard (Part 3)</h2>
+        <p><strong>Context:</strong> Using the <code>Week5_Project_Tracking.csv</code> file, we need to create a dependency flag.</p>
+        
+        <!-- Interactive Data Preview -->
+        <h3>📄 CSV Preview (Rows 1-3)</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Task_ID</th><th>Task_Name</th><th>Estimated_Min</th><th>Predecessor</th><th class="highlight-col">Actual_Time (F)</th><th class="highlight-col">Status_Flag (G)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td><td>Build Chassis</td><td>10</td><td>-</td><td>10</td><td>COMPLETE</td>
+                </tr>
+                <tr>
+                    <td>2</td><td>Install Motor</td><td>15</td><td>1</td><td><em>(Empty)</em></td><td><strong>?</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="scenario-box">
+            <strong>Goal:</strong> Check Cell F2 (Task 1 Time). If empty, say "BLOCKED". If not empty, check F3 (Task 2 Time).
+        </div>
+
+        <div class="formula-zone" id="dropZone">
+            <span style="color:var(--text-muted)">[Your Formula Here]</span>
+        </div>
+
+        <div class="formula-options">
+            <button class="btn btn-outline" onclick="addToFormula('=IF(')">=IF(</button>
+            <button class="btn btn-outline" onclick="addToFormula('F2=&quot;&quot;,')">F2="",</button>
+            <button class="btn btn-outline" onclick="addToFormula('&quot;BLOCKED&quot;,')">"BLOCKED",</button>
+            <button class="btn btn-outline" onclick="addToFormula('IF(F3&lt;&gt;&quot;&quot;,')">IF(F3&lt;&gt;"",</button>
+            <button class="btn btn-outline" onclick="addToFormula('&quot;COMPLETE&quot;,')">"COMPLETE",</button>
+            <button class="btn btn-outline" onclick="addToFormula('&quot;READY&quot;))')">"READY"))</button>
+            <button class="btn" style="background:var(--danger)" onclick="clearFormula()">Clear</button>
+        </div>
+
+        <div style="margin-top: 15px;">
+            <button class="btn" onclick="validateFormula()">Check Formula</button>
+            <button class="btn btn-link" onclick="toggleHint('formula-hint')">Need a Hint?</button>
+        </div>
+
+        <div id="formula-hint" class="hint-box">
+            <strong>Hint:</strong> Start by asking "Is F2 empty?". If yes -> BLOCKED. If no -> Start a second IF to check F3.
+        </div>
+        <div id="formula-feedback" class="feedback-msg"></div>
+    </section>
+
+    <!-- Section 6: Telemetry Logger (New Activity) -->
+    <section id="telemetry" class="card hidden">
+        <h2>6. Telemetry Logger (Part 5)</h2>
+        <p><strong>Context:</strong> We need a data entry sheet for next week's testing. We must avoid "Divide by Zero" errors when calculating velocity.</p>
+        
+        <div class="scenario-box">
+            <p><strong>Formula Needed:</strong> Calculate Velocity (Distance/Time), but if Time is 0, display "ERROR" instead of crashing.</p>
+        </div>
+
+        <label>Select the correct logic:</label>
+        <select id="telemetry-select" style="margin-bottom: 10px;">
+            <option value="">Select Formula...</option>
+            <option value="wrong1">=IF(Time=0, Distance/Time, "ERROR")</option>
+            <option value="correct">=IF(Time=0, "ERROR", Distance/Time)</option>
+            <option value="wrong2">=Distance / Time</option>
+        </select>
+
+        <p><strong>Anomaly Detection:</strong> If Velocity > 5.0 m/s, flag as "CHECK SENSOR".</p>
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-outline" onclick="checkAnomaly(this, false)">=IF(Vel > 5, "OK", "CHECK")</button>
+            <button class="btn btn-outline" onclick="checkAnomaly(this, true)">=IF(Vel > 5, "CHECK SENSOR", "VALID")</button>
+        </div>
+        <div id="telemetry-feedback" class="feedback-msg"></div>
+    </section>
+
+    <!-- Section 7: Quality Control (Math) -->
+    <section id="math-practice" class="card hidden">
+        <h2>7. Quality Control Analysis (Part 6)</h2>
+        <p>You are the Lead Engineer analyzing <code>Week5_Quality_Control_Data.csv</code>.</p>
+        
+        <!-- Interactive Data Preview -->
+        <h3>📄 CSV Preview (Extract)</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Error_ID</th><th>Date</th><th>Technician_ID</th><th>Error_Type</th><th>Rework_Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>ERR01</td><td>Oct 1</td><td>Tech_A</td><td>Wiring Error</td><td>5</td></tr>
+                <tr><td>ERR02</td><td>Oct 1</td><td>Tech_B</td><td>Soldering Failure</td><td>15</td></tr>
+                <tr><td>ERR03</td><td>Oct 2</td><td>Tech_A</td><td>Mechanical Jam</td><td>10</td></tr>
+            </tbody>
+        </table>
+
+        <div class="scenario-box">
+            <p><strong>Data:</strong> Range A2:E100 contains error types.</p>
+            <p id="math-question"><strong>Task:</strong> Count exactly how many "Wiring Error" rows exist.</p>
+        </div>
+
+        <select id="math-select">
+            <option value="">Select a formula...</option>
+            <option value="wrong1">=SUM(D2:D100, "Wiring Error")</option>
+            <option value="correct">=COUNTIF(D2:D100, "Wiring Error")</option>
+            <option value="wrong2">=IF(D2="Wiring Error", 1, 0)</option>
+            <option value="advanced">=COUNTIFS(D2:D100, "Wiring Error", C2:C100, "Tech_A")</option>
+        </select>
+        
+        <div style="margin-top: 15px;">
+            <button class="btn" onclick="checkMath()">Check</button>
+            <button class="btn btn-outline" onclick="randomizeMathProblem()">🔄 New Problem</button>
+            <button class="btn btn-link" onclick="toggleHint('math-hint')">Need a Hint?</button>
+        </div>
+        <div id="math-hint" class="hint-box">
+            <strong>Hint:</strong> We are <em>counting</em> specific words, not adding numbers. Look for the function with "COUNT" in the name.
+        </div>
+        <div id="math-feedback" class="feedback-msg"></div>
+    </section>
+
+    <!-- Section 8: Synthesis & Wrap-Up -->
+    <section id="wrapup" class="card hidden">
+        <h2>8. Synthesis & Wrap-Up</h2>
+        
+        <!-- Concept Map -->
+        <h3>🧠 Mental Map</h3>
+        <div class="concept-map">
+            <div class="map-node">Physical Build<br><small>(Circuits)</small></div>
+            <div class="map-arrow">➡</div>
+            <div class="map-node">Dependencies<br><small>(Logic)</small></div>
+            <div class="map-arrow">➡</div>
+            <div class="map-node">Excel Tracking<br><small>(Data)</small></div>
+            <div class="map-arrow">➡</div>
+            <div class="map-node">Success<br><small>(Analysis)</small></div>
+        </div>
+
+        <!-- 3-2-1 Reflection -->
+        <h3>3-2-1 Reflection</h3>
+        <label><strong>3</strong> things you learned about circuits or Excel:</label>
+        <textarea id="ref-3" rows="2"></textarea>
+        
+        <label><strong>2</strong> difficulties you faced (or anticipate facing) in the build:</label>
+        <textarea id="ref-2" rows="2"></textarea>
+        
+        <label><strong>1</strong> question you still have for the teacher:</label>
+        <textarea id="ref-1" rows="2"></textarea>
+        
+        <!-- Objective Checklist -->
+        <h3>✅ Success Criteria</h3>
+        <div class="checklist-item">
+            <input type="checkbox" id="obj1"> <label for="obj1">I can build a series circuit (Motor) and parallel circuit (LEDs).</label>
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox" id="obj2"> <label for="obj2">I can use <code>=IF</code> to check if a cell is empty.</label>
+        </div>
+        <div class="checklist-item">
+            <input type="checkbox" id="obj3"> <label for="obj3">I understand why tasks have dependencies.</label>
+        </div>
+
+        <button class="btn" onclick="finishLesson()">Complete Lesson</button>
+
+        <!-- Celebration & Bridge -->
+        <div id="final-badge" class="hidden" style="text-align: center; margin-top: 20px; animation: pulse 2s infinite;">
+            <div style="font-size: 3rem;">🏎️</div>
+            <h3>Certified Assembler</h3>
+            <p>You have unlocked the physical build kit!</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Your responses have been saved.</p>
+            <div style="margin-top: 20px; background: var(--bg-body); padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+                <strong>📅 Coming Next Week:</strong>
+                <p>Now that we can <em>build</em> and <em>track</em>, next week we will <strong>TEST</strong>. We will hook up the sensors to measure velocity using the Telemetry Logger you started today.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vocabulary Section -->
+    <section id="vocabulary" class="card">
+        <h2>📚 Vocabulary Engine</h2>
+        <input type="text" id="vocabSearch" onkeyup="filterVocab()" placeholder="Search terms (e.g., Dependency)...">
+        <ul id="vocabList" style="list-style: none; padding: 0;">
+            <!-- Populated by JS -->
+        </ul>
+    </section>
+
+    <!-- Extension -->
+    <section id="extension" class="card">
+        <h2>🚀 Homework Extension</h2>
+        <p><strong>Task:</strong> Use the `Week5_Quality_Control.csv` you downloaded.</p>
+        <p><strong>Challenge:</strong> Use <code>COUNTIFS</code> (plural) to find how many "Wiring Errors" were committed by "Tech_A".</p>
+    </section>
+
+</main>
+
+<script>
+    /* --- Data Generation (Downloads) --- */
+    function downloadCSV(type) {
+        let content = "";
+        let filename = "";
+        
+        if(type === 'tracking') {
+            filename = "Week5_Project_Tracking.csv";
+            content = "Task_ID,Task_Name,Predecessor,Estimated_Time,Assigned_To,Actual_Time_Min,Status_Flag\n" +
+                      "1,Safety Check,,5,Team_A,,\n" +
+                      "2,Inventory Sort,1,10,Team_A,,\n" +
+                      "3,Chassis Assembly,2,15,Team_B,,\n" +
+                      "4,Motor Mount,3,20,Team_B,,\n" +
+                      "5,Wiring Harness,4,20,Team_C,,\n";
+        } else {
+            filename = "Week5_Quality_Control_Data.csv";
+            content = "Error_ID,Date,Technician_ID,Error_Type,Severity,Rework_Time_Min\n" +
+                      "ERR001,2023-10-01,Tech_A,Wiring Error,Low,5\n" +
+                      "ERR002,2023-10-01,Tech_B,Soldering Failure,High,15\n" +
+                      "ERR003,2023-10-02,Tech_A,Mechanical Jam,Medium,10\n" +
+                      "ERR004,2023-10-02,Tech_C,Wiring Error,Low,5\n" +
+                      "ERR005,2023-10-03,Tech_A,Wiring Error,High,25\n" +
+                      "ERR006,2023-10-03,Tech_B,Wiring Error,Low,5\n";
+        }
+
+        const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    /* --- State Management --- */
+    const state = {
+        sectionsUnlocked: 1, // 1 to 8
+        darkMode: false,
+        formulaParts: []
+    };
+
+    const vocabData = [
+        { term: "Dependency", def: "A relationship where one task requires another to be finished before it can start." },
+        { term: "Series Circuit", def: "A circuit path where components are arranged one after another. If one fails, all fail." },
+        { term: "Parallel Circuit", def: "A circuit where components are on separate branches. Voltage is shared equally." },
+        { term: "Breadboard", def: "A tool for prototyping electronics without soldering." },
+        { term: "SUMIF", def: "Excel function: Adds numbers in a range based on a specific criteria." },
+        { term: "COUNTIF", def: "Excel function: Counts the number of cells that meet a criteria." },
+        { term: "Telemetry", def: "The automatic recording and transmission of data from remote sources (like your car)." }
+    ];
+
+    /* --- Initialization --- */
+    window.onload = function() {
+        loadState();
+        renderVocab();
+        updateUI();
+    };
+
+    function loadState() {
+        const saved = localStorage.getItem('lessonState_W5_v3');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            state.sectionsUnlocked = parsed.sectionsUnlocked || 1;
+            state.darkMode = parsed.darkMode || false;
+            
+            if(parsed.reflections) {
+                document.getElementById('ccq1').value = parsed.reflections.ccq1 || '';
+                document.getElementById('ref-3').value = parsed.reflections.ref3 || '';
+                document.getElementById('ref-2').value = parsed.reflections.ref2 || '';
+                document.getElementById('ref-1').value = parsed.reflections.ref1 || '';
+            }
+        }
+        if (state.darkMode) document.body.setAttribute('data-theme', 'dark');
+    }
+
+    function saveState() {
+        const data = {
+            sectionsUnlocked: state.sectionsUnlocked,
+            darkMode: state.darkMode,
+            reflections: {
+                ccq1: document.getElementById('ccq1').value,
+                ref3: document.getElementById('ref-3').value,
+                ref2: document.getElementById('ref-2').value,
+                ref1: document.getElementById('ref-1').value
+            }
+        };
+        localStorage.setItem('lessonState_W5_v3', JSON.stringify(data));
+        updateUI();
+    }
+
+    function updateUI() {
+        // Unlock Sections
+        const sections = ['opening', 'objectives', 'concepts', 'assembly', 'excel-practice', 'telemetry', 'math-practice', 'wrapup'];
+        const progress = (state.sectionsUnlocked / sections.length) * 100;
+        document.getElementById('progressBar').style.width = `${progress}%`;
+
+        sections.forEach((id, index) => {
+            if (index < state.sectionsUnlocked) {
+                document.getElementById(id).classList.remove('hidden');
+            }
+        });
+    }
+
+    function toggleTheme() {
+        state.darkMode = !state.darkMode;
+        document.body.setAttribute('data-theme', state.darkMode ? 'dark' : 'light');
+        saveState();
+    }
+
+    function toggleAccordion(id) {
+        document.getElementById(id).classList.toggle('active');
+    }
+
+    function toggleHint(id) {
+        const el = document.getElementById(id);
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function unlockNext(currentSectionIndex) {
+        if (state.sectionsUnlocked <= currentSectionIndex) {
+            state.sectionsUnlocked = currentSectionIndex + 1;
+            saveState();
+            setTimeout(() => {
+                const sections = ['opening', 'objectives', 'concepts', 'assembly', 'excel-practice', 'telemetry', 'math-practice', 'wrapup'];
+                if(sections[currentSectionIndex]) {
+                    document.getElementById(sections[currentSectionIndex]).scrollIntoView({behavior: 'smooth'});
+                }
+            }, 300);
+        }
+    }
+
+    /* --- Activity: Opening Hook --- */
+    function checkHook(btn, isCorrect) {
+        const feedback = document.getElementById('hook-feedback');
+        if (isCorrect) {
+            feedback.innerHTML = "✅ Correct! Work sequence matters.";
+            feedback.className = "feedback-msg feedback-correct";
+            unlockNext(1);
+            setTimeout(() => unlockNext(2), 1500); 
+        } else {
+            feedback.innerHTML = "❌ Try again. It's about the ORDER of tasks.";
+            feedback.className = "feedback-msg feedback-incorrect";
+        }
+    }
+
+    function saveReflection(id) {
+        const val = document.getElementById(id).value;
+        if(val.length > 5) {
+            alert("Reflection Saved!");
+            saveState();
+            if(id === 'ccq1') unlockNext(3);
+        } else {
+            alert("Please type a bit more.");
+        }
+    }
+
+    /* --- Activity: Physical Build (Stations) --- */
+    function switchStation(num) {
+        document.querySelectorAll('.station-content').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.station-tab').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(`station${num}`).classList.remove('hidden');
+        document.querySelector(`.station-tabs button:nth-child(${num})`).classList.add('active');
+    }
+
+    function checkMechanical() {
+        const c1 = document.getElementById('mech1').checked;
+        const c2 = document.getElementById('mech2').checked;
+        const c3 = document.getElementById('mech3').checked;
+        const c4 = document.getElementById('mech4').checked;
+        if(c1 && c2 && c3 && c4) {
+            alert("Mechanical Assembly Verified!");
+            unlockNext(4); // Unlocks Excel
+        } else {
+            alert("Please complete all checklist items.");
+        }
+    }
+
+    /* --- Activity: Formula Builder --- */
+    function addToFormula(part) {
+        state.formulaParts.push(part);
+        renderFormula();
+    }
+    
+    function clearFormula() {
+        state.formulaParts = [];
+        renderFormula();
+    }
+
+    function renderFormula() {
+        const zone = document.getElementById('dropZone');
+        if(state.formulaParts.length === 0) {
+            zone.innerHTML = '<span style="color:var(--text-muted)">[Your Formula Here]</span>';
+            return;
+        }
+        zone.innerHTML = state.formulaParts.map(p => `<span class="formula-block">${p}</span>`).join('');
+    }
+
+    function validateFormula() {
+        const fullString = state.formulaParts.join('');
+        const feedback = document.getElementById('formula-feedback');
+        if (fullString.includes('F2=""') && fullString.includes('"BLOCKED"') && fullString.includes('IF(F3<>""')) {
+             feedback.innerHTML = "✅ Perfect Logic!";
+             feedback.className = "feedback-msg feedback-correct";
+             unlockNext(5); // Unlock Telemetry
+        } else {
+             feedback.innerHTML = "⚠️ Logic Error. Check the Hint.";
+             feedback.className = "feedback-msg feedback-incorrect";
+        }
+    }
+
+    /* --- Activity: Telemetry --- */
+    function checkAnomaly(btn, isCorrect) {
+        const sel = document.getElementById('telemetry-select').value;
+        const feedback = document.getElementById('telemetry-feedback');
+
+        if(sel === 'correct' && isCorrect) {
+            feedback.innerHTML = "✅ Excellent! You have safeguarded the data entry.";
+            feedback.className = "feedback-msg feedback-correct";
+            unlockNext(6); // Unlock Math QC
+        } else {
+            feedback.innerHTML = "❌ Not quite. Check your Velocity formula (Did you handle the 0?) and your Anomaly logic.";
+            feedback.className = "feedback-msg feedback-incorrect";
+        }
+    }
+
+    /* --- Activity: Math Practice --- */
+    const mathScenarios = [
+        { text: 'Count exactly how many "Wiring Error" rows exist.', correct: '=COUNTIF(D2:D100, "Wiring Error")', answer: 'correct' },
+        { text: 'Count how many times "Soldering Failure" appears.', correct: '=COUNTIF(D2:D100, "Soldering Failure")', answer: 'correct' }
+    ];
+
+    function randomizeMathProblem() {
+        const rand = mathScenarios[Math.floor(Math.random() * mathScenarios.length)];
+        document.getElementById('math-question').innerHTML = `<strong>Task:</strong> ${rand.text}`;
+        document.getElementById('math-feedback').style.display = 'none';
+        document.getElementById('math-select').value = '';
+    }
+
+    function checkMath() {
+        const val = document.getElementById('math-select').value;
+        const feedback = document.getElementById('math-feedback');
+        if (val === 'correct') {
+            feedback.innerHTML = "✅ Correct!";
+            feedback.className = "feedback-msg feedback-correct";
+            unlockNext(7); // Unlock Wrapup
+        } else {
+            feedback.innerHTML = "❌ Incorrect. Check Hint.";
+            feedback.className = "feedback-msg feedback-incorrect";
+        }
+    }
+
+    /* --- Wrap Up --- */
+    function finishLesson() {
+        const r3 = document.getElementById('ref-3').value;
+        const obj1 = document.getElementById('obj1').checked;
+        if(r3 && obj1) {
+            saveState();
+            document.getElementById('final-badge').classList.remove('hidden');
+            document.getElementById('final-badge').scrollIntoView({behavior:'smooth'});
+        } else {
+            alert("Please complete reflections and checklist.");
+        }
+    }
+
+    /* --- Vocabulary --- */
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    function renderVocab() {
+        const list = document.getElementById('vocabList');
+        list.innerHTML = vocabData.map(item => `
+            <li style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px;">
+                <button class="btn btn-outline btn-sm" onclick="speak('${item.term}')">🔊</button>
+                <div><strong>${item.term}:</strong> ${item.def}</div>
+            </li>
+        `).join('');
+    }
+
+    function filterVocab() {
+        const query = document.getElementById('vocabSearch').value.toLowerCase();
+        document.querySelectorAll('#vocabList li').forEach(item => {
+            item.style.display = item.textContent.toLowerCase().includes(query) ? 'flex' : 'none';
+        });
+    }
+</script>
+</body>
+</html>

@@ -3,521 +3,854 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 2: Logic & Lookups | Solar Car Project</title>
+    <title>Week 4: Circuits, Breadboards & Excel Logic</title>
     <style>
+        /* --- CSS VARIABLES & THEME --- */
         :root {
-            --primary: #7c3aed; /* Purple for Logic/Code theme */
-            --primary-dark: #5b21b6;
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
             --secondary: #10b981;
             --accent: #f59e0b;
             --danger: #ef4444;
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --success: #d1fae5;
+            --success-text: #065f46;
         }
 
         [data-theme="dark"] {
-            --primary: #8b5cf6;
-            --primary-dark: #a78bfa;
-            --secondary: #34d399;
-            --accent: #fbbf24;
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --text: #f1f5f9;
-            --text-light: #94a3b8;
-            --border: #334155;
+            --bg-body: #111827;
+            --bg-card: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border: #374151;
+            --success: #064e3b;
+            --success-text: #a7f3d0;
         }
 
-        * { box-sizing: border-box; transition: all 0.2s ease; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 80px; }
-
-        /* Navigation */
-        nav {
-            background: var(--surface);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-brand { font-weight: 800; font-size: 1.25rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
-        .progress-bar-container { width: 150px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--secondary); width: 0%; }
-
-        /* Layout */
-        main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-        section { 
-            background: var(--surface); 
-            padding: 2.5rem; 
-            border-radius: var(--radius); 
-            margin-bottom: 2rem; 
-            box-shadow: var(--shadow);
-            display: none; 
-            animation: slideUp 0.4s ease-out;
-        }
-        section.active { display: block; }
+        /* --- RESET & BASE STYLES --- */
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; margin: 0; background-color: var(--bg-body); color: var(--text-main); }
+        h1, h2, h3 { line-height: 1.2; margin-bottom: 1rem; }
+        p { margin-bottom: 1rem; }
+        button { cursor: pointer; }
         
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- UTILITIES --- */
+        .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
+        .hidden { display: none !important; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 0.5rem; border: none; font-weight: 600; font-size: 1rem; transition: transform 0.1s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--primary); color: var(--text-main); }
+        .btn-outline:hover { background-color: rgba(37, 99, 235, 0.1); }
+        .card { background-color: var(--bg-card); padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; border: 1px solid var(--border); }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media(min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 1.5rem; }
 
-        h1 { color: var(--primary); margin: 0 0 1.5rem 0; font-size: 2.2rem; }
-        h2 { color: var(--text); border-left: 5px solid var(--accent); padding-left: 1rem; margin-top: 2rem; }
-        .subtitle { color: var(--text-light); font-size: 1.1rem; margin-top: -1rem; margin-bottom: 2rem; }
+        /* --- NAVIGATION --- */
+        header { position: sticky; top: 0; z-index: 50; background-color: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .progress-container { flex-grow: 1; margin: 0 1.5rem; background-color: var(--border); height: 8px; border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background-color: var(--secondary); width: 0%; transition: width 0.5s ease; }
+        .theme-toggle { background: none; border: none; font-size: 1.5rem; }
 
-        /* UI Elements */
-        button {
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
-        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-        .btn-tool { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; font-size: 0.9rem; }
-        .btn-tool:hover { border-color: var(--primary); color: var(--primary); }
-        .btn-tool.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-        /* Section 1: Broken Spreadsheet Hook */
-        .spreadsheet-sim {
-            font-family: 'Segoe UI', sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-            margin: 1.5rem 0;
-            background: white;
-            color: #333;
-            border: 1px solid #ccc;
-        }
-        .spreadsheet-sim th, .spreadsheet-sim td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .spreadsheet-sim th { background: #f3f4f6; font-weight: bold; }
-        .ref-box {
-            border: 2px dashed #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-            display: inline-block;
-            padding: 2px 5px;
-            border-radius: 4px;
-        }
-        .locked-ref-box {
-            border: 2px solid #10b981;
-            background: rgba(16, 185, 129, 0.1);
-            color: #065f46;
-        }
-
-        /* Section 3: Video Companion Link */
-        .link-card {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: var(--bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            margin-bottom: 1rem;
-            text-decoration: none;
-            color: var(--text);
-            transition: transform 0.2s;
-        }
-        .link-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .link-icon {
-            font-size: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* Section 4: Workshop Instructions */
-        .workshop-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .workshop-card h3 {
-            margin-top: 0;
-            color: var(--primary);
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .workshop-list {
-            padding-left: 1.2rem;
-            margin: 0;
-        }
-        .workshop-list li {
-            margin-bottom: 0.5rem;
-        }
-        .warning-box {
-            background: #fff1f2;
-            border: 1px solid #fda4af;
-            color: #be123c;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-        }
+        /* --- SPECIFIC SECTIONS --- */
         
-        /* Interactive Toggle for Hook */
-        .switch-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            background: var(--bg);
-            padding: 1rem;
-            border-radius: 8px;
-        }
+        /* Section 2: Opener */
+        .hook-scene { position: relative; height: 300px; background: #e0e7ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        [data-theme="dark"] .hook-scene { background: #312e81; }
+        .circuit-wire { height: 4px; background: #333; position: absolute; width: 60%; }
+        .battery-icon { font-size: 3rem; position: absolute; left: 10%; }
+        .led-icon { font-size: 3rem; position: absolute; right: 10%; filter: grayscale(100%); transition: filter 0.3s; }
+        .spark { position: absolute; font-size: 4rem; color: var(--accent); opacity: 0; transform: scale(0); transition: all 0.2s; }
+        .spark.active { opacity: 1; transform: scale(1.5); }
+        
+        /* Section 4 & 5: Breadboard Visualizer & Lab */
+        .breadboard { background-color: #f3f4f6; padding: 10px; border-radius: 8px; border: 2px solid #d1d5db; overflow-x: auto; position: relative; }
+        .bb-row { display: flex; gap: 4px; margin-bottom: 4px; justify-content: center; }
+        .bb-hole { width: 15px; height: 15px; background-color: #9ca3af; border-radius: 50%; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5); cursor: pointer; position: relative; }
+        .bb-hole:hover { background-color: var(--accent); transform: scale(1.2); }
+        .bb-hole.connected-highlight { background-color: var(--secondary) !important; box-shadow: 0 0 5px var(--secondary); }
+        
+        .power-rail { background-color: #fee2e2; padding: 5px; border-radius: 4px; margin-bottom: 10px; display: flex; gap: 5px; justify-content: center;}
+        .ground-rail { background-color: #dbeafe; padding: 5px; border-radius: 4px; margin-top: 10px; display: flex; gap: 5px; justify-content: center;}
 
-        /* Footer */
-        .sticky-footer {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: var(--surface);
-            padding: 1rem 2rem;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 900;
-        }
+        /* Lab Components Overlay */
+        .component-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .lab-wire { position: absolute; height: 4px; background: rgba(0,0,0,0.7); border-radius: 2px; transform-origin: left center; z-index: 10; display: none; }
+        .lab-led { position: absolute; font-size: 1.5rem; z-index: 20; display: none; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
+        .lab-resistor { position: absolute; width: 40px; height: 10px; background: repeating-linear-gradient(90deg, #d2b48c, #d2b48c 5px, red 5px, red 8px, #d2b48c 8px); border-radius: 5px; z-index: 15; display: none; border: 1px solid #8b4513; }
+        .lab-battery { position: absolute; font-size: 2rem; z-index: 20; display: none; left: 10px; top: 50%; }
+
+        /* Section 6: Excel Logic */
+        .excel-table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 0.9rem; }
+        .excel-table td, .excel-table th { border: 1px solid var(--border); padding: 0.5rem; text-align: left; }
+        .excel-table th { background-color: var(--border); }
+        .excel-row-highlight { background-color: rgba(245, 158, 11, 0.2); }
+        .formula-input { width: 100%; padding: 0.5rem; border: 1px solid var(--primary); border-radius: 4px; font-family: monospace; margin-top: 0.5rem; background: var(--bg-body); color: var(--text-main); }
+
+        /* Section 7: Practice & CCQs */
+        .quiz-option { display: block; width: 100%; text-align: left; margin-bottom: 0.5rem; padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem; background: var(--bg-card); color: var(--text-main); }
+        .quiz-option:hover { background-color: var(--bg-body); border-color: var(--primary); }
+        .quiz-option.selected { border-color: var(--primary); background-color: rgba(37, 99, 235, 0.1); }
+        .feedback { margin-top: 1rem; padding: 1rem; border-radius: 0.5rem; display: none; }
+        .feedback.correct { background-color: var(--success); color: var(--success-text); display: block; }
+        .feedback.incorrect { background-color: #fee2e2; color: #991b1b; display: block; }
+
+        /* Section 8: Reorder */
+        .reorder-item { cursor: pointer; position: relative; }
+        .reorder-item.selected-swap { border: 2px solid var(--accent); background-color: rgba(245, 158, 11, 0.1); transform: scale(1.02); }
+        .reorder-item::after { content: "↕"; position: absolute; right: 10px; color: var(--text-muted); opacity: 0.5; }
+
+        /* Section 9: Wrap Up */
+        .wrap-up-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .badge-container { text-align: center; padding: 2rem; border: 2px dashed var(--accent); border-radius: 1rem; margin-top: 1rem; display: none; }
+        
+        /* Vocabulary Styles */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+        .vocab-card { border: 1px solid var(--border); padding: 1rem; border-radius: 0.5rem; cursor: pointer; position: relative; overflow: hidden; }
+        .vocab-card h4 { margin: 0; color: var(--primary); }
+        .vocab-details { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .vocab-card.active .vocab-details { max-height: 200px; margin-top: 0.5rem; }
+
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="nav-brand">
-        <span>🤖</span> Logic & Lookups
-    </div>
-    <div style="display: flex; gap: 1rem; align-items: center;">
-        <div class="progress-bar-container">
+<!-- 1. Header & Navigation -->
+<header>
+    <div class="container nav-content">
+        <div style="font-weight: bold;">Week 4: Circuit Design</div>
+        <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
-        <button onclick="toggleTheme()" class="btn-tool" style="border-radius: 50%; padding: 0.5rem;">🌙</button>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode">🌓</button>
     </div>
-</nav>
+</header>
 
-<main>
-    <!-- Section 1: The Hook -->
-    <section id="sec-1" class="active">
-        <h1>The Broken Spreadsheet</h1>
-        <p class="subtitle">Week 2: Automating Decisions</p>
+<main class="container">
+
+    <!-- 2. Opening Activity: The Hook -->
+    <section id="section-opener" class="card">
+        <h2>🔌 Activity 1: From Theory to Reality</h2>
+        <p>Last week in Physics, you learned about <strong>Voltage</strong>, <strong>Current</strong>, <strong>Resistance</strong>, and how the <strong>Photovoltaic effect</strong> turns light into power. Today, we make that real.</p>
+        <p><strong>The Challenge:</strong> How do we go from an abstract schematic drawing to a physical robot circuit? The answer is systematic planning.</p>
+        <p><strong>Scenario:</strong> You connect your battery, but the motor doesn't spin and the battery starts getting hot immediately. <strong>Why?</strong></p>
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+        <div class="hook-scene" id="hookScene">
+            <div class="battery-icon">🔋</div>
+            <div class="circuit-wire"></div>
+            <div class="led-icon">⚙️</div>
+            <div class="spark" id="spark">💥</div>
+            <div style="position: absolute; bottom: 10px; width: 100%; text-align: center;">
+                <button class="btn btn-primary" onclick="triggerSpark()">Test Circuit</button>
+            </div>
+        </div>
+
+        <div id="prediction-area" class="hidden" style="margin-top: 1.5rem;">
+            <p>The battery got hot and nothing worked. What just happened?</p>
+            <div class="grid-2">
+                <button class="quiz-option" onclick="handleOpener('open')">An Open Circuit (Broken wire)</button>
+                <button class="quiz-option" onclick="handleOpener('short')">A Short Circuit (Direct path + to -)</button>
+            </div>
+        </div>
+        
+        <div id="opener-feedback" class="feedback"></div>
+        <div class="nav-buttons">
+            <span></span> <!-- Spacer -->
+            <button id="btn-start-lesson" class="btn btn-primary hidden" onclick="nextSection(3)">Start Lesson</button>
+        </div>
+    </section>
+
+    <!-- 3. Learning Objectives -->
+    <section id="section-objectives" class="card hidden">
+        <h2>🎯 Today's Mission</h2>
+        <ul style="list-style-type: none; padding: 0;">
+            <li style="margin-bottom: 0.5rem;">🧠 <strong>Understand:</strong> Breadboard functionality (Rails vs Rows) and prototyping.</li>
+            <li style="margin-bottom: 0.5rem;">⚡ <strong>Apply:</strong> Physics concepts (Voltage/Current) to plan a safe LED circuit.</li>
+            <li style="margin-bottom: 0.5rem;">📊 <strong>Document:</strong> Create a BOM in Excel using <code>VLOOKUP</code>.</li>
+            <li style="margin-bottom: 0.5rem;">✅ <strong>Validate:</strong> Check specs using <code>IF(AND(...))</code> logic.</li>
+        </ul>
+        <p><strong>Success Criteria:</strong> By the end, you will have a validated design and a sketch of your circuit.</p>
+        
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(2)">Back</button>
+            <button class="btn btn-primary" onclick="nextSection(4)">Breadboard Basics</button>
+        </div>
+    </section>
+
+    <!-- 4. Concept Exploration: Breadboards -->
+    <section id="section-concepts" class="card hidden">
+        <h2>🔍 Breadboard Anatomy</h2>
+        <p>A breadboard allows us to build circuits <strong>without soldering</strong>. It works because of hidden internal connections.</p>
+        
+        <div class="grid-2">
             <div>
-                <h3>🚨 Why did it break?</h3>
-                <p>We are trying to look up prices for our Solar Car parts. The lookup table is in the blue box at the bottom.</p>
-                <p>When we drag the formula down without "locking" it, the blue box moves down too! Look at what happens to Row 4 (Wheel Set).</p>
-                <p><strong>Goal:</strong> Learn to use the <code>$</code> sign (Absolute Reference) to lock the box in place.</p>
-                
-                <div class="switch-container">
-                    <span>Lock the Table ($)?</span>
-                    <button id="btn-lock" class="btn-outline" onclick="toggleLock()">No (Relative)</button>
-                </div>
+                <h3>1. Power Rails (The Edges)</h3>
+                <p>Look at the <span style="color:#ef4444; font-weight:bold;">Red (+)</span> and <span style="color:#3b82f6; font-weight:bold;">Blue (-)</span> lines.</p>
+                <ul>
+                    <li>All holes next to the Red line are connected <strong>Vertically</strong>.</li>
+                    <li>All holes next to the Blue line are connected <strong>Vertically</strong>.</li>
+                    <li>Use these to distribute power to the whole board.</li>
+                </ul>
+
+                <h3>2. Terminal Rows (The Middle)</h3>
+                <p>The main area is labeled with numbers (1-30) and letters (a-e, f-j).</p>
+                <ul>
+                    <li>Each row of 5 holes (e.g., Row 1 a-e) is connected <strong>Horizontally</strong>.</li>
+                    <li>The gap in the middle breaks the connection.</li>
+                </ul>
             </div>
             
-            <div id="sim-container">
-                <!-- Simulation Table -->
-                <table class="spreadsheet-sim">
-                    <tr><th>ID</th><th>Item</th><th>Price Formula</th></tr>
-                    <tr><td>M-01</td><td>Motor</td><td class="formula-cell">=VLOOKUP(A2, <span class="ref-box">A8:B10</span>, 2, 0)</td></tr>
-                    <tr><td>P-05</td><td>Panel</td><td class="formula-cell">=VLOOKUP(A3, <span class="ref-box" style="transform: translateY(20px);">A9:B11</span>, 2, 0)</td></tr>
-                    <tr style="background: #fee2e2;"><td>W-02</td><td>Wheel</td><td class="formula-cell" style="color:red; font-weight:bold;">#N/A (Broken!)</td></tr>
-                </table>
-                <div style="margin-top: 1rem; padding: 0.5rem; border: 2px solid #2563eb; border-radius: 4px; background: #eff6ff; color: #1e3a8a; position: relative;" id="lookup-table">
-                    <strong>Lookup Table (A8:B10)</strong><br>
-                    M-01: $5.00<br>
-                    P-05: $3.50<br>
-                    W-02: $1.50
+            <div>
+                <h3>Interactive X-Ray</h3>
+                <p>Hover over holes to see connections:</p>
+                <div class="breadboard" id="breadboard-vis">
+                    <!-- Generated by JS -->
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Section 2: Objectives -->
-    <section id="sec-2">
-        <h2>🎯 Learning Objectives</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-            <div style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; color: #075985;">
-                <h3>🧠 Cognitive Goals</h3>
-                <ul style="padding-left: 1.2rem;">
-                    <li>Master <strong>VLOOKUP</strong> for finding vertical data (prices).</li>
-                    <li>Understand <strong>HLOOKUP</strong> for horizontal data (shipping rates).</li>
-                    <li>Apply <strong>IF Statements</strong> for basic logic (Budget Approval).</li>
-                    <li><strong>Crucial Skill:</strong> Locking table ranges with Absolute References (<code>$</code>).</li>
-                </ul>
-            </div>
-            <div style="background: #fff1f2; padding: 1.5rem; border-radius: 8px; color: #9f1239;">
-                <h3>❤️ Social & Emotional Goals</h3>
-                <ul style="padding-left: 1.2rem;">
-                    <li>Practice patience and systematic debugging when formulas fail.</li>
-                    <li>Develop collaborative problem-solving skills (helping neighbors debug).</li>
-                    <li>Understand that "breaking" code/formulas is a normal part of the engineering process.</li>
-                </ul>
-            </div>
-            <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; color: #166534;">
-                <h3>⚡ Success Criteria</h3>
-                <p>By the end of this lesson, you will create an "Automated Procurement System" that fills in prices and shipping costs automatically based on a simple ID code.</p>
-            </div>
+        <div style="margin-top: 1.5rem; background-color: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem; border-radius: 0.5rem;">
+            <strong>⚠️ SAFETY CRITICAL:</strong>
+            <ul style="margin-bottom:0; padding-left: 1.5rem;">
+                <li>Never connect Battery (+) directly to Battery (-) (Short Circuit).</li>
+                <li>Always use a <strong>Resistor</strong> with LEDs to prevent burnout.</li>
+                <li>Check connections before powering.</li>
+            </ul>
+        </div>
+        
+        <div class="nav-buttons">
+             <button class="btn btn-outline" onclick="nextSection(3)">Back</button>
+             <button class="btn btn-primary" onclick="nextSection(5)">Virtual Circuit Lab</button>
         </div>
     </section>
 
-    <!-- Section 3: Video Companion & Source Files -->
-    <section id="sec-3">
-        <h2>📹 Tutorial & Source Files</h2>
-        <p>This week, you will follow a guided walkthrough. You need to download the files and perform the steps on your own computer.</p>
+    <!-- 5. NEW: Virtual Circuit Lab -->
+    <section id="section-lab" class="card hidden">
+        <h2>⚡ Virtual Circuit Lab</h2>
+        <p>Let's build a standard LED circuit step-by-step. Follow the teacher's demo.</p>
+
+        <div style="background: var(--bg-body); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                <h3 id="lab-step-title" style="margin:0;">Step 1: Materials</h3>
+                <span id="lab-step-count" style="color:var(--text-muted); font-size:0.9rem;">1 / 5</span>
+            </div>
+            <p id="lab-instruction" style="min-height: 4.5rem;">Gather your components.</p>
+            
+            <!-- Visualization Container -> Image Placeholder -->
+            <div id="lab-vis" style="height: 300px; display:flex; justify-content:center; align-items:center; background: #e5e7eb; border-radius: 8px; overflow: hidden; border: 2px dashed #9ca3af;">
+                <img id="lab-image" src="" alt="Circuit Step Visualization" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem;">
+                <em>(Images will appear here once linked in the code)</em>
+            </p>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="prevLabStep()">Previous Step</button>
+            <button class="btn btn-primary" onclick="nextLabStep()">Next Step</button>
+        </div>
         
+        <!-- Toggle Button Removed -->
+        
+        <div class="nav-buttons" style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 2rem;">
+            <button class="btn btn-outline" onclick="nextSection(4)">Back to Theory</button>
+            <button class="btn btn-primary" onclick="nextSection(6)">Continue to Excel Logic</button>
+        </div>
+    </section>
+
+    <!-- 6. Applied Examples: Excel Logic -->
+    <section id="section-excel" class="card hidden">
+        <h2>📊 Applied: The Digital Blueprint</h2>
+        <p>Before we build, we plan. We use Excel to look up parts and check rules.</p>
+
+        <!-- VLOOKUP Simulator -->
         <div style="margin-bottom: 2rem;">
-            <a href="https://drive.google.com/drive/folders/1f54RVBrZRU1dA7q6gmPHSPeLn6bFr1dV?usp=sharing" target="_blank" class="link-card">
-                <div class="link-icon">📂</div>
-                <div>
-                    <strong>Step 1: Download Source Files</strong>
-                    <div style="font-size: 0.9rem; color: var(--text-light);">Click to open the Google Drive folder. Download the CSV and Excel files.</div>
-                </div>
-            </a>
-
-            <a href="https://www.youtube.com/watch?v=bWCdtFCXpfI" target="_blank" class="link-card">
-                <div class="link-icon">📺</div>
-                <div>
-                    <strong>Step 2: Watch & Follow Along</strong>
-                    <div style="font-size: 0.9rem; color: var(--text-light);">Open the video and the Excel file you downloaded. Follow the steps exactly.</div>
-                </div>
-            </a>
-        </div>
-
-        <div style="background: #fffbeb; padding: 1rem; border-left: 4px solid #f59e0b; border-radius: 4px;">
-            <strong>⚠️ Important:</strong> You must <strong>SAVE</strong> the file you work on while watching the video. You will need to submit this "Solved Paper" along with your workshop.
-        </div>
-    </section>
-
-    <!-- Section 4: Workshop Instructions -->
-    <section id="sec-4">
-        <h2>🛠️ Week 2 Workshop: The Automated Procurement System</h2>
-        <p>Follow these instructions exactly to complete your <code>Week2_Homework.xlsx</code>. This uses an <strong>Auto-Grader</strong>, so pay attention to the warnings!</p>
-        
-        <div class="warning-box">
-            <strong>🤖 Auto-Grading Warning:</strong>
-            <ul style="margin-top: 0.5rem; margin-bottom: 0;">
-                <li><strong>Absolute References:</strong> If you do not lock your table arrays (e.g., <code>$A$15:$D$19</code>), you fail this section.</li>
-                <li><strong>No Manual Entry:</strong> Do not type "Solar Panel". You MUST use VLOOKUP.</li>
-                <li><strong>Precision:</strong> Follow the column instructions exactly.</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 1: Setup & Ranges</h3>
-            <ul class="workshop-list">
-                <li><strong>Open:</strong> <code>Week2_Solar_Procurement.csv</code>.</li>
-                <li><strong>Adjust Layout:</strong> Auto-fit all column widths.</li>
-                <li><strong>Identify Ranges:</strong> Locate the <strong>Component Database</strong> (starts at A14) and the <strong>Shipping Rates</strong> table (starts at B21).</li>
-                <li><strong>Formatting:</strong> Make Row 2 headers <strong>Bold</strong> and <span style="color:blue; font-weight:bold;">Blue</span>. Apply a Thin Border to the main Order Form (A2:I12).</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 2: Vertical Lookup (VLOOKUP)</h3>
-            <ul class="workshop-list">
-                <li><strong>Description Lookup (Column D):</strong> In cell D3, write a VLOOKUP formula to find the <strong>Item Name</strong> based on the Component Code (B3).
-                    <ul>
-                        <li><em>Table Array:</em> Use the Component Database range ($A$14:$E$18). <strong>CRITICAL:</strong> Use Absolute References ($).</li>
-                        <li><em>Column Index:</em> The Item Name is in column 2.</li>
-                        <li><em>Range Lookup:</em> FALSE (Exact Match).</li>
-                    </ul>
-                </li>
-                <li><strong>Unit Price Lookup (Column E):</strong> In cell E3, use VLOOKUP to find the <strong>Unit Price</strong> from the same database. Lock the table array!</li>
-                <li><strong>Drag:</strong> Drag both formulas down to Row 12.</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 3: Calculations & Logic (IF)</h3>
-            <ul class="workshop-list">
-                <li><strong>Total Cost (Column F):</strong> In F3, calculate <strong>Quantity * Unit Price</strong>. Drag down.</li>
-                <li><strong>Budget Check (Column G):</strong> We have a rule: Orders over <strong>$50.00</strong> require "Approval". Others are "Auto".</li>
-                <li>In cell G3, enter an <strong>IF statement</strong>:
-                    <ul>
-                        <li><em>Logical Test:</em> Is Total Cost (F3) greater than 50?</li>
-                        <li><em>Value if True:</em> "Approval"</li>
-                        <li><em>Value if False:</em> "Auto"</li>
-                    </ul>
-                </li>
-                <li>Drag down.</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 4: Horizontal Lookup (HLOOKUP)</h3>
-            <ul class="workshop-list">
-                <li><strong>Shipping Cost (Column I):</strong> The Shipping Class is in Column H (A, B, or C). The costs are in the horizontal table at the bottom.</li>
-                <li>In cell I3, write an <strong>HLOOKUP formula</strong>.
-                    <ul>
-                        <li><em>Lookup Value:</em> The Shipping Class (H3).</li>
-                        <li><em>Table Array:</em> The Shipping Rates table range ($B$21:$D$22). <strong>CRITICAL:</strong> Use Absolute References ($).</li>
-                        <li><em>Row Index:</em> The cost is in row 2.</li>
-                        <li><em>Range Lookup:</em> FALSE.</li>
-                    </ul>
-                </li>
-                <li>Drag down.</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 5: Formatting & Finalizing</h3>
-            <ul class="workshop-list">
-                <li><strong>Currency:</strong> Format Columns E, F, and I as <strong>Currency</strong> ($) with 2 decimal places.</li>
-                <li><strong>Conditional Formatting:</strong> Highlight the <strong>Budget Check</strong> column (G3:G12).
-                    <ul>
-                        <li>Apply a Rule: If text contains "Approval", fill with <span style="background:red; color:white; padding: 0 4px;">Red background and White text</span>.</li>
-                    </ul>
-                </li>
-                <li><strong>Save:</strong> As <code>Week2_Homework_YOURNAME.xlsx</code>.</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Section 5: Wrap Up & Submission -->
-    <section id="sec-5">
-        <h2>🏁 Wrap Up & Submission</h2>
-        
-        <div style="background: #f0fdf4; padding: 2rem; border-radius: 8px; border-left: 5px solid var(--secondary); text-align: center;">
-            <h3 style="color: var(--secondary); margin-top: 0;">🚀 Submission Checklist</h3>
-            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">For this week, you must submit <strong>TWO</strong> files on Phidias.</p>
+            <h3>1. The VLOOKUP Function</h3>
+            <p>Use Part ID to find details. Try entering different IDs (101, 102, 103) below.</p>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: left;">
-                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
-                    <h4 style="margin-top: 0;">📄 File 1: The Workshop</h4>
-                    <p>The automated procurement file you just built.</p>
-                    <div style="font-family: monospace; background: #f3f4f6; padding: 4px; border-radius: 4px; font-size: 0.9rem;">Week2_Homework_YOURNAME.xlsx</div>
+            <div class="grid-2">
+                <div>
+                    <strong>Component Library (Source)</strong>
+                    <table class="excel-table" id="library-table">
+                        <tr><th>A (ID)</th><th>B (Name)</th><th>C (Cost)</th></tr>
+                        <tr data-id="101"><td>101</td><td>DC Motor</td><td>$2.50</td></tr>
+                        <tr data-id="102"><td>102</td><td>AA Battery</td><td>$0.50</td></tr>
+                        <tr data-id="103"><td>103</td><td>Wheel 50mm</td><td>$1.20</td></tr>
+                    </table>
                 </div>
-                
-                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
-                    <h4 style="margin-top: 0;">🎥 File 2: The Video Practice</h4>
-                    <p>The "Solved Paper" you created by following the YouTube video step-by-step.</p>
-                    <div style="font-family: monospace; background: #f3f4f6; padding: 4px; border-radius: 4px; font-size: 0.9rem;">Solved_Paper_YOURNAME.xlsx</div>
+                <div>
+                    <strong>Your BOM (Design)</strong>
+                    <div style="margin-bottom: 0.5rem;">Part ID: <input type="number" id="vlookup-input" value="101" min="101" max="103" style="width: 60px;"></div>
+                    <div style="background: var(--bg-body); padding: 1rem; border-radius: 4px; font-family: monospace;">
+                        =VLOOKUP(<span style="color:blue">ID</span>, Library, 2, FALSE)<br>
+                        Result Name: <strong id="vlookup-result-name" style="color:var(--secondary)">DC Motor</strong>
+                    </div>
                 </div>
-            </div>
-
-            <div style="margin-top: 2rem; text-align: left; background: white; padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
-                 <strong>📅 Reminder:</strong> Check Phidias for the exact deadline. Late submissions may be penalized.
             </div>
         </div>
+
+        <!-- Logic Logic -->
+        <div>
+            <h3>2. Validation Logic (IF + AND)</h3>
+            <p>Your car length must be between <strong>120mm</strong> and <strong>180mm</strong>.</p>
+            <div style="background: var(--bg-body); padding: 1rem; border-radius: 4px;">
+                <label>Car Length (mm): <input type="number" id="logic-input" value="100" style="padding:5px;"></label>
+                <div class="formula-input">
+                    =IF(AND(Length>=120, Length<=180), "OK", "FAIL")
+                </div>
+                <p>Status: <strong id="logic-result" style="color: var(--danger)">FAIL</strong></p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(5)">Back</button>
+            <button class="btn btn-primary" onclick="nextSection(7)">Go to Practice</button>
+        </div>
+    </section>
+
+    <!-- 7. Practice with CCQs -->
+    <section id="section-practice" class="card hidden">
+        <h2>🛠️ Practice & Concept Check</h2>
+        <p>Complete the questions to verify your engineering license.</p>
+
+        <div id="practice-container">
+            <!-- Questions injected via JS -->
+        </div>
         
-        <button class="btn-primary" onclick="finishLesson()" style="width: 100%; justify-content: center; margin-top: 2rem;">Finish Lesson</button>
+        <div id="practice-controls" style="margin-top: 1rem; text-align: right;">
+            <p id="practice-status">Question 1 of 5</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(6)">Back to Excel</button>
+            <span></span>
+        </div>
+    </section>
+
+    <!-- 8. Synthesis -->
+    <section id="section-synthesis" class="card hidden">
+        <h2>🔄 Synthesis: The Workflow</h2>
+        <p><strong>Click two items to swap them</strong> until they are in the correct order for the engineering design process.</p>
+        
+        <div id="drag-container" style="display: flex; flex-direction: column; gap: 0.5rem; background: var(--bg-body); padding: 1rem; border-radius: 0.5rem;">
+            <div class="quiz-option reorder-item" onclick="handleReorderClick(this)" data-order="3">Build Circuit on Breadboard</div>
+            <div class="quiz-option reorder-item" onclick="handleReorderClick(this)" data-order="1">Select Parts (VLOOKUP)</div>
+            <div class="quiz-option reorder-item" onclick="handleReorderClick(this)" data-order="4">Test & Debug</div>
+            <div class="quiz-option reorder-item" onclick="handleReorderClick(this)" data-order="2">Validate Specs (IF/AND)</div>
+        </div>
+        <p id="sort-feedback" class="feedback"></p>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(7)">Back</button>
+            <div>
+                <button class="btn btn-primary" onclick="checkSort()">Check Order</button>
+                <button class="btn btn-primary hidden" id="btn-goto-wrapup" onclick="nextSection(9)">Finish Lesson</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Wrap-Up and Closure -->
+    <section id="section-wrapup" class="card hidden">
+        <h2>🏁 Wrap-Up & Reflection</h2>
+        
+        <div class="wrap-up-grid">
+            <div>
+                <h3>3-2-1 Reflection</h3>
+                <textarea id="reflect-3" class="quiz-option" placeholder="3 things you learned..."></textarea>
+                <textarea id="reflect-2" class="quiz-option" placeholder="2 interesting facts..."></textarea>
+                <textarea id="reflect-1" class="quiz-option" placeholder="1 question you still have..."></textarea>
+            </div>
+            <div>
+                <h3>Objective Check</h3>
+                <label class="quiz-option">
+                    <input type="checkbox" id="obj-1"> I can explain how a breadboard is wired.
+                </label>
+                <label class="quiz-option">
+                    <input type="checkbox" id="obj-2"> I can read a VLOOKUP formula.
+                </label>
+                <label class="quiz-option">
+                    <input type="checkbox" id="obj-3"> I know what a short circuit is.
+                </label>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+            <h3>🏠 Homework: Week 4 Assignment</h3>
+            <p><strong>Due:</strong> Friday by 11:59 PM</p>
+            
+            <div style="background-color: var(--bg-body); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                <h4>1. Download Data Sources</h4>
+                <div class="grid-2" style="margin-bottom: 1rem;">
+                    <a href="https://docs.google.com/spreadsheets/d/12uBEZGoRywuFR7c53N_dyIq1sLs9iwkMWXMUqxqbP8I/edit?usp=sharing" target="_blank" class="btn btn-outline" style="text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                        📄 Master Component Library
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1kI3Gjfu-qkyITUO1x_nZt622EX1ueQmEzY8rwxYc5T4/edit?usp=sharing" target="_blank" class="btn btn-outline" style="text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                        📄 Design Scenario Data
+                    </a>
+                </div>
+
+                <h4>2. The Assignment Tasks</h4>
+                <ul style="padding-left: 1.5rem;">
+                    <li style="margin-bottom:0.5rem"><strong>Finalize BOM:</strong> Create a complete Bill of Materials for your car using <code>VLOOKUP</code>.</li>
+                    <li style="margin-bottom:0.5rem"><strong>Design Specs:</strong> Validate Length, Width, Height, and Weight using <code>IF(AND(...))</code>.</li>
+                    <li><strong>Sketch:</strong> Draw your planned circuit diagram.</li>
+                </ul>
+
+                <h4>3. Submission</h4>
+                <p>Upload your <strong>.xlsx file</strong> and your <strong>Sketch Photo</strong> to the class portal.</p>
+            </div>
+
+            <h3>🌉 Bridge to Next Week</h3>
+            <p><strong>Next Lesson:</strong> Physical Assembly. We will take your BOM and physically build the chassis.</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(8)">Back</button>
+            <button class="btn btn-primary" onclick="finishLesson()">Submit Reflection</button>
+        </div>
+
+        <div id="badge-display" class="badge-container">
+            <div style="font-size: 3rem;">🏆</div>
+            <h3>Certified Circuit Planner</h3>
+            <p>You have successfully completed the logic and theory verification.</p>
+            <p id="score-display"></p>
+        </div>
+    </section>
+
+    <!-- Vocabulary (Floating or Footer) -->
+    <section class="card">
+        <h3>📚 Vocabulary Bank</h3>
+        <input type="text" id="vocab-search" placeholder="Search terms..." class="formula-input" style="margin-bottom: 1rem;">
+        <div class="vocab-grid" id="vocab-grid">
+            <!-- Populated by JS -->
+        </div>
     </section>
 
 </main>
 
-<div class="sticky-footer">
-    <button class="btn-outline" id="prevBtn" onclick="navigate(-1)" disabled>← Back</button>
-    <span style="font-weight: bold; color: var(--text);" id="pageIndicator">Step 1 of 5</span>
-    <button class="btn-primary" id="nextBtn" onclick="navigate(1)">Next Step →</button>
-</div>
-
 <script>
-    // --- State Management ---
-    const sections = ['sec-1', 'sec-2', 'sec-3', 'sec-4', 'sec-5'];
-    let currentStep = 0;
-    let isLocked = false;
+    /* --- STATE MANAGEMENT --- */
+    const state = {
+        currentSection: 2,
+        score: 0,
+        practiceIndex: 0,
+        swapSelected: null,
+        labStep: 1
+    };
 
-    // --- Navigation ---
-    function navigate(dir) {
-        const currentSection = document.getElementById(sections[currentStep]);
+    /* --- LAB CONFIGURATION (PASTE YOUR IMAGE LINKS HERE) --- */
+    const labSteps = [
+        {
+            step: 1,
+            title: "Step 1: Materials",
+            instruction: "<strong>Gather your components:</strong><br>- Breadboard<br>- 1 LED<br>- 1 Resistor (100Ω)<br>- Jumper Wires<br>- Battery Pack",
+            // PASTE YOUR IMAGE URL FOR STEP 1 BELOW:
+            image: "img/led_circuit_materials.png" 
+        },
+        {
+            step: 2,
+            title: "Step 2: Insert LED",
+            instruction: "Place LED Long Leg (+) into Column 5. Short Leg (-) into Column 6. (LEDs are polarized!)",
+            // PASTE YOUR IMAGE URL FOR STEP 2 BELOW:
+            image: "img/led_circuit_2.png"
+        },
+        {
+            step: 3,
+            title: "Step 3: Add Resistor",
+            instruction: "Connect Resistor from Column 1 to Column 5. This connects it to the LED (+) leg. Resistors limit current.",
+            // PASTE YOUR IMAGE URL FOR STEP 3 BELOW:
+            image: "img/led_circuit_3.png"
+        },
+        {
+            step: 4,
+            title: "Step 4: Connect Power",
+            instruction: "Connect Battery (+) to Column 1 (Resistor) and (-) to Column 6 (LED).<br><em>(Note: Cable color is for organization, it doesn't change how electricity works).</em>",
+            // PASTE YOUR IMAGE URL FOR STEP 4 BELOW:
+            image: "img/led_circuit_4.png"
+        },
+        {
+            step: 5,
+            title: "Step 5: Let there be Light!",
+            instruction: "The LED should light up!<br><strong>Troubleshooting:</strong> LED has polarity. If it's not turning on, <strong>switch the LED legs</strong> (flip it around).",
+            // PASTE YOUR IMAGE URL FOR STEP 5 BELOW:
+            image: "img/led_circuit_4.png"
+        }
+    ];
+
+    /* --- DATA --- */
+    // ... existing vocabData ...
+    const vocabData = [
+        { term: "Breadboard", def: "A reusable tool for prototyping circuits without soldering. Has internal rows and rails." },
+        { term: "Power Rail", def: "The Red (+) and Blue (-) columns on the sides. Connected Vertically." },
+        { term: "Terminal Row", def: "The numbered rows (e.g., Row 5). Connected Horizontally in groups of 5." },
+        { term: "Series Circuit", def: "Components connected one after another. Current must flow through all of them." },
+        { term: "Photovoltaic Effect", def: "The process where a solar panel converts light directly into electricity." },
+        { term: "VLOOKUP", def: "Excel function to search for a value in the first column and return a value in the same row." },
+        { term: "Short Circuit", def: "Connecting positive directly to negative without a load. Causes heat/damage." }
+    ];
+
+    // ... existing practiceQuestions ...
+    const practiceQuestions = [
+        {
+            type: "ccq-yn",
+            q: "CCQ: Can I connect the Battery (+) directly to the Battery (-) on the breadboard?",
+            options: ["Yes", "No"],
+            correct: 1,
+            feedback: "Correct! That would cause a Short Circuit and potential fire."
+        },
+        {
+            type: "app",
+            q: "Practice: You need to buy 4 motors. Which formula calculates the Total Cost?",
+            options: ["=UnitCost * Qty", "=UnitCost + Qty", "=VLOOKUP(Cost)"],
+            correct: 0,
+            feedback: "Correct. Total Cost is Price times Quantity."
+        },
+        {
+            type: "ccq-wh",
+            q: "CCQ: Why do we use VLOOKUP in our BOM?",
+            options: ["To do math calculations", "To make the text red", "To automatically pull data based on an ID"],
+            correct: 2,
+            feedback: "Right! It automates data entry to prevent mistakes."
+        },
+        {
+            type: "ccq-neg",
+            q: "CCQ: Would it be correct to say that Terminal Rows (a-e) are connected horizontally across the whole board?",
+            options: ["No, they are vertical groups of 5", "Yes", "No, they are diagonal"],
+            correct: 0,
+            feedback: "Exactly. The gap in the middle separates sides, and they are vertical groups."
+        },
+        {
+            type: "app",
+            q: "Logic Check: The car length is 200mm. The rule is MAX 180mm. What does =IF(Length<=180, 'OK', 'FAIL') return?",
+            options: ["OK", "ERROR", "FAIL"],
+            correct: 2,
+            feedback: "Correct. 200 is not less than or equal to 180, so it returns the second option."
+        }
+    ];
+
+    /* --- INITIALIZATION --- */
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        generateBreadboard();
+        generateVocab();
+        loadPracticeQuestion();
+        updateProgress();
+        updateLab(); // Initial Lab Load
         
-        currentSection.classList.remove('active');
-        setTimeout(() => currentSection.style.display = 'none', 300);
+        // Listeners
+        document.getElementById('vlookup-input').addEventListener('input', updateVlookupSim);
+        document.getElementById('logic-input').addEventListener('input', updateLogicSim);
+        document.getElementById('vocab-search').addEventListener('input', filterVocab);
+    });
 
-        currentStep += dir;
-        if (currentStep < 0) currentStep = 0;
-        if (currentStep >= sections.length) currentStep = sections.length - 1;
-
-        const newSection = document.getElementById(sections[currentStep]);
-        newSection.style.display = 'block';
-        setTimeout(() => newSection.classList.add('active'), 10);
-
-        updateUI();
-    }
-
-    function updateUI() {
-        document.getElementById('prevBtn').disabled = currentStep === 0;
-        document.getElementById('nextBtn').disabled = currentStep === sections.length - 1;
-        document.getElementById('pageIndicator').innerText = `Step ${currentStep + 1} of ${sections.length}`;
-        
-        const pct = ((currentStep + 1) / sections.length) * 100;
-        document.getElementById('progressBar').style.width = `${pct}%`;
-        window.scrollTo(0, 0);
-    }
-
-    // --- Hook Simulation Logic ---
-    function toggleLock() {
-        isLocked = !isLocked;
-        const btn = document.getElementById('btn-lock');
-        const cells = document.querySelectorAll('.formula-cell');
-        const refBoxes = document.querySelectorAll('.ref-box');
-        
-        if (isLocked) {
-            btn.innerText = "Yes (Absolute $)";
-            btn.style.background = "var(--secondary)";
-            btn.style.color = "white";
-            btn.style.borderColor = "var(--secondary)";
-            
-            // Fix Formulas
-            cells[0].innerHTML = '=VLOOKUP(A2, <span class="ref-box locked-ref-box">$A$8:$B$10</span>, 2, 0)';
-            cells[1].innerHTML = '=VLOOKUP(A3, <span class="ref-box locked-ref-box">$A$8:$B$10</span>, 2, 0)';
-            cells[2].innerHTML = '=VLOOKUP(A4, <span class="ref-box locked-ref-box">$A$8:$B$10</span>, 2, 0) <span style="color:var(--secondary); font-weight:bold;">✔ Correct!</span>';
-            cells[2].style.background = "#dcfce7";
-            
-        } else {
-            btn.innerText = "No (Relative)";
-            btn.style.background = "transparent";
-            btn.style.color = "var(--primary)";
-            btn.style.borderColor = "var(--primary)";
-            
-            // Break Formulas
-            cells[0].innerHTML = '=VLOOKUP(A2, <span class="ref-box">A8:B10</span>, 2, 0)';
-            cells[1].innerHTML = '=VLOOKUP(A3, <span class="ref-box" style="transform: translateY(20px);">A9:B11</span>, 2, 0)';
-            cells[2].innerHTML = '=VLOOKUP(A4, <span class="ref-box" style="transform: translateY(40px);">A10:B12</span>, 2, 0) <span style="color:red; font-weight:bold;">#N/A (Broken!)</span>';
-            cells[2].style.background = "#fee2e2";
+    // ... existing initTheme, toggleTheme, updateProgress, nextSection, opener functions ...
+    function initTheme() {
+        if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.setAttribute('data-theme', 'dark');
         }
     }
 
-    // --- Theme & Persistence ---
     function toggleTheme() {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        const current = document.body.getAttribute('data-theme');
+        document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+
+    function updateProgress() {
+        const percent = ((state.currentSection - 1) / 9) * 100;
+        document.getElementById('progressBar').style.width = `${Math.min(percent, 100)}%`;
+    }
+
+    function nextSection(sectionId) {
+        document.querySelectorAll('section').forEach(el => el.classList.add('hidden'));
+        document.querySelector('.vocab-grid').closest('section').classList.remove('hidden');
+        
+        let nextEl;
+        switch(sectionId) {
+            case 3: nextEl = document.getElementById('section-objectives'); break;
+            case 4: nextEl = document.getElementById('section-concepts'); break;
+            case 5: nextEl = document.getElementById('section-lab'); break;
+            case 6: nextEl = document.getElementById('section-excel'); break;
+            case 7: nextEl = document.getElementById('section-practice'); break;
+            case 8: nextEl = document.getElementById('section-synthesis'); break;
+            case 9: nextEl = document.getElementById('section-wrapup'); break;
+            default: nextEl = document.getElementById('section-opener');
+        }
+
+        if(sectionId === 9) state.currentSection = 9; 
+        else state.currentSection = sectionId;
+
+        nextEl.classList.remove('hidden');
+        updateProgress();
+        window.scrollTo(0,0);
+    }
+
+    function triggerSpark() {
+        const spark = document.getElementById('spark');
+        spark.classList.add('active');
+        setTimeout(() => {
+            document.getElementById('prediction-area').classList.remove('hidden');
+        }, 1000);
+    }
+
+    function handleOpener(choice) {
+        const fb = document.getElementById('opener-feedback');
+        if (choice === 'short') {
+            fb.textContent = "Correct! Connecting + directly to - without a 'load' (like a motor) allows infinite current flow, causing heat and failure.";
+            fb.className = "feedback correct";
+        } else {
+            fb.textContent = "Not quite. An Open Circuit means nothing happens. Here, things got HOT. That implies too much flow.";
+            fb.className = "feedback incorrect";
+        }
+        document.getElementById('btn-start-lesson').classList.remove('hidden');
+    }
+
+    // ... existing generateBreadboard logic ...
+    function generateBreadboard() {
+        const container = document.getElementById('breadboard-vis');
+        const mkHole = (cls) => `<div class="bb-hole" onmouseenter="highlight('${cls}')" onmouseleave="dehighlight('${cls}')"></div>`;
+
+        let html = '<div class="power-rail">';
+        for(let i=0; i<15; i++) html += mkHole('power-top');
+        html += '</div>';
+
+        html += '<div style="margin: 10px 0">';
+        for(let r=0; r<5; r++) {
+            html += '<div class="bb-row">';
+            for(let c=1; c<=15; c++) html += mkHole(`col-top-${c}`);
+            html += '</div>';
+        }
+        html += '</div>';
+        
+        html += '<div style="height:15px; background:#ddd; margin:5px 0;"></div>';
+
+        html += '<div style="margin: 10px 0">';
+        for(let r=0; r<5; r++) {
+            html += '<div class="bb-row">';
+            for(let c=1; c<=15; c++) html += mkHole(`col-bot-${c}`);
+            html += '</div>';
+        }
+        html += '</div>';
+
+        html += '<div class="ground-rail">';
+        for(let i=0; i<15; i++) html += mkHole('power-bot');
+        html += '</div>';
+
+        container.innerHTML = html;
+    }
+
+    window.highlight = function(cls) {
+        document.querySelectorAll('.bb-hole').forEach(h => {
+            if(h.getAttribute('onmouseenter').includes(cls)) h.classList.add('connected-highlight');
+        });
+    }
+    window.dehighlight = function(cls) {
+        document.querySelectorAll('.bb-hole').forEach(h => h.classList.remove('connected-highlight'));
+    }
+
+    /* --- VIRTUAL LAB (SECTION 5) --- */
+    function updateLab() {
+        const title = document.getElementById('lab-step-title');
+        const desc = document.getElementById('lab-instruction');
+        const count = document.getElementById('lab-step-count');
+        const img = document.getElementById('lab-image');
+        
+        // Ensure step index is valid
+        const index = state.labStep - 1; 
+        const currentData = labSteps[index];
+
+        if(currentData) {
+            count.textContent = `${state.labStep} / ${labSteps.length}`;
+            title.textContent = currentData.title;
+            desc.innerHTML = currentData.instruction;
+            img.src = currentData.image;
+            img.alt = currentData.title;
+        }
+    }
+
+    window.nextLabStep = function() {
+        if(state.labStep < labSteps.length) {
+            state.labStep++;
+            updateLab();
+        }
+    }
+
+    window.prevLabStep = function() {
+        if(state.labStep > 1) {
+            state.labStep--;
+            updateLab();
+        }
+    }
+
+    /* --- EXCEL SIMULATION, PRACTICE, REORDER, WRAPUP --- */
+    function updateVlookupSim() {
+        const id = document.getElementById('vlookup-input').value;
+        const rows = document.querySelectorAll('#library-table tr');
+        rows.forEach(r => r.classList.remove('excel-row-highlight'));
+        
+        let name = "N/A";
+        const target = document.querySelector(`tr[data-id="${id}"]`);
+        if(target) {
+            target.classList.add('excel-row-highlight');
+            name = target.children[1].textContent;
+        }
+        document.getElementById('vlookup-result-name').textContent = name;
+    }
+
+    function updateLogicSim() {
+        const val = parseInt(document.getElementById('logic-input').value);
+        const resEl = document.getElementById('logic-result');
+        if (val >= 120 && val <= 180) {
+            resEl.textContent = "OK";
+            resEl.style.color = "var(--success-text)";
+        } else {
+            resEl.textContent = "FAIL";
+            resEl.style.color = "var(--danger)";
+        }
+    }
+
+    function loadPracticeQuestion() {
+        const container = document.getElementById('practice-container');
+        const qData = practiceQuestions[state.practiceIndex];
+        
+        if(!qData) {
+            nextSection(8); 
+            return;
+        }
+
+        let html = `<div class="card">
+            <span style="font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted)">${qData.type.replace('-',' ')}</span>
+            <h3>${qData.q}</h3>
+            <div class="grid-2">`;
+        
+        qData.options.forEach((opt, idx) => {
+            html += `<button class="quiz-option" onclick="checkAnswer(${idx})">${opt}</button>`;
+        });
+        
+        html += `</div><div id="q-feedback" class="feedback"></div>
+                 <button id="btn-next-q" class="btn btn-primary hidden" onclick="nextQuestion()">Continue</button>
+                 </div>`;
+        
+        container.innerHTML = html;
+        document.getElementById('practice-status').textContent = `Question ${state.practiceIndex + 1} of ${practiceQuestions.length}`;
+    }
+
+    window.checkAnswer = function(idx) {
+        const qData = practiceQuestions[state.practiceIndex];
+        const fbEl = document.getElementById('q-feedback');
+        const nextBtn = document.getElementById('btn-next-q');
+        
+        document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
+        event.target.classList.add('selected');
+
+        if(idx === qData.correct) {
+            fbEl.textContent = qData.feedback;
+            fbEl.className = "feedback correct";
+            nextBtn.classList.remove('hidden');
+        } else {
+            fbEl.textContent = "Incorrect. Try again!";
+            fbEl.className = "feedback incorrect";
+            nextBtn.classList.add('hidden');
+        }
+    }
+
+    window.nextQuestion = function() {
+        state.practiceIndex++;
+        loadPracticeQuestion();
+    }
+
+    window.handleReorderClick = function(el) {
+        if(!state.swapSelected) {
+            state.swapSelected = el;
+            el.classList.add('selected-swap');
+        } else if(state.swapSelected === el) {
+            el.classList.remove('selected-swap');
+            state.swapSelected = null;
+        } else {
+            const val1 = el.innerHTML;
+            const ord1 = el.getAttribute('data-order');
+            const val2 = state.swapSelected.innerHTML;
+            const ord2 = state.swapSelected.getAttribute('data-order');
+            
+            el.innerHTML = val2;
+            el.setAttribute('data-order', ord2);
+            state.swapSelected.innerHTML = val1;
+            state.swapSelected.setAttribute('data-order', ord1);
+            
+            state.swapSelected.classList.remove('selected-swap');
+            state.swapSelected = null;
+            document.getElementById('sort-feedback').style.display = 'none';
+        }
+    }
+
+    function checkSort() {
+        const items = document.querySelectorAll('#drag-container .reorder-item');
+        let currentOrder = [];
+        items.forEach(el => currentOrder.push(parseInt(el.getAttribute('data-order'))));
+        
+        const correctOrder = [1, 2, 3, 4];
+        const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(correctOrder);
+        
+        const fb = document.getElementById('sort-feedback');
+        fb.style.display = 'block';
+        
+        if(isCorrect) {
+            fb.textContent = "Perfect! Design -> Validate -> Build -> Test.";
+            fb.className = "feedback correct";
+            document.getElementById('btn-goto-wrapup').classList.remove('hidden');
+        } else {
+            fb.textContent = "Not quite. Remember: We calculate and validate logic BEFORE we build anything.";
+            fb.className = "feedback incorrect";
+        }
     }
 
     function finishLesson() {
-        alert("Class 2 Complete! You are now ready to tackle the Phidias assignment.");
-        localStorage.setItem('week2_complete', 'true');
+        localStorage.setItem('reflect3', document.getElementById('reflect-3').value);
+        localStorage.setItem('reflect2', document.getElementById('reflect-2').value);
+        
+        document.getElementById('badge-display').style.display = 'block';
+        document.getElementById('badge-display').scrollIntoView({behavior: 'smooth'});
+        
+        let i = 0;
+        const interval = setInterval(() => {
+            const el = document.createElement('div');
+            el.innerHTML = ['🎉','⭐','🔋','🚗'][Math.floor(Math.random()*4)];
+            el.style.position = 'fixed';
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.top = '-50px';
+            el.style.transition = 'top 2s ease-in';
+            document.body.appendChild(el);
+            setTimeout(() => { el.style.top = '110vh'; }, 100);
+            setTimeout(() => { el.remove(); }, 2000);
+            i++;
+            if(i>20) clearInterval(interval);
+        }, 100);
     }
 
-    // Initialize
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-</script>
+    function generateVocab() {
+        const grid = document.getElementById('vocab-grid');
+        vocabData.forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            card.innerHTML = `<h4>${v.term}</h4><div class="vocab-details"><p>${v.def}</p></div>`;
+            card.onclick = () => card.classList.toggle('active');
+            grid.appendChild(card);
+        });
+    }
 
+    function filterVocab() {
+        const term = document.getElementById('vocab-search').value.toLowerCase();
+        document.querySelectorAll('.vocab-card').forEach(card => {
+            const text = card.textContent.toLowerCase();
+            card.style.display = text.includes(term) ? 'block' : 'none';
+        });
+    }
+</script>
 </body>
 </html>

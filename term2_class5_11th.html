@@ -1,468 +1,628 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 1: Excel Bootcamp | Solar Car Project</title>
+    <title>IGCSE ICT: Data Analysis Task 5</title>
     <style>
         :root {
+            /* Theme Variables matching the reference style */
             --primary: #2563eb;
             --primary-dark: #1e40af;
             --secondary: #10b981;
             --accent: #f59e0b;
             --danger: #ef4444;
             --bg: #f8fafc;
-            --surface: #ffffff;
             --text: #1e293b;
-            --text-light: #64748b;
+            --card-bg: #ffffff;
             --border: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
         }
 
         [data-theme="dark"] {
             --primary: #3b82f6;
             --primary-dark: #60a5fa;
             --secondary: #34d399;
-            --accent: #fbbf24;
             --bg: #0f172a;
-            --surface: #1e293b;
             --text: #f1f5f9;
-            --text-light: #94a3b8;
+            --card-bg: #1e293b;
             --border: #334155;
         }
 
-        * { box-sizing: border-box; transition: all 0.2s ease; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 80px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
 
-        /* Navigation */
-        nav {
-            background: var(--surface);
-            padding: 1rem 2rem;
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        /* --- Layout & Nav --- */
+        header {
+            background: var(--card-bg);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: var(--shadow);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .nav-brand { font-weight: 800; font-size: 1.25rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
-        .progress-bar-container { width: 150px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--secondary); width: 0%; }
 
-        /* Layout */
-        main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
-        section { 
-            background: var(--surface); 
-            padding: 2.5rem; 
-            border-radius: var(--radius); 
-            margin-bottom: 2rem; 
-            box-shadow: var(--shadow);
-            display: none; 
-            animation: slideUp 0.4s ease-out;
-        }
-        section.active { display: block; }
-        
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        h1 { color: var(--primary); margin: 0 0 1.5rem 0; font-size: 2.2rem; }
-        h2 { color: var(--text); border-left: 5px solid var(--accent); padding-left: 1rem; margin-top: 2rem; }
-        .subtitle { color: var(--text-light); font-size: 1.1rem; margin-top: -1rem; margin-bottom: 2rem; }
-
-        /* UI Elements */
-        button {
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            display: inline-flex;
+        .brand {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--primary);
+            display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
-        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-        .btn-tool { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; font-size: 0.9rem; }
-        .btn-tool:hover { border-color: var(--primary); color: var(--primary); }
-        .btn-tool.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* Section 1: Messy Warehouse Hook */
-        .csv-preview {
-            font-family: 'Courier New', monospace;
-            background: #1e1e1e;
-            color: #00ff00;
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            margin: 1.5rem 0;
-            position: relative;
+        .progress-container {
+            flex-grow: 1;
+            margin: 0 2rem;
+            background: var(--border);
+            height: 8px;
+            border-radius: 4px;
             overflow: hidden;
+            max-width: 400px;
         }
-        .csv-preview::before {
-            content: "RAW DATA - DO NOT EDIT";
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: #333;
-            color: #fff;
-            font-size: 0.7rem;
-            padding: 0.2rem 0.5rem;
-        }
-        
-        /* Section 3: Video Companion Link */
-        .video-link {
-            text-decoration: none;
-            color: var(--primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .video-link:hover { text-decoration: underline; color: var(--primary-dark); }
 
-        /* Section 4: Workshop Instructions */
-        .workshop-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
         }
-        .workshop-card h3 {
-            margin-top: 0;
-            color: var(--primary);
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.5rem;
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- Sections --- */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: 80vh;
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2, h3 {
+            color: var(--text);
             margin-bottom: 1rem;
         }
-        .workshop-list {
-            padding-left: 1.2rem;
-            margin: 0;
+
+        h1 { font-size: 2.5rem; letter-spacing: -0.05em; }
+        h2 { 
+            font-size: 1.8rem; 
+            border-left: 4px solid var(--primary); 
+            padding-left: 1rem; 
+            margin-top: 2rem; 
         }
-        .workshop-list li {
-            margin-bottom: 0.5rem;
-        }
-        .warning-box {
-            background: #fff1f2;
-            border: 1px solid #fda4af;
-            color: #be123c;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-        }
-        
-        /* Video cards */
-        .timestamp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-        .timestamp-card { 
-            background: var(--bg); 
-            padding: 1rem; 
-            border-radius: 8px; 
+
+        /* --- Cards & Grid --- */
+        .card {
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            cursor: pointer;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
         }
-        .timestamp-card:hover { border-color: var(--primary); background: rgba(37, 99, 235, 0.05); }
-        .ts-time { font-weight: 800; color: var(--primary); font-size: 1.1rem; }
-        .ts-desc { font-size: 0.9rem; color: var(--text-light); margin-top: 0.2rem; }
 
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
 
-        /* Footer */
-        .sticky-footer {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: var(--surface);
-            padding: 1rem 2rem;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .progress-container { display: none; }
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-controls {
             display: flex;
             justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* --- Specific Styles for this Lesson --- */
+        .resource-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+        }
+
+        .resource-card {
+            border: 2px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: var(--transition);
+            background: var(--card-bg);
+            cursor: pointer;
+        }
+
+        .resource-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .resource-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .step-list {
+            list-style: none;
+            counter-reset: step-counter 13; /* Starts at 14 */
+        }
+
+        .step-list li {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-list li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 2.5rem;
+            font-weight: bold;
+        }
+
+        .alert-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .alert-box.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--danger);
+        }
+
+        .submission-checklist {
+            list-style: none;
+        }
+        
+        .submission-checklist li {
+            margin-bottom: 0.5rem;
+            display: flex;
             align-items: center;
-            z-index: 900;
+            gap: 0.5rem;
+        }
+
+        .code-snippet {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            display: inline-block;
+        }
+
+        /* Video Toggle */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            padding-top: 25px;
+            height: 0;
+            display: none;
+            margin-top: 1rem;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
+
 <body>
 
-<nav>
-    <div class="nav-brand">
-        <span>📊</span> Excel Bootcamp
-    </div>
-    <div style="display: flex; gap: 1rem; align-items: center;">
-        <div class="progress-bar-container">
+    <header>
+        <div class="brand">
+            <span>📊</span> IGCSE ICT: Task 5
+        </div>
+        <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
-        <button onclick="toggleTheme()" class="btn-tool" style="border-radius: 50%; padding: 0.5rem;">🌙</button>
-    </div>
-</nav>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
+            🌓
+        </button>
+    </header>
 
-<main>
-    <!-- Section 1: The Hook -->
-    <section id="sec-1" class="active">
-        <h1>The Messy Warehouse</h1>
-        <p class="subtitle">Week 1: Introduction to Spreadsheets</p>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
-            <div>
-                <h3>🚨 The Problem</h3>
-                <p>We have 200 parts arriving for your Solar Car. The supplier sent us the inventory list, but it's a disaster. It's a raw <strong>CSV (Comma Separated Values)</strong> file.</p>
-                <p>If I asked you to find the <strong>Total Value</strong> of this inventory right now, you'd need a calculator and 5 minutes.</p>
-                <p><strong>Goal:</strong> By the end of this class, you'll do it in 2 seconds.</p>
+    <main>
+
+        <!-- SECTION 1: GOALS -->
+        <section id="s1" class="active">
+            <div class="card text-center">
+                <h1>Week 3 Class 3: Data Analysis</h1>
+                <p><strong>Topic:</strong> Cambridge IGCSE™ 0417/31 May/June 2021 (Task 5)</p>
+                <p><strong>Focus:</strong> HLOOKUP, Formatting & Formula Replication</p>
             </div>
-            <div class="csv-preview">
-                ID,Item,Qty,Price,Loc<br>
-                M-01,Motor N20,20,5.50,A1<br>
-                P-05,Solar Panel 5V,20,3.25,A2<br>
-                B-09,Li-Ion Bat,20,4.00,B1<br>
-                W-02,Wheel Set,40,1.50,C3<br>
-                S-01,Switch,20,0.50,D1
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>🧠 Cognitive Goals</h3>
+                    <ul style="padding-left: 1.5rem; list-style-type: disc;">
+                        <li><strong>Exam Technique:</strong> Interpret and execute strict formatting instructions (e.g., row/column visibility, merged cells).</li>
+                        <li><strong>Lookup Logic:</strong> Apply HLOOKUP (or INDEX/MATCH) to retrieve data from horizontal arrays.</li>
+                        <li><strong>Data Validation:</strong> Test the spreadsheet model with different inputs to ensure robustness.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>❤️ Social-Emotional Learning (SEL)</h3>
+                    <ul style="padding-left: 1.5rem; list-style-type: disc;">
+                        <li><strong>Collaborative Problem Solving:</strong> Practice working in pairs to unblock technical hurdles before asking the teacher.</li>
+                        <li><strong>Resourcefulness:</strong> Develop the habit of using available resources (video tutorials/help files) to self-correct.</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Section 2: Objectives -->
-    <section id="sec-2">
-        <h2>🎯 Learning Objectives</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-            <div style="background: #e0f2fe; padding: 1.5rem; border-radius: 8px; color: #075985;">
-                <h3>🧠 Cognitive Goals</h3>
-                <ul style="padding-left: 1.2rem;">
-                    <li>Navigate the Excel interface (Rows, Columns, Sheets).</li>
-                    <li>Master basic formatting (Currency, Borders, Wrapping).</li>
-                    <li>Understand <strong>Constants</strong> (typing 500) vs <strong>Formulas</strong> (using =A1*B1).</li>
-                    <li>Use basic functions: <code>SUM</code>, <code>AVERAGE</code>, <code>MAX</code>, <code>MIN</code>.</li>
-                </ul>
+            <div class="nav-controls">
+                <span></span>
+                <button class="btn" onclick="nextSection(1)">Get Resources &rarr;</button>
             </div>
-            <div style="background: #f0fdf4; padding: 1.5rem; border-radius: 8px; color: #166534;">
-                <h3>⚡ Success Criteria</h3>
-                <p>By the end of this lesson, you will be able to take a messy inventory list, clean it up, and build a "Smart Total" that updates automatically.</p>
-                <p><strong>Key Concept:</strong> The Auto-Grader is watching! It knows if you cheat by using a calculator.</p>
-            </div>
-            <div style="background: #fff1f2; padding: 1.5rem; border-radius: 8px; color: #9f1239;">
-                <h3>❤️ Social & Emotional Goals</h3>
-                <ul style="padding-left: 1.2rem;">
-                    <li>Develop confidence in tackling complex interdisciplinary projects.</li>
-                    <li>Understand how spreadsheets support real-world engineering and sustainability decisions.</li>
-                    <li>Practice patience and attention to detail when debugging data.</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Section 3: Video Companion -->
-    <section id="sec-3">
-        <h2>
-            <a href="https://www.youtube.com/results?search_query=IGCSE+ICT+0417+Spreadsheets+Part+1+Nicos+Paphitis" target="_blank" class="video-link">
-                📹 Video Tutorial Guide ↗
-            </a>
-        </h2>
-        <p>As you watch the "IGCSE Spreadsheets Part 1" video, pay attention to these key moments. Click a card to mark it as "Mastered".</p>
-        
-        <div class="timestamp-grid">
-            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
-                <div class="ts-time">06:00</div>
-                <div class="ts-desc">Adjusting Columns</div>
-                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Fixing the ###### error by double-clicking column edges.</div>
-            </div>
-            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
-                <div class="ts-time">11:00</div>
-                <div class="ts-desc">Selecting Ranges</div>
-                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Using <strong>Ctrl</strong> to select cells that are not next to each other.</div>
-            </div>
-            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
-                <div class="ts-time">18:00</div>
-                <div class="ts-desc">Basic Math</div>
-                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Start every formula with <strong>=</strong>. Example: <code>=A1+B1</code></div>
-            </div>
-            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
-                <div class="ts-time">27:00</div>
-                <div class="ts-desc">Fill Handle</div>
-                <div style="font-size: 0.8rem; margin-top: 0.5rem;">The small square in the corner that copies formulas down.</div>
-            </div>
-            <div class="timestamp-card" onclick="this.style.background='#dcfce7'; this.style.borderColor='#166534';">
-                <div class="ts-time">42:00</div>
-                <div class="ts-desc">Borders</div>
-                <div style="font-size: 0.8rem; margin-top: 0.5rem;">Making it look professional. Gridlines don't print!</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 4: Workshop Instructions -->
-    <section id="sec-4">
-        <h2>🛠️ Week 1 Workshop: Solar Inventory Master Class</h2>
-        <p>Follow these instructions exactly to complete your <code>Week1_Homework.xlsx</code>. This assignment uses an <strong>Auto-Grader</strong>, so precision matters!</p>
-        
-        <div class="warning-box">
-            <strong>🤖 Auto-Grading Warning:</strong>
-            <ul style="margin-top: 0.5rem; margin-bottom: 0;">
-                <li>If the instruction says "Red Border", an Orange Border gets 0 points.</li>
-                <li><strong>Formulas Only:</strong> If you type "99" instead of using a formula, you fail that section.</li>
-                <li>Do not merge cells or insert rows unless instructed.</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 1: Layout & Formatting (Video 06:00 - 10:00)</h3>
-            <ul class="workshop-list">
-                <li><strong>Open:</strong> <code><a href="https://docs.google.com/spreadsheets/d/1ffwj4oecg8hkImTPuJpEJxaOJSvOD68Z/edit?usp=sharing&ouid=114473330638073035121&rtpof=true&sd=true">Week1_Solar_Inventory.csv</a></code> in Excel.</li>
-                <li><strong>Row 1 Headers:</strong> Select A1:G1. Change Orientation to <strong>90 degrees</strong> (Vertical Text Up). Apply <strong>Wrap Text</strong>.</li>
-                <li><strong>Column Widths:</strong> Double-click boundaries to "Auto-fit" columns A, C, D, E, F, G. Manually adjust Column B to approx <strong>30 units</strong>.</li>
-                <li><strong>Date Format:</strong> Select F2:F11. Change format to <strong>Long Date</strong>.</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 2: Borders & Visual Style (Video 42:00 - 47:00)</h3>
-            <ul class="workshop-list">
-                <li><strong>Main Borders (A1:G11):</strong> Apply a <strong>Thick Box Border</strong> to the outside. Change Line Color to <span style="color:red; font-weight:bold;">RED</span>.</li>
-                <li><strong>Inside Grid:</strong> Apply <strong>All Borders</strong> (thin) to the inside. Change Line Color to <span style="color:blue; font-weight:bold;">BLUE</span>.</li>
-                <li><strong>Header Style:</strong> Select A1:G1. Fill Color: <span style="background:yellow; padding:0 4px; color:black;">Yellow</span>. Make text <strong>Bold</strong>.</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 3: Calculations & Fill Handle (Video 18:00 - 27:00)</h3>
-            <ul class="workshop-list">
-                <li><strong>Total Value (Column G):</strong> In G2, enter a formula to calculate the Value (Unit Cost multiplied by Quantity).</li>
-                <li><strong>Constraint:</strong> You MUST use cell references.</li>
-                <li><strong>Fill Handle:</strong> Drag the formula down from G2 to G11.</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 4: Functions & Statistics (Video 25:00 - 33:00)</h3>
-            <p>Locate the summary section starting at Row 13.</p>
-            <ul class="workshop-list">
-                <li><strong>Total Stock (E13):</strong> Use the <code>SUM</code> function to calculate the total items in the Quantity column.</li>
-                <li><strong>Avg Cost (E14):</strong> Use the <code>AVERAGE</code> function to calculate the average of the Unit Costs.</li>
-                <li><strong>Highest Cost (E15):</strong> Use the <code>MAX</code> function to find the highest Unit Cost.</li>
-                <li><strong>Lowest Cost (E16):</strong> Use the <code>MIN</code> function to find the lowest Unit Cost.</li>
-                <li><strong>Price Spread (E17):</strong> Calculate the difference between the Highest and Lowest cost (Max - Min).</li>
-            </ul>
-        </div>
-
-        <div class="workshop-card">
-            <h3>Part 5: Advanced Formatting (Video 34:00 - 37:00)</h3>
-            <ul class="workshop-list">
-                <li><strong>Non-Contiguous Selection:</strong> Select D2:D11. Hold <strong>Ctrl</strong>. Select G2:G11. Hold <strong>Ctrl</strong>. Select E14:E17.</li>
-                <li><strong>Action:</strong> With all three ranges selected, format as <strong>Currency</strong> ($) with 2 decimal places.</li>
-                <li><strong>Save:</strong> As <code>Week1_Homework_YOURNAME.xlsx</code>.</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Section 5: Concept Check -->
-    <section id="sec-5">
-        <h2>✅ Quick Check</h2>
-        
-        <div style="margin-bottom: 1.5rem;">
-            <p><strong>1. Why do cells sometimes show <code>######</code>?</strong></p>
-            <button class="btn-outline" style="width: 100%; text-align: left; margin-bottom: 0.5rem;" onclick="checkQuiz(this, true)">The column is too narrow to show the number.</button>
-            <button class="btn-outline" style="width: 100%; text-align: left;" onclick="checkQuiz(this, false)">It is a calculation error.</button>
-        </div>
-
-        <div style="margin-bottom: 1.5rem;">
-            <p><strong>2. Which key do you hold to select cells that are NOT next to each other (e.g., A1 and C1)?</strong></p>
-            <button class="btn-outline" style="width: 100%; text-align: left; margin-bottom: 0.5rem;" onclick="checkQuiz(this, false)">Shift</button>
-            <button class="btn-outline" style="width: 100%; text-align: left;" onclick="checkQuiz(this, true)">Ctrl (or Cmd on Mac)</button>
-        </div>
-    </section>
-
-    <!-- Section 6: Wrap Up -->
-    <section id="sec-6">
-        <h2>🏁 Wrap Up & Submission</h2>
-        
-        <div style="background: #f0fdf4; padding: 2rem; border-radius: 8px; border-left: 5px solid var(--secondary); text-align: center;">
-            <h3 style="color: var(--secondary); margin-top: 0;">🚀 Mission Accomplished!</h3>
-            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">You have completed the Week 1 Digital Textbook.</p>
+        <!-- SECTION 2: RESOURCES & STRATEGY -->
+        <section id="s2">
+            <h2>📂 Class Resources & Strategy</h2>
             
-            <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); text-align: left;">
-                <h4 style="margin-top: 0; display: flex; align-items: center; gap: 0.5rem;">
-                    ⚠️ Important Submission Reminder
-                </h4>
-                <p>You must submit your completed <strong>Week1_Homework_YOURNAME.xlsx</strong> file before the next class.</p>
-                <p>Please check the specific delivery date and time on the <strong>Phidias</strong> platform to avoid late penalties.</p>
-                <p><em>Remember: The Auto-Grader checks your formulas, borders, and colors exactly!</em></p>
+            <div class="card">
+                <h3>🤝 Strategy: How to Solve Problems</h3>
+                <p>For today's class, you are encouraged to <strong>work in pairs</strong>. If you get stuck:</p>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+                    <li><strong>Try to solve it yourself</strong> first using your prior knowledge.</li>
+                    <li><strong>Ask your partner</strong> and work together to find the solution.</li>
+                    <li><strong>Use the website hints:</strong> Go to the "Task Walkthrough" section on this page (Next Section).</li>
+                    <li><strong>Final Resource:</strong> Use the walkthrough video below only if absolutely necessary.</li>
+                </ol>
+
+                <div class="alert-box danger">
+                    <strong>⚠️ EXAM WARNING:</strong> In the real IGCSE Exam, you will have <strong>NO HELP</strong>. 
+                    <br>No partners, no videos, no hints. You must learn to rely on your own exploration of the software. 
+                    <br><strong>Tip:</strong> The <strong>Help Box</strong> inside Excel (F1) is your best friend in the exam. Learn to use it!
+                </div>
             </div>
+
+            <div class="card">
+                <h3>Step 1: Download Required Files</h3>
+                <p>You need the <strong>Question Paper (PDF)</strong> and the <strong>3 Source Files (CSV)</strong>.</p>
+                
+                <div class="grid-4" style="margin-top: 1.5rem;">
+                    <!-- PDF Link -->
+                    <a href="https://drive.google.com/file/d/1u6l5WuFyAmK5F8QqeZtoYrsW8YIGxTMn/view?usp=sharing" target="_blank" class="resource-link">
+                        <div class="resource-card">
+                            <span class="resource-icon">📕</span>
+                            <strong>Instructions PDF</strong>
+                            <div style="font-size:0.8rem; color:var(--primary); margin-top:0.5rem;">Open & Go to Page 7</div>
+                        </div>
+                    </a>
+
+                    <!-- CSV 1 -->
+                    <a href="https://drive.google.com/file/d/1N8YOZd4xUhs5_iWhnUJdETl3Xbxkl9Az/view?usp=sharing" target="_blank" class="resource-link">
+                        <div class="resource-card">
+                            <span class="resource-icon">📄</span>
+                            <strong>j2131home.csv</strong>
+                            <div style="font-size:0.8rem; margin-top:0.5rem;">Property Data</div>
+                        </div>
+                    </a>
+
+                    <!-- CSV 2 -->
+                    <a href="https://drive.google.com/file/d/11NaCFxNk43DPWfd8JOeym-wR3gweH5uI/view?usp=sharing" target="_blank" class="resource-link">
+                        <div class="resource-card">
+                            <span class="resource-icon">📄</span>
+                            <strong>j2131rate.csv</strong>
+                            <div style="font-size:0.8rem; margin-top:0.5rem;">Rates Table</div>
+                        </div>
+                    </a>
+
+                    <!-- CSV 3 -->
+                    <a href="https://drive.google.com/file/d/1oilwOQEK4krUaa7FLp-k39R9ED_DcLuS/view?usp=sharing" target="_blank" class="resource-link">
+                        <div class="resource-card">
+                            <span class="resource-icon">📄</span>
+                            <strong>j2131list.csv</strong>
+                            <div style="font-size:0.8rem; margin-top:0.5rem;">Working File</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                    <button class="btn btn-outline" onclick="toggleVideo()">📺 Toggle Walkthrough Video (Final Resource)</button>
+                    <div id="videoArea" class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/tIhmRMFoPhc?si=fIqS-GCicpZEFGYY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <strong>Instruction:</strong> You will only be solving <strong>Task 5 (Steps 14 to 21)</strong> today.
+            </div>
+
+            <div class="nav-controls">
+                <button class="btn btn-outline" onclick="prevSection(2)">&larr; Back</button>
+                <button class="btn" onclick="nextSection(2)">Start Task 5 &rarr;</button>
+            </div>
+        </section>
+
+        <!-- SECTION 3: TASK EXECUTION -->
+        <section id="s3">
+            <h2>🛠️ Task Walkthrough</h2>
+            
+            <div class="card">
+                <h3>Steps 14 - 15: Setup & Formatting</h3>
+                <ul class="step-list">
+                    <li><strong>Open Files:</strong> Open all 3 CSV files. Check `j2131rate.csv` to see how data is arranged (Horizontal headers?).</li>
+                    <li><strong>Save File:</strong> Save `j2131list.csv` as an Excel Workbook (`.xlsx`) named `j2131bhh_[Center]_[Candidate]`.</li>
+                    <li><strong>Header:</strong> Add "List prepared by: [Name] [Center] [Candidate] on [Date]" in the header.</li>
+                    <li><strong>Formatting:</strong> Merge A1:B1. Set text to White, 28pt, Black Background.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Steps 16 - 17: The Lookup Functions</h3>
+                <div class="alert-box" style="background: rgba(37, 99, 235, 0.1); border-color: var(--primary);">
+                    <strong>💡 Hint:</strong> Look at `j2131rate.csv`. Are the Room Codes (G, S, V) in the first column or the top row?
+                    <br>Top Row = <strong>HLOOKUP</strong>.
+                </div>
+                <ul class="step-list" style="counter-reset: step-counter 15;">
+                    <li><strong>Cell B7:</strong> Use a function to look up the "Number of persons" based on the "Room type" (B5).</li>
+                    <li><strong>Cell B8:</strong> Use a function to check if "Breakfast is provided" (Yes/No).</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Step 18: Generating the List (Challenge)</h3>
+                <p>You need to list properties based on the Location in B4.</p>
+                <ul class="step-list" style="counter-reset: step-counter 17;">
+                    <li><strong>The Logic:</strong> You need to find the correct column for "Ubud" (MATCH) and then pull rows 1, 2, 3... (INDEX).</li>
+                    <li><strong>Formula Structure:</strong>
+                        <br><br>
+                        <span class="code-snippet">=INDEX(DataRange, ROW(A1), MATCH(Location, HeaderRow, 0))</span>
+                        <br><br>
+                    </li>
+                    <li><strong>Replication:</strong> Drag this formula down from B10 to B15. Ensure you used Absolute Referencing (<code>$</code>) correctly!</li>
+                </ul>
+            </div>
+
+            <div class="nav-controls">
+                <button class="btn btn-outline" onclick="prevSection(3)">&larr; Back</button>
+                <button class="btn" onclick="nextSection(3)">Submission Details &rarr;</button>
+            </div>
+        </section>
+
+        <!-- SECTION 4: SUBMISSION -->
+        <section id="s4">
+            <h2>📤 Submission & Wrap-Up</h2>
+
+            <div class="card">
+                <h3>📄 Digital Submission (Phidias)</h3>
+                <p>Instead of printing physical paper, you will generate PDFs (Print to PDF).</p>
+                
+                <div class="grid-2">
+                    <div>
+                        <h4>Required PDF Files:</h4>
+                        <ul class="submission-checklist">
+                            <li><span style="color:var(--secondary)">✔</span> <strong>Printout 2:</strong> Landscape, Formula View (Formulas visible, Row/Col headings ON).</li>
+                            <li><span style="color:var(--secondary)">✔</span> <strong>Printout 3:</strong> Portrait, Values View (Data visible, Row/Col headings OFF).</li>
+                            <li><span style="color:var(--secondary)">✔</span> <strong>Printout 4:</strong> Values View after changing data to "Nusa Lembongan".</li>
+                        </ul>
+                    </div>
+                    <div style="border-left: 2px solid var(--border); padding-left: 1rem;">
+                        <h4>How to Submit:</h4>
+                        <ol style="margin-left: 1.5rem;">
+                            <li>Verify your Name/Candidate # is on every page.</li>
+                            <li>Go to the <strong>Phidias Platform</strong>.</li>
+                            <li>Upload all 3 PDFs to the "Classwork - Week 3" assignment.</li>
+                            <li>Upload your finished Excel file (.xlsx) as well.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <h3>🏠 Homework</h3>
+                <p>If you did not finish Steps 14-21 in class, complete them as homework.</p>
+                <p><strong>Deadline:</strong> Submit to Phidias before the next class session.</p>
+            </div>
+
+            <div class="nav-controls">
+                <button class="btn btn-outline" onclick="prevSection(4)">&larr; Back</button>
+                <button class="btn" onclick="finishClass()">I Have Submitted &rarr;</button>
+            </div>
+        </section>
+
+        <!-- SECTION 5: COMPLETED -->
+        <section id="s5">
+            <div class="card text-center" style="padding: 3rem;">
+                <div style="font-size: 4rem;">🎉</div>
+                <h2>Class Complete!</h2>
+                <p>Great job practicing Data Analysis today.</p>
+                <p>Don't forget to log out of Phidias.</p>
+                <button class="btn btn-outline" onclick="location.reload()" style="margin-top: 2rem;">Reset Page</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div style="text-align: center; padding: 2rem; color: #666; border-top: 1px solid var(--border);">
+            <p>IGCSE ICT 0417 | Week 3 Class 3 Resource</p>
         </div>
-        
-        <button class="btn-primary" onclick="finishLesson()" style="width: 100%; justify-content: center; margin-top: 2rem;">Finish Lesson</button>
-    </section>
+    </footer>
 
-</main>
+    <script>
+        // --- STATE MANAGEMENT ---
+        const TOTAL_SECTIONS = 5;
+        let currentSection = 1;
 
-<div class="sticky-footer">
-    <button class="btn-outline" id="prevBtn" onclick="navigate(-1)" disabled>← Back</button>
-    <span style="font-weight: bold; color: var(--text);" id="pageIndicator">Step 1 of 6</span>
-    <button class="btn-primary" id="nextBtn" onclick="navigate(1)">Next Step →</button>
-</div>
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgressBar();
+        });
 
-<script>
-    // --- State Management ---
-    const sections = ['sec-1', 'sec-2', 'sec-3', 'sec-4', 'sec-5', 'sec-6'];
-    let currentStep = 0;
-
-    // --- Navigation ---
-    function navigate(dir) {
-        const currentSection = document.getElementById(sections[currentStep]);
-        
-        // Hide current
-        currentSection.classList.remove('active');
-        setTimeout(() => currentSection.style.display = 'none', 300); // Wait for animation
-
-        // Update index
-        currentStep += dir;
-        if (currentStep < 0) currentStep = 0;
-        if (currentStep >= sections.length) currentStep = sections.length - 1;
-
-        // Show new
-        const newSection = document.getElementById(sections[currentStep]);
-        newSection.style.display = 'block';
-        setTimeout(() => newSection.classList.add('active'), 10);
-
-        updateUI();
-    }
-
-    function nextSection() { navigate(1); }
-
-    function updateUI() {
-        document.getElementById('prevBtn').disabled = currentStep === 0;
-        document.getElementById('nextBtn').disabled = currentStep === sections.length - 1;
-        document.getElementById('pageIndicator').innerText = `Step ${currentStep + 1} of ${sections.length}`;
-        
-        const pct = ((currentStep + 1) / sections.length) * 100;
-        document.getElementById('progressBar').style.width = `${pct}%`;
-        window.scrollTo(0, 0);
-    }
-
-    // --- Quiz Logic ---
-    function checkQuiz(btn, isCorrect) {
-        if (isCorrect) {
-            btn.style.background = "var(--secondary)";
-            btn.style.color = "white";
-            btn.innerHTML += " ✅ Correct!";
-        } else {
-            btn.style.background = "var(--danger)";
-            btn.style.color = "white";
-            btn.innerHTML += " ❌ Try again.";
+        // --- NAVIGATION ---
+        function nextSection(currentId) {
+            document.getElementById(`s${currentId}`).classList.remove('active');
+            document.getElementById(`s${currentId + 1}`).classList.add('active');
+            currentSection = currentId + 1;
+            window.scrollTo(0, 0);
+            updateProgressBar();
         }
-    }
 
-    // --- Theme & Persistence ---
-    function toggleTheme() {
-        const body = document.body;
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    }
+        function prevSection(currentId) {
+            document.getElementById(`s${currentId}`).classList.remove('active');
+            document.getElementById(`s${currentId - 1}`).classList.add('active');
+            currentSection = currentId - 1;
+            window.scrollTo(0, 0);
+            updateProgressBar();
+        }
 
-    function finishLesson() {
-        alert("Lesson Complete! Don't forget to submit your Excel file on Phidias.");
-        localStorage.setItem('week1_complete', 'true');
-    }
+        function finishClass() {
+            nextSection(4);
+            confettiEffect();
+        }
 
-    // Initialize
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-</script>
+        function updateProgressBar() {
+            const pct = (currentSection / TOTAL_SECTIONS) * 100;
+            document.getElementById('progressBar').style.width = `${pct}%`;
+        }
+
+        function toggleVideo() {
+            const vid = document.getElementById('videoArea');
+            if (vid.style.display === 'block') {
+                vid.style.display = 'none';
+            } else {
+                vid.style.display = 'block';
+            }
+        }
+
+        // --- THEME ---
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        // --- EFFECTS ---
+        function confettiEffect() {
+            const colors = ['#2563eb', '#10b981', '#f59e0b', '#ef4444'];
+            for (let i = 0; i < 50; i++) {
+                const d = document.createElement('div');
+                d.style.position = 'fixed';
+                d.style.left = Math.random() * 100 + 'vw';
+                d.style.top = '-10px';
+                d.style.width = '10px';
+                d.style.height = '10px';
+                d.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                d.style.transition = 'top 2s ease-in, transform 2s linear';
+                d.style.zIndex = '9999';
+                document.body.appendChild(d);
+
+                setTimeout(() => {
+                    d.style.top = '100vh';
+                    d.style.transform = `rotate(${Math.random() * 360}deg)`;
+                }, 100);
+
+                setTimeout(() => d.remove(), 2100);
+            }
+        }
+    </script>
 
 </body>
 </html>
