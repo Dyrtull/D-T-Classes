@@ -538,10 +538,24 @@
                  <li><strong>Clean Up:</strong> Scroll down to find the Vertical Product Table and Horizontal Zone Table.</li>
                  <li><strong>Specs:</strong> Use VLOOKUP to get Weight and Dimensions from the Product Table.</li>
                  <li><strong>Shipping Cost:</strong> Use HLOOKUP to find the "Zone Rate" based on the destination (Zone A, B, etc).</li>
-                 <li><strong>Approval Code (The Challenge):</strong> Implement the Corporate Policy:
-                    <div class="code-block" style="margin-top:0.5rem;">=IF(Total>2000, "EXEC_REVIEW", IF(Total>500, "MGR_REVIEW", "AUTO_APPROVE"))</div>
+                 <li><strong>Formatting:</strong> Format all monetary values (Costs, Rates, Totals) as <strong>Currency ($)</strong> with 2 decimal places.</li>
+                 <li><strong>Approval Code (The Challenge):</strong> Implement the Corporate Policy using a Nested IF:
+                    <ul style="list-style-type: circle; margin-left: 1.5rem; font-size: 0.9rem; margin-top: 0.5rem;">
+                        <li><strong>Step 1:</strong> Check if the <strong>Total</strong> is greater than <code>2000</code>. If TRUE, display <code>"EXEC_REVIEW"</code>.</li>
+                        <li><strong>Step 2:</strong> If FALSE, check if the <strong>Total</strong> is greater than <code>500</code>. If TRUE, display <code>"MGR_REVIEW"</code>.</li>
+                        <li><strong>Step 3:</strong> If both are FALSE (meaning it is 500 or less), display <code>"AUTO_APPROVE"</code>.</li>
+                    </ul>
                  </li>
             </ol>
+            
+            <div style="background: #fee2e2; border-left: 4px solid #ef4444; color: #991b1b; padding: 1rem; margin-top: 1rem; border-radius: 4px;">
+                <strong>⚠️ Automatic Grading Warning:</strong>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">Your file will be graded by a Python script. 
+                <br>1. Do NOT insert new rows or columns.
+                <br>2. Do NOT change any text labels or headers.
+                <br>3. Ensure your formulas are in the exact cells specified.
+                <br><strong>Any change to the structure of the file will be counted as a mistake (Grade: 1).</strong></p>
+            </div>
         </div>
 
          <!-- CCQ 2 -->
@@ -703,7 +717,7 @@
             <h3>🚀 Extension: Homework & Advanced</h3>
             <p><strong>Homework Task:</strong> Complete <code>Week2_Homework_Logistics.csv</code>. Remember the Corporate Approval Logic!</p>
             <div class="code-block">
-                =IF(Total>2000, "EXEC", IF(Total>500, "MGR", "AUTO"))
+                Check Logic: >2000? -> "EXEC", >500? -> "MGR", Else -> "AUTO"
             </div>
             <p class="mt-4"><strong>Advanced Challenge:</strong> Try using <code>INDEX</code> and <code>MATCH</code> instead of VLOOKUP. It's more flexible! Look it up for extra credit.</p>
         </div>
