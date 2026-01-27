@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Motion Detective's Handbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f3f4f6;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        h1, h2, h3, .handwriting {
+            font-family: 'Comic Neue', cursive;
+        }
+        .paper-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tape {
+            background-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            backdrop-filter: blur(2px);
+            transform: rotate(-2deg);
+            border-left: 1px dashed rgba(0,0,0,0.1);
+            border-right: 1px dashed rgba(0,0,0,0.1);
+        }
+        input[type="text"], textarea {
+            background-image: linear-gradient(transparent, transparent 29px, #e5e7eb 30px);
+            background-size: 100% 30px;
+            line-height: 30px;
+            border: none;
+            width: 100%;
+            font-family: 'Comic Neue', cursive;
+            font-size: 1.2rem;
+            color: #2563eb;
+            outline: none;
+            padding-left: 0.5rem;
+        }
+        input[type="text"]:focus, textarea:focus {
+            background-image: linear-gradient(transparent, transparent 29px, #93c5fd 30px);
+        }
+        .motion-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-gray-800 pb-20">
+
+    <!-- Header -->
+    <header class="bg-yellow-400 border-b-4 border-yellow-600 p-6 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="bg-white p-3 rounded-full border-4 border-black">
+                    <i class="fas fa-user-secret text-4xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-black">The Motion Detective’s Handbook</h1>
+                    <p class="text-yellow-900 font-semibold">Week 4 • Cambridge 4.3.2 • Science Class</p>
+                </div>
+            </div>
+            <button onclick="window.print()" class="hidden md:block bg-white text-black font-bold py-2 px-4 rounded-lg border-2 border-black hover:bg-gray-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">
+                <i class="fas fa-print mr-2"></i> Print Guide
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-8 space-y-12">
+
+        <!-- Intro Section -->
+        <section class="bg-white p-8 rounded-xl paper-shadow relative rotate-1">
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-32 h-8 tape"></div>
+            <h2 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">🎯</span> 
+                Our Mission Today
+            </h2>
+            <ul class="space-y-3 text-lg">
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                    <span><strong>Identify</strong> the 4 ways things move.</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                    <span><strong>Understand</strong> how we change one type of movement into another.</span>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                    <span><strong>Build</strong> a machine that changes motion (The Crank & Slider).</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Part 1: Detective Work -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">🎬</span>
+                <h2 class="text-3xl font-bold">Part 1: Motion Detective</h2>
+            </div>
+            <p class="mb-4 text-gray-600 italic border-l-4 border-yellow-400 pl-4">Instructions: Watch the video clips. What do you see?</p>
+
+            <div class="bg-white rounded-xl overflow-hidden border-2 border-gray-200">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 border-b-2 border-gray-300">
+                            <th class="p-4 w-16 text-center">Clip</th>
+                            <th class="p-4">What is the object?</th>
+                            <th class="p-4">Describe the motion</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="p-4 text-center font-bold bg-gray-50">1</td>
+                            <td class="p-2"><input type="text" placeholder="e.g. A Wheel..."></td>
+                            <td class="p-2"><input type="text" placeholder="e.g. Spinning round..."></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 text-center font-bold bg-gray-50">2</td>
+                            <td class="p-2"><input type="text"></td>
+                            <td class="p-2"><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 text-center font-bold bg-gray-50">3</td>
+                            <td class="p-2"><input type="text"></td>
+                            <td class="p-2"><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 text-center font-bold bg-gray-50">4</td>
+                            <td class="p-2"><input type="text"></td>
+                            <td class="p-2"><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 text-center font-bold bg-gray-50">5</td>
+                            <td class="p-2"><input type="text"></td>
+                            <td class="p-2"><input type="text"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Part 2: The Big Four -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">📚</span>
+                <h2 class="text-3xl font-bold">Part 2: The "Big Four" Types of Motion</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Rotary -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden motion-card border border-gray-200">
+                    <div class="h-48 bg-gray-100 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1575204015065-228787b4e130?auto=format&fit=crop&w=600&q=80" alt="Fan" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fas fa-sync fa-spin text-6xl text-white drop-shadow-lg" style="animation-duration: 3s;"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-blue-600 mb-2">1. Rotary Motion 🔄</h3>
+                        <p class="text-sm text-gray-600 mb-2"><strong>The Spinner</strong></p>
+                        <p class="text-gray-700 mb-4">Movement around a fixed axis in a <strong>complete circle</strong>.</p>
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1">Your Turn: Draw the arrow</p>
+                            <div class="h-16 border-2 border-dashed border-blue-300 rounded bg-white flex items-center justify-center text-gray-400">
+                                (Draw circle here)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linear -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden motion-card border border-gray-200">
+                    <div class="h-48 bg-gray-100 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=600&q=80" alt="Train" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fas fa-arrow-right text-6xl text-white drop-shadow-lg"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-green-600 mb-2">2. Linear Motion ➡️</h3>
+                        <p class="text-sm text-gray-600 mb-2"><strong>The Straight Shooter</strong></p>
+                        <p class="text-gray-700 mb-4">Movement in a <strong>straight line</strong> in one direction.</p>
+                        <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                            <p class="text-xs font-bold text-green-800 uppercase mb-1">Your Turn: Draw the arrow</p>
+                            <div class="h-16 border-2 border-dashed border-green-300 rounded bg-white flex items-center justify-center text-gray-400">
+                                (Draw line here)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reciprocating -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden motion-card border border-gray-200">
+                    <div class="h-48 bg-gray-100 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?auto=format&fit=crop&w=600&q=80" alt="Sewing Machine" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fas fa-arrows-alt-v text-6xl text-white drop-shadow-lg"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-purple-600 mb-2">3. Reciprocating Motion ↔️</h3>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Back-and-Forth Straight</strong></p>
+                        <p class="text-gray-700 mb-4">Moving back and forth in a straight line (like a piston).</p>
+                        <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
+                            <p class="text-xs font-bold text-purple-800 uppercase mb-1">Your Turn: Draw the arrows</p>
+                            <div class="h-16 border-2 border-dashed border-purple-300 rounded bg-white flex items-center justify-center text-gray-400">
+                                (Draw up & down here)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Oscillating -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden motion-card border border-gray-200">
+                    <div class="h-48 bg-gray-100 relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1542359487-14285cb58e93?auto=format&fit=crop&w=600&q=80" alt="Swing" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 border-b-4 border-white rounded-full animate-pulse"></div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-orange-600 mb-2">4. Oscillating Motion ↪️</h3>
+                        <p class="text-sm text-gray-600 mb-2"><strong>The Swinger</strong></p>
+                        <p class="text-gray-700 mb-4">Moving back and forth in a <strong>curve/arc</strong> (like a swing).</p>
+                        <div class="bg-orange-50 p-3 rounded-lg border border-orange-100">
+                            <p class="text-xs font-bold text-orange-800 uppercase mb-1">Your Turn: Draw the arc</p>
+                            <div class="h-16 border-2 border-dashed border-orange-300 rounded bg-white flex items-center justify-center text-gray-400">
+                                (Draw curve here)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning Box -->
+            <div class="mt-8 bg-red-50 border-l-8 border-red-500 p-6 rounded-r-lg shadow-sm">
+                <h3 class="text-red-800 font-bold text-lg mb-2"><i class="fas fa-exclamation-triangle mr-2"></i> Important: Don't get tricked!</h3>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <p class="text-red-900 font-semibold">Reciprocating = Straight Line</p>
+                        <p class="text-sm text-gray-600">Like a needle.</p>
+                    </div>
+                    <div class="hidden md:block w-px bg-red-200"></div>
+                    <div class="flex-1">
+                        <p class="text-red-900 font-semibold">Oscillating = Curve / Arc</p>
+                        <p class="text-sm text-gray-600">Like a swing.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 3: Mechanisms -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-4xl">⚙️</span>
+                <h2 class="text-3xl font-bold">Part 3: Mechanisms</h2>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-6">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="w-full md:w-1/3 bg-gray-100 h-40 rounded flex items-center justify-center relative">
+                        <!-- CSS Representation of Crank Slider -->
+                        <div class="relative w-24 h-24">
+                            <div class="absolute inset-0 rounded-full border-4 border-gray-400 opacity-25"></div>
+                            <div class="absolute top-1/2 left-1/2 w-10 h-2 bg-black origin-left transform rotate-45 rounded-full"></div> <!-- Crank -->
+                            <div class="absolute top-1/2 left-1/2 w-20 h-1 bg-red-500 origin-left transform translate-x-6 translate-y-2 rotate-12"></div> <!-- Rod -->
+                            <div class="absolute top-1/2 right-0 w-8 h-8 bg-blue-500 transform -translate-y-1/2 rounded"></div> <!-- Slider -->
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold mb-2">Mechanism A: The Crank and Slider</h3>
+                        <p class="mb-2"><strong>Mission:</strong> Turns <span class="text-blue-600 font-bold">Rotary (Spin)</span> into <span class="text-purple-600 font-bold">Reciprocating (Linear)</span>.</p>
+                        <p class="text-gray-600 text-sm">Example: A steam train wheel or car engine.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="w-full md:w-1/3 bg-gray-100 h-40 rounded flex items-center justify-center relative">
+                        <!-- CSS Representation of Cam -->
+                        <div class="relative w-20 h-20 bg-gray-300 rounded-full" style="border-radius: 50% 50% 50% 30%;">
+                            <div class="absolute top-0 left-1/2 w-2 h-16 bg-red-500 transform -translate-x-1/2 -translate-y-full"></div> <!-- Follower -->
+                            <div class="absolute inset-0 flex items-center justify-center text-xs text-gray-500">Cam</div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold mb-2">Mechanism B: The Cam and Follower</h3>
+                        <p class="mb-2"><strong>Mission:</strong> Turns <span class="text-blue-600 font-bold">Rotary</span> into <span class="text-orange-600 font-bold">Reciprocating/Oscillating</span>.</p>
+                        <p class="text-gray-600 text-sm">Example: Engine valves or a mechanical toy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 4: Guided Practice -->
+        <section class="space-y-8">
+            <div class="flex items-center gap-3">
+                <span class="text-4xl">🛠️</span>
+                <h2 class="text-3xl font-bold">Part 4: Guided Practice</h2>
+            </div>
+
+            <!-- Scavenger Hunt -->
+            <div class="bg-yellow-50 p-6 rounded-xl border-2 border-yellow-200">
+                <h3 class="text-xl font-bold mb-4">Activity 1: The Scavenger Hunt</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center bg-white p-2 rounded shadow-sm">
+                        <span class="w-1/3 font-bold px-2">🚲 Bicycle Wheel</span>
+                        <input type="text" placeholder="Type of motion?" class="flex-1 bg-transparent border-b border-gray-200">
+                    </div>
+                    <div class="flex items-center bg-white p-2 rounded shadow-sm">
+                        <span class="w-1/3 font-bold px-2">🏬 Escalator Steps</span>
+                        <input type="text" placeholder="Type of motion?" class="flex-1 bg-transparent border-b border-gray-200">
+                    </div>
+                    <div class="flex items-center bg-white p-2 rounded shadow-sm">
+                        <span class="w-1/3 font-bold px-2">☔ Windshield Wipers</span>
+                        <input type="text" placeholder="Type of motion?" class="flex-1 bg-transparent border-b border-gray-200">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Build Instructions -->
+            <div class="bg-blue-50 p-6 rounded-xl border-2 border-blue-200 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <i class="fas fa-tools text-9xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Activity 2: BUILD TIME (Crank & Slider)</h3>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold text-blue-800 mb-2">Instructions:</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-sm md:text-base">
+                            <li><strong>The Base:</strong> Place cardboard rectangle (20cm x 15cm) flat.</li>
+                            <li><strong>The Crank:</strong> Pin the Circle (5cm) to the Base.</li>
+                            <li><strong>The Rod:</strong> Pin the Strip (12cm) to the <em>edge</em> of the Circle.</li>
+                            <li><strong>The Slider:</strong> Tape two straws parallel on the Base.</li>
+                            <li><strong>Connect:</strong> Put the Rod end between the straws.</li>
+                        </ol>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-inner">
+                        <h4 class="font-bold text-gray-800 mb-2">📐 The Math Lab</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs text-gray-500 uppercase">Radius of Crank (cm)</label>
+                                <input type="number" class="w-full border-b border-blue-300 bg-blue-50 p-1" placeholder="e.g. 2.5">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 uppercase">Slider Stroke Distance (cm)</label>
+                                <input type="number" class="w-full border-b border-blue-300 bg-blue-50 p-1" placeholder="Measure it!">
+                            </div>
+                            <div class="text-sm bg-yellow-100 p-2 rounded">
+                                <strong>Secret Formula:</strong><br>
+                                Stroke ≈ 2 × Radius
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exit Ticket -->
+        <section class="bg-gray-800 text-white p-8 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6 border-b border-gray-600 pb-2">🎫 Exit Ticket: Knowledge Check</h2>
+            
+            <div class="grid gap-6">
+                <div>
+                    <label class="block text-gray-400 text-sm mb-1">1. What motion does a bicycle pedal make?</label>
+                    <input type="text" class="w-full bg-gray-700 text-white rounded p-2 focus:bg-gray-600 border border-gray-600" style="background-image: none;">
+                </div>
+                <div>
+                    <label class="block text-gray-400 text-sm mb-1">2. What motion does a drawer make when opening?</label>
+                    <input type="text" class="w-full bg-gray-700 text-white rounded p-2 focus:bg-gray-600 border border-gray-600" style="background-image: none;">
+                </div>
+                <div class="mt-4">
+                    <label class="block text-gray-400 text-sm mb-1">3. Sketch / Reflection:</label>
+                    <textarea class="w-full bg-gray-700 text-white rounded p-2 h-24 focus:bg-gray-600 border border-gray-600" style="background-image: none;" placeholder="Where have you seen a crank today?"></textarea>
+                </div>
+            </div>
+            
+            <button onclick="alert('Great job, Detective! Your answers are ready to be reviewed.')" class="mt-8 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded transition-colors">
+                Submit Answers
+            </button>
+        </section>
+
+    </main>
+
+    <footer class="text-center text-gray-400 py-8 text-sm">
+        <p>© Science Dept. | Motion Detective Unit</p>
+    </footer>
+
+</body>
+</html>
