@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated Automaton Design | Week 6</title>
+    <style>
+        /* --- CORE VARIABLES & RESET --- */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --font-main: system-ui, -apple-system, sans-serif;
+            --font-mono: 'Courier New', monospace;
+            --radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-dark: #60a5fa;
+            --secondary: #34d399;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
+        body { font-family: var(--font-main); background: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 80px; }
+
+        /* --- UTILITIES --- */
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .hidden { display: none !important; }
+        .btn {
+            background: var(--primary); color: white; border: none; padding: 10px 20px;
+            border-radius: var(--radius); cursor: pointer; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-success { background: var(--secondary); }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+        
+        /* Video Container */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 20px;
+        }
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: sticky; top: 0; z-index: 100; background: var(--surface);
+            border-bottom: 1px solid var(--border); padding: 10px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+        .progress-container { flex-grow: 1; margin: 0 20px; background: var(--border); height: 8px; border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--secondary); width: 0%; transition: width 0.5s; }
+        .theme-toggle { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- SECTIONS SPECIFIC --- */
+        /* Opening Activity */
+        .mystery-box {
+            background: #333; color: #fff; padding: 40px; border-radius: var(--radius);
+            text-align: center; position: relative; overflow: hidden;
+            border: 4px dashed var(--accent);
+        }
+        .animation-stage { height: 150px; display: flex; justify-content: center; align-items: center; }
+        .gear-anim { font-size: 3rem; animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* Tabs */
+        .tabs { display: flex; gap: 10px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; cursor: pointer; white-space: nowrap; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .concept-detail { border-left: 3px solid var(--secondary); padding-left: 15px; margin: 15px 0; }
+        .concept-img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; border: 2px dashed var(--border); }
+
+        /* System Builder */
+        .system-builder { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; background: var(--surface); padding: 20px; border-radius: var(--radius); border: 2px solid var(--border); }
+        .component-slot {
+            width: 100px; height: 100px; border: 2px dashed var(--text-muted);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            text-align: center; font-size: 0.8rem; cursor: pointer; position: relative;
+        }
+        .component-slot.filled { border-style: solid; border-color: var(--primary); background: rgba(37, 99, 235, 0.1); }
+        .arrow { font-size: 1.5rem; color: var(--text-muted); }
+
+        /* CCQs */
+        .ccq-container { border-left: 4px solid var(--accent); background: rgba(245, 158, 11, 0.1); padding: 15px; margin-top: 20px; border-radius: 0 var(--radius) var(--radius) 0; }
+        .feedback { margin-top: 10px; padding: 10px; border-radius: 8px; font-weight: 500; }
+        .feedback.correct { background: #dcfce7; color: #166534; }
+        .feedback.incorrect { background: #fee2e2; color: #991b1b; }
+
+        /* Vocabulary */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .vocab-card {
+            background: var(--surface); border: 1px solid var(--border); padding: 15px;
+            border-radius: 8px; cursor: pointer; position: relative;
+        }
+        .vocab-card h4 { color: var(--primary); margin-bottom: 5px; }
+        .vocab-def { display: none; font-size: 0.9rem; margin-top: 5px; border-top: 1px solid var(--border); padding-top: 5px; }
+        .vocab-card.active .vocab-def { display: block; }
+
+        /* Wrap Up Extras */
+        .tutorial-step { background: var(--bg); padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border); }
+        .checklist-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+
+        /* Footer Nav */
+        .footer-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--surface); border-top: 1px solid var(--border);
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">
+        <span style="font-size: 1.5rem;">⚙️</span>
+        <div>
+            <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);">Week 6</div>
+            <div>Automaton Design</div>
+        </div>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">🌓</button>
+</header>
+
+<main class="container">
+
+    <!-- SECTION 1: OPENING ACTIVITY (MANDATORY) -->
+    <section id="sec-opening" class="active-section">
+        <div class="card">
+            <h2>🔎 Opening: The Mechanism Detective</h2>
+            <p>Welcome, Engineer. Before we build, we must analyze. Look at the "Black Box" below.</p>
+            
+            <div class="mystery-box">
+                <div class="animation-stage">
+                    <!-- Simple visualization of input/output -->
+                    <div style="margin-right: 20px;">
+                        <div>INPUT</div>
+                        <div class="gear-anim">↻</div>
+                        <small>Continuous Rotation</small>
+                    </div>
+                    <div style="font-size: 2rem;">➜ [ ? ] ➜</div>
+                    <div style="margin-left: 20px;">
+                        <div>OUTPUT</div>
+                        <div style="font-size: 3rem; animation: bounce 1s infinite alternate;">↕️</div>
+                        <small>Linear Up/Down</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <h3>Prediction Challenge:</h3>
+                <p>Which combination of mechanisms is most likely inside the box?</p>
+                <div class="grid-2">
+                    <button class="btn btn-outline" onclick="checkOpening(this, false)">Two Gears connecting</button>
+                    <button class="btn btn-outline" onclick="checkOpening(this, true)">A Cam and Follower</button>
+                    <button class="btn btn-outline" onclick="checkOpening(this, false)">A Pulley System</button>
+                    <button class="btn btn-outline" onclick="checkOpening(this, false)">A single Lever</button>
+                </div>
+                <div id="opening-feedback" class="hidden feedback"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: OBJECTIVES -->
+    <section id="sec-objectives" class="hidden">
+        <div class="card" style="border-left: 5px solid var(--primary);">
+            <h2>🎯 Learning Objectives</h2>
+            <p>By the end of this session (1h 30m), you will be able to:</p>
+            <ul style="margin-left: 20px; margin-top: 10px; display: grid; gap: 10px;">
+                <li><strong>Synthesize</strong> knowledge of levers, gears, and cams to design a complex system.</li>
+                <li><strong>Design</strong> an automaton that meets 5 specific engineering criteria.</li>
+                <li><strong>Create</strong> technical sketches to communicate your mechanical logic.</li>
+                <li><strong>Collaborate</strong> to refine designs and troubleshoot potential failures.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SECTION 3: CONCEPT EXPLORATION -->
+    <section id="sec-concepts" class="hidden">
+        <h2>📚 Mechanism Deep Dive</h2>
+        <p>Before we design, let's explore how these systems move in detail. Watch the examples below, then study the components.</p>
+        
+        <!-- YOUTUBE VIDEO SECTION -->
+        <div class="card">
+            <h3>🎥 Video Inspiration: Automata in Motion</h3>
+            <p>Watch this compilation of cardboard automata. Observe how the <strong>crank</strong> turns, how <strong>cams</strong> lift followers, and how <strong>linkages</strong> create complex steps.</p>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/OGPhJxkjR3A" title="Automata Mechanisms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('mechanisms', 'levers')">Levers & Linkages</button>
+            <button class="tab-btn" onclick="showTab('mechanisms', 'gears')">Gears & Pulleys</button>
+            <button class="tab-btn" onclick="showTab('mechanisms', 'cams')">Cams & Cranks</button>
+        </div>
+
+        <div id="tab-levers" class="card tab-content">
+            <h3>Levers & Linkages</h3>
+            <!-- IMAGE PLACEHOLDER: Paste your image address below where it says 'via.placeholder.com...' -->
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20240424185818/Types-of-Lever.png" alt="Lever Mechanism" class="concept-img">
+            
+            <p><strong>Step-by-Step Logic:</strong> Linkages are used to transfer motion from one place to another or change its type.</p>
+            <div class="concept-detail">
+                <h4>1. The Fixed Pivot</h4>
+                <p>Every lever needs a fulcrum (pivot point). In your automaton, this is usually a skewer or wire that stays still while the lever moves around it.</p>
+            </div>
+            <div class="concept-detail">
+                <h4>2. The Input Motion</h4>
+                <p>Typically, a crank creates a rotating input. A linkage rod connects this rotation to a lever, pushing it back and forth.</p>
+            </div>
+            <div class="concept-detail">
+                <h4>3. The Result</h4>
+                <p><strong>Oscillating Motion:</strong> The final output waves back and forth (like a hand waving or a head nodding).</p>
+            </div>
+        </div>
+
+        <div id="tab-gears" class="card tab-content hidden">
+            <h3>Gears & Pulleys</h3>
+            <!-- IMAGE PLACEHOLDER: Paste your image address below -->
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHw4TVmopFDaxuM1IrF3FoyeqwN01hGCYaPw&s" alt="Gear Mechanism" class="concept-img">
+
+            <p><strong>Step-by-Step Logic:</strong> These are the "transmission" of your machine.</p>
+            <div class="concept-detail">
+                <h4>1. Driver vs. Follower</h4>
+                <p>The <strong>Driver</strong> is connected to your hand crank. The <strong>Follower</strong> is the gear being turned.</p>
+            </div>
+            <div class="concept-detail">
+                <h4>2. Speed & Torque Rules</h4>
+                <ul>
+                    <li><strong>Small Driver ➜ Big Follower:</strong> Slower speed, More power (Torque). Good for lifting heavy parts.</li>
+                    <li><strong>Big Driver ➜ Small Follower:</strong> Faster speed, Less power. Good for spinning things quickly.</li>
+                </ul>
+            </div>
+            <div class="concept-detail">
+                <h4>3. Direction Change</h4>
+                <p>Two gears touching will rotate in <strong>opposite</strong> directions. To keep the same direction, you need an "Idler" gear in the middle.</p>
+            </div>
+        </div>
+
+        <div id="tab-cams" class="card tab-content hidden">
+            <h3>Cams & Cranks</h3>
+            <!-- IMAGE PLACEHOLDER: Paste your image address below -->
+            <img src="https://i0.wp.com/www.theengineeringchoice.com/wp-content/uploads/2024/06/What-is-Cam-And-Follower.webp" alt="Cam Mechanism" class="concept-img">
+
+            <p><strong>Step-by-Step Logic:</strong> The "Brain" of the operation. Cams program exactly <em>how</em> something moves.</p>
+            <div class="concept-detail">
+                <h4>1. The Cam Profile (Shape)</h4>
+                <p>The shape matters! An <strong>Oval</strong> cam creates a smooth up-and-down wave. A <strong>Snail (Drop)</strong> cam creates a slow rise followed by a sudden drop (great for hammering motions).</p>
+            </div>
+            <div class="concept-detail">
+                <h4>2. The Follower</h4>
+                <p>This is a rod that sits on top of the cam. It is constrained by a guide so it can only move Up and Down (Linear Reciprocating).</p>
+            </div>
+            <div class="concept-detail">
+                <h4>3. Gravity is Key</h4>
+                <p>The follower falls back down because of gravity. If your automaton is tilted, it might not work!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: DESIGN BRIEF & BRAINSTORM -->
+    <section id="sec-brief" class="hidden">
+        <div class="card">
+            <h2>📝 The Design Brief</h2>
+            <p><strong>Your Challenge:</strong> Design and build an Integrated Mechanical Automaton.</p>
+            
+            <div style="background: var(--bg); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4>Specifications Checklist:</h4>
+                <label style="display: block; margin: 5px 0;"><input type="checkbox" disabled checked> Hand-powered (One crank)</label>
+                <label style="display: block; margin: 5px 0;"><input type="checkbox" disabled checked> Includes at least <strong>TWO</strong> different mechanisms</label>
+                <label style="display: block; margin: 5px 0;"><input type="checkbox" disabled checked> Functional & Smooth operation</label>
+                <label style="display: block; margin: 5px 0;"><input type="checkbox" disabled checked> Themed (e.g., animal, machine, magic)</label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🎨 Step 1: Brainstorm & Sketch</h3>
+            <p>We are going old school! Good engineering starts on paper.</p>
+            
+            <div class="grid-2">
+                <div>
+                    <h4>Instructions:</h4>
+                    <ol style="margin-left: 20px; line-height: 2;">
+                        <li>Grab a sheet of blank A4 paper.</li>
+                        <li>Divide the page into 3 sections for 3 different ideas.</li>
+                        <li>Draw the <strong>Box</strong> (Frame) first.</li>
+                        <li>Draw the <strong>Crank</strong> on the side.</li>
+                        <li>Sketch the mechanisms inside (use arrows to show movement).</li>
+                    </ol>
+                    <div style="margin-top: 20px; padding: 10px; background: #e0f2fe; border-radius: 8px; color: #0369a1;">
+                        <strong>💡 Tip:</strong> Don't worry about art skills! We just need to see the circles (gears/cams) and lines (rods/levers).
+                    </div>
+                </div>
+                <div>
+                    <!-- IMAGE PLACEHOLDER: Paste example sketch here -->
+                    <img src="img/sketch.png" alt="Example Sketch" style="width: 100%; border-radius: 8px; border: 2px solid var(--border);">
+                    <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Example of a rough engineering sketch</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: SYSTEM DESIGN (INTERACTIVE) -->
+    <section id="sec-design" class="hidden">
+        <h2>🛠️ Step 2: System Architecture</h2>
+        <p>Now we plan the logic step-by-step. Use the builder below to test combinations.</p>
+        
+        <div class="card" style="border-left: 4px solid var(--primary);">
+            <h4>Instructional Guide: How to Chain Mechanisms</h4>
+            <ol style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                <li><strong>Start with the Input:</strong> Your energy source is always the Hand Crank (Rotary motion).</li>
+                <li><strong>Choose Mechanism 1:</strong> This connects directly to the crank shaft. 
+                    <br><em>Tip:</em> Use gears here if you want to change the speed immediately. Use a cam if you want movement directly on the main shaft.</li>
+                <li><strong>Choose Mechanism 2:</strong> This runs off the output of Mechanism 1.
+                    <br><em>Tip:</em> If Mechanism 1 is a gear, Mechanism 2 connects to the second gear's shaft. If Mechanism 1 is a cam, Mechanism 2 is the follower rod.</li>
+                <li><strong>Analyze Output:</strong> The final box tells you how the object on top (the decorative part) will move.</li>
+            </ol>
+        </div>
+
+        <div class="system-builder">
+            <!-- SLOT 1 -->
+            <div class="component-slot filled" style="background: #e0f2fe; border-color: #3b82f6;">
+                <div>
+                    <strong>INPUT</strong><br>
+                    <span>Hand Crank</span><br>
+                    <small>Rotary ↻</small>
+                </div>
+            </div>
+            
+            <div class="arrow">➜</div>
+
+            <!-- SLOT 2 -->
+            <div class="component-slot" id="slot-2" onclick="cycleComponent(2)">
+                <div id="slot-2-text">
+                    <span style="color:var(--text-muted)">Click to Add Mechanism 1</span>
+                </div>
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <!-- SLOT 3 -->
+            <div class="component-slot" id="slot-3" onclick="cycleComponent(3)">
+                <div id="slot-3-text">
+                    <span style="color:var(--text-muted)">Click to Add Mechanism 2</span>
+                </div>
+            </div>
+            
+            <div class="arrow">➜</div>
+
+            <!-- OUTPUT -->
+            <div class="component-slot filled" style="background: #dcfce7; border-color: #22c55e;">
+                <div id="output-text">
+                    <strong>OUTPUT</strong><br>
+                    <span>?</span>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn" style="margin-top: 15px;" onclick="analyzeSystem()">Analyze System</button>
+        <div id="system-analysis" class="hidden feedback" style="margin-top: 10px;"></div>
+    </section>
+
+    <!-- SECTION 6: PRACTICE & CCQs (MANDATORY) -->
+    <section id="sec-practice" class="hidden">
+        <h2>🧠 Engineering Checkpoint</h2>
+        <p>Verify your understanding before the Feasibility Check.</p>
+
+        <!-- CCQ 1: Wh- Question -->
+        <div class="card">
+            <h4>Question 1: Speed & Torque</h4>
+            <p>You need your automaton to move <em>very slowly</em> but with enough power to lift a heavy wing. How should you arrange your gears?</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn btn-outline" onclick="checkCCQ(this, false, 'Think about a bicycle. Big front gear makes you go fast, but it is hard to pedal.')">Large Driver ➜ Small Follower</button>
+                <button class="btn btn-outline" onclick="checkCCQ(this, true, 'Correct! This is a reduction ratio. Speed goes down, Torque goes up.')">Small Driver ➜ Large Follower</button>
+                <button class="btn btn-outline" onclick="checkCCQ(this, false, 'Same size gears only transfer motion, they do not change speed or torque.')">Same Size Gears</button>
+            </div>
+            <div class="feedback hidden"></div>
+        </div>
+
+        <!-- CCQ 2: Negative Checking -->
+        <div class="card">
+            <h4>Question 2: Logic Check</h4>
+            <p><strong>True or False:</strong> It is possible to use a Cam to create linear motion <em>without</em> a Follower.</p>
+            <div class="grid-2">
+                <button class="btn btn-outline" onclick="checkCCQ(this, false, 'Incorrect. Without a follower (a rod resting on the cam), the rotating cam just spins without pushing anything.')">True</button>
+                <button class="btn btn-outline" onclick="checkCCQ(this, true, 'Correct! The follower is the essential part that reads the shape of the cam.')">False</button>
+            </div>
+            <div class="feedback hidden"></div>
+        </div>
+
+        <!-- CCQ 3: Application -->
+        <div class="card">
+            <h4>Question 3: Troubleshooting</h4>
+            <p>Your team built a linkage, but the output movement is jamming and getting stuck. What is the most likely culprit?</p>
+            <select id="ccq3-select" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 10px;">
+                <option value="">Select a diagnosis...</option>
+                <option value="A">The gears are too small</option>
+                <option value="B">The pivot points are too tight (too much friction)</option>
+                <option value="C">The crank is turning too fast</option>
+            </select>
+            <button class="btn" onclick="checkSelectCCQ()">Check Diagnosis</button>
+            <div id="ccq3-feedback" class="feedback hidden"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: VOCABULARY -->
+    <section id="sec-vocab" class="hidden">
+        <h2>📖 Engineering Vocabulary</h2>
+        <input type="text" id="vocab-search" placeholder="Search terms..." onkeyup="filterVocab()" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: var(--radius); border: 1px solid var(--border);">
+        
+        <div class="vocab-grid" id="vocab-list">
+            <!-- JS will populate -->
+        </div>
+    </section>
+
+    <!-- SECTION 8: WRAP-UP (MANDATORY) -->
+    <section id="sec-wrapup" class="hidden">
+        <div class="card">
+            <h2>🏁 Wrap-Up & Reflection</h2>
+            
+            <div style="margin-bottom: 30px;">
+                <button class="btn btn-outline" style="width: 100%; text-align: left; justify-content: space-between;" onclick="toggleTutorial()">
+                    <span>✏️ Bonus: Sketching Tutorial for Dummies</span>
+                    <span>▼</span>
+                </button>
+                <div id="sketch-tutorial" class="hidden" style="margin-top: 15px; border-left: 3px solid var(--accent); padding-left: 15px;">
+                    <div class="tutorial-step">
+                        <strong>Step 1: The Frame</strong><br>
+                        Draw a simple 3D cube or a rectangle. This is the box that holds everything together.
+                    </div>
+                    <div class="tutorial-step">
+                        <strong>Step 2: The Axle</strong><br>
+                        Draw a straight line going through the box horizontally. Add a handle (a zigzag line) on one end. This is your power source.
+                    </div>
+                    <div class="tutorial-step">
+                        <strong>Step 3: The Mechanism</strong><br>
+                        Draw a circle on the axle line. 
+                        <br><em>If it's a Cam:</em> Draw an egg shape.
+                        <br><em>If it's a Gear:</em> Draw a circle with little teeth marks.
+                    </div>
+                    <div class="tutorial-step">
+                        <strong>Step 4: The Output</strong><br>
+                        Draw a vertical line (a stick) resting on top of your circle. This stick goes up through the top of the box.
+                    </div>
+                    <div class="tutorial-step">
+                        <strong>Step 5: The Character</strong><br>
+                        Draw your character (bird, boat, hand) on top of the stick. Done!
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="background: #f0fdf4; border-color: #86efac; margin-bottom: 30px;">
+                <h3>📋 End of Class Deliverables</h3>
+                <p>Before leaving today, ensure you have the following ready:</p>
+                <div class="checklist-item">
+                    <input type="checkbox" id="del-1"> <label for="del-1"><strong>Physical Sketch:</strong> A labelled drawing of your design on paper.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="del-2"> <label for="del-2"><strong>System Plan:</strong> You have tested your logic in the "System Architecture" tool above.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="del-3"> <label for="del-3"><strong>The Pitch:</strong> You can explain <em>how</em> it moves to a partner in 30 seconds.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="del-4"> <label for="del-4"><strong>Webpage Progress:</strong> You have completed the reflection questions below.</label>
+                </div>
+            </div>
+
+            <h3>3-2-1 Reflection</h3>
+            <div style="display: grid; gap: 15px;">
+                <div>
+                    <label><strong>3</strong> things I learned about mechanisms:</label>
+                    <textarea class="auto-save" id="ref-3" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border);"></textarea>
+                </div>
+                <div>
+                    <label><strong>2</strong> challenges I faced in the design phase:</label>
+                    <textarea class="auto-save" id="ref-2" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border);"></textarea>
+                </div>
+                <div>
+                    <label><strong>1</strong> question I still have:</label>
+                    <textarea class="auto-save" id="ref-1" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border);"></textarea>
+                </div>
+            </div>
+            
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border);">
+
+            <h3>Confidence Meter</h3>
+            <p>How ready do you feel to build this physically next week?</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button class="btn btn-outline" onclick="rateConfidence(1)">😟 Not Ready</button>
+                <button class="btn btn-outline" onclick="rateConfidence(2)">😐 Getting There</button>
+                <button class="btn btn-outline" onclick="rateConfidence(3)">😃 Ready to Build!</button>
+            </div>
+            <p id="conf-msg" style="text-align: center; margin-top: 10px; font-weight: bold;"></p>
+
+            <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; margin-top: 20px; text-align: center;">
+                <h3>Next Class: The Build Phase</h3>
+                <p>We will take these diagrams and use cardboard, dowels, and hot glue to bring them to life. Bring your sketches!</p>
+            </div>
+            
+            <button class="btn btn-success" style="width: 100%; justify-content: center; margin-top: 20px;" onclick="finishLesson()">🎓 Complete Lesson & Save</button>
+        </div>
+    </section>
+
+</main>
+
+<nav class="footer-nav">
+    <button class="btn btn-outline" id="prevBtn" onclick="changeSection(-1)" disabled>← Back</button>
+    <span id="current-step-label" style="font-weight: 600; font-size: 0.9rem;">1. Opening</span>
+    <button class="btn" id="nextBtn" onclick="changeSection(1)">Next →</button>
+</nav>
+
+<script>
+    /* --- STATE MANAGEMENT --- */
+    const sections = ['sec-opening', 'sec-objectives', 'sec-concepts', 'sec-brief', 'sec-design', 'sec-practice', 'sec-vocab', 'sec-wrapup'];
+    let currentSectionIndex = 0;
+    const progressSteps = sections.length;
+
+    /* --- INITIALIZATION --- */
+    window.onload = function() {
+        loadProgress();
+        renderVocab();
+        // setupCanvas removed
+        updateUI();
+    };
+
+    function updateUI() {
+        // Hide all sections
+        sections.forEach((id, index) => {
+            const el = document.getElementById(id);
+            if(index === currentSectionIndex) {
+                el.classList.remove('hidden');
+                el.classList.add('active-section');
+            } else {
+                el.classList.add('hidden');
+                el.classList.remove('active-section');
+            }
+        });
+
+        // Update Buttons
+        document.getElementById('prevBtn').disabled = currentSectionIndex === 0;
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentSectionIndex === sections.length - 1) {
+            nextBtn.innerHTML = "Finish";
+            nextBtn.onclick = finishLesson;
+        } else {
+            nextBtn.innerHTML = "Next →";
+            nextBtn.onclick = () => changeSection(1);
+        }
+
+        // Update Progress Bar
+        const pct = ((currentSectionIndex + 1) / progressSteps) * 100;
+        document.getElementById('progressBar').style.width = pct + "%";
+        
+        // Update Label
+        const titles = ["Opening", "Objectives", "Concepts", "Design Brief", "System Design", "Practice", "Vocabulary", "Wrap-Up"];
+        document.getElementById('current-step-label').innerText = `${currentSectionIndex + 1}. ${titles[currentSectionIndex]}`;
+        
+        window.scrollTo(0,0);
+    }
+
+    function changeSection(dir) {
+        currentSectionIndex += dir;
+        updateUI();
+        saveProgress();
+    }
+
+    /* --- OPENING ACTIVITY --- */
+    function checkOpening(btn, isCorrect) {
+        const feedback = document.getElementById('opening-feedback');
+        feedback.classList.remove('hidden', 'correct', 'incorrect');
+        
+        if (isCorrect) {
+            feedback.innerHTML = "<strong>✅ Correct!</strong> A Cam transforms rotation into linear (up/down) motion. A follower rides on the cam to create the bump.";
+            feedback.classList.add('correct');
+            confettiEffect();
+        } else {
+            feedback.innerHTML = "<strong>❌ Not quite.</strong> Look at the output. It moves UP and DOWN. Gears usually just rotate, and pulleys pull things. Try again!";
+            feedback.classList.add('incorrect');
+        }
+    }
+
+    /* --- TABS --- */
+    function showTab(group, id) {
+        document.querySelectorAll(`#sec-concepts .tab-content`).forEach(el => el.classList.add('hidden'));
+        document.getElementById(`tab-${id}`).classList.remove('hidden');
+        
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    /* --- CANVAS LOGIC REMOVED --- */
+
+    /* --- SYSTEM BUILDER (SIMULATION) --- */
+    const components = ["Gear (Small)", "Gear (Large)", "Cam (Oval)", "Cam (Snail)", "Linkage", "Pulley"];
+    const slotState = { 2: 0, 3: 0 }; // Indexes
+
+    function cycleComponent(slotNum) {
+        slotState[slotNum] = (slotState[slotNum] + 1) % components.length;
+        document.getElementById(`slot-${slotNum}-text`).innerHTML = `<strong>${components[slotState[slotNum]]}</strong>`;
+        document.getElementById(`slot-${slotNum}`).classList.add('filled');
+    }
+
+    function analyzeSystem() {
+        const c1 = components[slotState[2]];
+        const c2 = components[slotState[3]];
+        const out = document.getElementById('system-analysis');
+        const outText = document.getElementById('output-text');
+        
+        out.classList.remove('hidden');
+        
+        // Enhanced Logic Simulation
+        let result = "";
+        let motionType = "Unknown";
+        let colorClass = "feedback correct"; // default
+
+        // Logic Block
+        if (c1.includes("Gear") && c2.includes("Gear")) {
+            if(c1 === "Gear (Small)" && c2 === "Gear (Large)") {
+                result = "<strong>Reduction Drive:</strong> Small ➜ Large. Speed decreases, Torque increases. Motion is Rotary.";
+            } else if (c1 === "Gear (Large)" && c2 === "Gear (Small)") {
+                result = "<strong>Overdrive:</strong> Large ➜ Small. Speed increases, Torque decreases. Motion is Rotary.";
+            } else {
+                result = "<strong>Direct Drive:</strong> Gears are transferring rotation. Motion remains Rotary.";
+            }
+            motionType = "Rotary ↻";
+        } 
+        else if (c2.includes("Cam")) {
+            if(c2.includes("Snail")) {
+                result = "<strong>Drop Cam System:</strong> The Snail cam will slowly lift the follower and then drop it suddenly. Good for hammering.";
+            } else {
+                result = "<strong>Smooth Cam System:</strong> The Oval cam creates a gentle up and down wave.";
+            }
+            motionType = "Linear (Reciprocating) ↕️";
+        } 
+        else if (c2.includes("Linkage")) {
+            result = "<strong>Linkage System:</strong> Converting the rotary input into an oscillating (waving) motion.";
+            motionType = "Oscillating 〰️";
+        } 
+        else if (c1.includes("Pulley") && c2.includes("Pulley")) {
+            result = "<strong>Belt Drive:</strong> Pulleys transfer motion over a distance. Quieter than gears but might slip.";
+            motionType = "Rotary ↻";
+        }
+        else {
+            result = "<strong>Complex Hybrid:</strong> You are mixing mechanism families. Ensure you can physically connect them (e.g., Cam on a Gear shaft).";
+            motionType = "Complex / Experimental";
+            colorClass = "feedback incorrect"; // Use warning color
+        }
+
+        out.innerHTML = `<strong>Analysis:</strong> ${result}`;
+        outText.innerHTML = `<strong>OUTPUT</strong><br><span>${motionType}</span>`;
+        out.className = colorClass;
+    }
+
+    /* --- PRACTICE & CCQs --- */
+    function checkCCQ(btn, isCorrect, msg) {
+        const parent = btn.parentElement;
+        const feedback = parent.nextElementSibling; // div.feedback
+        
+        feedback.classList.remove('hidden', 'correct', 'incorrect');
+        feedback.innerText = msg;
+        
+        if (isCorrect) {
+            feedback.classList.add('correct');
+        } else {
+            feedback.classList.add('incorrect');
+        }
+    }
+
+    function checkSelectCCQ() {
+        const val = document.getElementById('ccq3-select').value;
+        const fb = document.getElementById('ccq3-feedback');
+        fb.classList.remove('hidden', 'correct', 'incorrect');
+
+        if (val === "B") {
+            fb.innerText = "Correct! Friction is the enemy of automata. Tight pivots stop movement.";
+            fb.classList.add('correct');
+        } else {
+            fb.innerText = "Try again. Think about what physically stops parts from moving smoothly.";
+            fb.classList.add('incorrect');
+        }
+    }
+
+    /* --- VOCABULARY --- */
+    const vocabData = [
+        { term: "Automaton", def: "A moving mechanical device made in imitation of a human being or animal." },
+        { term: "Cam", def: "A rotating piece in a mechanical linkage used especially in transforming rotary motion into linear motion." },
+        { term: "Follower", def: "The rod or lever that rests on the edge of a cam and follows its shape." },
+        { term: "Gear Ratio", def: "The relationship between the number of teeth on two gears (Driver vs. Follower)." },
+        { term: "Oscillating", def: "Moving back and forth at a regular speed (like a pendulum)." },
+        { term: "Reciprocating", def: "Moving backwards and forwards in a straight line." },
+        { term: "Linkage", def: "A system of rods connected by pivots to transmit motion." },
+        { term: "Torque", def: "A twisting force that causes rotation." }
+    ];
+
+    function renderVocab() {
+        const list = document.getElementById('vocab-list');
+        list.innerHTML = vocabData.map(v => `
+            <div class="vocab-card" onclick="this.classList.toggle('active')">
+                <h4>${v.term}</h4>
+                <div class="vocab-def">${v.def}</div>
+            </div>
+        `).join('');
+    }
+
+    function filterVocab() {
+        const q = document.getElementById('vocab-search').value.toLowerCase();
+        const cards = document.querySelectorAll('.vocab-card');
+        cards.forEach(c => {
+            const txt = c.innerText.toLowerCase();
+            c.style.display = txt.includes(q) ? 'block' : 'none';
+        });
+    }
+
+    /* --- WRAP UP & PERSISTENCE --- */
+    function rateConfidence(level) {
+        const msg = document.getElementById('conf-msg');
+        if(level === 1) msg.innerText = "That's okay! Review the 'Mechanisms' tab before next class.";
+        if(level === 2) msg.innerText = "Good! We will solve problems together during the build.";
+        if(level === 3) msg.innerText = "Fantastic! You're ready to be a lead engineer.";
+        localStorage.setItem('class_confidence', level);
+    }
+
+    function saveProgress() {
+        localStorage.setItem('class_step', currentSectionIndex);
+        
+        // Save inputs
+        document.querySelectorAll('.auto-save').forEach(input => {
+            localStorage.setItem(input.id, input.value);
+        });
+    }
+
+    function loadProgress() {
+        const savedStep = localStorage.getItem('class_step');
+        if(savedStep) currentSectionIndex = parseInt(savedStep);
+        
+        // Load inputs
+        document.querySelectorAll('.auto-save').forEach(input => {
+            const val = localStorage.getItem(input.id);
+            if(val) input.value = val;
+        });
+
+        // Load Sketch logic removed
+    }
+
+    function finishLesson() {
+        alert("🎉 Congratulations! You have completed the Integrated Automaton Design planning phase. Your responses have been saved.");
+        localStorage.removeItem('class_step'); // Reset step for next time, but keep data
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const current = body.getAttribute('data-theme');
+        body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+
+    function toggleTutorial() {
+        const tut = document.getElementById('sketch-tutorial');
+        tut.classList.toggle('hidden');
+    }
+
+    function confettiEffect() {
+        // Simple visual cue
+        const fb = document.getElementById('opening-feedback');
+        fb.style.transform = "scale(1.05)";
+        setTimeout(() => fb.style.transform = "scale(1)", 200);
+    }
+
+</script>
+</body>
+</html>
