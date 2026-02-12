@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4: The Digital Twin & BOM</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --text-light: #1e293b;
+            --text-dark: #e2e8f0;
+            --card-light: #ffffff;
+            --card-dark: #1e293b;
+            --border-light: #e2e8f0;
+            --border-dark: #334155;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Navigation */
+        header {
+            background-color: var(--card-light);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dark-mode header {
+            background-color: var(--card-dark);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .dark-mode .btn-outline {
+            color: white;
+            border-color: white;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 101;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Main Container */
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.5s;
+            margin-bottom: 3rem;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Interactive Elements */
+        .card {
+            background-color: var(--card-light);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-light);
+        }
+
+        .dark-mode .card {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+        }
+
+        .warning-card {
+            border-left: 5px solid var(--accent);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        /* Steps */
+        .step-container {
+            border-left: 3px solid var(--border-light);
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+        
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        summary {
+            padding: 1rem;
+            background: rgba(0,0,0,0.02);
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        summary:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .step-content {
+            padding: 1rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .component-card {
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+            text-align: center;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .component-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .expanded {
+            max-height: 500px;
+        }
+
+        /* Activities */
+        .interactive-zone {
+            background: rgba(37, 99, 235, 0.05);
+            border: 2px dashed var(--primary);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .draggable-item {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin: 0.5rem;
+            cursor: grab;
+            color: #333;
+        }
+        
+        .dark-mode .draggable-item {
+            background: #475569;
+            color: white;
+        }
+
+        .drop-zone {
+            min-height: 100px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Gallery Grid for Opening */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .gallery-item {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 80px;
+            object-fit: contain;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .dark-mode .gallery-item {
+            background: #334155;
+        }
+        
+        .dark-mode .gallery-item img {
+            background: #475569;
+            border-color: #64748b;
+        }
+
+        /* CCQ Styling */
+        .ccq-container {
+            background-color: #f0f9ff;
+            border-left: 5px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 1rem 1rem 0;
+        }
+
+        .dark-mode .ccq-container {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .feedback-msg {
+            margin-top: 1rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .correct { color: var(--success); }
+        .incorrect { color: var(--error); }
+
+        /* Tables for Excel Simulation */
+        .excel-sim {
+            overflow-x: auto;
+            margin: 1rem 0;
+            background: white;
+            color: black;
+            border: 1px solid #ccc;
+        }
+        
+        .excel-sim table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: monospace;
+        }
+        
+        .excel-sim th, .excel-sim td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .excel-sim th {
+            background: #f3f3f3;
+            font-weight: bold;
+        }
+
+        /* Navigation Buttons Bottom */
+        .section-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        /* Vocabulary Drawer */
+        .vocab-drawer {
+            position: fixed;
+            right: -300px;
+            top: 70px;
+            width: 280px;
+            height: calc(100vh - 70px);
+            background: var(--card-light);
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            transition: right 0.3s;
+            overflow-y: auto;
+            padding: 1rem;
+            z-index: 90;
+        }
+
+        .dark-mode .vocab-drawer {
+            background: var(--card-dark);
+        }
+
+        .vocab-drawer.open {
+            right: 0;
+        }
+
+        .vocab-item {
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.5rem 0;
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        .dark-mode input[type="text"], .dark-mode textarea {
+            background: #334155;
+            color: white;
+            border-color: #475569;
+        }
+        
+        code {
+            background: rgba(0,0,0,0.1);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #d63384;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <header>
+        <div style="font-weight: bold; font-size: 1.2rem;">IGCSE ICT • Week 4</div>
+        <div class="nav-controls">
+            <button class="btn-outline" onclick="toggleVocab()">📖 Vocab</button>
+            <button class="btn-outline" onclick="toggleTheme()">🌓</button>
+        </div>
+    </header>
+
+    <div class="vocab-drawer" id="vocabDrawer">
+        <h3>Vocabulary Bank</h3>
+        <input type="text" placeholder="Search terms..." onkeyup="filterVocab(this.value)">
+        <div id="vocabList">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <main>
+        <!-- 2. Opening Activity -->
+        <section id="s-opening" class="active">
+            <h2>Start: The Unboxed Kit</h2>
+            <div class="card">
+                <h3>🔍 The Inventory Check</h3>
+                <p>On your desk is a bag of parts. Identify them below to ensure you have everything needed for the build.</p>
+                
+                <!-- COMPONENT GALLERY PLACEHOLDERS -->
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://kitsguru.com/cdn/shop/products/bo-motor-wheel-65mm-yellow.jpg?v=1763972989" alt="Back Wheels">
+                        <p>Back Wheels</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://cdn1.botland.store/71668-large_default/dc-motor-with-148-gear-3-6v-with-double-sided-shaft-200rpm.jpg" alt="Yellow DC Motor">
+                        <p>DC Motor</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://m.media-amazon.com/images/I/61MxgcuLqQL._AC_UL480_FMwebp_QL65_.jpg" alt="Front Wheels">
+                        <p>Front Wheels</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://cdnx.jumpseller.com/zamux-electronica/image/17636628/thumb/1438/1438?1649810420" alt="Mini Protoboard">
+                        <p>Mini Protoboard</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://www.barcelonaled.com/blog/wp-content/uploads/2024/06/diodos-colores.jpg" alt="LEDs">
+                        <p>LEDs</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://www.microchipusa.com/_next/image?url=%2Fmedia%2FScreenshot%202025-01-21%20at%204.14.09%C3%A2%C2%AFPM-1.png&w=3840&q=75" alt="Resistors">
+                        <p>Resistors</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://www.electropilas.com/wp-content/uploads/2024/07/14500-3.7v-1000mAh-Li-ion-Rechargeable-Battery-Cell-ICR14500-1000.jpg.webp" alt="3.7v Rechargeable Battery">
+                        <p>3.7V Battery</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSq4VuukdRD-BUB5wVxr8Qwezr9bVLHksBdw&s" alt="Battery Case">
+                        <p>Battery Case</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://m.media-amazon.com/images/I/61oQRmeFOjL._AC_SY450_PIbundle-5,TopRight,0,0_SH20_.jpg" alt="Solar Panel">
+                        <p>Solar Panel</p>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://m.media-amazon.com/images/I/412zODFJsqL._SX342_SY445_QL70_FMwebp_.jpg" alt="Chassis">
+                        <p>Chassis</p>
+                    </div>
+                </div>
+
+                <div class="warning-card" style="padding: 15px; margin: 15px 0;">
+                    <strong>🚧 ENGINEERING NOTICE:</strong>
+                    <p>You will receive a diagram for the <strong>Electrical Circuit</strong>.</p>
+                    <p>However, you will NOT receive instructions for the <strong>Mechanical Assembly</strong> (wheels, chassis, motor mount). You must figure out how to bolt it together yourself.</p>
+                </div>
+                <p><strong>Question:</strong> Before you bolt anything together, what is the ONE thing you must do to ensure your project is feasible?</p>
+                
+                <div class="interactive-zone">
+                    <div id="hook-options">
+                        <button class="btn-outline" onclick="checkHook(this, false)">Start screwing parts together randomly</button>
+                        <button class="btn-outline" onclick="checkHook(this, true)">Create a Digital Inventory (BOM) & Check Specs</button>
+                        <button class="btn-outline" onclick="checkHook(this, false)">Paint the chassis</button>
+                    </div>
+                    <div id="hook-feedback" class="feedback-msg"></div>
+                </div>
+                <textarea id="hook-reflection" placeholder="Why is it risky to build without checking your component specs first?"></textarea>
+            </div>
+            <div class="section-nav" style="justify-content: flex-end;">
+                <button class="btn-primary" onclick="nextSection('s-objectives')">Start Mission &rarr;</button>
+            </div>
+        </section>
+
+        <!-- 3. Learning Objectives -->
+        <section id="s-objectives">
+            <h2>🎯 Mission Objectives</h2>
+            <div class="component-grid">
+                <div class="card">
+                    <h3>🧠 Cognitive</h3>
+                    <ul>
+                        <li><strong>Reverse Engineer</strong> physical components into digital data.</li>
+                        <li><strong>Construct</strong> a dual-sheet Excel Workbook (Database + BOM).</li>
+                        <li><strong>Apply</strong> the <code>VLOOKUP</code> function to automate pricing.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>❤️ Social-Emotional</h3>
+                    <ul>
+                        <li><strong>Independence:</strong> Solving mechanical assembly problems without a guide.</li>
+                        <li><strong>Attention to Detail:</strong> Translating physical labels to digital cells accurately.</li>
+                    </ul>
+                </div>
+            </div>
+            <p><strong>Success Criteria:</strong> A completed "Digital Twin" of your robot kit in Excel that predicts the total cost and voltage.</p>
+            <div class="section-nav">
+                <button class="btn-outline" onclick="prevSection('s-opening')">&larr; Back</button>
+                <button class="btn-primary" onclick="nextSection('s-exploration')">Phase 1: Research &rarr;</button>
+            </div>
+        </section>
+
+        <!-- 4. Concept Exploration: Components Intro -->
+        <section id="s-exploration">
+            <h2>Phase 1: The Data Hunt</h2>
+            <p><strong>Instructions:</strong> Pick up the physical parts on your desk. Click the cards below to see what data you need to find for each one. Write this down or type it directly into Excel.</p>
+            
+            <div class="component-grid" id="componentGrid">
+                <!-- JS will populate cards -->
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>The Missing Spec: Breadboard Logic</h3>
+                <p>You have a breadboard. You cannot research its "voltage" because it is just a connector. But you must understand how it connects.</p>
+                
+                <!-- PROTOBOARD IMAGE PLACEHOLDER -->
+                <div style="text-align: center; margin: 15px 0;">
+                    <img src="https://cdn.learn.pimoroni.com/article/anatomy-of-a-mini-breadboard/assets/breadboard-right-and-wrong.jpg?width=800" alt="Breadboard Internal Connections" style="max-width: 100%; width: 400px; height: auto; border: 2px solid #ccc; border-radius: 8px;">
+                    <p style="font-size: 0.9em; color: #666;">Breadboard Internal Connections</p>
+                </div>
+
+                <div style="background: white; color: black; padding: 20px; border-radius: 8px; font-family: monospace;">
+                    <p><strong>Mini Breadboard Logic:</strong></p>
+                    <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                        <div style="background: #ddd; padding: 10px;">Row 1: a-b-c-d-e</div>
+                        <div>↔ Connected Horizontally</div>
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.9rem;"><em>(Mini breadboards usually do not have side power rails. We use rows for power too!)</em></p>
+                </div>
+            </div>
+
+            <div class="section-nav">
+                <button class="btn-outline" onclick="prevSection('s-objectives')">&larr; Back</button>
+                <button class="btn-primary" onclick="nextSection('s-applied')">Phase 2: Excel Guide &rarr;</button>
+            </div>
+        </section>
+
+        <!-- 5. Applied Examples: BOM From Scratch -->
+        <section id="s-applied">
+            <h2>Phase 2: Creating the Digital Twin</h2>
+            <p>Follow these exact steps to create your project file. Do not skip any.</p>
+
+            <!-- JUSTIFICATION CARD ADDED HERE -->
+            <div class="card warning-card">
+                <h3>❓ Why are we doing this?</h3>
+                <p>You might be thinking: <em>"Why can't I just type '$3.50' directly into the order form? Why use VLOOKUP?"</em></p>
+                <p><strong>The Engineering Answer:</strong> Prices change. Designs change. If your supplier increases the motor price to $4.00, you don't want to find every spreadsheet where you typed "$3.50" and update it manually.</p>
+                <p>With VLOOKUP, you change the price <strong>once</strong> in the Library, and every calculation updates automatically. This is how real engineering systems work.</p>
+            </div>
+
+            <div class="card">
+                <h3>Part A: Setting up the Database</h3>
+                <p>This sheet will hold the "Truth" about your components.</p>
+                
+                <details open>
+                    <summary>Step 1: Open & Rename</summary>
+                    <div class="step-content">
+                        <ol>
+                            <li>Open a blank Microsoft Excel workbook.</li>
+                            <li>Look at the bottom tab named "Sheet1". Double-click it.</li>
+                            <li>Rename it to <strong>Library</strong>. Press Enter.</li>
+                        </ol>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Step 2: Create Headers</summary>
+                    <div class="step-content">
+                        <ol>
+                            <li>In cell <strong>A1</strong>, type: <code>ID</code></li>
+                            <li>In cell <strong>B1</strong>, type: <code>Item Name</code></li>
+                            <li>In cell <strong>C1</strong>, type: <code>Voltage (V)</code></li>
+                            <li>In cell <strong>D1</strong>, type: <code>Cost ($)</code></li>
+                            <li>Make the text <strong>Bold</strong> (Ctrl+B).</li>
+                        </ol>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Step 3: Enter Your Research</summary>
+                    <div class="step-content">
+                        <p>Enter the data you found in Phase 1. Use these exact IDs:</p>
+                        <div class="excel-sim">
+                            <table>
+                                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+                                <tr><th>2</th><td>MOT-01</td><td>Yellow DC Motor</td><td>[Your Spec]</td><td>$3.50</td></tr>
+                                <tr><th>3</th><td>BAT-HLD</td><td>Battery Holder</td><td>[Your Spec]</td><td>$1.50</td></tr>
+                                <tr><th>4</th><td>LED-R</td><td>Red LED</td><td>2</td><td>$0.25</td></tr>
+                                <tr><th>5</th><td>SW-01</td><td>Slide Switch</td><td>0</td><td>$0.50</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="card">
+                <h3>Part B: The Automation Sheet</h3>
+                <p>This sheet is your "Order Form". It will pull data from the Library.</p>
+
+                <details>
+                    <summary>Step 4: Create Sheet 2</summary>
+                    <div class="step-content">
+                        <ol>
+                            <li>Click the <strong>+</strong> button at the bottom to add a new sheet.</li>
+                            <li>Rename it to <strong>BOM</strong>.</li>
+                            <li><strong>Headers:</strong>
+                                <ul>
+                                    <li>A1: <code>Part ID</code></li>
+                                    <li>B1: <code>Name</code> (We will automate this)</li>
+                                    <li>C1: <code>Quantity</code></li>
+                                    <li>D1: <code>Unit Cost</code> (We will automate this)</li>
+                                    <li>E1: <code>Total Cost</code></li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Step 5: The VLOOKUP Formula (Crucial!)</summary>
+                    <div class="step-content">
+                        <p>We want Excel to look at the ID in A2, find it in the Library, and tell us the Name.</p>
+                        <ol>
+                            <li>Click cell <strong>B2</strong> (under Name).</li>
+                            <li>Type this formula EXACTLY: <br>
+                                <code>=VLOOKUP(A2, Library!$A$2:$D$10, 2, FALSE)</code>
+                            </li>
+                            <li><strong>Breakdown:</strong>
+                                <ul>
+                                    <li><code>A2</code>: The ID we want to find.</li>
+                                    <li><code>Library!$A$2:$D$10</code>: The database area. <strong>Note the $ signs!</strong> This locks the table.</li>
+                                    <li><code>2</code>: We want the 2nd column (Name).</li>
+                                    <li><code>FALSE</code>: We want an Exact Match.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Step 6: Automating Cost</summary>
+                    <div class="step-content">
+                        <ol>
+                            <li>Click cell <strong>D2</strong> (under Unit Cost).</li>
+                            <li>Type the formula: <br>
+                                <code>=VLOOKUP(A2, Library!$A$2:$D$10, 4, FALSE)</code>
+                            </li>
+                            <li><em>Why 4?</em> Because Cost is in the 4th column of the Library.</li>
+                        </ol>
+                    </div>
+                </details>
+                
+                <!-- NEW STEP ADDED TO PROVE UTILITY -->
+                <details>
+                    <summary>Step 7: The System Test (Prove it works)</summary>
+                    <div class="step-content">
+                        <p>Let's prove why this is better than typing manually.</p>
+                        <ol>
+                            <li>Go back to your <strong>Library</strong> sheet.</li>
+                            <li>Change the cost of the Motor from <code>$3.50</code> to <code>$10.00</code>.</li>
+                            <li>Click back to your <strong>BOM</strong> sheet.</li>
+                            <li>Look at the price. Did it update to $10.00 automatically?</li>
+                            <li><strong>If yes:</strong> Congratulations, you have built a dynamic system! (Change it back to $3.50 now).</li>
+                        </ol>
+                    </div>
+                </details>
+            </div>
+
+            <div class="section-nav">
+                <button class="btn-outline" onclick="prevSection('s-exploration')">&larr; Back</button>
+                <button class="btn-primary" onclick="nextSection('s-practice')">Practice Activities &rarr;</button>
+            </div>
+        </section>
+
+        <!-- 6 & 7. Practice + CCQs -->
+        <section id="s-practice">
+            <h2>3. Simulation & Check</h2>
+            
+            <!-- Activity 1: Component ID -->
+            <div class="card">
+                <h3>Activity A: Component Check</h3>
+                <p>Drag the correct ID to the component description.</p>
+                <div class="interactive-zone">
+                    <div id="drag-items">
+                        <span class="draggable-item" draggable="true" ondragstart="drag(event)" id="drag-mot">MOT-01</span>
+                        <span class="draggable-item" draggable="true" ondragstart="drag(event)" id="drag-led">LED-R</span>
+                        <span class="draggable-item" draggable="true" ondragstart="drag(event)" id="drag-res">RES-100</span>
+                    </div>
+                    <div class="component-grid" style="margin-top: 20px;">
+                        <div class="drop-zone" ondrop="drop(event, 'MOT-01')" ondragover="allowDrop(event)">Spins wheels</div>
+                        <div class="drop-zone" ondrop="drop(event, 'RES-100')" ondragover="allowDrop(event)">Limits current</div>
+                        <div class="drop-zone" ondrop="drop(event, 'LED-R')" ondragover="allowDrop(event)">Emits Light</div>
+                    </div>
+                    <p id="drag-feedback" class="feedback-msg"></p>
+                </div>
+            </div>
+
+            <!-- CCQ 1 -->
+            <div class="ccq-container">
+                <h4>Concept Check: Polarity</h4>
+                <p><strong>Question:</strong> Would it be correct to say that you can connect an LED in any direction and it will still work?</p>
+                <button class="btn-outline" onclick="checkCCQ(this, false, 'Correct! LEDs are polarized. They have an Anode (+) and Cathode (-). Reversed, they block current.')">Yes</button>
+                <button class="btn-outline" onclick="checkCCQ(this, true, 'Correct! LEDs are polarized components. They must be connected + to +.')">No</button>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <!-- Activity 2: VLOOKUP Builder -->
+            <div class="card">
+                <h3>Activity B: Build the Formula</h3>
+                <p><strong>Goal:</strong> Find the COST of the item in cell A2. The database is in range $A$1:$E$50 on the "Library" sheet. Cost is in the 5th column.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center;">
+                    <span>=VLOOKUP(</span>
+                    <select id="v-val"><option>?</option><option value="correct">A2</option><option>Cost</option></select>
+                    <span>,</span>
+                    <select id="v-table"><option>?</option><option>A1:E50</option><option value="correct">Library!$A$1:$E$50</option></select>
+                    <span>,</span>
+                    <select id="v-col"><option>?</option><option>2</option><option value="correct">5</option></select>
+                    <span>,</span>
+                    <select id="v-match"><option>?</option><option>TRUE</option><option value="correct">FALSE</option></select>
+                    <span>)</span>
+                </div>
+                <button class="btn-primary" style="margin-top: 15px;" onclick="checkFormula()">Check Formula</button>
+                <p id="formula-feedback" class="feedback-msg"></p>
+            </div>
+
+            <!-- CCQ 2 -->
+            <div class="ccq-container">
+                <h4>Concept Check: Absolute References</h4>
+                <p><strong>Question:</strong> Why must we use dollar signs ($) in the table array part of the VLOOKUP formula?</p>
+                <button class="btn-outline" onclick="checkCCQ(this, false, 'Incorrect. The formula works without them for one cell, but breaks when copied.')">Because Excel requires it for all formulas.</button>
+                <button class="btn-outline" onclick="checkCCQ(this, true, 'Exact Match! The $ locks the table reference so it does not shift when you copy the formula down.')">To lock the table position so it doesn't move when we copy the formula.</button>
+                <div class="feedback-msg"></div>
+            </div>
+
+            <div class="section-nav">
+                <button class="btn-outline" onclick="prevSection('s-applied')">&larr; Back</button>
+                <button class="btn-primary" onclick="nextSection('s-wrapup')">Final Reflection &rarr;</button>
+            </div>
+        </section>
+
+        <!-- 8 & 9. Synthesis & Wrap-Up -->
+        <section id="s-wrapup">
+            <h2>4. Mission Debrief</h2>
+            
+            <div class="card" style="border-left: 5px solid var(--accent);">
+                <h3>📤 Submission Checklist</h3>
+                <p>Before leaving today, ensure you have the following ready to submit:</p>
+                <ul>
+                    <li><strong>Excel File:</strong> Must be named <code>Week4_BOM_YourName.xlsx</code></li>
+                    <li><strong>Sheet 1 (Library):</strong> Contains specs for Motor, Battery, LEDs, etc.</li>
+                    <li><strong>Sheet 2 (BOM):</strong> Uses <code>VLOOKUP</code> to pull Price and Name automatically.</li>
+                    <li><strong>Calculations:</strong> "Total Cost" column calculates correctly (=Quantity * Unit Cost).</li>
+                    <li><strong>Reflection:</strong> Submit your answers to the reflection questions below.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Consolidation: 3-2-1 Reflection</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <label>3 Specs you found for your motor/battery:</label>
+                        <input type="text" id="ref-3" placeholder="e.g., 6V, 200RPM, 1.5V">
+                    </div>
+                    <div>
+                        <label>2 Reasons to use VLOOKUP:</label>
+                        <input type="text" id="ref-2" placeholder="e.g., Speed, Accuracy">
+                    </div>
+                    <div>
+                        <label>1 Question you still have about the assembly:</label>
+                        <input type="text" id="ref-1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Objective Check</h3>
+                <p>How confident do you feel?</p>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-outline" onclick="this.style.background='var(--success)'; this.style.color='white'">I can identify components</button>
+                    <button class="btn-outline" onclick="this.style.background='var(--success)'; this.style.color='white'">I understand breadboards</button>
+                    <button class="btn-outline" onclick="this.style.background='var(--success)'; this.style.color='white'">I can write a VLOOKUP</button>
+                </div>
+            </div>
+
+            <div class="interactive-zone" id="cert-zone">
+                <button class="btn-primary" onclick="generateCertificate()">Complete Lesson & Generate Certificate</button>
+            </div>
+
+            <div class="section-nav">
+                <button class="btn-outline" onclick="prevSection('s-practice')">&larr; Back</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- Data & Content ---
+        const components = [
+            { id: "MOT", name: "Yellow DC Motor", icon: "⚙️", desc: "<strong>TASK:</strong> Find the Voltage (V) and Current (A). Check the label or google 'TT Gear Motor'." },
+            { id: "LED", name: "Red LED", icon: "💡", desc: "<strong>TASK:</strong> Identify the Long Leg (+) and Short Leg (-). Voltage is usually 2V." },
+            { id: "BAT", name: "Battery Holder", icon: "🔋", desc: "<strong>TASK:</strong> Count the slots. If 1 AA battery is 1.5V, what is the total voltage?" },
+            { id: "RES", name: "Resistor", icon: "〰️", desc: "<strong>TASK:</strong> Read the colored bands. We need 100 Ohms (Brown-Black-Brown)." },
+            { id: "SWI", name: "Slide Switch", icon: "🎚️", desc: "<strong>TASK:</strong> Check the pin count (3 pins). The middle pin is 'Common'. We only need 2 pins to make it work." },
+            { id: "CHA", name: "Chassis Kit", icon: "🚗", desc: "<strong>TASK:</strong> Count the screw holes. Plan where your motor goes. You build this yourself!" },
+            { id: "SOL", name: "Solar Panel", icon: "☀️", desc: "<strong>TASK:</strong> Check the voltage output on the back. We use this to power the LEDs only." }
+        ];
+
+        const vocabulary = [
+            { term: "Anode", def: "The positive (+) leg of an LED." },
+            { term: "Cathode", def: "The negative (-) leg of an LED." },
+            { term: "BOM", def: "Bill of Materials. A list of all parts needed for a project." },
+            { term: "VLOOKUP", def: "Vertical Lookup. An Excel function to search for a value in a column." },
+            { term: "Absolute Reference", def: "Using $ in Excel (e.g., $A$1) to lock a cell address." },
+            { term: "Polarity", def: "The direction of current flow. Components like LEDs must be connected correct way." },
+            { term: "Circuit", def: "A closed loop that electrons can travel through." },
+            { term: "Breadboard", def: "A board for making an experimental model of an electric circuit." }
+        ];
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initComponents();
+            initVocab();
+            loadProgress();
+            updateProgressBar();
+        });
+
+        // --- Component Logic ---
+        function initComponents() {
+            const grid = document.getElementById('componentGrid');
+            components.forEach(comp => {
+                const card = document.createElement('div');
+                card.className = 'card component-card';
+                card.innerHTML = `
+                    <div class="component-icon">${comp.icon}</div>
+                    <h4>${comp.name}</h4>
+                    <div class="hidden-details">
+                        <p>${comp.desc}</p>
+                        <small>Eng ID: ${comp.id}-01</small>
+                    </div>
+                `;
+                card.onclick = () => {
+                    card.querySelector('.hidden-details').classList.toggle('expanded');
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        // --- Navigation Logic ---
+        const sections = ['s-opening', 's-objectives', 's-exploration', 's-applied', 's-practice', 's-wrapup'];
+        let currentStep = 0;
+
+        function nextSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            currentStep = sections.indexOf(id);
+            window.scrollTo(0,0);
+            updateProgressBar();
+            saveProgress();
+        }
+
+        function prevSection(id) {
+            nextSection(id);
+        }
+
+        function updateProgressBar() {
+            const pct = ((currentStep + 1) / sections.length) * 100;
+            document.getElementById('progressBar').style.width = pct + '%';
+        }
+
+        // --- Interaction Logic ---
+        function checkHook(btn, isCorrect) {
+            const feedback = document.getElementById('hook-feedback');
+            const btns = document.getElementById('hook-options').querySelectorAll('button');
+            btns.forEach(b => b.disabled = true);
+            
+            if (isCorrect) {
+                btn.style.background = 'var(--success)';
+                btn.style.color = 'white';
+                feedback.innerHTML = "✅ Correct. Without specs, you might fry your LED (too much voltage) or your motor won't spin (too little).";
+                feedback.className = "feedback-msg correct";
+            } else {
+                btn.style.background = 'var(--error)';
+                btn.style.color = 'white';
+                feedback.innerHTML = "❌ Dangerous! If you don't check voltage specs, you might burn out components immediately.";
+                feedback.className = "feedback-msg incorrect";
+            }
+            feedback.style.display = 'block';
+            
+            // Re-enable correct button visual if wrong was clicked
+            if(!isCorrect) {
+                btns[1].style.border = "2px solid var(--success)";
+            }
+        }
+
+        function checkCCQ(btn, isCorrect, msg) {
+            const parent = btn.parentElement;
+            const feedback = parent.querySelector('.feedback-msg');
+            
+            if (isCorrect) {
+                btn.style.background = 'var(--success)';
+                btn.style.color = 'white';
+                feedback.innerHTML = "✅ " + msg;
+                feedback.className = "feedback-msg correct";
+            } else {
+                btn.style.background = 'var(--error)';
+                btn.style.color = 'white';
+                feedback.innerHTML = "❌ " + msg;
+                feedback.className = "feedback-msg incorrect";
+            }
+            feedback.style.display = 'block';
+        }
+
+        // --- Drag and Drop ---
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev, correctId) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const draggedEl = document.getElementById(data);
+            const droppedId = draggedEl.innerText;
+            const feedback = document.getElementById('drag-feedback');
+
+            if (droppedId === correctId) {
+                ev.target.appendChild(draggedEl);
+                ev.target.style.background = "#dcfce7";
+                draggedEl.style.cursor = "default";
+                draggedEl.draggable = false;
+                checkDragCompletion();
+            } else {
+                feedback.innerText = "Try again! That ID doesn't match the function.";
+                feedback.className = "feedback-msg incorrect";
+                feedback.style.display = 'block';
+                setTimeout(() => feedback.style.display = 'none', 2000);
+            }
+        }
+
+        function checkDragCompletion() {
+            const dropZones = document.querySelectorAll('.drop-zone');
+            let filled = 0;
+            dropZones.forEach(z => { if(z.children.length > 0) filled++; });
+            if (filled === 3) {
+                const fb = document.getElementById('drag-feedback');
+                fb.innerText = "Great job! You know your components.";
+                fb.className = "feedback-msg correct";
+                fb.style.display = 'block';
+            }
+        }
+
+        // --- Formula Builder ---
+        function checkFormula() {
+            const v1 = document.getElementById('v-val').value;
+            const v2 = document.getElementById('v-table').value;
+            const v3 = document.getElementById('v-col').value;
+            const v4 = document.getElementById('v-match').value;
+            const fb = document.getElementById('formula-feedback');
+
+            if (v1 === 'correct' && v2 === 'correct' && v3 === 'correct' && v4 === 'correct') {
+                fb.innerHTML = "✅ Perfect Formula! <code>=VLOOKUP(A2, Library!$A$1:$E$50, 5, FALSE)</code>";
+                fb.className = "feedback-msg correct";
+            } else {
+                let hint = "Check your logic: ";
+                if (v2 !== 'correct') hint += "Did you reference the Library sheet with $ signs? ";
+                if (v3 !== 'correct') hint += "Is Cost really in that column? ";
+                if (v4 !== 'correct') hint += "Do we want an exact match? ";
+                fb.innerText = hint;
+                fb.className = "feedback-msg incorrect";
+            }
+            fb.style.display = 'block';
+        }
+
+        // --- Vocabulary ---
+        function initVocab() {
+            const list = document.getElementById('vocabList');
+            vocabulary.forEach(v => {
+                const div = document.createElement('div');
+                div.className = 'vocab-item';
+                div.innerHTML = `<strong>${v.term}</strong><br><small>${v.def}</small>`;
+                list.appendChild(div);
+            });
+        }
+
+        function toggleVocab() {
+            document.getElementById('vocabDrawer').classList.toggle('open');
+        }
+
+        function filterVocab(text) {
+            const items = document.querySelectorAll('.vocab-item');
+            items.forEach(item => {
+                item.style.display = item.innerText.toLowerCase().includes(text.toLowerCase()) ? 'block' : 'none';
+            });
+        }
+
+        // --- Theme & Storage ---
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        function saveProgress() {
+            const data = {
+                step: currentStep,
+                reflection: document.getElementById('hook-reflection').value,
+                ref3: document.getElementById('ref-3').value,
+                ref2: document.getElementById('ref-2').value,
+                ref1: document.getElementById('ref-1').value
+            };
+            localStorage.setItem('roboticsWeek4', JSON.stringify(data));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('roboticsWeek4');
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('hook-reflection').value = data.reflection || '';
+                document.getElementById('ref-3').value = data.ref3 || '';
+                document.getElementById('ref-2').value = data.ref2 || '';
+                document.getElementById('ref-1').value = data.ref1 || '';
+            }
+        }
+
+        function generateCertificate() {
+            const zone = document.getElementById('cert-zone');
+            zone.innerHTML = `
+                <div style="border: 5px double var(--accent); padding: 20px; background: white; color: black;">
+                    <h3>🎓 Certificate of Completion</h3>
+                    <p>This certifies that the engineer</p>
+                    <h4>Ready for Assembly</h4>
+                    <p>Has successfully reverse-engineered the robot kit specs for Week 4.</p>
+                    <small>${new Date().toLocaleDateString()}</small>
+                </div>
+            `;
+            saveProgress();
+        }
+
+    </script>
+</body>
+</html>

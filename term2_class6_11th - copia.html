@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4: Circuits, Breadboards & Excel Logic</title>
+    <style>
+        /* --- CSS VARIABLES & THEME --- */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --success: #d1fae5;
+            --success-text: #065f46;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #111827;
+            --bg-card: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border: #374151;
+            --success: #064e3b;
+            --success-text: #a7f3d0;
+        }
+
+        /* --- RESET & BASE STYLES --- */
+        * { box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; margin: 0; background-color: var(--bg-body); color: var(--text-main); }
+        h1, h2, h3 { line-height: 1.2; margin-bottom: 1rem; }
+        p { margin-bottom: 1rem; }
+        button { cursor: pointer; }
+        
+        /* --- UTILITIES --- */
+        .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
+        .hidden { display: none !important; }
+        .btn { padding: 0.75rem 1.5rem; border-radius: 0.5rem; border: none; font-weight: 600; font-size: 1rem; transition: transform 0.1s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--primary); color: var(--text-main); }
+        .btn-outline:hover { background-color: rgba(37, 99, 235, 0.1); }
+        .card { background-color: var(--bg-card); padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; border: 1px solid var(--border); }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media(min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+
+        /* --- NAVIGATION --- */
+        header { position: sticky; top: 0; z-index: 50; background-color: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .progress-container { flex-grow: 1; margin: 0 1.5rem; background-color: var(--border); height: 8px; border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; background-color: var(--secondary); width: 0%; transition: width 0.5s ease; }
+        .theme-toggle { background: none; border: none; font-size: 1.5rem; }
+
+        /* --- SPECIFIC SECTIONS --- */
+        
+        /* Section 2: Opener */
+        .hook-scene { position: relative; height: 300px; background: #e0e7ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        [data-theme="dark"] .hook-scene { background: #312e81; }
+        .circuit-wire { height: 4px; background: #333; position: absolute; width: 60%; }
+        .battery-icon { font-size: 3rem; position: absolute; left: 10%; }
+        .led-icon { font-size: 3rem; position: absolute; right: 10%; filter: grayscale(100%); transition: filter 0.3s; }
+        .spark { position: absolute; font-size: 4rem; color: var(--accent); opacity: 0; transform: scale(0); transition: all 0.2s; }
+        .spark.active { opacity: 1; transform: scale(1.5); }
+        
+        /* Section 4 & 5: Breadboard Visualizer & Lab */
+        .breadboard { background-color: #f3f4f6; padding: 10px; border-radius: 8px; border: 2px solid #d1d5db; overflow-x: auto; position: relative; }
+        .bb-row { display: flex; gap: 4px; margin-bottom: 4px; justify-content: center; }
+        .bb-hole { width: 15px; height: 15px; background-color: #9ca3af; border-radius: 50%; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5); cursor: pointer; position: relative; }
+        .bb-hole:hover { background-color: var(--accent); transform: scale(1.2); }
+        .bb-hole.connected-highlight { background-color: var(--secondary) !important; box-shadow: 0 0 5px var(--secondary); }
+        
+        .power-rail { background-color: #fee2e2; padding: 5px; border-radius: 4px; margin-bottom: 10px; display: flex; gap: 5px; justify-content: center;}
+        .ground-rail { background-color: #dbeafe; padding: 5px; border-radius: 4px; margin-top: 10px; display: flex; gap: 5px; justify-content: center;}
+
+        /* Lab Components Overlay */
+        .component-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .lab-wire { position: absolute; height: 4px; background: rgba(0,0,0,0.7); border-radius: 2px; transform-origin: left center; z-index: 10; display: none; }
+        .lab-led { position: absolute; font-size: 1.5rem; z-index: 20; display: none; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
+        .lab-resistor { position: absolute; width: 40px; height: 10px; background: repeating-linear-gradient(90deg, #d2b48c, #d2b48c 5px, red 5px, red 8px, #d2b48c 8px); border-radius: 5px; z-index: 15; display: none; border: 1px solid #8b4513; }
+        .lab-battery { position: absolute; font-size: 2rem; z-index: 20; display: none; left: 10px; top: 50%; }
+
+        /* Section 6: Excel Logic */
+        .excel-table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 0.9rem; }
+        .excel-table td, .excel-table th { border: 1px solid var(--border); padding: 0.5rem; text-align: left; }
+        .excel-table th { background-color: var(--border); }
+        .excel-row-highlight { background-color: rgba(245, 158, 11, 0.2); }
+        .formula-input { width: 100%; padding: 0.5rem; border: 1px solid var(--primary); border-radius: 4px; font-family: monospace; margin-top: 0.5rem; background: var(--bg-body); color: var(--text-main); }
+
+        /* Section 7: Practice & CCQs */
+        .quiz-option { display: block; width: 100%; text-align: left; margin-bottom: 0.5rem; padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem; background: var(--bg-card); color: var(--text-main); }
+        .quiz-option:hover { background-color: var(--bg-body); border-color: var(--primary); }
+        .quiz-option.selected { border-color: var(--primary); background-color: rgba(37, 99, 235, 0.1); }
+        .feedback { margin-top: 1rem; padding: 1rem; border-radius: 0.5rem; display: none; }
+        .feedback.correct { background-color: var(--success); color: var(--success-text); display: block; }
+        .feedback.incorrect { background-color: #fee2e2; color: #991b1b; display: block; }
+
+        /* Section 8: Reorder */
+        .reorder-item { cursor: pointer; position: relative; }
+        .reorder-item.selected-swap { border: 2px solid var(--accent); background-color: rgba(245, 158, 11, 0.1); transform: scale(1.02); }
+        .reorder-item::after { content: "↕"; position: absolute; right: 10px; color: var(--text-muted); opacity: 0.5; }
+
+        /* Section 9: Wrap Up */
+        .wrap-up-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .badge-container { text-align: center; padding: 2rem; border: 2px dashed var(--accent); border-radius: 1rem; margin-top: 1rem; display: none; }
+        
+        /* Vocabulary Styles */
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+        .vocab-card { border: 1px solid var(--border); padding: 1rem; border-radius: 0.5rem; cursor: pointer; position: relative; overflow: hidden; }
+        .vocab-card h4 { margin: 0; color: var(--primary); }
+        .vocab-details { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .vocab-card.active .vocab-details { max-height: 200px; margin-top: 0.5rem; }
+
+    </style>
+</head>
+<body>
+
+<!-- 1. Header & Navigation -->
+<header>
+    <div class="container nav-content">
+        <div style="font-weight: bold;">Week 4: Circuit Design</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode">🌓</button>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- 2. Opening Activity: The Hook -->
+    <section id="section-opener" class="card">
+        <h2>🔌 Activity 1: From Theory to Reality</h2>
+        <p>Last week in Physics, you learned about <strong>Voltage</strong>, <strong>Current</strong>, <strong>Resistance</strong>, and how the <strong>Photovoltaic effect</strong> turns light into power. Today, we make that real.</p>
+        <p><strong>The Challenge:</strong> How do we go from an abstract schematic drawing to a physical robot circuit? The answer is systematic planning.</p>
+        <p><strong>Scenario:</strong> You connect your battery, but the motor doesn't spin and the battery starts getting hot immediately. <strong>Why?</strong></p>
+        
+        <div class="hook-scene" id="hookScene">
+            <div class="battery-icon">🔋</div>
+            <div class="circuit-wire"></div>
+            <div class="led-icon">⚙️</div>
+            <div class="spark" id="spark">💥</div>
+            <div style="position: absolute; bottom: 10px; width: 100%; text-align: center;">
+                <button class="btn btn-primary" onclick="triggerSpark()">Test Circuit</button>
+            </div>
+        </div>
+
+        <div id="prediction-area" class="hidden" style="margin-top: 1.5rem;">
+            <p>The battery got hot and nothing worked. What just happened?</p>
+            <div class="grid-2">
+                <button class="quiz-option" onclick="handleOpener('open')">An Open Circuit (Broken wire)</button>
+                <button class="quiz-option" onclick="handleOpener('short')">A Short Circuit (Direct path + to -)</button>
+            </div>
+        </div>
+        
+        <div id="opener-feedback" class="feedback"></div>
+        <div class="nav-buttons">
+            <span></span> <!-- Spacer -->
+            <button id="btn-start-lesson" class="btn btn-primary hidden" onclick="nextSection(3)">Start Lesson</button>
+        </div>
+    </section>
+
+    <!-- 3. Learning Objectives -->
+    <section id="section-objectives" class="card hidden">
+        <h2>🎯 Today's Mission</h2>
+        <ul style="list-style-type: none; padding: 0;">
+            <li style="margin-bottom: 0.5rem;">🧠 <strong>Understand:</strong> Breadboard functionality (Rails vs Rows) and prototyping.</li>
+            <li style="margin-bottom: 0.5rem;">⚡ <strong>Apply:</strong> Physics concepts (Voltage/Current) to plan a safe LED circuit.</li>
+            <li style="margin-bottom: 0.5rem;">📊 <strong>Document:</strong> Create a BOM in Excel using <code>VLOOKUP</code>.</li>
+            <li style="margin-bottom: 0.5rem;">✅ <strong>Validate:</strong> Check specs using <code>IF(AND(...))</code> logic.</li>
+        </ul>
+        <p><strong>Success Criteria:</strong> By the end, you will have a validated design and a sketch of your circuit.</p>
+        
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(2)">Back</button>
+            <button class="btn btn-primary" onclick="nextSection(4)">Breadboard Basics</button>
+        </div>
+    </section>
+
+    <!-- 4. Concept Exploration: Breadboards -->
+    <section id="section-concepts" class="card hidden">
+        <h2>🔍 Breadboard Anatomy</h2>
+        <p>A breadboard allows us to build circuits <strong>without soldering</strong>. It works because of hidden internal connections.</p>
+        
+        <div class="grid-2">
+            <div>
+                <h3>1. Power Rails (The Edges)</h3>
+                <p>Look at the <span style="color:#ef4444; font-weight:bold;">Red (+)</span> and <span style="color:#3b82f6; font-weight:bold;">Blue (-)</span> lines.</p>
+                <ul>
+                    <li>All holes next to the Red line are connected <strong>Vertically</strong>.</li>
+                    <li>All holes next to the Blue line are connected <strong>Vertically</strong>.</li>
+                    <li>Use these to distribute power to the whole board.</li>
+                </ul>
+
+                <h3>2. Terminal Rows (The Middle)</h3>
+                <p>The main area is labeled with numbers (1-30) and letters (a-e, f-j).</p>
+                <ul>
+                    <li>Each row of 5 holes (e.g., Row 1 a-e) is connected <strong>Horizontally</strong>.</li>
+                    <li>The gap in the middle breaks the connection.</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3>Interactive X-Ray</h3>
+                <p>Hover over holes to see connections:</p>
+                <div class="breadboard" id="breadboard-vis">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; background-color: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem; border-radius: 0.5rem;">
+            <strong>⚠️ SAFETY CRITICAL:</strong>
+            <ul style="margin-bottom:0; padding-left: 1.5rem;">
+                <li>Never connect Battery (+) directly to Battery (-) (Short Circuit).</li>
+                <li>Always use a <strong>Resistor</strong> with LEDs to prevent burnout.</li>
+                <li>Check connections before powering.</li>
+            </ul>
+        </div>
+        
+        <div class="nav-buttons">
+             <button class="btn btn-outline" onclick="nextSection(3)">Back</button>
+             <button class="btn btn-primary" onclick="nextSection(5)">Virtual Circuit Lab</button>
+        </div>
+    </section>
+
+    <!-- 5. NEW: Virtual Circuit Lab -->
+    <section id="section-lab" class="card hidden">
+        <h2>⚡ Virtual Circuit Lab</h2>
+        <p>Let's build a standard LED circuit step-by-step. Follow the teacher's demo.</p>
+
+        <div style="background: var(--bg-body); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                <h3 id="lab-step-title" style="margin:0;">Step 1: Materials</h3>
+                <span id="lab-step-count" style="color:var(--text-muted); font-size:0.9rem;">1 / 5</span>
+            </div>
+            <p id="lab-instruction" style="min-height: 4.5rem;">Gather your components.</p>
+            
+            <!-- Visualization Container -> Image Placeholder -->
+            <div id="lab-vis" style="height: 300px; display:flex; justify-content:center; align-items:center; background: #e5e7eb; border-radius: 8px; overflow: hidden; border: 2px dashed #9ca3af;">
+                <img id="lab-image" src="" alt="Circuit Step Visualization" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem;">
+                <em>(Images will appear here once linked in the code)</em>
+            </p>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="prevLabStep()">Previous Step</button>
+            <button class="btn btn-primary" onclick="nextLabStep()">Next Step</button>
+        </div>
+        
+        <!-- Toggle Button Removed -->
+        
+        <div class="nav-buttons" style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 2rem;">
+            <button class="btn btn-outline" onclick="nextSection(4)">Back to Theory</button>
+            <button class="btn btn-primary" onclick="nextSection(6)">Continue to Excel Logic</button>
+        </div>
+    </section>
+
+    <!-- 6. Applied Examples: Excel Logic -->
+    <section id="section-excel" class="card hidden">
+        <h2>📊 Applied: The Digital Blueprint</h2>
+        <p>Before we build, we plan. We use Excel to look up parts and check rules.</p>
+
+        <!-- VLOOKUP Simulator -->
+        <div style="margin-bottom: 2rem;">
+            <h3>1. The VLOOKUP Function</h3>
+            <p>Use Part ID to find details. Try entering different IDs (101, 102, 103) below.</p>
+            
+            <div class="grid-2">
+                <div>
+                    <strong>Component Library (Source)</strong>
+                    <table class="excel-table" id="library-table">
+                        <tr><th>A (ID)</th><th>B (Name)</th><th>C (Cost)</th></tr>
+                        <tr data-id="101"><td>101</td><td>DC Motor</td><td>$2.50</td></tr>
+                        <tr data-id="102"><td>102</td><td>AA Battery</td><td>$0.50</td></tr>
+                        <tr data-id="103"><td>103</td><td>Wheel 50mm</td><td>$1.20</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <strong>Your BOM (Design)</strong>
+                    <div style="margin-bottom: 0.5rem;">Part ID: <input type="number" id="vlookup-input" value="101" min="101" max="103" style="width: 60px;"></div>
+                    <div style="background: var(--bg-body); padding: 1rem; border-radius: 4px; font-family: monospace;">
+                        =VLOOKUP(<span style="color:blue">ID</span>, Library, 2, FALSE)<br>
+                        Result Name: <strong id="vlookup-result-name" style="color:var(--secondary)">DC Motor</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logic Logic -->
+        <div>
+            <h3>2. Validation Logic (IF + AND)</h3>
+            <p>Your car length must be between <strong>120mm</strong> and <strong>180mm</strong>.</p>
+            <div style="background: var(--bg-body); padding: 1rem; border-radius: 4px;">
+                <label>Car Length (mm): <input type="number" id="logic-input" value="100" style="padding:5px;"></label>
+                <div class="formula-input">
+                    =IF(AND(Length>=120, Length<=180), "OK", "FAIL")
+                </div>
+                <p>Status: <strong id="logic-result" style="color: var(--danger)">FAIL</strong></p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(5)">Back</button>
+            <button class="btn btn-primary" onclick="nextSection(7)">Go to Practice</button>
+        </div>
+    </section>
+
+    <!-- 7. Practice with CCQs -->
+    <section id="section-practice" class="card hidden">
+        <h2>🛠️ Practice & Concept Check</h2>
+        <p>Complete the questions to verify your engineering license.</p>
+
+        <div id="practice-container">
+            <!-- Questions injected via JS -->
+        </div>
+        
+        <div id="practice-controls" style="margin-top: 1rem; text-align: right;">
+            <p id="practice-status">Question 1 of 5</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(6)">Back to Excel</button>
+            <span></span>
+        </div>
+    </section>
+
+    <!-- 8. Synthesis -->
+    <section id="section-synthesis" class="card hidden">
+        <h2>🔄 Synthesis: The Workflow</h2>
+        <p><strong>Click two items to swap them</strong> until they are in the correct order for the engineering design process.</p>
+        
+        <div id="drag-container" style="display: flex; flex-direction: column; gap: 0.5rem; background: var(--bg-body); padding: 1rem; border-radius: 0.5rem;">
+            <div class="quiz-option reorder-item" onclick="handleReorderClick(this)" data-order="3">Build Circuit on Breadboard</div>
+            <div class="quiz-option reorder-item" onclick="handleReorderClick(this)" data-order="1">Select Parts (VLOOKUP)</div>
+            <div class="quiz-option reorder-item" onclick="handleReorderClick(this)" data-order="4">Test & Debug</div>
+            <div class="quiz-option reorder-item" onclick="handleReorderClick(this)" data-order="2">Validate Specs (IF/AND)</div>
+        </div>
+        <p id="sort-feedback" class="feedback"></p>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(7)">Back</button>
+            <div>
+                <button class="btn btn-primary" onclick="checkSort()">Check Order</button>
+                <button class="btn btn-primary hidden" id="btn-goto-wrapup" onclick="nextSection(9)">Finish Lesson</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Wrap-Up and Closure -->
+    <section id="section-wrapup" class="card hidden">
+        <h2>🏁 Wrap-Up & Reflection</h2>
+        
+        <div class="wrap-up-grid">
+            <div>
+                <h3>3-2-1 Reflection</h3>
+                <textarea id="reflect-3" class="quiz-option" placeholder="3 things you learned..."></textarea>
+                <textarea id="reflect-2" class="quiz-option" placeholder="2 interesting facts..."></textarea>
+                <textarea id="reflect-1" class="quiz-option" placeholder="1 question you still have..."></textarea>
+            </div>
+            <div>
+                <h3>Objective Check</h3>
+                <label class="quiz-option">
+                    <input type="checkbox" id="obj-1"> I can explain how a breadboard is wired.
+                </label>
+                <label class="quiz-option">
+                    <input type="checkbox" id="obj-2"> I can read a VLOOKUP formula.
+                </label>
+                <label class="quiz-option">
+                    <input type="checkbox" id="obj-3"> I know what a short circuit is.
+                </label>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+            <h3>🏠 Homework: Week 4 Assignment</h3>
+            <p><strong>Due:</strong> Friday by 11:59 PM</p>
+            
+            <div style="background-color: var(--bg-body); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                <h4>1. Download Data Sources</h4>
+                <div class="grid-2" style="margin-bottom: 1rem;">
+                    <a href="https://docs.google.com/spreadsheets/d/12uBEZGoRywuFR7c53N_dyIq1sLs9iwkMWXMUqxqbP8I/edit?usp=sharing" target="_blank" class="btn btn-outline" style="text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                        📄 Master Component Library
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1kI3Gjfu-qkyITUO1x_nZt622EX1ueQmEzY8rwxYc5T4/edit?usp=sharing" target="_blank" class="btn btn-outline" style="text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                        📄 Design Scenario Data
+                    </a>
+                </div>
+
+                <h4>2. The Assignment Tasks</h4>
+                <ul style="padding-left: 1.5rem;">
+                    <li style="margin-bottom:0.5rem"><strong>Finalize BOM:</strong> Create a complete Bill of Materials for your car using <code>VLOOKUP</code>.</li>
+                    <li style="margin-bottom:0.5rem"><strong>Design Specs:</strong> Validate Length, Width, Height, and Weight using <code>IF(AND(...))</code>.</li>
+                    <li><strong>Sketch:</strong> Draw your planned circuit diagram.</li>
+                </ul>
+
+                <h4>3. Submission</h4>
+                <p>Upload your <strong>.xlsx file</strong> and your <strong>Sketch Photo</strong> to the class portal.</p>
+            </div>
+
+            <h3>🌉 Bridge to Next Week</h3>
+            <p><strong>Next Lesson:</strong> Physical Assembly. We will take your BOM and physically build the chassis.</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="nextSection(8)">Back</button>
+            <button class="btn btn-primary" onclick="finishLesson()">Submit Reflection</button>
+        </div>
+
+        <div id="badge-display" class="badge-container">
+            <div style="font-size: 3rem;">🏆</div>
+            <h3>Certified Circuit Planner</h3>
+            <p>You have successfully completed the logic and theory verification.</p>
+            <p id="score-display"></p>
+        </div>
+    </section>
+
+    <!-- Vocabulary (Floating or Footer) -->
+    <section class="card">
+        <h3>📚 Vocabulary Bank</h3>
+        <input type="text" id="vocab-search" placeholder="Search terms..." class="formula-input" style="margin-bottom: 1rem;">
+        <div class="vocab-grid" id="vocab-grid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+</main>
+
+<script>
+    /* --- STATE MANAGEMENT --- */
+    const state = {
+        currentSection: 2,
+        score: 0,
+        practiceIndex: 0,
+        swapSelected: null,
+        labStep: 1
+    };
+
+    /* --- LAB CONFIGURATION (PASTE YOUR IMAGE LINKS HERE) --- */
+    const labSteps = [
+        {
+            step: 1,
+            title: "Step 1: Materials",
+            instruction: "<strong>Gather your components:</strong><br>- Breadboard<br>- 1 LED<br>- 1 Resistor (100Ω)<br>- Jumper Wires<br>- Battery Pack",
+            // PASTE YOUR IMAGE URL FOR STEP 1 BELOW:
+            image: "img/led_circuit_materials.png" 
+        },
+        {
+            step: 2,
+            title: "Step 2: Insert LED",
+            instruction: "Place LED Long Leg (+) into Column 5. Short Leg (-) into Column 6. (LEDs are polarized!)",
+            // PASTE YOUR IMAGE URL FOR STEP 2 BELOW:
+            image: "img/led_circuit_2.png"
+        },
+        {
+            step: 3,
+            title: "Step 3: Add Resistor",
+            instruction: "Connect Resistor from Column 1 to Column 5. This connects it to the LED (+) leg. Resistors limit current.",
+            // PASTE YOUR IMAGE URL FOR STEP 3 BELOW:
+            image: "img/led_circuit_3.png"
+        },
+        {
+            step: 4,
+            title: "Step 4: Connect Power",
+            instruction: "Connect Battery (+) to Column 1 (Resistor) and (-) to Column 6 (LED).<br><em>(Note: Cable color is for organization, it doesn't change how electricity works).</em>",
+            // PASTE YOUR IMAGE URL FOR STEP 4 BELOW:
+            image: "img/led_circuit_4.png"
+        },
+        {
+            step: 5,
+            title: "Step 5: Let there be Light!",
+            instruction: "The LED should light up!<br><strong>Troubleshooting:</strong> LED has polarity. If it's not turning on, <strong>switch the LED legs</strong> (flip it around).",
+            // PASTE YOUR IMAGE URL FOR STEP 5 BELOW:
+            image: "img/led_circuit_4.png"
+        }
+    ];
+
+    /* --- DATA --- */
+    // ... existing vocabData ...
+    const vocabData = [
+        { term: "Breadboard", def: "A reusable tool for prototyping circuits without soldering. Has internal rows and rails." },
+        { term: "Power Rail", def: "The Red (+) and Blue (-) columns on the sides. Connected Vertically." },
+        { term: "Terminal Row", def: "The numbered rows (e.g., Row 5). Connected Horizontally in groups of 5." },
+        { term: "Series Circuit", def: "Components connected one after another. Current must flow through all of them." },
+        { term: "Photovoltaic Effect", def: "The process where a solar panel converts light directly into electricity." },
+        { term: "VLOOKUP", def: "Excel function to search for a value in the first column and return a value in the same row." },
+        { term: "Short Circuit", def: "Connecting positive directly to negative without a load. Causes heat/damage." }
+    ];
+
+    // ... existing practiceQuestions ...
+    const practiceQuestions = [
+        {
+            type: "ccq-yn",
+            q: "CCQ: Can I connect the Battery (+) directly to the Battery (-) on the breadboard?",
+            options: ["Yes", "No"],
+            correct: 1,
+            feedback: "Correct! That would cause a Short Circuit and potential fire."
+        },
+        {
+            type: "app",
+            q: "Practice: You need to buy 4 motors. Which formula calculates the Total Cost?",
+            options: ["=UnitCost * Qty", "=UnitCost + Qty", "=VLOOKUP(Cost)"],
+            correct: 0,
+            feedback: "Correct. Total Cost is Price times Quantity."
+        },
+        {
+            type: "ccq-wh",
+            q: "CCQ: Why do we use VLOOKUP in our BOM?",
+            options: ["To do math calculations", "To make the text red", "To automatically pull data based on an ID"],
+            correct: 2,
+            feedback: "Right! It automates data entry to prevent mistakes."
+        },
+        {
+            type: "ccq-neg",
+            q: "CCQ: Would it be correct to say that Terminal Rows (a-e) are connected horizontally across the whole board?",
+            options: ["No, they are vertical groups of 5", "Yes", "No, they are diagonal"],
+            correct: 0,
+            feedback: "Exactly. The gap in the middle separates sides, and they are vertical groups."
+        },
+        {
+            type: "app",
+            q: "Logic Check: The car length is 200mm. The rule is MAX 180mm. What does =IF(Length<=180, 'OK', 'FAIL') return?",
+            options: ["OK", "ERROR", "FAIL"],
+            correct: 2,
+            feedback: "Correct. 200 is not less than or equal to 180, so it returns the second option."
+        }
+    ];
+
+    /* --- INITIALIZATION --- */
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        generateBreadboard();
+        generateVocab();
+        loadPracticeQuestion();
+        updateProgress();
+        updateLab(); // Initial Lab Load
+        
+        // Listeners
+        document.getElementById('vlookup-input').addEventListener('input', updateVlookupSim);
+        document.getElementById('logic-input').addEventListener('input', updateLogicSim);
+        document.getElementById('vocab-search').addEventListener('input', filterVocab);
+    });
+
+    // ... existing initTheme, toggleTheme, updateProgress, nextSection, opener functions ...
+    function initTheme() {
+        if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    }
+
+    function toggleTheme() {
+        const current = document.body.getAttribute('data-theme');
+        document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+
+    function updateProgress() {
+        const percent = ((state.currentSection - 1) / 9) * 100;
+        document.getElementById('progressBar').style.width = `${Math.min(percent, 100)}%`;
+    }
+
+    function nextSection(sectionId) {
+        document.querySelectorAll('section').forEach(el => el.classList.add('hidden'));
+        document.querySelector('.vocab-grid').closest('section').classList.remove('hidden');
+        
+        let nextEl;
+        switch(sectionId) {
+            case 3: nextEl = document.getElementById('section-objectives'); break;
+            case 4: nextEl = document.getElementById('section-concepts'); break;
+            case 5: nextEl = document.getElementById('section-lab'); break;
+            case 6: nextEl = document.getElementById('section-excel'); break;
+            case 7: nextEl = document.getElementById('section-practice'); break;
+            case 8: nextEl = document.getElementById('section-synthesis'); break;
+            case 9: nextEl = document.getElementById('section-wrapup'); break;
+            default: nextEl = document.getElementById('section-opener');
+        }
+
+        if(sectionId === 9) state.currentSection = 9; 
+        else state.currentSection = sectionId;
+
+        nextEl.classList.remove('hidden');
+        updateProgress();
+        window.scrollTo(0,0);
+    }
+
+    function triggerSpark() {
+        const spark = document.getElementById('spark');
+        spark.classList.add('active');
+        setTimeout(() => {
+            document.getElementById('prediction-area').classList.remove('hidden');
+        }, 1000);
+    }
+
+    function handleOpener(choice) {
+        const fb = document.getElementById('opener-feedback');
+        if (choice === 'short') {
+            fb.textContent = "Correct! Connecting + directly to - without a 'load' (like a motor) allows infinite current flow, causing heat and failure.";
+            fb.className = "feedback correct";
+        } else {
+            fb.textContent = "Not quite. An Open Circuit means nothing happens. Here, things got HOT. That implies too much flow.";
+            fb.className = "feedback incorrect";
+        }
+        document.getElementById('btn-start-lesson').classList.remove('hidden');
+    }
+
+    // ... existing generateBreadboard logic ...
+    function generateBreadboard() {
+        const container = document.getElementById('breadboard-vis');
+        const mkHole = (cls) => `<div class="bb-hole" onmouseenter="highlight('${cls}')" onmouseleave="dehighlight('${cls}')"></div>`;
+
+        let html = '<div class="power-rail">';
+        for(let i=0; i<15; i++) html += mkHole('power-top');
+        html += '</div>';
+
+        html += '<div style="margin: 10px 0">';
+        for(let r=0; r<5; r++) {
+            html += '<div class="bb-row">';
+            for(let c=1; c<=15; c++) html += mkHole(`col-top-${c}`);
+            html += '</div>';
+        }
+        html += '</div>';
+        
+        html += '<div style="height:15px; background:#ddd; margin:5px 0;"></div>';
+
+        html += '<div style="margin: 10px 0">';
+        for(let r=0; r<5; r++) {
+            html += '<div class="bb-row">';
+            for(let c=1; c<=15; c++) html += mkHole(`col-bot-${c}`);
+            html += '</div>';
+        }
+        html += '</div>';
+
+        html += '<div class="ground-rail">';
+        for(let i=0; i<15; i++) html += mkHole('power-bot');
+        html += '</div>';
+
+        container.innerHTML = html;
+    }
+
+    window.highlight = function(cls) {
+        document.querySelectorAll('.bb-hole').forEach(h => {
+            if(h.getAttribute('onmouseenter').includes(cls)) h.classList.add('connected-highlight');
+        });
+    }
+    window.dehighlight = function(cls) {
+        document.querySelectorAll('.bb-hole').forEach(h => h.classList.remove('connected-highlight'));
+    }
+
+    /* --- VIRTUAL LAB (SECTION 5) --- */
+    function updateLab() {
+        const title = document.getElementById('lab-step-title');
+        const desc = document.getElementById('lab-instruction');
+        const count = document.getElementById('lab-step-count');
+        const img = document.getElementById('lab-image');
+        
+        // Ensure step index is valid
+        const index = state.labStep - 1; 
+        const currentData = labSteps[index];
+
+        if(currentData) {
+            count.textContent = `${state.labStep} / ${labSteps.length}`;
+            title.textContent = currentData.title;
+            desc.innerHTML = currentData.instruction;
+            img.src = currentData.image;
+            img.alt = currentData.title;
+        }
+    }
+
+    window.nextLabStep = function() {
+        if(state.labStep < labSteps.length) {
+            state.labStep++;
+            updateLab();
+        }
+    }
+
+    window.prevLabStep = function() {
+        if(state.labStep > 1) {
+            state.labStep--;
+            updateLab();
+        }
+    }
+
+    /* --- EXCEL SIMULATION, PRACTICE, REORDER, WRAPUP --- */
+    function updateVlookupSim() {
+        const id = document.getElementById('vlookup-input').value;
+        const rows = document.querySelectorAll('#library-table tr');
+        rows.forEach(r => r.classList.remove('excel-row-highlight'));
+        
+        let name = "N/A";
+        const target = document.querySelector(`tr[data-id="${id}"]`);
+        if(target) {
+            target.classList.add('excel-row-highlight');
+            name = target.children[1].textContent;
+        }
+        document.getElementById('vlookup-result-name').textContent = name;
+    }
+
+    function updateLogicSim() {
+        const val = parseInt(document.getElementById('logic-input').value);
+        const resEl = document.getElementById('logic-result');
+        if (val >= 120 && val <= 180) {
+            resEl.textContent = "OK";
+            resEl.style.color = "var(--success-text)";
+        } else {
+            resEl.textContent = "FAIL";
+            resEl.style.color = "var(--danger)";
+        }
+    }
+
+    function loadPracticeQuestion() {
+        const container = document.getElementById('practice-container');
+        const qData = practiceQuestions[state.practiceIndex];
+        
+        if(!qData) {
+            nextSection(8); 
+            return;
+        }
+
+        let html = `<div class="card">
+            <span style="font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted)">${qData.type.replace('-',' ')}</span>
+            <h3>${qData.q}</h3>
+            <div class="grid-2">`;
+        
+        qData.options.forEach((opt, idx) => {
+            html += `<button class="quiz-option" onclick="checkAnswer(${idx})">${opt}</button>`;
+        });
+        
+        html += `</div><div id="q-feedback" class="feedback"></div>
+                 <button id="btn-next-q" class="btn btn-primary hidden" onclick="nextQuestion()">Continue</button>
+                 </div>`;
+        
+        container.innerHTML = html;
+        document.getElementById('practice-status').textContent = `Question ${state.practiceIndex + 1} of ${practiceQuestions.length}`;
+    }
+
+    window.checkAnswer = function(idx) {
+        const qData = practiceQuestions[state.practiceIndex];
+        const fbEl = document.getElementById('q-feedback');
+        const nextBtn = document.getElementById('btn-next-q');
+        
+        document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
+        event.target.classList.add('selected');
+
+        if(idx === qData.correct) {
+            fbEl.textContent = qData.feedback;
+            fbEl.className = "feedback correct";
+            nextBtn.classList.remove('hidden');
+        } else {
+            fbEl.textContent = "Incorrect. Try again!";
+            fbEl.className = "feedback incorrect";
+            nextBtn.classList.add('hidden');
+        }
+    }
+
+    window.nextQuestion = function() {
+        state.practiceIndex++;
+        loadPracticeQuestion();
+    }
+
+    window.handleReorderClick = function(el) {
+        if(!state.swapSelected) {
+            state.swapSelected = el;
+            el.classList.add('selected-swap');
+        } else if(state.swapSelected === el) {
+            el.classList.remove('selected-swap');
+            state.swapSelected = null;
+        } else {
+            const val1 = el.innerHTML;
+            const ord1 = el.getAttribute('data-order');
+            const val2 = state.swapSelected.innerHTML;
+            const ord2 = state.swapSelected.getAttribute('data-order');
+            
+            el.innerHTML = val2;
+            el.setAttribute('data-order', ord2);
+            state.swapSelected.innerHTML = val1;
+            state.swapSelected.setAttribute('data-order', ord1);
+            
+            state.swapSelected.classList.remove('selected-swap');
+            state.swapSelected = null;
+            document.getElementById('sort-feedback').style.display = 'none';
+        }
+    }
+
+    function checkSort() {
+        const items = document.querySelectorAll('#drag-container .reorder-item');
+        let currentOrder = [];
+        items.forEach(el => currentOrder.push(parseInt(el.getAttribute('data-order'))));
+        
+        const correctOrder = [1, 2, 3, 4];
+        const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(correctOrder);
+        
+        const fb = document.getElementById('sort-feedback');
+        fb.style.display = 'block';
+        
+        if(isCorrect) {
+            fb.textContent = "Perfect! Design -> Validate -> Build -> Test.";
+            fb.className = "feedback correct";
+            document.getElementById('btn-goto-wrapup').classList.remove('hidden');
+        } else {
+            fb.textContent = "Not quite. Remember: We calculate and validate logic BEFORE we build anything.";
+            fb.className = "feedback incorrect";
+        }
+    }
+
+    function finishLesson() {
+        localStorage.setItem('reflect3', document.getElementById('reflect-3').value);
+        localStorage.setItem('reflect2', document.getElementById('reflect-2').value);
+        
+        document.getElementById('badge-display').style.display = 'block';
+        document.getElementById('badge-display').scrollIntoView({behavior: 'smooth'});
+        
+        let i = 0;
+        const interval = setInterval(() => {
+            const el = document.createElement('div');
+            el.innerHTML = ['🎉','⭐','🔋','🚗'][Math.floor(Math.random()*4)];
+            el.style.position = 'fixed';
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.top = '-50px';
+            el.style.transition = 'top 2s ease-in';
+            document.body.appendChild(el);
+            setTimeout(() => { el.style.top = '110vh'; }, 100);
+            setTimeout(() => { el.remove(); }, 2000);
+            i++;
+            if(i>20) clearInterval(interval);
+        }, 100);
+    }
+
+    function generateVocab() {
+        const grid = document.getElementById('vocab-grid');
+        vocabData.forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'vocab-card';
+            card.innerHTML = `<h4>${v.term}</h4><div class="vocab-details"><p>${v.def}</p></div>`;
+            card.onclick = () => card.classList.toggle('active');
+            grid.appendChild(card);
+        });
+    }
+
+    function filterVocab() {
+        const term = document.getElementById('vocab-search').value.toLowerCase();
+        document.querySelectorAll('.vocab-card').forEach(card => {
+            const text = card.textContent.toLowerCase();
+            card.style.display = text.includes(term) ? 'block' : 'none';
+        });
+    }
+</script>
+</body>
+</html>
