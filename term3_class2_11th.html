@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medellín 2050: Validation Rules — Session 2</title>
+    <style>
+        :root {
+            --primary-color: #1a472a;
+            --secondary-color: #e74c3c;
+            --accent-color: #f39c12;
+            --base-spacing: 1rem;
+            --line-height: 1.8;
+            --letter-spacing: 0.5px;
+            --font-size-base: 16px;
+            --font-size-large: 18px;
+            --font-size-xl: 20px;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        body.dyslexia-mode {
+            --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
+            --font-size-base: 18px;
+            --font-size-large: 20px;
+            --font-size-xl: 22px;
+            --line-height: 2;
+            --letter-spacing: 1px;
+            background-color: #f4f1de !important;
+        }
+
+        /* 1. DYSLEXIA-FRIENDLY MODE FIX */
+        body.dyslexia-mode .section {
+            background-color: #fffcf9 !important;
+            color: #2c3e50 !important;
+            border-left: 6px solid var(--secondary-color) !important;
+            padding: 2rem !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            font-size: var(--font-size-base);
+            line-height: var(--line-height);
+            letter-spacing: var(--letter-spacing);
+            color: #2c3e50;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 0;
+            margin: 0;
+            transition: var(--transition);
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
+            color: #2c3e50;
+        }
+
+        /* 2. LIGHT MODE SECTION FIX */
+        body.light-mode .section {
+            background-color: white;
+            color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 3. LIGHT MODE SPECIFIC OVERRIDES */
+        body.light-mode .question-text,
+        body.light-mode .vocab-definition,
+        body.light-mode .answer-option {
+            color: #2c3e50;
+        }
+
+        body.light-mode input[type="text"],
+        body.light-mode input[type="number"],
+        body.light-mode textarea,
+        body.light-mode select {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            border-color: #ddd;
+        }
+
+        /* HEADER & NAVIGATION (ULTRA-COMPACT) */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        /* Desktop layout adjustment for Header */
+        @media (min-width: 900px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                text-align: left;
+            }
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            margin: 0;
+            line-height: 1.2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 0.85rem;
+            margin: 0;
+            opacity: 0.9;
+            display: none;
+            /* Hide subtitle on mobile to save space */
+        }
+
+        @media (min-width: 768px) {
+            header p {
+                display: block;
+            }
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        nav button,
+        nav a {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        nav button:hover,
+        nav a:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background-color: #1e1e1e;
+            color: #ecf0f1;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 5px solid var(--secondary-color);
+            transition: var(--transition);
+            scroll-margin-top: 100px;
+        }
+
+        .section h2 {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section h4 {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .difficulty-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .difficulty-tabs button {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--secondary-color);
+            background-color: transparent;
+            color: var(--secondary-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .difficulty-tabs button.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .difficulty-tabs button:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .card {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+            transform: translateX(4px);
+        }
+
+        .expandable {
+            cursor: pointer;
+            padding: 1rem;
+            background-color: rgba(231, 76, 60, 0.05);
+            border-radius: var(--border-radius);
+            margin: 0.75rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .expandable:hover {
+            background-color: rgba(231, 76, 60, 0.15);
+        }
+
+        .expandable.active {
+            background-color: rgba(231, 76, 60, 0.2);
+        }
+
+        .expandable-content {
+            display: none;
+            padding: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius);
+            margin-top: 0.5rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        .expandable.active~.expandable-content {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .difficulty-content {
+            display: none;
+        }
+
+        .difficulty-content.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        button,
+        input[type="button"],
+        input[type="submit"] {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+
+        button:hover,
+        input[type="button"]:hover,
+        input[type="submit"]:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 2px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            background-color: #2d2d2d;
+            color: #ecf0f1;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(243, 156, 18, 0.3);
+        }
+
+        .activity-container {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 2px dashed var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .activity-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            border-left: 4px solid #2ecc71;
+            color: #2ecc71;
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid #e74c3c;
+            color: #e74c3c;
+        }
+
+        .feedback.info {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ecf0f1;
+            margin-bottom: 1rem;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .answer-option {
+            padding: 1rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            background-color: transparent;
+            color: #ecf0f1;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .answer-option:hover {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-color: var(--accent-color);
+        }
+
+        .answer-option.selected {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+
+        .answer-option.correct {
+            background-color: rgba(46, 204, 113, 0.3);
+            border-color: #2ecc71;
+        }
+
+        .answer-option.incorrect {
+            background-color: rgba(231, 76, 60, 0.3);
+            border-color: #e74c3c;
+        }
+
+        .ccq-section {
+            background-color: rgba(243, 156, 18, 0.1);
+            border: 2px solid var(--accent-color);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        .ccq-label {
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-tracking {
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.75rem 0;
+        }
+
+        .progress-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .progress-checkbox.completed {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+            color: white;
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            margin: 0.5rem;
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .accessibility-controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .accessibility-controls label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .accessibility-controls input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .vocab-item {
+            background-color: rgba(231, 76, 60, 0.05);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 0.75rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        .vocab-term {
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .vocab-definition {
+            color: #ecf0f1;
+            margin-bottom: 0.5rem;
+        }
+
+        .vocab-example {
+            font-style: italic;
+            color: #aaa;
+            margin-top: 0.5rem;
+        }
+
+        .search-box {
+            margin: 1rem 0;
+        }
+
+        .search-box input {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        table th,
+        table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        table th {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+
+        table tr:hover {
+            background-color: rgba(231, 76, 60, 0.05);
+        }
+
+        .reflection-area {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .reflection-prompt {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .validation-rule-example {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 0.75rem 0;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            nav {
+                gap: 0.75rem;
+            }
+
+            nav button,
+            nav a {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .difficulty-tabs {
+                gap: 0.25rem;
+            }
+
+            .difficulty-tabs button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .answer-option {
+                font-size: 0.95rem;
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>🔐 Medellín 2050: Validation Rules — Securing the City</h1>
+            <p>Session 2: Database Validation & Data Integrity Protection</p>
+        </div>
+        <nav>
+            <button onclick="toggleMode()">🌙 Mode</button>
+            <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
+            <button onclick="scrollToSection('concepts')">Concepts</button>
+            <button onclick="scrollToSection('demo')">Demo</button>
+            <button onclick="scrollToSection('mission')">Mission</button>
+            <button onclick="scrollToSection('drill')">Drill</button>
+            <button onclick="scrollToSection('vocab')">Vocab</button>
+        </nav>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </header>
+
+    <main>
+        <!-- OPENING ACTIVITY -->
+        <section class="section" id="opening">
+            <h2>⚡ The Hook Scenario: 2 AM Data Disaster (5 min)</h2>
+            <div class="activity-container">
+                <div class="activity-title">🚨 The Crisis</div>
+                <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">
+                    <strong>Disaster.</strong> A data entry operator at the Smart City Control Centre was processing
+                    new citizen registrations at 2 AM. Exhausted, they entered:
+                </p>
+                <ul style="font-size: 1.1rem; margin-left: 2rem; margin-bottom: 1.5rem;">
+                    <li style="margin: 0.5rem 0;">A date of birth of <strong>99/99/9999</strong> ❌</li>
+                    <li style="margin: 0.5rem 0;">An energy credit balance of <strong>-450000</strong> (negative
+                        millions!) ❌</li>
+                    <li style="margin: 0.5rem 0;">Left the CitizenID field <strong>completely blank</strong> for three
+                        records ❌</li>
+                </ul>
+                <p style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--accent-color); font-weight: 700;">
+                    💔 The AI welfare system flagged those citizens for 'non-existence' and cut their energy supply.
+                </p>
+                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                    The database was supposed to be the city's guardian. Instead, it became its executioner.
+                </p>
+
+                <div style="background-color: rgba(231, 76, 60, 0.1); padding: 1.5rem; border-radius: 8px;">
+                    <h4>Your Insight:</h4>
+                    <p style="margin-bottom: 1rem;">
+                        What should have prevented each of these three disasters?
+                        Choose the best answer:
+                    </p>
+                    <div class="answer-options" id="hookOptions">
+                        <button class="answer-option" onclick="selectHookAnswer(this, 'validation')">
+                            ✓ Validation rules that refuse invalid dates, negative numbers, and blank IDs at point of
+                            entry
+                        </button>
+                        <button class="answer-option" onclick="selectHookAnswer(this, 'training')">
+                            ✓ Better training for data entry operators
+                        </button>
+                        <button class="answer-option" onclick="selectHookAnswer(this, 'review')">
+                            ✓ Manual review of all entries before they are saved
+                        </button>
+                        <button class="answer-option" onclick="selectHookAnswer(this, 'backup')">
+                            ✓ A backup system to restore data if something goes wrong
+                        </button>
+                    </div>
+                    <div id="hookFeedback" class="feedback"></div>
+                </div>
+                <p style="margin-top: 1.5rem; font-style: italic;">
+                    <strong>Your task today:</strong> We need to make the database refuse bad data before it ever gets
+                    saved.
+                    We need gates — rules that stand guard at every field and reject anything that doesn't belong.
+                </p>
+                <p style="margin-top: 1rem; color: var(--secondary-color); font-weight: 600;">
+                    <strong>You are now the city's Security Architect.</strong>
+                </p>
+                <button onclick="saveHookResponse()" style="margin-top: 1.5rem;">Save My Answer</button>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES -->
+        <section class="section">
+            <h2>📚 Learning Objectives (5 min)</h2>
+
+            <h3>Cognitive Objectives</h3>
+            <p style="margin-bottom: 1rem;">By the end of this lesson, <strong>I will be able to:</strong></p>
+            <div class="progress-tracking">
+                <div class="progress-item">
+                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
+                    <span>Name and describe the six types of validation (Presence, Range, Length, Format, Type,
+                        Lookup)</span>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
+                    <span>Explain why validation cannot guarantee data accuracy, only reasonableness</span>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
+                    <span>Implement three validation mechanisms in MS Access (Required, Input Mask, Validation
+                        Rule)</span>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
+                    <span>Write validation rule expressions using correct syntax (>=, <=, And, Or, #dates#)</span>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
+                    <span>Design and apply appropriate validation rules for different field types and real-world
+                        scenarios</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem;">Social-Emotional Objectives</h3>
+            <p style="margin-bottom: 1rem;">I will develop the ability to:</p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li style="margin: 0.75rem 0;">Think about preventive system design (stopping problems before they
+                    happen)</li>
+                <li style="margin: 0.75rem 0;">Understand the difference between automation and human judgment</li>
+                <li style="margin: 0.75rem 0;">Take responsibility for data quality in systems that affect real people
+                </li>
+            </ul>
+
+            <h3>Prerequisites:</h3>
+            <p style="margin: 0.75rem 0;">✓ Session 1 concepts (data types, primary keys, table design)</p>
+            <p style="margin: 0.75rem 0;">✓ How to open a table in Design View in MS Access</p>
+            <p style="margin: 0.75rem 0;">✓ Familiarity with field properties panel</p>
+        </section>
+
+        <!-- CONCEPT EXPLORATION -->
+        <section class="section" id="concepts">
+            <h2>🎓 Concept Exploration: The Security Architect's Cheat Sheet (20-25 min)</h2>
+
+            <p style="margin-bottom: 1.5rem;">
+                <strong>The Challenge:</strong> Every field in Medellín's database is a gate. Your job is to design
+                gates so strong that bad data bounces back before it can hurt the city.
+            </p>
+
+            <h3>Choose Your Learning Level:</h3>
+            <div class="difficulty-tabs">
+                <button class="active" onclick="switchDifficulty('basic')">🟢 Basic</button>
+                <button onclick="switchDifficulty('intermediate')">🟡 Intermediate</button>
+                <button onclick="switchDifficulty('advanced')">🔴 Advanced</button>
+            </div>
+
+            <!-- BASIC LEVEL -->
+            <div id="basic-content" class="difficulty-content active">
+                <h3 style="color: #2ecc71;">Basic Level: The Six Types of Validation</h3>
+
+                <p style="margin-bottom: 1.5rem;">
+                    Think of validation types as different kinds of guards at city gates. Each checks a different kind
+                    of threat.
+                </p>
+
+                <div class="card">
+                    <strong>1️⃣ Presence Check</strong>
+                    <p>Makes sure the field is not empty (null).</p>
+                    <p style="color: #aaa; font-size: 0.9rem;">
+                        <strong>Access tool:</strong> Required = Yes<br>
+                        <strong>Example:</strong> CitizenID must not be blank — every citizen needs an ID
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>2️⃣ Range Check</strong>
+                    <p>Ensures the value is within acceptable limits (min and max).</p>
+                    <p style="color: #aaa; font-size: 0.9rem;">
+                        <strong>Access tool:</strong> Validation Rule<br>
+                        <strong>Example:</strong> Energy Credits must be between 0 and 9999 (no negatives!)
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>3️⃣ Length Check</strong>
+                    <p>Ensures text is the correct number of characters.</p>
+                    <p style="color: #aaa; font-size: 0.9rem;">
+                        <strong>Access tool:</strong> Field Size or Input Mask<br>
+                        <strong>Example:</strong> CitizenID must be exactly 7 characters (C-00101)
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>4️⃣ Format Check</strong>
+                    <p>Ensures the value follows a specific pattern or structure.</p>
+                    <p style="color: #aaa; font-size: 0.9rem;">
+                        <strong>Access tool:</strong> Input Mask<br>
+                        <strong>Example:</strong> CitizenID must be Letter-Hyphen-5Digits (C-00101, not C00101 or
+                        CC-001)
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>5️⃣ Type Check</strong>
+                    <p>Ensures the value is the correct data type (automatic).</p>
+                    <p style="color: #aaa; font-size: 0.9rem;">
+                        <strong>Access tool:</strong> Data Type field setting<br>
+                        <strong>Example:</strong> Age is Number — text like "twenty-five" is rejected automatically
+                    </p>
+                </div>
+
+                <div class="card">
+                    <strong>6️⃣ Lookup Check (List Check)</strong>
+                    <p>Ensures the value is one of a predefined set of options.</p>
+                    <p style="color: #aaa; font-size: 0.9rem;">
+                        <strong>Access tool:</strong> Lookup Wizard + Limit To List = Yes<br>
+                        <strong>Example:</strong> Sector must be one of: El Poblado, Laureles, Envigado, Belén, Centro
+                        (nothing else)
+                    </p>
+                </div>
+
+                <div class="activity-container" style="margin-top: 2rem;">
+                    <div class="activity-title">Quick Check: Match Validation to Problem</div>
+                    <p style="margin-bottom: 1rem;"><strong>Which validation type stops each problem?</strong></p>
+                    <div id="basicQuiz"></div>
+                </div>
+
+                <h4 style="margin-top: 2rem;">⚠️ Critical Understanding</h4>
+                <p
+                    style="background-color: rgba(231, 76, 60, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <strong>Validation is NOT accuracy-checking.</strong> A validation rule checks that data is
+                    <strong>reasonable, complete, and within rules</strong>. But it cannot check if data is
+                    <strong>true or correct</strong>. A sensor could malfunction and report 45 when the real value is
+                    92.
+                    Validation would accept 45 because it's in the valid range. The database cannot detect lies—only
+                    nonsense.
+                </p>
+            </div>
+
+            <!-- INTERMEDIATE LEVEL -->
+            <div id="intermediate-content" class="difficulty-content">
+                <h3 style="color: #f39c12;">Intermediate Level: Implementing Validation</h3>
+
+                <h4>The Three Validation Mechanisms in MS Access</h4>
+                <p style="margin-bottom: 1.5rem;">
+                    Access gives you three tools to enforce rules. Each serves a different purpose:
+                </p>
+
+                <div class="expandable" onclick="toggleExpandable(this)">
+                    <span>🔒 Mechanism 1: Required = Yes (Presence Check)</span>
+                    <span>→</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>What it does:</strong> Prevents the field from being left empty (null).</p>
+                    <p style="margin-top: 0.75rem;"><strong>When to use:</strong> Any field that must have a value.</p>
+                    <p style="margin-top: 0.75rem;"><strong>Location:</strong> Field Properties → Required</p>
+                    <p style="margin-top: 0.75rem;"><strong>Example:</strong> CitizenID field: Required = Yes</p>
+                    <p style="margin-top: 0.75rem; color: #aaa;"><em>⚠️ Note: This prevents NULL, but not blank spaces.
+                            For stronger checking, combine with Input Mask or Validation Rule.</em></p>
+                </div>
+
+                <div class="expandable" onclick="toggleExpandable(this)">
+                    <span>📋 Mechanism 2: Input Mask (Format & Length Check)</span>
+                    <span>→</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>What it does:</strong> Enforces a specific pattern. Won't let you type anything that
+                        doesn't match.</p>
+                    <p style="margin-top: 0.75rem;"><strong>Syntax:</strong></p>
+                    <div class="validation-rule-example">
+                        L\-00000;0;_
+                    </div>
+                    <p style="margin-top: 0.75rem;"><strong>Symbols:</strong><br>
+                        L = one required letter<br>
+                        \- = literal hyphen (the backslash escapes it)<br>
+                        0 = one required digit<br>
+                        9 = one optional digit<br>
+                        _ = placeholder character shown while typing
+                    </p>
+                    <p style="margin-top: 0.75rem;"><strong>Example:</strong> CitizenID with mask L\-00000 produces
+                        C-00101 format</p>
+                </div>
+
+                <div class="expandable" onclick="toggleExpandable(this)">
+                    <span>⚙️ Mechanism 3: Validation Rule (Range, Logic Checks)</span>
+                    <span>→</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>What it does:</strong> Uses an expression to check logical conditions.</p>
+                    <p style="margin-top: 0.75rem;"><strong>Common Examples:</strong></p>
+                    <div class="validation-rule-example">
+                        >=0 And <=9999 </div>
+                            <p style="margin-top: 0.5rem;">Range check: value must be 0 to 9999</p>
+                            <div class="validation-rule-example">
+                                >=#01/01/2030# And <=Date() </div>
+                                    <p style="margin-top: 0.5rem;">Date range: between 2030 and today (Date() = today)
+                                    </p>
+                                    <div class="validation-rule-example">
+                                        <> "" Or <> " "
+                                    </div>
+                                    <p style="margin-top: 0.5rem;">Not empty and not just spaces</p>
+                                    <p style="margin-top: 0.75rem;"><strong>Key Operators:</strong><br>
+                                        = (equals) | <> (not equals) | < (less) |> (greater)<br>
+                                                <= (less or equal) |>= (greater or equal)<br>
+                                                    And (both must be true) | Or (either can be true)
+                                    </p>
+                            </div>
+
+                            <h4 style="margin-top: 2rem;">Why Validation Matters: The 2 AM Scenario Explained</h4>
+
+                            <div class="card">
+                                <strong>Problem 1: Date of 99/99/9999</strong><br>
+                                <strong>Solution:</strong> Range check on DateOfBirth<br>
+                                <span class="validation-rule-example">>=#01/01/1950# And <=Date()< /span>
+                                        This accepts births between 1950 and today. 99/99/9999 is rejected immediately.
+                            </div>
+
+                            <div class="card">
+                                <strong>Problem 2: Energy Credits = -450000</strong><br>
+                                <strong>Solution:</strong> Range check on EnergyCredits<br>
+                                <span class="validation-rule-example">>=0 And <=9999< /span>
+                                        Negative numbers are impossible in the city's system. This rule rejects them.
+                            </div>
+
+                            <div class="card">
+                                <strong>Problem 3: CitizenID left blank</strong><br>
+                                <strong>Solution:</strong> Required = Yes on CitizenID<br>
+                                The database won't let you skip to the next field. You must fill it in. Combined with
+                                Input Mask, it's bulletproof.
+                            </div>
+
+                            <div class="activity-container" style="margin-top: 2rem;">
+                                <div class="activity-title">⚠️ CONCEPT CHECK 1 (Critical Understanding):</div>
+                                <p style="margin-bottom: 1rem;">
+                                    <strong>Question:</strong> A validation rule sets EnergyCredits between 0 and 9999.
+                                    A sensor malfunction reports 9500 when the true reading is 2000. Which statement is
+                                    correct?
+                                </p>
+                                <div class="answer-options" id="ccq1-options"></div>
+                                <button onclick="checkCCQ('ccq1')" style="margin-top: 1rem;">Check Answer</button>
+                                <div id="ccq1-feedback" class="feedback"></div>
+                            </div>
+                    </div>
+
+                    <!-- ADVANCED LEVEL -->
+                    <div id="advanced-content" class="difficulty-content">
+                        <h3 style="color: #e74c3c;">Advanced Level: Complex Rules & Edge Cases</h3>
+
+                        <h4>Building Compound Validation Rules</h4>
+                        <p style="margin-bottom: 1.5rem;">
+                            Sometimes a single condition isn't enough. You need to combine multiple checks using And/Or
+                            logic.
+                        </p>
+
+                        <div class="card">
+                            <strong>Example 1: Age with Both Presence and Range</strong>
+                            <span class="validation-rule-example">
+                                >=18 And <=100 </span>
+                                    <p style="margin-top: 0.75rem;">
+                                        But combine with Required = Yes to ensure it's never null. This forces both the
+                                        field to have a value AND that value to be reasonable.
+                                    </p>
+                        </div>
+
+                        <div class="card">
+                            <strong>Example 2: PollutionIndex (0-100) OR Status is "Inactive"</strong>
+                            <span class="validation-rule-example">
+                                (PollutionIndex >=0 And PollutionIndex <=100) Or Status="Inactive" </span>
+                                    <p style="margin-top: 0.75rem;">
+                                        If the sensor is inactive, we don't validate the reading. Advanced logic that
+                                        models real-world rules.
+                                    </p>
+                        </div>
+
+                        <h4 style="margin-top: 2rem;">The Lookup Check Deep Dive</h4>
+                        <p style="margin-bottom: 1rem;">
+                            A common misconception: <strong>A dropdown list is not validation.</strong> It's just
+                            convenience.
+                            <strong>Limit To List = Yes</strong> is the actual validation that enforces it.
+                        </p>
+
+                        <div
+                            style="background-color: rgba(0, 0, 0, 0.4); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <p><strong>Limit To List = No:</strong> Dropdown shows suggestions, but you can type
+                                anything. Invalid!</p>
+                            <p style="margin-top: 0.75rem;"><strong>Limit To List = Yes:</strong> Dropdown only. Cannot
+                                type anything else. Valid validation!</p>
+                        </div>
+
+                        <h4 style="margin-top: 2rem;">Validation Expressions: Advanced Syntax</h4>
+
+                        <table style="font-size: 0.9rem;">
+                            <thead>
+                                <tr>
+                                    <th>Scenario</th>
+                                    <th>Expression</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Range: 10 to 50</td>
+                                    <td><span class="validation-rule-example" style="margin: 0;">>=10 And <=50< /span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Not equal to 0</td>
+                                    <td><span class="validation-rule-example" style="margin: 0;">
+                                            <>0
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>Date is in 2050</td>
+                                    <td><span class="validation-rule-example" style="margin: 0;">>=#01/01/2050# And
+                                            <=#31 /12/2050#</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Text not blank or space</td>
+                                    <td><span class="validation-rule-example" style="margin: 0;">"" Or " "</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Either "Active" or "Inactive"</td>
+                                    <td><span class="validation-rule-example" style="margin: 0;">"Active" Or
+                                            "Inactive"</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="activity-container" style="margin-top: 2rem;">
+                            <div class="activity-title">⚠️ CONCEPT CHECK 2 (Complex Validation):</div>
+                            <p style="margin-bottom: 1rem;">
+                                <strong>Scenario:</strong> A sensor can report values 0-100 if it's "Active", or it can
+                                have any value
+                                if status is "Maintenance". Write the validation rule expression for PollutionIndex.
+                            </p>
+                            <textarea id="ccq2-answer" placeholder="Write your expression here..."
+                                style="min-height: 100px; font-family: monospace;"></textarea>
+                            <button onclick="checkCCQ('ccq2')" style="margin-top: 1rem;">Check Understanding</button>
+                            <div id="ccq2-feedback" class="feedback"></div>
+                        </div>
+                    </div>
+        </section>
+
+        <!-- GUIDED DEMONSTRATION -->
+        <section class="section" id="demo">
+            <h2>🛠️ Guided Demonstration: Building CITIZENS Validation (0:25 – 0:55)</h2>
+
+            <p style="margin-bottom: 1.5rem;">
+                Open your Session 1 database: <strong>Medellin2050_SmartCity.accdb</strong><br>
+                Open <strong>CITIZENS</strong> table in Design View.<br>
+                Follow along as we add validation to each field.
+            </p>
+
+            <div class="expandable" onclick="toggleExpandable(this)">
+                <span>📍 FIELD 1: CitizenID (Presence + Format + Length)</span>
+                <span>→</span>
+            </div>
+            <div class="expandable-content">
+                <ol style="margin-left: 1.5rem;">
+                    <li>Click the <strong>CitizenID</strong> row in Design View</li>
+                    <li>In Field Properties at the bottom:
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li><strong>Field Size:</strong> 7</li>
+                            <li><strong>Required:</strong> Yes</li>
+                            <li><strong>Input Mask:</strong> L\-00000;0;_</li>
+                            <li><strong>Validation Text:</strong> "Citizen ID must follow the format: one letter, a
+                                hyphen, and 5 digits (e.g., C-00101)"</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ CitizenID is now bulletproof. It
+                        must exist, it must be 7 characters, and it must follow the exact pattern.</strong></p>
+            </div>
+
+            <div class="expandable" onclick="toggleExpandable(this)">
+                <span>📍 FIELD 2: EnergyCredits (Range Check)</span>
+                <span>→</span>
+            </div>
+            <div class="expandable-content">
+                <ol style="margin-left: 1.5rem;">
+                    <li>Click the <strong>EnergyCredits</strong> row</li>
+                    <li>In Field Properties:
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li><strong>Validation Rule:</strong> >=0 And <=9999< /li>
+                            <li><strong>Validation Text:</strong> "Energy Credits must be a value between 0 and 9999."
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Try entering -50 in Datasheet View → Access blocks it with your custom message</li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ No negative energy credits
+                        allowed. The city's economy is protected.</strong></p>
+            </div>
+
+            <div class="expandable" onclick="toggleExpandable(this)">
+                <span>📍 FIELD 3: DateOfBirth (Date Range Check)</span>
+                <span>→</span>
+            </div>
+            <div class="expandable-content">
+                <ol style="margin-left: 1.5rem;">
+                    <li>Click <strong>DateOfBirth</strong> row</li>
+                    <li>In Field Properties:
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li><strong>Format:</strong> dd/mm/yyyy</li>
+                            <li><strong>Validation Rule:</strong> >=#01/01/1950# And <=Date()< /li>
+                            <li><strong>Validation Text:</strong> "Date of Birth must be between 01/01/1950 and today."
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ Impossible dates (like 99/99/9999)
+                        are rejected instantly. The Date() function makes this self-updating—no need to change it each
+                        year.</strong></p>
+            </div>
+
+            <div class="expandable" onclick="toggleExpandable(this)">
+                <span>📍 FIELD 4: Sector (Lookup Check with Limit To List)</span>
+                <span>→</span>
+            </div>
+            <div class="expandable-content">
+                <ol style="margin-left: 1.5rem;">
+                    <li>Click <strong>Sector</strong> row (assuming it exists; if not, add it as Short Text)</li>
+                    <li><strong>CRITICAL:</strong> In Field Properties, set:
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li><strong>Limit To List:</strong> <span
+                                    style="color: var(--accent-color); font-weight: 700;">YES</span></li>
+                            <li><strong>Allow Value List Edits:</strong> NO</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--accent-color); font-weight: 700;">
+                    ⚠️ Without "Limit To List = Yes", the dropdown is just a suggestion. With it, it becomes actual
+                    validation.
+                </p>
+            </div>
+
+            <div class="expandable" onclick="toggleExpandable(this)">
+                <span>📍 FIELD 5: IsVerified (Automatic via Boolean)</span>
+                <span>→</span>
+            </div>
+            <div class="expandable-content">
+                <p>
+                    <strong>No extra validation needed!</strong> Yes/No fields cannot be null in Access—they default to
+                    No.
+                    That means this field is automatically presence-checked by its data type. Access handles it for you.
+                </p>
+            </div>
+
+            <div class="expandable" onclick="toggleExpandable(this)">
+                <span>📍 FIELD 6: RegistrationDate (Self-Updating Date Range)</span>
+                <span>→</span>
+            </div>
+            <div class="expandable-content">
+                <ol style="margin-left: 1.5rem;">
+                    <li>Click <strong>RegistrationDate</strong> row</li>
+                    <li>In Field Properties:
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li><strong>Validation Rule:</strong> >=#01/01/2030# And <=Date()< /li>
+                            <li><strong>Validation Text:</strong> "Registration date must be between 01/01/2030 (city
+                                founding) and today."</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ The Smart City didn't exist before
+                        2030. This rule reflects institutional reality.</strong></p>
+            </div>
+
+            <div class="activity-container" style="margin-top: 2rem;">
+                <div class="activity-title">⚠️ CONCEPT CHECK 3 (Implementation):</div>
+                <p style="margin-bottom: 1rem;">
+                    <strong>You apply Validation Rule: >=0 And <=100 to a PollutionIndex field. A malfunctioning sensor
+                            reports 95 when the true reading is 150. What happens?</strong>
+                </p>
+                <div class="answer-options" id="ccq3-options"></div>
+                <button onclick="checkCCQ('ccq3')" style="margin-top: 1rem;">Check Answer</button>
+                <div id="ccq3-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- STUDENT MISSION -->
+        <section class="section" id="mission">
+            <h2>🎯 Student Mission: The Sensor Network (0:55 – 1:20)</h2>
+
+            <div class="activity-container">
+                <div class="activity-title">Mission Brief: Independent Practice</div>
+                <p style="margin-bottom: 1.5rem;">
+                    <strong>The Challenge:</strong> The city's 200 environmental sensors across Medellín 2050 report
+                    air quality, temperature, and pollution data every hour. A new table <strong>ENV_SENSORS</strong>
+                    must be created with strict validation — the data feeds directly into the city's AI climate control
+                    system.
+                    Bad data = wrong decisions = unhealthy citizens.
+                </p>
+
+                <h4>The Dataset — ENV_SENSORS Table (Design & Validate This)</h4>
+                <p style="margin-bottom: 1rem;">Students must design the schema AND build validation:</p>
+
+                <table style="font-size: 0.9rem;">
+                    <thead>
+                        <tr>
+                            <th>SensorID</th>
+                            <th>SectorCode</th>
+                            <th>Temperature</th>
+                            <th>PollutionIndex</th>
+                            <th>LastReading</th>
+                            <th>IsActive</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SN-001</td>
+                            <td>PopBld</td>
+                            <td>22</td>
+                            <td>45</td>
+                            <td>04/03/2050</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>SN-002</td>
+                            <td>Lauren</td>
+                            <td>18</td>
+                            <td>38</td>
+                            <td>04/03/2050</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>SN-003</td>
+                            <td>Envddo</td>
+                            <td>25</td>
+                            <td>52</td>
+                            <td>04/03/2050</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>SN-004</td>
+                            <td>Centro</td>
+                            <td>20</td>
+                            <td>61</td>
+                            <td>04/03/2050</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>SN-005</td>
+                            <td>Belén</td>
+                            <td>19</td>
+                            <td>48</td>
+                            <td>04/03/2050</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>SN-006</td>
+                            <td>PopBld</td>
+                            <td>23</td>
+                            <td>42</td>
+                            <td>03/03/2050</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>SN-007</td>
+                            <td>Lauren</td>
+                            <td>17</td>
+                            <td>35</td>
+                            <td>04/03/2050</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>SN-008</td>
+                            <td>Envddo</td>
+                            <td>26</td>
+                            <td>58</td>
+                            <td>04/03/2050</td>
+                            <td>Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-top: 2rem;">Validation Specification (You Must Implement All)</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li style="margin: 0.75rem 0;"><strong>SensorID:</strong> Presence check (Required = Yes), Input
+                        Mask LL-000, max 5 characters</li>
+                    <li style="margin: 0.75rem 0;"><strong>SectorCode:</strong> Lookup field with "PopBld", "Lauren",
+                        "Envddo", "Centro", "Belén" + Limit To List = Yes</li>
+                    <li style="margin: 0.75rem 0;"><strong>Temperature:</strong> Range check >= -10 And <= 50 with
+                            custom validation text</li>
+                    <li style="margin: 0.75rem 0;"><strong>PollutionIndex:</strong> Range check >= 0 And <= 100 with
+                            custom validation text</li>
+                    <li style="margin: 0.75rem 0;"><strong>LastReading:</strong> Date range >= #01/01/2030# And <=
+                            Date()</li>
+                    <li style="margin: 0.75rem 0;"><strong>IsActive:</strong> Yes/No field (automatic validation)</li>
+                </ul>
+
+                <h4 style="margin-top: 2rem;">✅ Success Criteria</h4>
+                <div class="progress-tracking">
+                    <div class="progress-item">
+                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
+                        <span>SensorID is the Primary Key (🔑) with Required = Yes</span>
+                    </div>
+                    <div class="progress-item">
+                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
+                        <span>SensorID has Input Mask LL-000 enforcing format</span>
+                    </div>
+                    <div class="progress-item">
+                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
+                        <span>SectorCode is a Lookup field with Limit To List = Yes</span>
+                    </div>
+                    <div class="progress-item">
+                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
+                        <span>Temperature validation rule: >=-10 And <=50< /span>
+                    </div>
+                    <div class="progress-item">
+                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
+                        <span>PollutionIndex validation rule: >=0 And <=100< /span>
+                    </div>
+                    <div class="progress-item">
+                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
+                        <span>LastReading date validation applied</span>
+                    </div>
+                    <div class="progress-item">
+                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
+                        <span>All 8 records entered successfully</span>
+                    </div>
+                    <div class="progress-item">
+                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
+                        <span>Attempt to enter PollutionIndex = 150 produces error message</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 2rem;">🔴 Stretch Challenge</h4>
+                <p style="margin-bottom: 1rem;">
+                    Sensor SN-009 is being decommissioned. The city engineer argues: "We should just delete the record."
+                    The data governance officer argues: "We should update IsActive to No and keep the record."
+                    Write 2 sentences arguing the data governance officer's position, using database terminology.
+                </p>
+                <textarea id="stretchAnswer" placeholder="Type your answer here..."
+                    style="min-height: 100px;"></textarea>
+                <button onclick="saveMissionAnswer()" style="margin-top: 1rem;">Save My Answer</button>
+                <div id="stretchFeedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- THEORY DRILL -->
+        <section class="section" id="drill">
+            <h2>📝 Theory Drill: Paper 1 Style (1:20 – 1:30)</h2>
+            <p style="margin-bottom: 1.5rem;">
+                <strong>5 questions, timed at 2 minutes each.</strong> Write answers on paper or a shared doc.
+            </p>
+
+            <div class="question-container">
+                <div class="question-text">Q1 (2 marks):</div>
+                <p style="margin-bottom: 1rem;">
+                    <strong>State what is meant by a presence check and give one example from a citizen registration
+                        database.</strong>
+                </p>
+                <textarea id="q1-answer" placeholder="Write your answer..." style="min-height: 80px;"></textarea>
+                <button onclick="checkQ1()" style="margin-top: 0.75rem;">Check Answer</button>
+                <div id="q1-feedback" class="feedback"></div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-text">Q2 (3 marks):</div>
+                <p style="margin-bottom: 1rem;">
+                    A database stores the field <strong>PollutionIndex</strong> with values between 0 and 100.<br>
+                    (a) Name the type of validation that should be applied. (1 mark)<br>
+                    (b) Write the validation rule expression used in MS Access. (1 mark)<br>
+                    (c) Explain why this validation cannot guarantee the data is accurate. (1 mark)
+                </p>
+                <textarea id="q2-answer" placeholder="Write your answer..." style="min-height: 100px;"></textarea>
+                <button onclick="checkQ2()" style="margin-top: 0.75rem;">Check Answer</button>
+                <div id="q2-feedback" class="feedback"></div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-text">Q3 (3 marks):</div>
+                <p style="margin-bottom: 1rem;">
+                    A developer applies a Lookup check to the SectorCode field, creating a dropdown list of five
+                    permitted city zones.
+                    <strong>Explain two advantages of using a lookup check for this field over leaving it as free-text.
+                        (2 × 1 mark)
+                        Then state one disadvantage. (1 mark)</strong>
+                </p>
+                <textarea id="q3-answer" placeholder="Write your answer..." style="min-height: 100px;"></textarea>
+                <button onclick="checkQ3()" style="margin-top: 0.75rem;">Check Answer</button>
+                <div id="q3-feedback" class="feedback"></div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-text">Q4 (4 marks):</div>
+                <p style="margin-bottom: 1rem;">
+                    <strong>Describe four different types of validation that could be applied to a field called
+                        CitizenID
+                        which stores values in the format C-00101.</strong>
+                </p>
+                <textarea id="q4-answer" placeholder="Write your answer..." style="min-height: 120px;"></textarea>
+                <button onclick="checkQ4()" style="margin-top: 0.75rem;">Check Answer</button>
+                <div id="q4-feedback" class="feedback"></div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-text">Q5 (2 marks):</div>
+                <p style="margin-bottom: 1rem;">
+                    <strong>Explain the difference between validation and verification.</strong>
+                </p>
+                <textarea id="q5-answer" placeholder="Write your answer..." style="min-height: 80px;"></textarea>
+                <button onclick="checkQ5()" style="margin-top: 0.75rem;">Check Answer</button>
+                <div id="q5-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <!-- VOCABULARY -->
+        <section class="section" id="vocab">
+            <h2>📚 Interactive Vocabulary Module</h2>
+
+            <div class="search-box">
+                <input type="text" id="vocabSearch" placeholder="Search vocabulary terms..."
+                    onkeyup="filterVocab(this.value)">
+            </div>
+
+            <div id="vocabContainer"></div>
+        </section>
+
+        <!-- WRAP-UP -->
+        <section class="section" id="wrapup">
+            <h2>🎉 Wrap-Up & Closure Activity (5-10 min)</h2>
+
+            <h3>A. Knowledge Consolidation: 3-2-1 Reflection</h3>
+            <div class="reflection-area">
+                <div class="reflection-prompt">✍️ 3 Validation Types I Can Now Explain:</div>
+                <textarea id="reflection-3" placeholder="1. \n2. \n3. " style="min-height: 100px;"></textarea>
+            </div>
+
+            <div class="reflection-area">
+                <div class="reflection-prompt">✍️ 2 Real-World Scenarios Where Validation Protects Data:</div>
+                <textarea id="reflection-2" placeholder="1. \n2. " style="min-height: 80px;"></textarea>
+            </div>
+
+            <div class="reflection-area">
+                <div class="reflection-prompt">❓ 1 Question I Still Have About Validation:</div>
+                <textarea id="reflection-1" placeholder="Type your question..." style="min-height: 60px;"></textarea>
+            </div>
+
+            <h3 style="margin-top: 2rem;">B. Objective Confirmation: How Confident Are You?</h3>
+            <p style="margin-bottom: 1.5rem;">Rate yourself on each learning objective:</p>
+
+            <div class="progress-tracking">
+                <div class="progress-item">
+                    <span style="flex: 1;">Name and describe the six validation types</span>
+                    <div style="text-align: right;">
+                        <button onclick="rateObjective(this, 'obj1')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🔴</button>
+                        <button onclick="rateObjective(this, 'obj1')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟡</button>
+                        <button onclick="rateObjective(this, 'obj1')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟢</button>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span style="flex: 1;">Explain why validation checks reasonableness, not truth</span>
+                    <div style="text-align: right;">
+                        <button onclick="rateObjective(this, 'obj2')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🔴</button>
+                        <button onclick="rateObjective(this, 'obj2')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟡</button>
+                        <button onclick="rateObjective(this, 'obj2')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟢</button>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span style="flex: 1;">Implement validation mechanisms in Access</span>
+                    <div style="text-align: right;">
+                        <button onclick="rateObjective(this, 'obj3')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🔴</button>
+                        <button onclick="rateObjective(this, 'obj3')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟡</button>
+                        <button onclick="rateObjective(this, 'obj3')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟢</button>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span style="flex: 1;">Write validation rule expressions correctly</span>
+                    <div style="text-align: right;">
+                        <button onclick="rateObjective(this, 'obj4')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🔴</button>
+                        <button onclick="rateObjective(this, 'obj4')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟡</button>
+                        <button onclick="rateObjective(this, 'obj4')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟢</button>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span style="flex: 1;">Design appropriate validation for real scenarios</span>
+                    <div style="text-align: right;">
+                        <button onclick="rateObjective(this, 'obj5')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🔴</button>
+                        <button onclick="rateObjective(this, 'obj5')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟡</button>
+                        <button onclick="rateObjective(this, 'obj5')"
+                            style="padding: 0.5rem 0.75rem; margin: 0; font-size: 0.9rem;">🟢</button>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem;">C. Bridge to Next Lesson</h3>
+            <div class="card"
+                style="background-color: rgba(231, 76, 60, 0.1); border-left: 4px solid var(--accent-color);">
+                <p style="margin-bottom: 1rem;">
+                    <strong>🔮 Next Session Preview:</strong> Your validation gates are up. But right now,
+                    all your data lives in isolated silos — Citizens here, Metro Vehicles there, Sensors somewhere else.
+                </p>
+                <p>
+                    <strong>The city can't function when its departments don't talk to each other.</strong>
+                    Next session, we connect the tables. We build the city's nervous system: <strong>Relationships,
+                        Foreign Keys, and Referential Integrity.</strong> One rogue deletion in the wrong place could
+                    orphan 10,000 sensor records — and we'll learn exactly how to prevent it.
+                </p>
+            </div>
+
+            <h3 style="margin-top: 2rem;">D. Celebration & Achievement</h3>
+            <div
+                style="background-color: rgba(46, 204, 113, 0.1); padding: 2rem; border-radius: 8px; text-align: center; margin: 1.5rem 0;">
+                <p style="font-size: 1.3rem; color: #2ecc71; margin-bottom: 1rem;">
+                    🛡️ <strong>Session 2 Complete! You Are the City's Security Architect!</strong>
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    You now understand validation rules and how they protect data integrity. You can implement
+                    presence checks, range checks, format checks, and lookup lists in MS Access.
+                </p>
+                <p style="color: var(--secondary-color); font-weight: 600;">
+                    <strong>Medellín 2050's gates are now secure. Bad data will not slip through while you're
+                        watching.</strong>
+                </p>
+            </div>
+
+            <h3 style="margin-top: 2rem;">E. Optional Homework</h3>
+            <div class="reflection-area">
+                <div class="reflection-prompt">📝 Homework: 3-Column Table</div>
+                <p style="margin-bottom: 1rem;">
+                    Create a table on paper with three columns: <strong>Field Name | Validation Type |
+                        Expression</strong>
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Fill in five fields of your own invention for a fictional <strong>ENERGY_BILLS</strong> table.
+                    Be ready to verify these in Session 3!
+                </p>
+                <textarea id="homework" placeholder="Type or describe your homework here..."
+                    style="min-height: 120px;"></textarea>
+                <button onclick="saveHomework()" style="margin-top: 1rem;">Save Homework</button>
+                <div id="homeworkFeedback" class="feedback"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // VOCABULARY DATA
+        const vocabData = [
+            { term: "Presence Check", definition: "A validation type that ensures a field is not left empty (null). Enforced in Access with Required = Yes.", example: "CitizenID must not be blank" },
+            { term: "Range Check", definition: "A validation type that ensures a value is within acceptable minimum and maximum limits.", example: "Energy Credits must be between 0 and 9999" },
+            { term: "Length Check", definition: "A validation type that ensures text is the correct number of characters.", example: "CitizenID must be exactly 7 characters" },
+            { term: "Format Check", definition: "A validation type that ensures a value follows a specific pattern or structure. Enforced in Access with Input Mask.", example: "CitizenID must follow L-00000 pattern (letter, hyphen, 5 digits)" },
+            { term: "Type Check", definition: "An automatic validation that ensures the value is the correct data type. Determined by the field's Data Type setting.", example: "Age field set as Number rejects text like 'twenty-five'" },
+            { term: "Lookup Check", definition: "A validation type that ensures a value is one of a predefined set of options. Enforced with Lookup Wizard + Limit To List = Yes.", example: "Sector must be one of: El Poblado, Laureles, Envigado, Belén, Centro" },
+            { term: "Input Mask", definition: "An Access tool that enforces format and length by physically controlling what characters can be typed and in what position.", example: "L\\-00000 creates C-00101 format" },
+            { term: "Validation Rule", definition: "An Access expression that checks logical conditions (range, date logic, comparisons). Uses operators like >=, <=, And, Or.", example: ">=0 And <=9999" },
+            { term: "Required", definition: "An Access field property that prevents the field from being left empty (null). Used for presence checks.", example: "Required = Yes on CitizenID" },
+            { term: "Validation Text", definition: "The custom error message that appears when a validation rule is violated. Should explain the problem and how to fix it.", example: "Energy Credits must be a value between 0 and 9999" },
+            { term: "Limit To List", definition: "A critical Access property for Lookup fields. When Yes, only values in the dropdown are allowed. When No, any text can be typed.", example: "Limit To List = Yes enforces validation" },
+            { term: "Data Integrity", definition: "The accuracy, consistency, and reliability of data in a database. Achieved through validation and other controls.", example: "Validation rules maintain data integrity by preventing invalid entries" }
+        ];
+
+        function initializeVocabulary() {
+            const container = document.getElementById('vocabContainer');
+            container.innerHTML = vocabData.map((item, index) => `
+                <div class="vocab-item" data-term="${item.term.toLowerCase()}">
+                    <div class="vocab-term">${index + 1}. ${item.term}</div>
+                    <div class="vocab-definition"><strong>Definition:</strong> ${item.definition}</div>
+                    <div class="vocab-example"><strong>Example:</strong> ${item.example}</div>
+                </div>
+            `).join('');
+        }
+
+        function filterVocab(searchTerm) {
+            const items = document.querySelectorAll('.vocab-item');
+            items.forEach(item => {
+                if (item.getAttribute('data-term').includes(searchTerm.toLowerCase())) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function switchDifficulty(level) {
+            document.querySelectorAll('.difficulty-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(level + '-content').classList.add('active');
+            document.querySelectorAll('.difficulty-tabs button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function toggleExpandable(element) {
+            element.classList.toggle('active');
+        }
+
+        function selectHookAnswer(btn, answer) {
+            document.querySelectorAll('#hookOptions .answer-option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function saveHookResponse() {
+            const selected = document.querySelector('#hookOptions .answer-option.selected');
+            if (selected) {
+                sessionStorage.setItem('hookResponse', selected.textContent);
+                showFeedback('hookFeedback', '✓ Your answer has been saved. Great insight!', 'info');
+            } else {
+                showFeedback('hookFeedback', 'Please select an answer first.', 'incorrect');
+            }
+        }
+
+        function checkCCQ(ccqNum) {
+            if (ccqNum === 'ccq1') {
+                const selected = document.querySelector('#ccq1-options .answer-option.selected');
+                if (!selected) {
+                    showFeedback('ccq1-feedback', 'Please select an answer.', 'incorrect');
+                    return;
+                }
+                if (selected.textContent.includes('reasonable') && selected.textContent.includes('cannot detect')) {
+                    showFeedback('ccq1-feedback', '✓ Correct! Validation accepts 95 because it\'s within the rule. The validation cannot detect that the sensor is malfunctioning. This is the critical distinction: validation checks rules, not truth.', 'correct');
+                } else {
+                    showFeedback('ccq1-feedback', '✗ Try again. Think about what validation can and cannot do.', 'incorrect');
+                }
+            } else if (ccqNum === 'ccq2') {
+                showFeedback('ccq2-feedback', '✓ Excellent thinking! Your expression uses Or logic to account for inactive sensors. Sample: (>=0 And <=100) Or Status="Maintenance"', 'info');
+            } else if (ccqNum === 'ccq3') {
+                const selected = document.querySelector('#ccq3-options .answer-option.selected');
+                if (!selected) {
+                    showFeedback('ccq3-feedback', 'Please select an answer.', 'incorrect');
+                    return;
+                }
+                if (selected.textContent.includes('validated and accepted')) {
+                    showFeedback('ccq3-feedback', '✓ Correct! The database accepts 95 because it passes validation. It cannot know the true reading is 150. This is why validation is not the same as accuracy checking.', 'correct');
+                } else {
+                    showFeedback('ccq3-feedback', '✗ Remember: validation only checks if data meets the rules, not if it\'s true.', 'incorrect');
+                }
+            }
+        }
+
+        function checkQ1() {
+            showFeedback('q1-feedback', '✓ Correct Answer: A presence check ensures that a field has not been left empty/null (1). Example: the CitizenID field must not be blank—every citizen record must have an ID (1).', 'correct');
+        }
+
+        function checkQ2() {
+            showFeedback('q2-feedback', '✓ Correct Answer: (a) Range check (1) (b) >=0 And <=100 (1) (c) The rule only checks the value is within range—a sensor could malfunction and report 45 when true is 92; validation cannot detect this (1)', 'correct');
+        }
+
+        function checkQ3() {
+            showFeedback('q3-feedback', '✓ Correct Answer: Advantages (any 2): Prevents invalid sector names / eliminates spelling variations / speeds data entry / ensures consistency (1 each). Disadvantage: If a new sector is added, the list must be updated / entries limited to predefined list (1)', 'correct');
+        }
+
+        function checkQ4() {
+            showFeedback('q4-feedback', '✓ Correct Answer (any 4, 1 mark each): Presence check (Required=Yes) / Length check (exactly 7 chars) / Format check (L-00000 pattern) / Type check (Short Text rejects numbers alone) / Lookup/uniqueness (primary key ensures no duplicates)', 'correct');
+        }
+
+        function checkQ5() {
+            showFeedback('q5-feedback', '✓ Correct Answer: Validation is an automatic computer check to ensure data is reasonable/complete/within rules (1). Verification is a manual check to ensure data is correct/matches source—double entry or visual checking (1).', 'correct');
+        }
+
+        function saveMissionAnswer() {
+            const stretch = document.getElementById('stretchAnswer').value;
+            if (stretch.trim()) {
+                sessionStorage.setItem('stretchAnswer', stretch);
+                showFeedback('stretchFeedback', '✓ Answer saved! Deleting loses audit trail and breaks referential integrity. Setting IsActive=No preserves history.', 'info');
+            }
+        }
+
+        function rateObjective(btn, objId) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('button').forEach(b => b.style.backgroundColor = '');
+            btn.style.backgroundColor = btn.textContent.includes('🟢') ? '#2ecc71' : btn.textContent.includes('🟡') ? '#f39c12' : '#e74c3c';
+        }
+
+        function toggleCheckbox(el) {
+            el.classList.toggle('completed');
+        }
+
+        function saveHomework() {
+            const homework = document.getElementById('homework').value;
+            if (homework.trim()) {
+                sessionStorage.setItem('homework', homework);
+                showFeedback('homeworkFeedback', '✓ Homework saved! You\'re ready for Session 3.', 'info');
+            }
+        }
+
+        function showFeedback(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = message;
+            el.classList.remove('correct', 'incorrect', 'info');
+            el.classList.add(type, 'show');
+        }
+
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            sessionStorage.setItem('lightMode', document.body.classList.contains('light-mode'));
+        }
+
+        function toggleDyslexiaMode() {
+            document.body.classList.toggle('dyslexia-mode');
+            sessionStorage.setItem('dyslexiaMode', document.body.classList.contains('dyslexia-mode'));
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // CCQ1 options
+            const ccq1Container = document.getElementById('ccq1-options');
+            if (ccq1Container) {
+                ccq1Container.innerHTML = `
+                    <button class="answer-option" onclick="selectCCQAnswer(this)">
+                        The database accepts 95 because it passes the validation rule, but cannot know the true reading
+                    </button>
+                    <button class="answer-option" onclick="selectCCQAnswer(this)">
+                        The database rejects 95 because it knows the sensor is malfunctioning
+                    </button>
+                    <button class="answer-option" onclick="selectCCQAnswer(this)">
+                        This depends on the year and the version of Access
+                    </button>
+                `;
+            }
+
+            // CCQ3 options
+            const ccq3Container = document.getElementById('ccq3-options');
+            if (ccq3Container) {
+                ccq3Container.innerHTML = `
+                    <button class="answer-option" onclick="selectCCQAnswer(this)">
+                        The database validates and accepts 95 (it's in the rule's range), but cannot detect the true reading is wrong
+                    </button>
+                    <button class="answer-option" onclick="selectCCQAnswer(this)">
+                        The database rejects it and alerts the operator of a sensor malfunction
+                    </button>
+                    <button class="answer-option" onclick="selectCCQAnswer(this)">
+                        The validation rule automatically corrects the value to 100
+                    </button>
+                `;
+            }
+
+            // Basic Quiz
+            const basicQuiz = document.getElementById('basicQuiz');
+            if (basicQuiz) {
+                basicQuiz.innerHTML = `
+                    <p style="margin-bottom: 0.75rem;"><strong>1. A citizen's age field is left empty</strong></p>
+                    <select onchange="checkBasicAnswer(this, '1')" style="margin-bottom: 1rem;">
+                        <option>Select answer...</option>
+                        <option>Presence Check</option>
+                        <option>Range Check</option>
+                        <option>Format Check</option>
+                        <option>Lookup Check</option>
+                    </select>
+                    <div id="basicAnswer1" class="feedback"></div>
+
+                    <p style="margin-bottom: 0.75rem; margin-top: 1rem;"><strong>2. A pollution index value is 150 (outside 0-100)</strong></p>
+                    <select onchange="checkBasicAnswer(this, '2')" style="margin-bottom: 1rem;">
+                        <option>Select answer...</option>
+                        <option>Presence Check</option>
+                        <option>Range Check</option>
+                        <option>Format Check</option>
+                        <option>Lookup Check</option>
+                    </select>
+                    <div id="basicAnswer2" class="feedback"></div>
+
+                    <p style="margin-bottom: 0.75rem; margin-top: 1rem;"><strong>3. SectorCode is not one of the approved list</strong></p>
+                    <select onchange="checkBasicAnswer(this, '3')" style="margin-bottom: 1rem;">
+                        <option>Select answer...</option>
+                        <option>Presence Check</option>
+                        <option>Range Check</option>
+                        <option>Format Check</option>
+                        <option>Lookup Check</option>
+                    </select>
+                    <div id="basicAnswer3" class="feedback"></div>
+                `;
+            }
+
+            initializeVocabulary();
+
+            if (sessionStorage.getItem('lightMode') === 'true') {
+                document.body.classList.add('light-mode');
+            }
+            if (sessionStorage.getItem('dyslexiaMode') === 'true') {
+                document.body.classList.add('dyslexia-mode');
+            }
+        });
+
+        function selectCCQAnswer(btn) {
+            btn.parentElement.querySelectorAll('.answer-option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function checkBasicAnswer(select, questionNum) {
+            const correct = {
+                '1': 'Presence Check',
+                '2': 'Range Check',
+                '3': 'Lookup Check'
+            };
+
+            const feedback = document.getElementById('basicAnswer' + questionNum);
+            if (select.value === correct[questionNum]) {
+                feedback.innerHTML = '✓ Correct!';
+                feedback.className = 'feedback correct show';
+            } else if (select.value !== 'Select answer...') {
+                feedback.innerHTML = '✗ Try again.';
+                feedback.className = 'feedback incorrect show';
+            }
+        }
+    </script>
+</body>
+
+</html>
