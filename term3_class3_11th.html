@@ -1,0 +1,1357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medellín 2050: Smart City Database - Session 3</title>
+
+    <!-- Modern Font Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* CONSISTENT COLOR PALETTE - ICT/Database */
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+
+            /* Modern Dark Mode Base (Slate/Zinc inspired) */
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-color-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+
+            /* Accessibility & Spacing (DO NOT MODIFY) */
+            --base-spacing: 1rem;
+            --line-height: 1.6;
+            --letter-spacing: 0.2px;
+            --font-size-base: 16px;
+            --font-size-large: 18px;
+            --font-size-xl: 20px;
+            --border-radius: 12px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 1. LIGHT MODE OVERRIDES */
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --surface-color-hover: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        /* 2. DYSLEXIA-FRIENDLY MODE FIX */
+        body.dyslexia-mode {
+            --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
+            --font-size-base: 18px;
+            --font-size-large: 20px;
+            --font-size-xl: 22px;
+            --line-height: 2;
+            --letter-spacing: 1px;
+            background-color: #f4f1de !important;
+            color: #2c3e50 !important;
+        }
+
+        body.dyslexia-mode .section,
+        body.dyslexia-mode header,
+        body.dyslexia-mode .exercise,
+        body.dyslexia-mode .concept-check {
+            background-color: #fffcf9 !important;
+            color: #2c3e50 !important;
+            border-left: 6px solid var(--secondary-color) !important;
+        }
+
+        body.dyslexia-mode .section h2 {
+            color: var(--primary-color) !important;
+        }
+
+        body.dyslexia-mode .section h3 {
+            color: var(--secondary-color) !important;
+        }
+
+        /* Universal Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-size: var(--font-size-base);
+            line-height: var(--line-height);
+            letter-spacing: var(--letter-spacing);
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* HEADER & NAVIGATION (MODERN, GLASSMORPHISM) */
+        header {
+            background-color: rgba(var(--surface-color-rgb), 0.85);
+            background: var(--surface-color);
+            color: var(--text-main);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (min-width: 900px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                text-align: left;
+                padding: 1rem 3rem;
+            }
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 900px) {
+            header h1 {
+                justify-content: flex-start;
+            }
+        }
+
+        header p {
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            header p {
+                display: block;
+            }
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        nav button,
+        nav a {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        nav button:hover,
+        nav a:hover {
+            background-color: var(--surface-color-hover);
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 3px;
+            background-color: transparent;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--secondary-color);
+            width: 0%;
+            transition: width 0.4s ease-out;
+            box-shadow: 0 0 8px var(--secondary-color);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Modern Cards for Sections */
+        .section {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            scroll-margin-top: 120px;
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: var(--text-main);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section h3 {
+            color: var(--text-main);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section p {
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+        }
+
+        .question-text {
+            color: var(--text-main);
+        }
+
+        /* Difficulty Tabs - Modernized */
+        .difficulty-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            background: var(--bg-color);
+            padding: 0.25rem;
+            border-radius: 12px;
+            display: inline-flex;
+        }
+
+        .difficulty-tabs button {
+            padding: 0.5rem 1.25rem;
+            border: none;
+            background-color: transparent;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: inherit;
+            transition: var(--transition);
+            margin-top: 0;
+        }
+
+        .difficulty-tabs button.active {
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .difficulty-content {
+            display: none;
+            padding: 1.5rem;
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--secondary-color);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .difficulty-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Interactive Exercises */
+        .exercise {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        /* Modern Form Elements */
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+            /* Updated for secondary color */
+        }
+
+        /* Primary Buttons */
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(52, 152, 219, 0.2);
+        }
+
+        button.btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        button.btn-accent:hover {
+            background-color: #c0392b;
+            box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.2);
+        }
+
+        button.btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        button.btn-outline:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        /* Concept Checking Questions */
+        .concept-check {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        .concept-check h4 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+
+        /* Modern Radio Button List */
+        .concept-check .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1.25rem 0;
+        }
+
+        .concept-check .option {
+            position: relative;
+        }
+
+        .concept-check input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .concept-check label {
+            display: block;
+            padding: 1rem 1.25rem;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .concept-check label:hover {
+            border-color: var(--text-muted);
+            background-color: var(--surface-color-hover);
+        }
+
+        .concept-check input[type="radio"]:checked+label {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+            box-shadow: 0 0 0 1px var(--secondary-color);
+        }
+
+        /* Feedback Boxes */
+        .feedback {
+            margin-top: 1.25rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.correct {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+            border: 1px solid rgba(39, 174, 96, 0.2);
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Modern Tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            overflow-x: auto;
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            table {
+                display: table;
+            }
+        }
+
+        th,
+        td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-color);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: var(--surface-color-hover);
+        }
+
+        /* Vocabulary Section */
+        .vocab-search input {
+            border-radius: 20px;
+            padding-left: 1.5rem;
+        }
+
+        .vocab-item {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .vocab-item:hover {
+            transform: translateX(4px);
+            border-color: var(--text-muted);
+        }
+
+        .vocab-item.hidden {
+            display: none;
+        }
+
+        .vocab-term {
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .vocab-definition {
+            display: none;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .vocab-definition.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        /* Highlights & Tags */
+        .highlight-box {
+            background-color: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .tag.green {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+        }
+
+        .tag.yellow {
+            background: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+        }
+
+        .tag.red {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        /* Status indicators */
+        .status-badge {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-green {
+            background-color: #27ae60;
+        }
+
+        .status-yellow {
+            background-color: #f39c12;
+        }
+
+        .status-red {
+            background-color: #e74c3c;
+        }
+
+        /* Hidden helper classes */
+        .d-none {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem 0.5rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            th,
+            td {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+
+            header,
+            nav,
+            button,
+            .vocab-search {
+                display: none;
+            }
+
+            .section {
+                page-break-inside: avoid;
+                border: 1px solid #ccc;
+                box-shadow: none;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+
+    <!-- HEADER & NAVIGATION (CRITICAL MAPPING) -->
+    <header>
+        <div>
+            <h1>Medellín 2050: Wiring the City's Nervous System</h1>
+            <p>11th Grade ICT | Session 3: Relationships & Referential Integrity</p>
+        </div>
+        <nav>
+            <button onclick="toggleMode()">🌙 Theme</button>
+            <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
+            <button onclick="scrollToSection('opening-activity')">Hook</button>
+            <button onclick="scrollToSection('concepts')">Concepts</button>
+            <button onclick="scrollToSection('demo')">Demo</button>
+            <button onclick="scrollToSection('mission')">Mission</button>
+            <button onclick="scrollToSection('drill')">Drill & CCQs</button>
+            <button onclick="scrollToSection('vocab')">Vocab</button>
+        </nav>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </header>
+
+    <main>
+        <!-- OPENING ACTIVITY (MANDATORY & INTERACTIVE) -->
+        <section class="section" id="opening-activity">
+            <h2>⚡ The Hook: Emergency in Medellín 2050</h2>
+            <div class="highlight-box">
+                <p><strong>2050. The city's Finance Minister calls an emergency meeting.</strong></p>
+                <p>47,000 energy bills have been issued to citizens — but when the AI cross-references the citizen
+                    registry, it finds that <strong>312 of those bills are linked to CitizenIDs that no longer
+                        exist</strong>.</p>
+                <p>The citizens were deleted from the registry after a data migration, but their bills stayed behind —
+                    orphaned records floating in the system, attached to nobody. The city can't collect the fines. The
+                    courts can't prosecute. The data is legally worthless.</p>
+            </div>
+
+            <div class="exercise">
+                <h3>What is your immediate diagnosis?</h3>
+                <p>As the Chief Data Architect, why did the system allow bills to exist for deleted citizens? What rule
+                    was missing?</p>
+                <textarea id="hook-response" rows="3" placeholder="Type your diagnosis here..."></textarea>
+                <button onclick="saveHookResponse()">Save Diagnosis</button>
+                <div id="hook-feedback" class="feedback correct d-none">
+                    <strong>Diagnosis Logged.</strong> The answer: The two tables were never formally linked! They were
+                    just two islands of data. Today, we build the bridges and enforce the ultimate law: <em>Referential
+                        Integrity</em>.
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING OBJECTIVES SECTION -->
+        <section class="section" id="learning-objectives">
+            <h2>🎯 Mission Objectives</h2>
+            <p>Before we fix the city's data crisis, here is what you will achieve today:</p>
+
+            <div class="highlight-box">
+                <h4>Cognitive Objectives</h4>
+                <ul>
+                    <li>By the end of this class, I will be able to differentiate between Primary Keys and Foreign Keys.
+                    </li>
+                    <li>I will be able to construct a One-to-Many relationship between two tables in MS Access.</li>
+                    <li>I will be able to enforce Referential Integrity and explain why it prevents orphaned data.</li>
+                </ul>
+
+                <h4 style="margin-top: 1rem;">Social-Emotional Objectives</h4>
+                <ul>
+                    <li>I will develop the ability to think systematically about how components in a complex system
+                        affect each other.</li>
+                </ul>
+            </div>
+
+            <p><strong>Connection to Prior Knowledge:</strong> In Sessions 1 & 2, you built flat tables and set
+                validation rules. Today, we evolve from flat spreadsheets to a true Relational structure.</p>
+
+            <div class="exercise">
+                <h4>Success Criteria Checklist</h4>
+                <p>Tick these off as you gain confidence throughout the lesson:</p>
+                <div><input type="checkbox" id="sc1"> <label for="sc1">I can identify a Primary vs. Foreign Key</label>
+                </div>
+                <div><input type="checkbox" id="sc2"> <label for="sc2">I understand 'One-to-Many'</label></div>
+                <div><input type="checkbox" id="sc3"> <label for="sc3">I know what Referential Integrity does</label>
+                </div>
+                <div><input type="checkbox" id="sc4"> <label for="sc4">I can build relationships in MS Access</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCEPT EXPLORATION -->
+        <section class="section" id="concepts">
+            <h2>📚 The City Planner's Cheat Sheet</h2>
+            <p>Select your difficulty level to explore the core concepts of relational databases.</p>
+
+            <div class="difficulty-tabs">
+                <button class="active" onclick="switchTab('concepts', 'basic')">Basic (Keys)</button>
+                <button onclick="switchTab('concepts', 'intermediate')">Intermediate (Relationships)</button>
+                <button onclick="switchTab('concepts', 'advanced')">Advanced (Integrity)</button>
+            </div>
+
+            <div id="concepts-basic" class="difficulty-content active">
+                <h3>Primary & Foreign Keys</h3>
+                <p><strong>Primary Key:</strong> A field that uniquely identifies each record in its own table; cannot
+                    be null or duplicated.<br>
+                    <em>Analogy:</em> The citizen's biometric chip ID — unique to one person, forever.
+                </p>
+
+                <p><strong>Foreign Key:</strong> A field in one table that references the primary key of another table,
+                    creating a link between them.<br>
+                    <em>Analogy:</em> The CitizenID field printed inside an ENERGY_BILL — it points back to the real
+                    person in the CITIZENS registry.
+                </p>
+
+                <p><strong>Flat-file vs Relational:</strong> A flat file is one giant spreadsheet causing redundancy. A
+                    relational database splits data across linked tables.</p>
+            </div>
+
+            <div id="concepts-intermediate" class="difficulty-content">
+                <h3>Relationship Types</h3>
+                <p>A relationship is a defined link between two tables based on matching key fields.</p>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Medellín Analogy</th>
+                    </tr>
+                    <tr>
+                        <td><strong>One-to-One</strong></td>
+                        <td>One record matches exactly one record</td>
+                        <td>One citizen ↔ one biometric profile</td>
+                    </tr>
+                    <tr>
+                        <td><strong>One-to-Many</strong></td>
+                        <td>One record matches many records</td>
+                        <td>One district ↔ many citizens <em>(This is the standard!)</em></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Many-to-Many</strong></td>
+                        <td>Many records match many records</td>
+                        <td>Many citizens ↔ many transport routes</td>
+                    </tr>
+                </table>
+                <p><em>⚠️ Exam Trap: Never say "two-to-many" or "multiple-to-one". Use strictly one-to-one, one-to-many,
+                        or many-to-many.</em></p>
+            </div>
+
+            <div id="concepts-advanced" class="difficulty-content">
+                <h3>Referential Integrity & Cascades</h3>
+                <p><strong>Referential Integrity:</strong> A rule that prevents a foreign key value from existing
+                    without a matching primary key value in the related table. <br>
+                    <em>The City Law: "You cannot bill a citizen who doesn't exist."</em>
+                </p>
+
+                <h4>Cascade Options</h4>
+                <ul>
+                    <li><strong>Cascade Update:</strong> If a Primary Key value changes, all matching Foreign Key values
+                        update automatically. (Safe to use).</li>
+                    <li><strong>Cascade Delete:</strong> If a record is deleted from Table A, all linked records in
+                        Table B are deleted automatically. (Dangerous! Deleting a district could delete all its
+                        citizens).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- APPLIED EXAMPLES / DEMO -->
+        <section class="section" id="demo">
+            <h2>🛠️ The Live Build: Wiring the Connections</h2>
+            <p>Follow along in MS Access (`Medellin2050_SmartCity.accdb`) as we connect the tables.</p>
+
+            <div class="exercise">
+                <h3>Step 1: The DISTRICTS Reference Table</h3>
+                <p>Create a new table in Design View saved as <code>DISTRICTS</code>. Set <code>DistrictCode</code> as
+                    the Primary Key.</p>
+                <div class="highlight-box">
+                    <p><strong>Why do we do this first?</strong> You must build the reference table (the parent) before
+                        you can link anything to it.</p>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h3>Step 2: Add Foreign Key to CITIZENS</h3>
+                <p>Open <code>CITIZENS</code> in Design view. Add a new field: <code>DistrictCode</code> (Short Text,
+                    Size 5).</p>
+                <p><em>Notice: This field has the exact same name and data type as the Primary Key in DISTRICTS. This is
+                        required!</em></p>
+            </div>
+
+            <div class="exercise">
+                <h3>Step 3: Enforce the Relationship (The Tests)</h3>
+                <p>In Database Tools → Relationships, drag from the Primary Key to the Foreign Key. Tick
+                    <strong>"Enforce Referential Integrity"</strong>.</p>
+
+                <div style="margin-top: 1rem;">
+                    <button class="btn-outline" onclick="toggleVisibility('breaking-test')">Toggle Breaking Test
+                        Solution</button>
+                    <div id="breaking-test" class="d-none"
+                        style="margin-top: 1rem; padding: 1rem; border-left: 3px solid var(--accent-color);">
+                        <strong>What happens if you try to add BillID 13 to CitizenID "C-00999"?</strong><br>
+                        Access blocks it! "You cannot add a record because a related record is required in CITIZENS."
+                        The city's law is working.
+                    </div>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <button class="btn-outline" onclick="toggleVisibility('deletion-test')">Toggle Deletion Test
+                        Solution</button>
+                    <div id="deletion-test" class="d-none"
+                        style="margin-top: 1rem; padding: 1rem; border-left: 3px solid var(--accent-color);">
+                        <strong>What happens if you try to delete Citizen C-00101?</strong><br>
+                        Access blocks it! "The record cannot be deleted because ENERGY_BILLS includes related records."
+                        You cannot demolish a citizen while bills are attached!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE ACTIVITIES / MISSION -->
+        <section class="section" id="mission">
+            <h2>🎯 Student Mission: The Transport Network</h2>
+            <p>The Metro Authority needs its <code>METRO_VEHICLES</code> table linked to a new <code>METRO_LINES</code>
+                reference table. Fix the free-text errors before the city loses track of its trains.</p>
+
+            <div class="highlight-box">
+                <h4>Your Tasks in MS Access:</h4>
+                <ol>
+                    <li>Create <code>METRO_LINES</code> (Fields: LineCode, LineName, LaunchYear, IsOperational,
+                        MaxSpeed).</li>
+                    <li>Determine the Primary Key and set validation rules.</li>
+                    <li>Check the Foreign Key in <code>METRO_VEHICLES</code>.</li>
+                    <li>Build and Enforce the Relationship (Cascade Update ONLY).</li>
+                </ol>
+            </div>
+
+            <div class="concept-check">
+                <h4>Mission Checkpoint: Identifying the Keys</h4>
+                <p>When linking these two tables, what is the correct setup for the keys?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q-mission" id="qm-a" value="incorrect">
+                        <label for="qm-a">LineCode is the PK in METRO_VEHICLES, and FK in METRO_LINES.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q-mission" id="qm-b" value="correct">
+                        <label for="qm-b">LineCode is the PK in METRO_LINES, and FK in METRO_VEHICLES.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q-mission" id="qm-c" value="incorrect">
+                        <label for="qm-c">Both tables use LineCode as a Primary Key to enforce a One-to-Many
+                            connection.</label>
+                    </div>
+                </div>
+                <button onclick="checkRadioAnswer('q-mission', 'qm-feedback')">Submit Answer</button>
+                <div id="qm-feedback" class="feedback"></div>
+            </div>
+
+            <!-- Stretch Challenge -->
+            <div class="exercise">
+                <h4>🔴 Stretch Challenge</h4>
+                <p>Line-D is decommissioned. The city engineer wants to delete its record from METRO_LINES. How do you
+                    do this without violating referential integrity?</p>
+                <button class="btn-outline" onclick="toggleVisibility('stretch-solution')">Reveal Strategy</button>
+                <div id="stretch-solution" class="d-none"
+                    style="margin-top: 1rem; padding: 1rem; background: var(--surface-color-hover); border-radius: 8px;">
+                    First, update or delete all child records in METRO_VEHICLES where LineCode = 'Line-D'. Once no child
+                    records reference the foreign key, you can safely delete the parent record from METRO_LINES.
+                </div>
+            </div>
+        </section>
+
+        <!-- PRACTICE EXERCISES & CCQS (CRITICAL REQUIREMENT) -->
+        <section class="section" id="drill">
+            <h2>📝 Theory Drill & Concept Checks</h2>
+            <p>Test your knowledge with these Paper-1 style questions. A database architect must know the theory to
+                build the structures.</p>
+
+            <!-- CCQ 1 -->
+            <div class="concept-check">
+                <h4>CCQ 1: Key Differentiation (2 Marks)</h4>
+                <p class="question-text">Explain the difference between a primary key and a foreign key.</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="c1-a" value="incorrect">
+                        <label for="c1-a">A primary key links tables together. A foreign key is unique to one
+                            record.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="c1-b" value="correct">
+                        <label for="c1-b">A primary key uniquely identifies each record in its own table. A foreign key
+                            references the primary key of another table to create a link.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="c1-c" value="incorrect">
+                        <label for="c1-c">They are the exact same thing, just located in different tables.</label>
+                    </div>
+                </div>
+                <button onclick="checkRadioAnswer('ccq1', 'f-ccq1')">Check Concept</button>
+                <div id="f-ccq1" class="feedback"
+                    data-correct="Correct! The PK is the anchor; the FK is the grappling hook connecting back to it."
+                    data-incorrect="Incorrect. Remember, 'Primary' means first/unique. 'Foreign' means it comes from somewhere else.">
+                </div>
+            </div>
+
+            <!-- CCQ 2 -->
+            <div class="concept-check">
+                <h4>CCQ 2: Relationship Types (1 Mark)</h4>
+                <p class="question-text">The ENERGY_BILLS table contains a CitizenID field that references the CITIZENS
+                    table. What is the relationship type?</p>
+                <div class="options">
+                    <div class="option"><input type="radio" name="ccq2" id="c2-a" value="incorrect"><label
+                            for="c2-a">Many-to-Many</label></div>
+                    <div class="option"><input type="radio" name="ccq2" id="c2-b" value="incorrect"><label
+                            for="c2-b">Two-to-Many</label></div>
+                    <div class="option"><input type="radio" name="ccq2" id="c2-c" value="correct"><label
+                            for="c2-c">One-to-Many</label></div>
+                    <div class="option"><input type="radio" name="ccq2" id="c2-d" value="incorrect"><label
+                            for="c2-d">One-to-One</label></div>
+                </div>
+                <button onclick="checkRadioAnswer('ccq2', 'f-ccq2')">Check Concept</button>
+                <div id="f-ccq2" class="feedback"
+                    data-correct="Correct! One citizen can have many bills. Avoid the trap of saying 'Two-to-many'!"
+                    data-incorrect="Incorrect. Think about how many citizens exist (one) versus how many bills they receive over time (many).">
+                </div>
+            </div>
+
+            <!-- CCQ 3 -->
+            <div class="concept-check">
+                <h4>CCQ 3: The Enforcer (2 Marks)</h4>
+                <p class="question-text">If referential integrity is enforced, what happens if a user tries to enter a
+                    bill for CitizenID = C-00999 (a ghost citizen)?</p>
+                <div class="options">
+                    <div class="option"><input type="radio" name="ccq3" id="c3-a" value="correct"><label
+                            for="c3-a">Access rejects the entry to prevent an orphaned record.</label></div>
+                    <div class="option"><input type="radio" name="ccq3" id="c3-b" value="incorrect"><label
+                            for="c3-b">Access creates a blank citizen in the CITIZENS table automatically.</label></div>
+                    <div class="option"><input type="radio" name="ccq3" id="c3-c" value="incorrect"><label
+                            for="c3-c">Access allows it but highlights it in red.</label></div>
+                </div>
+                <button onclick="checkRadioAnswer('ccq3', 'f-ccq3')">Check Concept</button>
+                <div id="f-ccq3" class="feedback"
+                    data-correct="Correct! Referential integrity is a strict rule: No parent, no child."
+                    data-incorrect="Incorrect. Access does not guess or allow bad data. It outright rejects it."></div>
+            </div>
+
+            <!-- CCQ 4 -->
+            <div class="concept-check">
+                <h4>CCQ 4: Flat-file vs Relational (4 Marks)</h4>
+                <p class="question-text">Why not just put all District, Citizen, and Bill info into one giant Flat-file
+                    spreadsheet?</p>
+                <div class="options">
+                    <div class="option"><input type="radio" name="ccq4" id="c4-a" value="incorrect"><label for="c4-a">A
+                            flat-file is actually better because it is faster to search.</label></div>
+                    <div class="option"><input type="radio" name="ccq4" id="c4-b" value="correct"><label for="c4-b">It
+                            causes data redundancy (repeating the Mayor's name on every citizen) and update
+                            anomalies.</label></div>
+                    <div class="option"><input type="radio" name="ccq4" id="c4-c" value="incorrect"><label
+                            for="c4-c">Flat-files cannot use AutoNumbers.</label></div>
+                </div>
+                <button onclick="checkRadioAnswer('ccq4', 'f-ccq4')">Check Concept</button>
+                <div id="f-ccq4" class="feedback"
+                    data-correct="Correct! Relational DBs solve redundancy by storing data once and linking it via Foreign Keys."
+                    data-incorrect="Incorrect. While simple, flat-files cause massive duplication of data."></div>
+            </div>
+
+            <!-- CCQ 5 -->
+            <div class="concept-check">
+                <h4>CCQ 5: Negative Checking Question</h4>
+                <p class="question-text">Would it be correct to say that Cascade Delete is perfectly safe and should
+                    always be checked when making a relationship?</p>
+                <div class="options">
+                    <div class="option"><input type="radio" name="ccq5" id="c5-a" value="incorrect"><label
+                            for="c5-a">Yes, it keeps the database clean.</label></div>
+                    <div class="option"><input type="radio" name="ccq5" id="c5-b" value="correct"><label for="c5-b">No,
+                            it is dangerous. Deleting a parent record wipes out all linked child records
+                            permanently.</label></div>
+                </div>
+                <button onclick="checkRadioAnswer('ccq5', 'f-ccq5')">Check Concept</button>
+                <div id="f-ccq5" class="feedback"
+                    data-correct="Correct! Cascade Delete is highly destructive. Cascade Update is the safer option."
+                    data-incorrect="Incorrect. Imagine deleting a District and losing 185,000 citizen records automatically!">
+                </div>
+            </div>
+
+            <!-- CCQ 6 -->
+            <div class="concept-check">
+                <h4>CCQ 6: Application Check</h4>
+                <p class="question-text">If a Primary Key requires a 'Short Text' data type, what data type MUST the
+                    Foreign Key in the linked table be?</p>
+                <div class="options">
+                    <div class="option"><input type="radio" name="ccq6" id="c6-a" value="incorrect"><label
+                            for="c6-a">AutoNumber</label></div>
+                    <div class="option"><input type="radio" name="ccq6" id="c6-b" value="correct"><label
+                            for="c6-b">Short Text</label></div>
+                    <div class="option"><input type="radio" name="ccq6" id="c6-c" value="incorrect"><label
+                            for="c6-c">Lookup Wizard</label></div>
+                </div>
+                <button onclick="checkRadioAnswer('ccq6', 'f-ccq6')">Check Concept</button>
+                <div id="f-ccq6" class="feedback"
+                    data-correct="Correct! The keys must perfectly match in data type to form a bridge."
+                    data-incorrect="Incorrect. The Foreign key must mirror the data type of the Primary Key it points to.">
+                </div>
+            </div>
+        </section>
+
+        <!-- WRAP-UP ACTIVITY (MANDATORY 5 COMPONENTS) -->
+        <section class="section" id="wrap-up">
+            <h2>🏁 Session Wrap-Up</h2>
+
+            <!-- Component B: Objective Confirmation -->
+            <div class="exercise">
+                <h4>1. Self-Assessment (Objectives)</h4>
+                <p>How confident are you with today's topics?</p>
+                <div>
+                    <span class="status-badge status-green"></span> Confident &nbsp;
+                    <span class="status-badge status-yellow"></span> Needs Review &nbsp;
+                    <span class="status-badge status-red"></span> Need Help
+                </div>
+                <div style="margin-top: 1rem;">
+                    <select id="eval-1">
+                        <option value="">Select mastery for: Primary vs Foreign Keys</option>
+                        <option value="green">🟢 Confident</option>
+                        <option value="yellow">🟡 Needs Review</option>
+                        <option value="red">🔴 Need Help</option>
+                    </select>
+                    <select id="eval-2">
+                        <option value="">Select mastery for: Building One-to-Many Relationships</option>
+                        <option value="green">🟢 Confident</option>
+                        <option value="yellow">🟡 Needs Review</option>
+                        <option value="red">🔴 Need Help</option>
+                    </select>
+                    <select id="eval-3">
+                        <option value="">Select mastery for: Referential Integrity</option>
+                        <option value="green">🟢 Confident</option>
+                        <option value="yellow">🟡 Needs Review</option>
+                        <option value="red">🔴 Need Help</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Component A: Knowledge Consolidation (Exit Ticket) -->
+            <!-- Component C: Reflection Prompts -->
+            <div class="highlight-box">
+                <h4>2. Exit Ticket & Reflection</h4>
+                <p>Choose one prompt below and write your response. (Your answer will be saved locally).</p>
+                <select id="reflection-prompt" style="margin-bottom: 0.5rem;">
+                    <option value="1">Distill the entire lesson into one sentence.</option>
+                    <option value="2">What was the most challenging concept for you today?</option>
+                    <option value="3">How does Referential Integrity act like the city's 'immune system'?</option>
+                    <option value="4">What question do you still have?</option>
+                </select>
+                <textarea id="reflection-answer" rows="3" placeholder="Type your reflection..."></textarea>
+                <button onclick="saveWrapUp()">Submit Exit Ticket</button>
+                <div id="wrapup-feedback" class="feedback correct d-none">Exit ticket submitted. Excellent work today!
+                </div>
+            </div>
+
+            <!-- Component D: Bridge to Next Lesson -->
+            <div class="exercise" style="border-left-color: var(--secondary-color);">
+                <h4>🔭 Preview: Session 4</h4>
+                <p>The city's tables are now linked and protected. But to find all unpaid bills from citizens in El
+                    Poblado, you'd have to scroll manually. <em>That's a 1990s filing cabinet.</em></p>
+                <p>Next session, we build <strong>Queries</strong> — teaching the database to answer complex questions
+                    instantly using criteria, Boolean logic, and wildcards.</p>
+                <p><strong>Homework:</strong> Sketch a relationship diagram for a fictional <code>TRANSPORT_FINES</code>
+                    table linking to <code>CITIZENS</code>. Label the PK, FK, and relationship type.</p>
+            </div>
+
+            <!-- Component E: Celebration Element -->
+            <div id="celebration" class="d-none highlight-box"
+                style="text-align: center; background: rgba(39, 174, 96, 0.1); border-color: #27ae60;">
+                <h3 style="color: #27ae60;">🎉 System Architect Badge Earned!</h3>
+                <p>You have successfully wired the city's nervous system. The data is secure.</p>
+            </div>
+        </section>
+
+        <!-- VOCABULARY SECTION (ENHANCED) -->
+        <section class="section" id="vocab">
+            <h2>📖 Smart City Glossary</h2>
+            <div class="vocab-search">
+                <input type="text" id="vocab-searchInput" placeholder="Search terms (e.g. Primary, Integrity...)"
+                    onkeyup="filterVocab()">
+            </div>
+
+            <div id="vocab-list">
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Primary Key</div>
+                    <div class="vocab-definition">A field that uniquely identifies each record in its own table; cannot
+                        be null or duplicated. <em>(The citizen's biometric ID).</em></div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Foreign Key</div>
+                    <div class="vocab-definition">A field in one table that references the primary key of another table,
+                        creating a link between them. <em>(The DistrictCode inside the CITIZENS table).</em></div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Relationship</div>
+                    <div class="vocab-definition">A defined link between two tables based on matching key fields.
+                        <em>(The bridge between two islands of data).</em></div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Referential Integrity</div>
+                    <div class="vocab-definition">A rule that prevents a foreign key value from existing without a
+                        matching primary key value in the related table. <em>(You cannot bill a ghost).</em></div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">One-to-Many</div>
+                    <div class="vocab-definition">One record in Table A can be linked to many records in Table B.
+                        <em>(One district, many citizens).</em></div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Flat-file</div>
+                    <div class="vocab-definition">All data stored in a single table, causing massive redundancy.</div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Cascade Update</div>
+                    <div class="vocab-definition">If a PK value changes, all matching FK values update automatically.
+                    </div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Cascade Delete</div>
+                    <div class="vocab-definition">If a parent record is deleted, all linked child records are deleted
+                        automatically. (Use with caution!).</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- 1. Mode Toggles (Theme & Dyslexia) ---
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('medellin_theme', isLight ? 'light' : 'dark');
+        }
+
+        function toggleDyslexiaMode() {
+            document.body.classList.toggle('dyslexia-mode');
+            const isDyslexic = document.body.classList.contains('dyslexia-mode');
+            localStorage.setItem('medellin_dyslexia', isDyslexic ? 'true' : 'false');
+        }
+
+        // --- 2. Navigation & Scrolling ---
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        window.onscroll = function () {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        // --- 3. Tabs Logic ---
+        function switchTab(groupId, tabId) {
+            // Find parent section
+            const section = document.getElementById(groupId);
+
+            // Deactivate all buttons
+            const buttons = section.querySelectorAll('.difficulty-tabs button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Hide all content
+            const contents = section.querySelectorAll('.difficulty-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Activate clicked button and target content
+            event.target.classList.add('active');
+            document.getElementById(`${groupId}-${tabId}`).classList.add('active');
+        }
+
+        // --- 4. Simple Visibility Toggle ---
+        function toggleVisibility(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('d-none');
+        }
+
+        // --- 5. Quiz / Concept Check Logic ---
+        function checkRadioAnswer(groupName, feedbackId) {
+            const selected = document.querySelector(`input[name="${groupName}"]:checked`);
+            const feedbackBox = document.getElementById(feedbackId);
+
+            if (!selected) {
+                feedbackBox.className = 'feedback show incorrect';
+                feedbackBox.innerHTML = 'Please select an answer first.';
+                return;
+            }
+
+            const isCorrect = selected.value === 'correct';
+
+            if (isCorrect) {
+                feedbackBox.className = 'feedback show correct';
+                feedbackBox.innerHTML = '✅ ' + (feedbackBox.dataset.correct || 'Correct!');
+            } else {
+                feedbackBox.className = 'feedback show incorrect';
+                feedbackBox.innerHTML = '❌ ' + (feedbackBox.dataset.incorrect || 'Incorrect. Please try again.');
+            }
+        }
+
+        // --- 6. Vocabulary Search ---
+        function filterVocab() {
+            const input = document.getElementById('vocab-searchInput');
+            const filter = input.value.toLowerCase();
+            const nodes = document.querySelectorAll('.vocab-item');
+
+            nodes.forEach(node => {
+                const term = node.querySelector('.vocab-term').innerText.toLowerCase();
+                if (term.includes(filter)) {
+                    node.classList.remove('hidden');
+                } else {
+                    node.classList.add('hidden');
+                }
+            });
+        }
+
+        function toggleVocab(element) {
+            const def = element.querySelector('.vocab-definition');
+            def.classList.toggle('show');
+        }
+
+        // --- 7. Local Storage & Data Persistence ---
+        function saveHookResponse() {
+            const text = document.getElementById('hook-response').value;
+            if (text.trim() !== '') {
+                localStorage.setItem('medellin_hook_s3', text);
+                const feedback = document.getElementById('hook-feedback');
+                feedback.classList.remove('d-none');
+            }
+        }
+
+        function saveWrapUp() {
+            const text = document.getElementById('reflection-answer').value;
+            if (text.trim() !== '') {
+                localStorage.setItem('medellin_reflection_s3', text);
+                document.getElementById('wrapup-feedback').classList.remove('d-none');
+                document.getElementById('celebration').classList.remove('d-none');
+            }
+        }
+
+        // On Load initialization
+        window.onload = function () {
+            // Load Themes
+            if (localStorage.getItem('medellin_theme') === 'light') {
+                document.body.classList.add('light-mode');
+            }
+            if (localStorage.getItem('medellin_dyslexia') === 'true') {
+                document.body.classList.add('dyslexia-mode');
+            }
+
+            // Load saved responses
+            const savedHook = localStorage.getItem('medellin_hook_s3');
+            if (savedHook) {
+                document.getElementById('hook-response').value = savedHook;
+            }
+
+            const savedRef = localStorage.getItem('medellin_reflection_s3');
+            if (savedRef) {
+                document.getElementById('reflection-answer').value = savedRef;
+            }
+        }
+    </script>
+</body>
+
+</html>
