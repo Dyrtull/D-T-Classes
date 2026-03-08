@@ -5,25 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>⚖️ Sharing the Voltage: The Potential Divider - Session 3</title>
+    <!-- Modern Font Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            /* Divider Circuit Color Palette - Purple/Gold/Teal */
-            --primary-color: #663399;
-            --secondary-color: #ffd700;
-            --accent-color: #20b2aa;
+            /* CONSISTENT COLOR PALETTE - Divider Circuit (Purple/Gold/Teal) */
+            --primary-color: #6d28d9;
+            /* Deep Purple */
+            --secondary-color: #d97706;
+            /* Dark Gold/Amber for better contrast */
+            --accent-color: #0d9488;
+            /* Teal */
 
-            /* Accessibility & Spacing */
+            /* Modern Dark Mode Base (Slate/Zinc inspired) */
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-color-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+
+            /* Accessibility & Spacing (DO NOT MODIFY) */
             --base-spacing: 1rem;
-            --line-height: 1.8;
-            --letter-spacing: 0.5px;
+            --line-height: 1.6;
+            --letter-spacing: 0.2px;
             --font-size-base: 16px;
             --font-size-large: 18px;
             --font-size-xl: 20px;
-            --border-radius: 8px;
-            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Dyslexia-Friendly Mode */
+        /* 1. LIGHT MODE OVERRIDES */
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --surface-color-hover: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        /* 2. DYSLEXIA-FRIENDLY MODE FIX */
         body.dyslexia-mode {
             --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
             --font-size-base: 18px;
@@ -32,12 +58,24 @@
             --line-height: 2;
             --letter-spacing: 1px;
             background-color: #f4f1de !important;
+            color: #2c3e50 !important;
         }
 
-        body.dyslexia-mode .section {
+        body.dyslexia-mode .section,
+        body.dyslexia-mode header,
+        body.dyslexia-mode .exercise,
+        body.dyslexia-mode .concept-check {
             background-color: #fffcf9 !important;
+            color: #2c3e50 !important;
             border-left: 6px solid var(--secondary-color) !important;
-            padding: 2rem !important;
+        }
+
+        body.dyslexia-mode .section h2 {
+            color: var(--primary-color) !important;
+        }
+
+        body.dyslexia-mode .section h3 {
+            color: var(--secondary-color) !important;
         }
 
         /* Universal Styles */
@@ -52,125 +90,145 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Arial', sans-serif;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
             font-size: var(--font-size-base);
             line-height: var(--line-height);
             letter-spacing: var(--letter-spacing);
-            color: #2c3e50;
-            background: linear-gradient(135deg, #1a0d2e 0%, #2d1b4e 100%);
-            padding: 0;
-            margin: 0;
-            transition: var(--transition);
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Light Mode */
-        body.light-mode {
-            background: linear-gradient(135deg, #f5f0ff 0%, #f0e6ff 100%);
-            color: #2c3e50;
-        }
-
-        body.light-mode .section {
-            background-color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Header & Navigation */
+        /* HEADER & NAVIGATION (MODERN, GLASSMORPHISM) */
         header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            color: white;
-            padding: 2rem;
-            text-align: center;
+            background-color: rgba(var(--surface-color-rgb), 0.85);
+            background: var(--surface-color);
+            color: var(--text-main);
+            padding: 1rem 1.5rem;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            position: relative;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (min-width: 900px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                text-align: left;
+                padding: 1rem 3rem;
+            }
         }
 
         header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 900px) {
+            header h1 {
+                justify-content: flex-start;
+            }
         }
 
         header p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            header p {
+                display: block;
+            }
         }
 
         nav {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
-            margin: 1.5rem 0 0 0;
-            align-items: center;
         }
 
         nav button,
         nav a {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius);
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
             transition: var(--transition);
             text-decoration: none;
-            display: inline-block;
         }
 
         nav button:hover,
         nav a:hover {
-            background-color: white;
-            color: var(--primary-color);
-            transform: translateY(-2px);
+            background-color: var(--surface-color-hover);
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
         }
 
         /* Progress Bar */
         .progress-container {
             width: 100%;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.2);
+            height: 3px;
+            background-color: transparent;
             position: absolute;
             bottom: 0;
+            left: 0;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            background: var(--secondary-color);
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.4s ease-out;
+            box-shadow: 0 0 8px var(--secondary-color);
         }
 
         /* Main Content */
         main {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2rem 1rem;
         }
 
+        /* Modern Cards for Sections */
         .section {
-            background-color: #1e1a2e;
-            color: #ecf0f1;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
-            padding: 2rem;
+            padding: 2.5rem;
             margin: 2rem 0;
-            border-left: 5px solid var(--secondary-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
             transition: var(--transition);
-            scroll-margin-top: 100px;
-            animation: slideIn 0.6s ease-out;
+            scroll-margin-top: 120px;
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -178,68 +236,79 @@
         }
 
         .section h2 {
-            color: var(--secondary-color);
-            font-size: 2rem;
+            color: var(--text-main);
+            font-size: 1.75rem;
+            font-weight: 700;
             margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .section h3 {
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            margin-top: 1.5rem;
+            color: var(--text-main);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
             margin-bottom: 1rem;
         }
 
         .section h4 {
-            color: var(--secondary-color);
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            margin-bottom: 0.75rem;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
         .section p {
-            margin-bottom: 1rem;
-            line-height: var(--line-height);
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
         }
 
-        /* Difficulty Tabs */
+        .question-text {
+            color: var(--text-main);
+        }
+
+        /* Difficulty Tabs - Modernized */
         .difficulty-tabs {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
+            background: var(--bg-color);
+            padding: 0.25rem;
+            border-radius: 12px;
+            display: inline-flex;
         }
 
         .difficulty-tabs button {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid var(--secondary-color);
+            padding: 0.5rem 1.25rem;
+            border: none;
             background-color: transparent;
-            color: var(--secondary-color);
-            border-radius: var(--border-radius);
+            color: var(--text-muted);
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
+            font-family: inherit;
             transition: var(--transition);
         }
 
         .difficulty-tabs button.active {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-        }
-
-        .difficulty-tabs button:hover {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .difficulty-content {
             display: none;
             padding: 1.5rem;
-            background-color: rgba(255, 215, 0, 0.08);
-            border-left: 4px solid var(--secondary-color);
+            background-color: var(--bg-color);
             border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--secondary-color);
             animation: fadeIn 0.3s ease;
         }
 
@@ -259,249 +328,216 @@
 
         /* Interactive Exercises */
         .exercise {
-            background-color: rgba(32, 178, 170, 0.1);
-            border-left: 4px solid var(--accent-color);
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-color);
             padding: 1.5rem;
             margin: 1.5rem 0;
             border-radius: var(--border-radius);
         }
 
-        .exercise input,
-        .exercise select,
-        .exercise textarea {
+        /* Modern Form Elements */
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
             width: 100%;
-            padding: 0.75rem;
-            margin: 0.75rem 0;
-            border: 2px solid var(--secondary-color);
-            border-radius: var(--border-radius);
-            background-color: #2a2a2a;
-            color: #ecf0f1;
+            padding: 0.875rem 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
             font-size: 1rem;
+            transition: var(--transition);
         }
 
-        .exercise input:focus,
-        .exercise select:focus,
-        .exercise textarea:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 8px rgba(32, 178, 170, 0.3);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+            /* Amber focus ring */
         }
 
-        .exercise button {
+        /* Primary Buttons */
+        button {
             background-color: var(--secondary-color);
-            color: var(--primary-color);
+            color: white;
             border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
             transition: var(--transition);
             margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        .exercise button:hover {
-            background-color: #ffed4e;
-            transform: translateY(-2px);
+        button:hover {
+            background-color: #b45309;
+            /* Darker amber */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2);
+        }
+
+        button.btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        button.btn-accent:hover {
+            background-color: #0f766e;
+            /* Darker teal */
+            box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2);
         }
 
         /* Concept Checking Questions */
         .concept-check {
-            background-color: rgba(255, 215, 0, 0.08);
-            border-left: 4px solid var(--secondary-color);
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
             padding: 1.5rem;
             margin: 2rem 0;
             border-radius: var(--border-radius);
         }
 
         .concept-check h4 {
-            color: var(--secondary-color);
+            color: var(--accent-color);
+            margin-top: 0;
         }
 
+        /* Modern Radio Button List */
         .concept-check .options {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            margin: 1rem 0;
+            gap: 0.5rem;
+            margin: 1.25rem 0;
+        }
+
+        .concept-check .option {
+            position: relative;
         }
 
         .concept-check input[type="radio"] {
-            margin-right: 0.75rem;
+            position: absolute;
+            opacity: 0;
             cursor: pointer;
         }
 
         .concept-check label {
+            display: block;
+            padding: 1rem 1.25rem;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             cursor: pointer;
-            flex: 1;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-main);
         }
 
+        .concept-check label:hover {
+            border-color: var(--text-muted);
+            background-color: var(--surface-color-hover);
+        }
+
+        .concept-check input[type="radio"]:checked+label {
+            border-color: var(--secondary-color);
+            background-color: rgba(217, 119, 6, 0.05);
+            box-shadow: 0 0 0 1px var(--secondary-color);
+        }
+
+        /* Feedback Boxes */
         .feedback {
-            margin-top: 1rem;
+            margin-top: 1.25rem;
             padding: 1rem;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
+            font-weight: 500;
             display: none;
+            font-size: 0.95rem;
         }
 
         .feedback.correct {
-            background-color: rgba(32, 178, 170, 0.2);
-            color: #20b2aa;
-            border-left: 4px solid #20b2aa;
+            background-color: rgba(13, 148, 136, 0.1);
+            color: #0d9488;
+            border: 1px solid rgba(13, 148, 136, 0.2);
         }
 
         .feedback.incorrect {
-            background-color: rgba(255, 100, 100, 0.2);
-            color: #ff6464;
-            border-left: 4px solid #ff6464;
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
         }
 
         .feedback.show {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
 
-        /* Tables */
+        /* Modern Tables */
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin: 1.5rem 0;
-            background-color: #2a2a2a;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
         }
 
         th,
         td {
-            padding: 1rem;
+            padding: 1rem 1.25rem;
             text-align: left;
-            border: 1px solid var(--secondary-color);
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
-            background-color: var(--primary-color);
-            color: var(--secondary-color);
+            background-color: var(--bg-color);
+            color: var(--text-muted);
             font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        tr:hover {
-            background-color: rgba(255, 215, 0, 0.08);
+        tr:last-child td {
+            border-bottom: none;
         }
 
-        /* Potential Divider Simulator */
-        .divider-simulator {
-            background-color: #2a2a2a;
-            border: 2px solid var(--secondary-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .simulator-input {
-            margin: 1.5rem 0;
-        }
-
-        .simulator-input label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        .simulator-input input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--secondary-color);
-            background-color: #1e1e1e;
-            color: #ecf0f1;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .circuit-diagram {
-            background: linear-gradient(135deg, #333 0%, #555 100%);
-            border: 2px solid var(--secondary-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: center;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--secondary-color);
-            font-family: monospace;
-            font-size: 0.9rem;
-            line-height: 1.8;
-        }
-
-        .divider-result {
-            background-color: rgba(255, 215, 0, 0.15);
-            border: 2px solid var(--secondary-color);
-            padding: 2rem;
-            border-radius: 8px;
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-
-        .result-box {
-            background-color: #1e1e1e;
-            border: 2px solid var(--accent-color);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        .result-value {
-            font-size: 1.8rem;
-            color: var(--accent-color);
-            font-weight: bold;
-            margin: 1rem 0;
-            font-family: monospace;
-        }
-
-        .formula-box {
-            background-color: rgba(102, 51, 153, 0.15);
-            border-left: 4px solid var(--primary-color);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            font-family: monospace;
-            font-size: 0.95rem;
-        }
-
-        .analogy-box {
-            background-color: rgba(32, 178, 170, 0.1);
-            border-left: 4px solid var(--accent-color);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            font-style: italic;
+        tr:hover td {
+            background-color: var(--surface-color-hover);
         }
 
         /* Vocabulary Section */
-        .vocab-search {
-            margin-bottom: 1.5rem;
-        }
-
         .vocab-search input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--secondary-color);
-            border-radius: var(--border-radius);
-            background-color: #2a2a2a;
-            color: #ecf0f1;
-            font-size: 1rem;
+            border-radius: 20px;
+            padding-left: 1.5rem;
         }
 
         .vocab-item {
-            background-color: #2a2a2a;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
             border-left: 4px solid var(--secondary-color);
-            padding: 1rem;
-            margin: 1rem 0;
+            padding: 1.25rem;
+            margin: 0.75rem 0;
             border-radius: var(--border-radius);
             cursor: pointer;
             transition: var(--transition);
         }
 
         .vocab-item:hover {
-            transform: translateX(5px);
-            border-left-color: var(--accent-color);
+            transform: translateX(4px);
+            border-color: var(--text-muted);
         }
 
         .vocab-item.hidden {
@@ -509,111 +545,164 @@
         }
 
         .vocab-term {
-            color: var(--secondary-color);
+            color: var(--text-main);
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
         }
 
         .vocab-definition {
             display: none;
             margin-top: 0.75rem;
             padding-top: 0.75rem;
-            border-top: 1px solid var(--secondary-color);
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            line-height: 1.5;
         }
 
         .vocab-definition.show {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.2s ease;
         }
 
-        /* Buttons */
-        .btn {
+        /* Highlights & Tags */
+        .highlight-box {
+            background-color: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .tag {
             display: inline-block;
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius);
-            cursor: pointer;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
             font-weight: 600;
-            transition: var(--transition);
-            text-decoration: none;
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--secondary-color);
         }
 
-        .btn:hover {
-            background-color: #ffed4e;
-            transform: translateY(-2px);
+        /* RESPONSIVE IMAGES */
+        .content-image {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: block;
+            background-color: var(--surface-color-hover);
         }
 
-        .btn-accent {
-            background-color: var(--accent-color);
-            color: white;
+        /* ------------------------------------- */
+        /* CUSTOM STYLES FOR DIVIDER SESSION     */
+        /* ------------------------------------- */
+        .formula-box {
+            background-color: var(--surface-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-align: center;
+            border: 1px solid var(--border-color);
         }
 
-        .btn-accent:hover {
-            background-color: #18a8a0;
+        .result-box {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
         }
 
-        .btn:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-            transform: none;
+        /* Interactive Simulator */
+        .divider-simulator {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2.5rem 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .simulator-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .divider-result {
+            background-color: rgba(217, 119, 6, 0.05);
+            border: 1px solid var(--secondary-color);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .divider-result h4 {
+            margin-top: 0;
+            color: var(--text-main);
+        }
+
+        .result-val-display {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            font-weight: 700;
+            margin: 1rem 0;
+            font-family: monospace;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.75rem;
-            }
-
-            nav {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            nav button,
-            nav a {
-                width: 100%;
-            }
-
             main {
-                padding: 1rem;
+                padding: 1rem 0.5rem;
             }
 
             .section {
                 padding: 1.5rem;
-                margin: 1rem 0;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
             }
 
             .section h2 {
                 font-size: 1.5rem;
             }
 
-            table {
-                font-size: 0.9rem;
-            }
-
             th,
             td {
-                padding: 0.5rem;
+                padding: 0.75rem;
+                font-size: 0.9rem;
             }
         }
 
-        @media (max-width: 480px) {
-            header {
-                padding: 1rem;
-            }
+        /* PRINT STYLES */
+        @media print {
 
-            header h1 {
-                font-size: 1.25rem;
-            }
-
-            header p {
-                font-size: 0.9rem;
+            header,
+            nav,
+            button {
+                display: none;
             }
 
             .section {
-                padding: 1rem;
+                page-break-inside: avoid;
+                border: 1px solid #ccc;
             }
         }
     </style>
@@ -622,17 +711,19 @@
 <body class="light-mode">
     <!-- Header -->
     <header>
-        <h1>⚖️ Sharing the Voltage: The Potential Divider Circuit</h1>
-        <p>10th Grade Electronics | Session 3 | The Smart Vertical Garden Project</p>
+        <div>
+            <h1>⚖️ Sharing the Voltage</h1>
+            <p>10th Grade Electronics | Session 3 | The Potential Divider</p>
+        </div>
         <nav>
+            <button onclick="toggleMode()">🌙 Theme</button>
+            <button onclick="toggleDyslexiaMode()" id="dyslexia-btn">Aa Dyslexia</button>
             <button onclick="scrollToSection('opening-activity')">Opening</button>
-            <button onclick="scrollToSection('learning-objectives')">Objectives</button>
-            <button onclick="scrollToSection('concept-exploration')">Concepts</button>
-            <button onclick="scrollToSection('practice')">Practice</button>
-            <button onclick="scrollToSection('vocabulary')">Vocabulary</button>
+            <button onclick="scrollToSection('concepts')">Concepts</button>
+            <button onclick="scrollToSection('demo')">Simulator</button>
+            <button onclick="scrollToSection('drill')">Drill</button>
+            <button onclick="scrollToSection('vocab')">Vocab</button>
             <button onclick="scrollToSection('wrap-up')">Wrap-Up</button>
-            <button onclick="toggleDyslexiaMode()" id="dyslexia-btn">A↔a</button>
-            <button onclick="toggleLightMode()" id="light-btn">🌙</button>
         </nav>
         <div class="progress-container">
             <div class="progress-bar" id="progress-bar"></div>
@@ -647,6 +738,11 @@
             <p>You have one watering can with water. You have two plants: a tiny orchid seedling and a large fern. Do
                 you give the same amount of water to both?</p>
 
+            <!-- PASTE YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+            <img src="img/watering-can.png"
+                alt="Illustration of a watering can pouring water unevenly between a large plant and a small seedling"
+                class="content-image">
+
             <div class="exercise">
                 <label style="color: var(--secondary-color); font-weight: 600;">How would you divide the water
                     fairly?</label>
@@ -654,71 +750,81 @@
                 <button onclick="saveOpeningResponse()">Save My Answer</button>
             </div>
 
-            <p style="margin-top: 1.5rem; font-style: italic; color: #bbb;">💡 Electricity works exactly the same way.
-                Your smart garden sensor cannot work with the full 9V from the battery. It needs a smaller, more
-                delicate voltage—just like the tiny orchid needs less water. We need a circuit that divides the voltage
-                intelligently.</p>
+            <div class="highlight-box">
+                <p style="font-style: italic; color: var(--text-muted); margin: 0;">
+                    <span style="font-style: normal">💡</span> Electricity works exactly the same way.
+                    Your smart garden sensor cannot work with the full 9V from the battery. It needs a smaller, more
+                    delicate voltage—just like the tiny orchid needs less water. We need a circuit that divides the
+                    voltage
+                    intelligently.
+                </p>
+            </div>
 
             <p style="margin-top: 1rem;">That circuit is called a <strong>Potential Divider</strong>, and it is the
                 single most important concept in this entire project.</p>
 
-            <p
-                style="margin-top: 1rem; padding: 1rem; background-color: rgba(255, 215, 0, 0.15); border-radius: 8px; border-left: 4px solid var(--secondary-color);">
-                Every sensor in your Smart Garden—the light sensor, the temperature sensor—works because of what you
-                learn today. Without the potential divider, you have no sensing. Without sensing, you have no Smart
-                Garden.</p>
+            <div class="highlight-box" style="border-left: 4px solid var(--secondary-color);">
+                <p style="margin: 0; color: var(--text-main);">
+                    Every sensor in your Smart Garden—the light sensor, the temperature sensor—works because of what you
+                    learn today. Without the potential divider, you have no sensing. Without sensing, you have no Smart
+                    Garden.</p>
+            </div>
         </section>
 
         <!-- Learning Objectives -->
         <section class="section" id="learning-objectives">
             <h2>🎯 What You Will Learn Today</h2>
             <div style="display: grid; gap: 1rem;">
-                <div
-                    style="padding: 1rem; background-color: rgba(255, 215, 0, 0.08); border-left: 4px solid var(--secondary-color); border-radius: 8px;">
+                <div class="highlight-box" style="margin: 0; border-left: 4px solid var(--secondary-color);">
                     <strong>✓ Understand resistors in series</strong>
-                    <p style="margin-top: 0.5rem; font-size: 0.95rem;">Learn how to calculate total resistance when
+                    <p style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--text-muted);">Learn how to calculate
+                        total resistance when
                         resistors are connected end-to-end.</p>
                 </div>
-                <div
-                    style="padding: 1rem; background-color: rgba(255, 215, 0, 0.08); border-left: 4px solid var(--secondary-color); border-radius: 8px;">
+                <div class="highlight-box" style="margin: 0; border-left: 4px solid var(--secondary-color);">
                     <strong>✓ Understand resistors in parallel</strong>
-                    <p style="margin-top: 0.5rem; font-size: 0.95rem;">Learn how combined resistance decreases when
+                    <p style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--text-muted);">Learn how combined
+                        resistance decreases when
                         resistors are side-by-side.</p>
                 </div>
-                <div
-                    style="padding: 1rem; background-color: rgba(255, 215, 0, 0.08); border-left: 4px solid var(--secondary-color); border-radius: 8px;">
+                <div class="highlight-box" style="margin: 0; border-left: 4px solid var(--secondary-color);">
                     <strong>✓ Master the potential divider formula</strong>
-                    <p style="margin-top: 0.5rem; font-size: 0.95rem;">Use V<sub>out</sub> = (R₂ / (R₁ + R₂)) ×
+                    <p style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--text-muted);">Use V<sub>out</sub> =
+                        (R₂ / (R₁ + R₂)) ×
                         V<sub>in</sub> to predict sensor voltages.</p>
                 </div>
             </div>
         </section>
 
         <!-- Concept Exploration: Series -->
-        <section class="section" id="concept-exploration">
+        <section class="section" id="concepts">
             <h2>🔗 Resistors in Series: Adding Resistance</h2>
             <p>When resistors are connected end-to-end (in a chain), they are in <strong>series</strong>. The current
                 flows through one, then the next, then the next.</p>
 
-            <div class="circuit-diagram">
-                +9V ──[ R1 ]──[ R2 ]──[ R3 ]── 0V
-            </div>
+            <!-- PASTE YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+            <img src="https://cmds-test.vedantu.com/prod/question-sets/9d9d76fd-f672-4750-9473-cd08e5c121ca4003958272564300276.png"
+                alt="Diagram showing resistors R1, R2, R3 connected end-to-end in a line" class="content-image">
 
             <div class="difficulty-tabs">
-                <button class="active" onclick="switchDifficulty(event, 'series-basic')">🟢 Basic</button>
-                <button onclick="switchDifficulty(event, 'series-intermediate')">🟡 Intermediate</button>
+                <button class="active" onclick="switchDifficulty(event, 'series-basic')">Basic</button>
+                <button onclick="switchDifficulty(event, 'series-intermediate')">Intermediate</button>
             </div>
 
             <div id="series-basic" class="difficulty-content active">
                 <h3>The Rule</h3>
                 <p>Total resistance is the sum of all individual resistors:</p>
+
                 <div class="formula-box">
                     R<sub>T</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub>
                 </div>
 
-                <div class="analogy-box">
-                    💬 Series resistors are like traffic jams stacked one after another on the road. Each one slows the
-                    current down a little more. The total slowdown is just the sum of all of them.
+                <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
+                    <p style="font-style: italic; margin: 0; color: var(--text-muted);">
+                        💬 Series resistors are like traffic jams stacked one after another on the road. Each one slows
+                        the
+                        current down a little more. The total slowdown is just the sum of all of them.
+                    </p>
                 </div>
 
                 <h4>Worked Example</h4>
@@ -726,13 +832,13 @@
                     What is the total resistance?</p>
                 <div class="result-box">
                     <p>R<sub>T</sub> = 100 + 120 + 220 = <span
-                            style="color: var(--secondary-color); font-weight: bold;">440Ω</span></p>
+                            style="color: var(--secondary-color); font-weight: 700;">440Ω</span></p>
                 </div>
 
                 <p style="margin-top: 1rem;">If 9V is applied across this chain, what current flows?</p>
                 <div class="result-box">
                     <p>I = V / R<sub>T</sub> = 9V / 440Ω ≈ <span
-                            style="color: var(--secondary-color); font-weight: bold;">20 mA</span></p>
+                            style="color: var(--secondary-color); font-weight: 700;">20 mA</span></p>
                 </div>
             </div>
 
@@ -741,24 +847,27 @@
                 <p>Each resistor opposes current flow independently. When arranged in series, their opposition adds up.
                 </p>
 
-                <h4 style="margin-top: 1rem;">Key Points</h4>
-                <ul style="margin-left: 2rem;">
+                <h4 style="margin-top: 1.5rem;">Key Points</h4>
+                <ul style="margin-left: 2rem; color: var(--text-muted);">
                     <li>Total resistance ALWAYS increases with series connection</li>
                     <li>The same current flows through all resistors</li>
                     <li>Voltage SPLITS across the resistors (Kirchhoff's Voltage Law)</li>
                     <li>Larger resistor gets larger voltage drop</li>
                 </ul>
 
-                <p
-                    style="margin-top: 1rem; padding: 1rem; background-color: rgba(255, 215, 0, 0.1); border-radius: 8px; border-left: 4px solid var(--secondary-color);">
-                    <strong>Example calculation:</strong> If 100Ω, 120Ω, and 220Ω are in series with 9V:
-                    <br>Total R = 440Ω
-                    <br>Current = 9V / 440Ω = 20.45 mA
-                    <br>Voltage across 220Ω = 20.45mA × 220Ω = 4.5V
-                    <br>Voltage across 120Ω = 20.45mA × 120Ω = 2.45V
-                    <br>Voltage across 100Ω = 20.45mA × 100Ω = 2.05V
-                    <br><strong>Sum = 4.5 + 2.45 + 2.05 = 9V ✓</strong>
-                </p>
+                <div class="highlight-box" style="border-left: 4px solid var(--secondary-color);">
+                    <p style="margin-bottom: 0.5rem; color: var(--text-main);"><strong>Example calculation:</strong> If
+                        100Ω, 120Ω, and 220Ω are in series with 9V:</p>
+                    <ul style="list-style-type: none; margin: 0; padding: 0; color: var(--text-muted);">
+                        <li>Total R = 440Ω</li>
+                        <li>Current = 9V / 440Ω = 20.45 mA</li>
+                        <li>Voltage across 220Ω = 20.45mA × 220Ω = 4.5V</li>
+                        <li>Voltage across 120Ω = 20.45mA × 120Ω = 2.45V</li>
+                        <li>Voltage across 100Ω = 20.45mA × 100Ω = 2.05V</li>
+                        <li style="margin-top: 0.5rem; color: var(--secondary-color); font-weight: 600;">Sum = 4.5 +
+                            2.45 + 2.05 = 9V ✓</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
@@ -768,38 +877,41 @@
             <p>When resistors are connected side-by-side, they are in <strong>parallel</strong>. The current has
                 multiple paths to follow.</p>
 
-            <div class="circuit-diagram">
-                ┌──[ R1 ]──┐<br>
-                +9V ────┤ ├──── 0V<br>
-                └──[ R2 ]──┘
-            </div>
+            <!-- PASTE YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+            <img src="https://buphy.bu.edu/~duffy/PY106/Rparallel.GIF"
+                alt="Diagram showing resistors R1 and R2 connected side-by-side in parallel branches"
+                class="content-image">
 
             <div class="difficulty-tabs">
-                <button class="active" onclick="switchDifficulty(event, 'parallel-basic')">🟢 Basic</button>
-                <button onclick="switchDifficulty(event, 'parallel-intermediate')">🟡 Intermediate</button>
+                <button class="active" onclick="switchDifficulty(event, 'parallel-basic')">Basic</button>
+                <button onclick="switchDifficulty(event, 'parallel-intermediate')">Intermediate</button>
             </div>
 
             <div id="parallel-basic" class="difficulty-content active">
                 <h3>The Rule (Two Resistors)</h3>
                 <p>For two resistors in parallel, use this formula:</p>
+
                 <div class="formula-box">
                     R<sub>T</sub> = (R<sub>1</sub> × R<sub>2</sub>) / (R<sub>1</sub> + R<sub>2</sub>)
                 </div>
 
-                <div class="analogy-box">
-                    💬 Parallel resistors are like opening extra checkout lanes at a supermarket. More lanes = less
-                    total waiting. More paths for current = less total resistance. The combined resistance is ALWAYS
-                    LESS than the smallest individual resistor.
+                <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
+                    <p style="font-style: italic; margin: 0; color: var(--text-muted);">
+                        💬 Parallel resistors are like opening extra checkout lanes at a supermarket. More lanes = less
+                        total waiting. More paths for current = less total resistance. The combined resistance is ALWAYS
+                        LESS than the smallest individual resistor.
+                    </p>
                 </div>
 
                 <h4>Worked Example</h4>
                 <p>Two resistors in parallel: <strong>120Ω</strong> and <strong>100Ω</strong>. What is the combined
                     resistance?</p>
+
                 <div class="result-box">
                     <p>R<sub>T</sub> = (120 × 100) / (120 + 100)</p>
                     <p style="margin-top: 0.5rem;">= 12,000 / 220</p>
                     <p style="margin-top: 0.5rem;">≈ <span
-                            style="color: var(--secondary-color); font-weight: bold;">54.5Ω</span></p>
+                            style="color: var(--secondary-color); font-weight: 700;">54.5Ω</span></p>
                 </div>
 
                 <p style="margin-top: 1rem; color: var(--accent-color); font-weight: 600;">✓ Notice: 54.5Ω is less than
@@ -811,141 +923,152 @@
                 <p>Parallel connections create additional paths for current. More paths = easier flow = less total
                     resistance.</p>
 
-                <h4 style="margin-top: 1rem;">Key Points</h4>
-                <ul style="margin-left: 2rem;">
+                <h4 style="margin-top: 1.5rem;">Key Points</h4>
+                <ul style="margin-left: 2rem; color: var(--text-muted);">
                     <li>Total resistance ALWAYS decreases with parallel connection</li>
                     <li>The same voltage appears across ALL parallel resistors</li>
                     <li>Current SPLITS between the branches</li>
                     <li>Smaller resistor gets more current (inverse relationship)</li>
                 </ul>
 
-                <h4 style="margin-top: 1rem;">General Rule (3+ Resistors)</h4>
+                <h4 style="margin-top: 1.5rem;">General Rule (3+ Resistors)</h4>
                 <div class="formula-box">
                     1/R<sub>T</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub>
                 </div>
 
-                <p
-                    style="margin-top: 1rem; padding: 1rem; background-color: rgba(255, 215, 0, 0.1); border-radius: 8px; border-left: 4px solid var(--secondary-color);">
-                    <strong>Check your work:</strong> Total resistance MUST be less than the smallest resistor. If it's
-                    not, you made an error!</p>
+                <div class="highlight-box" style="border-left: 4px solid var(--secondary-color);">
+                    <p style="margin: 0;"><strong>Check your work:</strong> Total resistance MUST be less than the
+                        smallest resistor. If it's
+                        not, you made an error!</p>
+                </div>
             </div>
         </section>
 
         <!-- THE Potential Divider -->
         <section class="section">
             <h2>⚖️ The Potential Divider: THE KEY CONCEPT</h2>
-            <p style="font-weight: 600; font-size: 1.1rem; color: var(--secondary-color);">This is the heart of this
-                entire session. Take your time with this.</p>
 
-            <p style="margin-top: 1rem;">A potential divider is two resistors connected in series across a supply
+            <div class="highlight-box"
+                style="background: rgba(13, 148, 136, 0.1); border-left: 4px solid var(--accent-color);">
+                <p style="font-weight: 600; font-size: 1.05rem; color: var(--accent-color); margin: 0;">This is the
+                    heart of this
+                    entire session. Take your time with this.</p>
+            </div>
+
+            <p style="margin-top: 1.5rem;">A potential divider is two resistors connected in series across a supply
                 voltage. The voltage is "shared" between them—and we tap the voltage from the middle point between the
                 two resistors.</p>
 
-            <div class="circuit-diagram" style="margin-top: 1.5rem;">
-                +9V (V<sub>in</sub>)<br>
-                │<br>
-                [ R1 ]<br>
-                │<br>
-                ├────► V<sub>out</sub> (sensor signal!)<br>
-                │<br>
-                [ R2 ]<br>
-                │<br>
-                0V
-            </div>
+            <!-- PASTE YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+            <img src="img/potential-divider.png"
+                alt="img/potential-divider.png"
+                class="content-image" style="max-width: 400px; margin: 2rem auto;">
 
             <h3 style="margin-top: 2rem;">The Formula</h3>
-            <div class="formula-box" style="font-size: 1.1rem; text-align: center;">
+            <div class="formula-box">
                 V<sub>out</sub> = (R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)) × V<sub>in</sub>
             </div>
 
-            <p
-                style="margin-top: 1.5rem; padding: 1rem; background-color: rgba(32, 178, 170, 0.1); border-radius: 8px; border-left: 4px solid var(--accent-color);">
-                💬 <strong>Read this aloud:</strong> "V out equals R 2 divided by the total resistance, multiplied by
-                the supply voltage. R 2 gets a share of V in that is proportional to its size relative to the total. A
-                big R 2 takes a big share. A small R 2 takes a small share."</p>
+            <div class="highlight-box" style="border-left: 4px solid var(--primary-color);">
+                <p style="margin: 0; font-style: italic; color: var(--text-muted);">
+                    <span style="font-style: normal; color: var(--text-main); font-weight: 600;">Read this aloud:</span>
+                    "V out equals R 2 divided by the total resistance, multiplied by
+                    the supply voltage. R 2 gets a share of V in that is proportional to its size relative to the total.
+                    A
+                    big R 2 takes a big share. A small R 2 takes a small share."
+                </p>
+            </div>
 
             <h3 style="margin-top: 2rem;">Worked Example 1: Fixed Resistors</h3>
             <p><strong>R₁ = 10kΩ, R₂ = 18kΩ, V<sub>in</sub> = 9V. What is V<sub>out</sub>?</strong></p>
 
             <div class="result-box">
-                <p>V<sub>out</sub> = (18,000 / (10,000 + 18,000)) × 9</p>
-                <p style="margin-top: 0.5rem;">= (18,000 / 28,000) × 9</p>
-                <p style="margin-top: 0.5rem;">= 0.643 × 9</p>
-                <p style="margin-top: 0.5rem;">= <span
-                        style="color: var(--secondary-color); font-weight: bold; font-size: 1.2rem;">5.79V</span></p>
+                <p style="font-family: monospace;">V<sub>out</sub> = (18,000 / (10,000 + 18,000)) × 9</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= (18,000 / 28,000) × 9</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= 0.643 × 9</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= <span
+                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">5.79V</span></p>
             </div>
 
-            <p
-                style="margin-top: 1.5rem; padding: 1rem; background-color: rgba(255, 215, 0, 0.08); border-radius: 8px;">
-                💬 <strong>Key insight:</strong> 9V goes in at the top. 5.79V comes out at the middle. We have divided
-                the voltage—without using a single extra battery or power source. Just two resistors. Elegant.</p>
+            <div class="highlight-box" style="border-left: 4px solid var(--text-muted);">
+                <p style="margin: 0; color: var(--text-muted);">
+                    💬 <strong>Key insight:</strong> 9V goes in at the top. 5.79V comes out at the middle. We have
+                    divided
+                    the voltage—without using a single extra battery or power source. Just two resistors. Elegant.</p>
+            </div>
 
-            <h3 style="margin-top: 2rem;">Worked Example 2: The Garden Preview (MOST IMPORTANT)</h3>
+            <h3 style="margin-top: 2.5rem;">Worked Example 2: The Garden Preview (MOST IMPORTANT)</h3>
             <p><strong>Now imagine R₁ is our LDR (light sensor). In bright light, the LDR has LOW resistance: 1kΩ. R₂ is
                     a fixed 10kΩ. V<sub>in</sub> = 9V. What is V<sub>out</sub> in bright light?</strong></p>
 
             <div class="result-box">
-                <p>V<sub>out</sub> = (10,000 / (1,000 + 10,000)) × 9</p>
-                <p style="margin-top: 0.5rem;">= (10,000 / 11,000) × 9</p>
-                <p style="margin-top: 0.5rem;">= <span
-                        style="color: var(--secondary-color); font-weight: bold; font-size: 1.2rem;">8.18V</span></p>
+                <p style="font-family: monospace;">V<sub>out</sub> = (10,000 / (1,000 + 10,000)) × 9</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= (10,000 / 11,000) × 9</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= <span
+                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">8.18V</span></p>
             </div>
 
-            <p style="margin-top: 1.5rem;"><strong>In darkness, the LDR resistance rises to 50kΩ. Same R₂ = 10kΩ. What
+            <p style="margin-top: 2rem;"><strong>In darkness, the LDR resistance rises to 50kΩ. Same R₂ = 10kΩ. What
                     is V<sub>out</sub> in darkness?</strong></p>
 
             <div class="result-box">
-                <p>V<sub>out</sub> = (10,000 / (50,000 + 10,000)) × 9</p>
-                <p style="margin-top: 0.5rem;">= (10,000 / 60,000) × 9</p>
-                <p style="margin-top: 0.5rem;">= <span
-                        style="color: var(--secondary-color); font-weight: bold; font-size: 1.2rem;">1.5V</span></p>
+                <p style="font-family: monospace;">V<sub>out</sub> = (10,000 / (50,000 + 10,000)) × 9</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= (10,000 / 60,000) × 9</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= <span
+                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">1.5V</span></p>
             </div>
 
-            <div
-                style="padding: 1.5rem; background-color: rgba(255, 215, 0, 0.15); border: 2px solid var(--secondary-color); border-radius: 8px; margin-top: 1.5rem;">
-                <p style="font-weight: 600; font-size: 1.1rem; color: var(--secondary-color);">⭐ THE BREAKTHROUGH ⭐</p>
-                <p style="margin-top: 1rem; color: #ecf0f1;">Bright light → HIGH resistance → HIGH V<sub>out</sub>
+            <div class="highlight-box"
+                style="background: rgba(217, 119, 6, 0.1); border: 1px solid rgba(217, 119, 6, 0.3);">
+                <p style="font-weight: 700; font-size: 1.1rem; color: var(--secondary-color); text-align: center;">⭐ THE
+                    BREAKTHROUGH ⭐</p>
+                <p style="margin-top: 1rem; color: var(--text-main); text-align: center;">Bright light → HIGH resistance
+                    → HIGH V<sub>out</sub>
                     (8.18V)</p>
-                <p style="margin-top: 0.5rem; color: #ecf0f1;">Darkness → LOW resistance → LOW V<sub>out</sub> (1.5V)
+                <p style="margin-top: 0.5rem; color: var(--text-main); text-align: center;">Darkness → LOW resistance →
+                    LOW V<sub>out</sub> (1.5V)
                 </p>
-                <p style="margin-top: 1rem; font-style: italic; color: var(--accent-color);">This changing voltage is
+                <p style="margin-top: 1.5rem; font-style: italic; color: var(--text-muted); text-align: center;">This
+                    changing voltage is
                     our "sensor signal." In Week 6, we feed this signal to a transistor that switches on our pump. You
                     have just understood how the entire sensing chain works.</p>
             </div>
         </section>
 
-        <!-- Interactive Divider Calculator -->
-        <section class="section">
-            <h2>🧮 Interactive Potential Divider Calculator</h2>
+        <!-- Interactive Divider Calculator (Now ID = demo) -->
+        <section class="section" id="demo">
+            <h2>🧮 Interactive Potential Divider Simulator</h2>
             <p>Experiment with different resistor values and see how V<sub>out</sub> changes instantly.</p>
 
             <div class="divider-simulator">
-                <div class="simulator-input">
-                    <label>R₁ (Ohms)</label>
-                    <input type="number" id="r1-input" value="10000" onchange="calculateDivider()"
-                        placeholder="e.g., 10000">
+                <div class="simulator-grid">
+                    <div class="simulator-input">
+                        <label>R₁ (Top Resistor in Ohms)</label>
+                        <input type="number" id="r1-input" value="10000" onchange="calculateDivider()"
+                            placeholder="e.g., 10000">
+                    </div>
+
+                    <div class="simulator-input">
+                        <label>R₂ (Bottom Resistor in Ohms)</label>
+                        <input type="number" id="r2-input" value="18000" onchange="calculateDivider()"
+                            placeholder="e.g., 18000">
+                    </div>
+
+                    <div class="simulator-input">
+                        <label>V<sub>in</sub> (Supply Volts)</label>
+                        <input type="number" id="vin-input" value="9" step="0.1" onchange="calculateDivider()"
+                            placeholder="e.g., 9">
+                    </div>
                 </div>
 
-                <div class="simulator-input">
-                    <label>R₂ (Ohms)</label>
-                    <input type="number" id="r2-input" value="18000" onchange="calculateDivider()"
-                        placeholder="e.g., 18000">
-                </div>
-
-                <div class="simulator-input">
-                    <label>V<sub>in</sub> (Volts)</label>
-                    <input type="number" id="vin-input" value="9" step="0.1" onchange="calculateDivider()"
-                        placeholder="e.g., 9">
-                </div>
-
-                <button class="btn" onclick="calculateDivider()" style="width: 100%; margin-top: 1.5rem;">Calculate
-                    V<sub>out</sub></button>
+                <button onclick="calculateDivider()" style="width: 100%;">Calculate V<sub>out</sub></button>
 
                 <div id="divider-result" style="display: none;">
                     <div class="divider-result">
-                        <h4>Result</h4>
-                        <div class="result-value" id="vout-display">0V</div>
-                        <p id="formula-display" style="margin-top: 1rem; font-family: monospace; font-size: 0.9rem;">
+                        <h4>Calculated Output (V<sub>out</sub>)</h4>
+                        <div class="result-val-display" id="vout-display">0V</div>
+                        <p id="formula-display"
+                            style="margin-top: 1rem; font-family: monospace; font-size: 0.9rem; color: var(--text-muted);">
                             Formula calculation</p>
                         <p id="circuit-state"
                             style="margin-top: 1rem; color: var(--secondary-color); font-weight: 600;"></p>
@@ -954,13 +1077,14 @@
             </div>
         </section>
 
-        <!-- Concept Checking Questions -->
-        <section class="section">
+        <!-- Concept Checking Questions (Now ID = drill) -->
+        <section class="section" id="drill">
             <h2>❓ Check Your Understanding</h2>
 
             <div class="concept-check">
                 <h4>Question 1: Series Calculation</h4>
-                <p>Three resistors (100Ω, 150Ω, 250Ω) are connected in series. What is the total resistance?</p>
+                <p class="question-text">Three resistors (100Ω, 150Ω, 250Ω) are connected in series. What is the total
+                    resistance?</p>
                 <div class="options">
                     <div class="option">
                         <input type="radio" id="q1a" name="q1" value="incorrect">
@@ -975,13 +1099,13 @@
                         <label for="q1c">Not possible to calculate</label>
                     </div>
                 </div>
-                <button class="btn btn-accent" onclick="checkAnswer('q1')">Check Answer</button>
+                <button class="btn-accent" onclick="checkAnswer('q1')">Check Answer</button>
                 <div class="feedback" id="q1-feedback"></div>
             </div>
 
             <div class="concept-check">
                 <h4>Question 2: Parallel Property</h4>
-                <p>When two resistors are in parallel, the total resistance is:</p>
+                <p class="question-text">When two resistors are in parallel, the total resistance is:</p>
                 <div class="options">
                     <div class="option">
                         <input type="radio" id="q2a" name="q2" value="incorrect">
@@ -996,13 +1120,14 @@
                         <label for="q2c">Equal to the sum of both</label>
                     </div>
                 </div>
-                <button class="btn btn-accent" onclick="checkAnswer('q2')">Check Answer</button>
+                <button class="btn-accent" onclick="checkAnswer('q2')">Check Answer</button>
                 <div class="feedback" id="q2-feedback"></div>
             </div>
 
             <div class="concept-check">
                 <h4>Question 3: Potential Divider Logic</h4>
-                <p>In a potential divider, as R₂ gets larger, what happens to V<sub>out</sub>?</p>
+                <p class="question-text">In a potential divider, as R₂ gets larger relative to R₁, what happens to
+                    V<sub>out</sub>?</p>
                 <div class="options">
                     <div class="option">
                         <input type="radio" id="q3a" name="q3" value="correct">
@@ -1017,13 +1142,14 @@
                         <label for="q3c">V<sub>out</sub> stays the same</label>
                     </div>
                 </div>
-                <button class="btn btn-accent" onclick="checkAnswer('q3')">Check Answer</button>
+                <button class="btn-accent" onclick="checkAnswer('q3')">Check Answer</button>
                 <div class="feedback" id="q3-feedback"></div>
             </div>
 
             <div class="concept-check">
                 <h4>Question 4: LDR Sensing</h4>
-                <p>An LDR (light-dependent resistor) decreases its resistance in bright light. In your potential
+                <p class="question-text">An LDR (light-dependent resistor) decreases its resistance in bright light. If
+                    the LDR is R₁ in your potential
                     divider, what happens to V<sub>out</sub> when the light gets brighter?</p>
                 <div class="options">
                     <div class="option">
@@ -1039,7 +1165,7 @@
                         <label for="q4c">V<sub>out</sub> stays the same</label>
                     </div>
                 </div>
-                <button class="btn btn-accent" onclick="checkAnswer('q4')">Check Answer</button>
+                <button class="btn-accent" onclick="checkAnswer('q4')">Check Answer</button>
                 <div class="feedback" id="q4-feedback"></div>
             </div>
         </section>
@@ -1047,70 +1173,77 @@
         <!-- Series vs Parallel Table -->
         <section class="section">
             <h2>📊 Series vs. Parallel: Quick Reference</h2>
-            <table>
-                <tr>
-                    <th>Property</th>
-                    <th>Series</th>
-                    <th>Parallel</th>
-                </tr>
-                <tr>
-                    <td><strong>Total Resistance</strong></td>
-                    <td>Increases (sum of all)</td>
-                    <td>Decreases (less than smallest)</td>
-                </tr>
-                <tr>
-                    <td><strong>Current</strong></td>
-                    <td>Same through all components</td>
-                    <td>Splits between branches</td>
-                </tr>
-                <tr>
-                    <td><strong>Voltage</strong></td>
-                    <td>Splits across components</td>
-                    <td>Same across all branches</td>
-                </tr>
-                <tr>
-                    <td><strong>Used in Our Project For</strong></td>
-                    <td>Potential divider, LED protection</td>
-                    <td>—</td>
-                </tr>
-            </table>
+            <div style="overflow-x: auto;">
+                <table>
+                    <tr>
+                        <th>Property</th>
+                        <th>Series</th>
+                        <th>Parallel</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Resistance</strong></td>
+                        <td>Increases (sum of all)</td>
+                        <td>Decreases (less than smallest)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Current</strong></td>
+                        <td>Same through all components</td>
+                        <td>Splits between branches</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Voltage</strong></td>
+                        <td>Splits across components</td>
+                        <td>Same across all branches</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Used in Our Project For</strong></td>
+                        <td>Potential divider, LED protection</td>
+                        <td>—</td>
+                    </tr>
+                </table>
+            </div>
         </section>
 
-        <!-- Practical Exercises -->
-        <section class="section" id="practice">
-            <h2>🛠️ Practical Exercises</h2>
+        <!-- Practical Exercises (Part 2) -->
+        <section class="section">
+            <h2>🛠️ Practice Computations</h2>
 
             <h3>Exercise 1: Series Calculations</h3>
             <div class="exercise">
-                <h4>Calculate the total resistance:</h4>
-                <p style="margin-top: 1rem;">R₁ = 47Ω, R₂ = 100Ω, R₃ = 220Ω (all in series)</p>
+                <h4 style="margin-top: 0;" class="question-text">Calculate the total resistance:</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-muted);">R₁ = 47Ω, R₂ = 100Ω, R₃ = 220Ω (all in series)
+                </p>
                 <input type="text" id="series-answer" placeholder="Your answer in Ohms...">
                 <button onclick="checkSeriesCalculation()">Check</button>
             </div>
 
             <h3 style="margin-top: 2rem;">Exercise 2: Parallel Calculations</h3>
             <div class="exercise">
-                <h4>Calculate the total resistance:</h4>
-                <p style="margin-top: 1rem;">Two resistors in parallel: R₁ = 100Ω, R₂ = 100Ω</p>
+                <h4 style="margin-top: 0;" class="question-text">Calculate the total resistance:</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-muted);">Two resistors in parallel: R₁ = 100Ω, R₂ =
+                    100Ω</p>
                 <input type="text" id="parallel-answer" placeholder="Your answer in Ohms...">
                 <button onclick="checkParallelCalculation()">Check</button>
             </div>
 
             <h3 style="margin-top: 2rem;">Exercise 3: Potential Divider</h3>
             <div class="exercise">
-                <h4>Calculate V<sub>out</sub>:</h4>
-                <p style="margin-top: 1rem;">R₁ = 10kΩ, R₂ = 4.7kΩ, V<sub>in</sub> = 9V</p>
+                <h4 style="margin-top: 0;" class="question-text">Calculate V<sub>out</sub>:</h4>
+                <p style="margin-bottom: 1rem; color: var(--text-muted);">R₁ = 10kΩ, R₂ = 4.7kΩ, V<sub>in</sub> = 9V</p>
                 <input type="text" id="divider-answer" placeholder="Your answer in Volts...">
                 <button onclick="checkDividerCalculation()">Check</button>
             </div>
         </section>
 
-        <!-- Vocabulary Section -->
-        <section class="section" id="vocabulary">
+        <!-- Vocabulary Section (Now ID = vocab) -->
+        <section class="section" id="vocab">
             <h2>📚 Vocabulary & Glossary</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Master these terms—they are essential for
+                understanding circuit behavior.</p>
 
             <div class="vocab-search">
-                <input type="text" id="vocab-search-input" placeholder="Search vocabulary..." onkeyup="searchVocab()">
+                <input type="text" id="vocab-search-input" placeholder="🔍 Search vocabulary..."
+                    onkeyup="searchVocab()">
             </div>
 
             <div id="vocab-list">
@@ -1122,110 +1255,100 @@
         <section class="section" id="wrap-up">
             <h2>🎓 Wrap-Up: Consolidate Your Learning</h2>
 
-            <h3>1. Knowledge Consolidation</h3>
-            <div
-                style="background-color: rgba(255, 215, 0, 0.15); padding: 1.5rem; border-left: 4px solid var(--secondary-color); border-radius: 8px; margin: 1rem 0;">
-                <p><strong>Series resistors add up:</strong> R<sub>T</sub> = R₁ + R₂ + R₃. Total resistance increases.
+            <div class="highlight-box">
+                <h3 style="margin-top: 0;">Key Takeaways</h3>
+                <p class="question-text" style="color: var(--text-muted); font-size: 0.95rem;"><strong>Series resistors
+                        add up:</strong> R<sub>T</sub> = R₁ + R₂ + R₃. Total resistance increases.
                 </p>
-                <p style="margin-top: 0.5rem;"><strong>Parallel resistors combine differently:</strong> 1/R<sub>T</sub>
+                <p class="question-text" style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">
+                    <strong>Parallel resistors combine differently:</strong> 1/R<sub>T</sub>
                     = 1/R₁ + 1/R₂. Total resistance DECREASES.</p>
-                <p style="margin-top: 0.5rem;"><strong>Potential divider formula:</strong> V<sub>out</sub> = (R₂ / (R₁ +
+                <p class="question-text" style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">
+                    <strong>Potential divider formula:</strong> V<sub>out</sub> = (R₂ / (R₁ +
                     R₂)) × V<sub>in</sub>. This formula lets us create sensors that respond to light, temperature, and
                     other environmental changes.</p>
             </div>
 
-            <h3 style="margin-top: 1.5rem;">2. Objective Confirmation</h3>
+            <h3 style="margin-top: 2rem;">Reflection</h3>
             <div class="exercise">
-                <p style="margin-bottom: 1rem;">Check the box if you can do each one:</p>
-                <div style="margin-left: 2rem;">
-                    <input type="checkbox" id="obj1"> <label for="obj1">I can calculate total resistance for series
-                        resistors</label><br>
-                    <input type="checkbox" id="obj2"> <label for="obj2">I can calculate total resistance for parallel
-                        resistors</label><br>
-                    <input type="checkbox" id="obj3"> <label for="obj3">I can apply the potential divider formula to
-                        predict V<sub>out</sub></label><br>
-                </div>
-            </div>
-
-            <h3 style="margin-top: 1.5rem;">3. Reflection</h3>
-            <div class="exercise">
-                <label style="color: var(--secondary-color); font-weight: 600;">Complete this sentence:</label>
+                <label style="color: var(--text-main); font-weight: 600;">Complete this sentence:</label>
                 <textarea id="reflection"
                     placeholder="The potential divider formula makes sense to me because... OR I still find it confusing when..."
                     rows="3"></textarea>
-                <button class="btn" onclick="saveReflection()">Save Reflection</button>
+                <button onclick="saveReflection()">Save Reflection</button>
             </div>
 
-            <h3 style="margin-top: 1.5rem;">4. Bridge to Next Week</h3>
-            <div
-                style="background-color: rgba(32, 178, 170, 0.15); padding: 1.5rem; border-left: 4px solid var(--accent-color); border-radius: 8px; margin: 1rem 0;">
-                <p><strong>Next week: LDR & Thermistor — The Sensor Sub-circuit</strong></p>
-                <p style="margin-top: 0.5rem;">We replace one resistor in the potential divider with an LDR (light
-                    sensor) or Thermistor (temperature sensor). The divider becomes a living sensor that responds to the
-                    world.</p>
-            </div>
+            <h3 style="margin-top: 2rem;">Bridge to Next Week</h3>
+            <p class="question-text" style="color: var(--text-muted);"><strong>Next week: LDR & Thermistor — The Sensor
+                    Sub-circuit</strong><br>
+                We replace one resistor in the potential divider with an LDR (light
+                sensor) or Thermistor (temperature sensor). The divider becomes a living sensor that responds to the
+                world.</p>
 
-            <h3 style="margin-top: 1.5rem;">5. Celebration & Closure</h3>
             <div
-                style="background-color: rgba(255, 215, 0, 0.2); padding: 2rem; border-left: 4px solid var(--secondary-color); border-radius: 8px; margin: 1rem 0; text-align: center;">
-                <p style="font-size: 1.25rem; color: var(--secondary-color); font-weight: 600;">⚖️ YOU'VE MASTERED THE
-                    FOUNDATION! ⚖️</p>
-                <p style="margin-top: 1rem; font-style: italic;">This is the most mathematically demanding session of
-                    the bootcamp. But you did it. You understand how to divide voltage intelligently. You understand the
-                    formula that makes sensing possible.</p>
-                <p style="margin-top: 1rem;">Next week, we turn this abstract math into a LIVING SENSOR. Your potential
-                    divider will become a light detector. Your understanding becomes reality.</p>
-                <p style="margin-top: 1rem; color: var(--accent-color); font-weight: 600;">See you next week! 🌱</p>
+                style="margin-top: 2.5rem; text-align: center; padding: 2.5rem; border-radius: 12px; background: rgba(217, 119, 6, 0.1); border: 1px solid rgba(217, 119, 6, 0.2);">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚖️</div>
+                <h3 style="margin: 0; color: var(--secondary-color);">YOU'VE MASTERED THE FOUNDATION!</h3>
+                <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.95rem; max-width: 600px; margin-left: auto; margin-right: auto;"
+                    class="question-text">
+                    This is the most mathematically demanding session of the bootcamp. But you did it. You understand
+                    how to divide voltage intelligently. You understand the formula that makes sensing possible. Next
+                    week, we turn this abstract math into a LIVING SENSOR.</p>
             </div>
         </section>
 
         <!-- Homework -->
         <section class="section">
-            <h2>📝 Homework: The "Exam Boss" Challenge</h2>
+            <h2>📝 The "Exam Boss" Challenge</h2>
             <p><strong>Past-Paper Style Question (IGCSE 4.4.4 — Potential Divider)</strong></p>
 
             <div class="exercise">
-                <h3>Question</h3>
-                <p style="margin-bottom: 1rem;">A potential divider is connected to a <strong>12V supply</strong>.<br>
+                <p class="question-text" style="margin-bottom: 1.5rem;">A potential divider is connected to a
+                    <strong>12V supply</strong>.<br>
                     R₁ = 10kΩ (between +12V and output node)<br>
                     R₂ = 18kΩ (between output node and 0V)</p>
 
-                <h4 style="margin-top: 1rem;">(a) Calculate V<sub>out</sub> using the potential divider formula. Show
+                <h4 style="margin-top: 1rem;" class="question-text">(a) Calculate V<sub>out</sub> using the potential
+                    divider formula. Show
                     all working. (3 marks)</h4>
                 <textarea placeholder="Show your calculation..." rows="3"></textarea>
 
-                <h4 style="margin-top: 1rem;">(b) A student replaces R₂ with a variable resistor and increases it from
+                <h4 style="margin-top: 1rem;" class="question-text">(b) A student replaces R₂ with a variable resistor
+                    and increases it from
                     1kΩ to 20kΩ. Describe what happens to V<sub>out</sub>. (2 marks)</h4>
                 <textarea placeholder="Your answer..." rows="3"></textarea>
 
-                <h4 style="margin-top: 1rem;">(c) In a garden sensor, R₁ is an LDR. Explain what happens to
+                <h4 style="margin-top: 1rem;" class="question-text">(c) In a garden sensor, R₁ is an LDR. Explain what
+                    happens to
                     V<sub>out</sub> when the garden gets bright sunlight. (2 marks)</h4>
                 <textarea placeholder="Your answer..." rows="3"></textarea>
 
-                <p style="margin-top: 1.5rem; color: #bbb; font-size: 0.95rem;"><strong>Total: 7 marks</strong></p>
-                <button class="btn" onclick="saveHomework()">Save Homework</button>
+                <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.95rem;"><strong>Total: 7
+                        marks</strong></p>
+                <button onclick="saveHomework()">Save Homework</button>
             </div>
 
-            <h3 style="margin-top: 1.5rem;">🔑 Answer Key</h3>
-            <div style="background-color: rgba(32, 178, 170, 0.15); padding: 1rem; border-left: 4px solid var(--accent-color); border-radius: 8px; cursor: pointer;"
+            <h3 style="margin-top: 2rem;">🔑 Answer Key (For Self-Checking)</h3>
+            <div class="highlight-box" style="cursor: pointer; border-left: 4px solid var(--accent-color);"
                 onclick="toggleAnswerKey()">
-                <p style="font-weight: 600; color: var(--accent-color);">Click to reveal answer key</p>
-                <div id="answer-key" style="display: none; margin-top: 1rem;">
+                <p style="font-weight: 600; color: var(--accent-color); margin: 0;">Click to reveal answer key</p>
+                <div id="answer-key" style="display: none; margin-top: 1.5rem; color: var(--text-muted);">
                     <p><strong>(a) V<sub>out</sub> = (18,000 / (10,000 + 18,000)) × 12 = (18,000 / 28,000) × 12 ≈
                             7.71V</strong> (3 marks)</p>
-                    <p style="margin-top: 0.5rem;"><strong>(b) As R₂ increases, it takes a larger share of voltage, so
+                    <p style="margin-top: 0.75rem;"><strong>(b) As R₂ increases, it takes a larger share of voltage, so
                             V<sub>out</sub> increases toward 12V</strong> (2 marks)</p>
-                    <p style="margin-top: 0.5rem;"><strong>(c) In bright light, LDR resistance decreases; lower R₁ means
+                    <p style="margin-top: 0.75rem;"><strong>(c) In bright light, LDR resistance decreases; lower R₁
+                            means
                             R₂ takes larger proportion, so V<sub>out</sub> increases</strong> (2 marks)</p>
                 </div>
             </div>
         </section>
 
         <!-- Navigation -->
-        <section style="text-align: center; margin-top: 2rem; padding: 2rem; background-color: transparent;">
-            <button class="btn" onclick="scrollToSection('opening-activity')" style="margin: 0.5rem;">← Back to
-                Top</button>
-            <button class="btn btn-accent" onclick="window.print()" style="margin: 0.5rem;">🖨️ Print This Page</button>
+        <section style="text-align: center; margin-top: 2rem; padding: 1rem;">
+            <button onclick="scrollToSection('opening-activity')"
+                style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main);">↑
+                Back to Top</button>
         </section>
     </main>
 
@@ -1233,18 +1356,18 @@
     <script>
         // Vocabulary
         const vocabulary = [
-            { term: "Series Resistors", definition: "Resistors connected end-to-end in a chain. Total resistance is the sum of all individual resistors.", level: "basic" },
-            { term: "Parallel Resistors", definition: "Resistors connected side-by-side with common endpoints. Total resistance is less than the smallest individual resistor.", level: "basic" },
-            { term: "Potential Divider", definition: "A circuit with two resistors in series across a supply voltage, where output voltage is tapped from the junction between them.", level: "intermediate" },
-            { term: "Voltage Divider Formula", definition: "V<sub>out</sub> = (R₂ / (R₁ + R₂)) × V<sub>in</sub>. Calculates the output voltage in a potential divider circuit.", level: "intermediate" },
-            { term: "Total Resistance (Series)", definition: "R<sub>T</sub> = R₁ + R₂ + R₃. Sum of all individual resistances when connected in series.", level: "basic" },
-            { term: "Total Resistance (Parallel)", definition: "1/R<sub>T</sub> = 1/R₁ + 1/R₂ + 1/R₃. Reciprocal formula for parallel resistors. Always less than smallest individual.", level: "intermediate" },
-            { term: "LDR", definition: "Light-Dependent Resistor. A component whose resistance decreases in bright light and increases in darkness. Used in light sensors.", level: "intermediate" },
-            { term: "Thermistor", definition: "A component whose resistance changes with temperature. Used in temperature sensors in the Smart Garden.", level: "intermediate" },
-            { term: "V<sub>out</sub>", definition: "Output voltage. The voltage measured at the junction between R₁ and R₂ in a potential divider.", level: "basic" },
-            { term: "V<sub>in</sub>", definition: "Input voltage. The supply voltage applied across the entire potential divider circuit.", level: "basic" },
-            { term: "Sensor Signal", definition: "A voltage that changes in response to environmental conditions (light, temperature). Generated by potential dividers in the Smart Garden.", level: "intermediate" },
-            { term: "Kirchhoff's Voltage Law", definition: "The sum of voltage drops around a closed circuit equals the supply voltage. Used to verify series resistor calculations.", level: "advanced" }
+            { term: "Series Resistors", definition: "Resistors connected end-to-end in a chain. Total resistance is the sum of all individual resistors." },
+            { term: "Parallel Resistors", definition: "Resistors connected side-by-side with common endpoints. Total resistance is less than the smallest individual resistor." },
+            { term: "Potential Divider", definition: "A circuit with two resistors in series across a supply voltage, where output voltage is tapped from the junction between them." },
+            { term: "Voltage Divider Formula", definition: "Vout = (R₂ / (R₁ + R₂)) × Vin. Calculates the output voltage in a potential divider circuit." },
+            { term: "Total Resistance (Series)", definition: "RT = R₁ + R₂ + R₃. Sum of all individual resistances when connected in series." },
+            { term: "Total Resistance (Parallel)", definition: "1/RT = 1/R₁ + 1/R₂ + 1/R₃. Reciprocal formula for parallel resistors. Always less than smallest individual." },
+            { term: "LDR", definition: "Light-Dependent Resistor. A component whose resistance decreases in bright light and increases in darkness. Used in light sensors." },
+            { term: "Thermistor", definition: "A component whose resistance changes with temperature. Used in temperature sensors in the Smart Garden." },
+            { term: "Vout", definition: "Output voltage. The voltage measured at the junction between R₁ and R₂ in a potential divider." },
+            { term: "Vin", definition: "Input voltage. The supply voltage applied across the entire potential divider circuit." },
+            { term: "Sensor Signal", definition: "A voltage that changes in response to environmental conditions (light, temperature). Generated by potential dividers in the Smart Garden." },
+            { term: "Kirchhoff's Voltage Law", definition: "The sum of voltage drops around a closed circuit equals the supply voltage. Used to verify series resistor calculations." }
         ];
 
         function populateVocab() {
@@ -1310,16 +1433,11 @@
         }
 
         // Answer checking
-        const answerKey = {
-            q1: 'correct',
-            q2: 'correct',
-            q3: 'correct',
-            q4: 'correct'
-        };
+        const answerKey = { q1: 'correct', q2: 'correct', q3: 'correct', q4: 'correct' };
 
         const answerExplanations = {
             q1: {
-                correct: "Correct! ✓ R<sub>T</sub> = 100 + 150 + 250 = 500Ω",
+                correct: "Correct! ✓ RT = 100 + 150 + 250 = 500Ω",
                 incorrect: "Try again. In series, you ADD all resistances: 100 + 150 + 250 = ?"
             },
             q2: {
@@ -1327,8 +1445,8 @@
                 incorrect: "In parallel, combined resistance DECREASES. It's always less than the smallest resistor."
             },
             q3: {
-                correct: "Correct! ✓ Larger R₂ = bigger share of voltage. V<sub>out</sub> increases.",
-                incorrect: "Remember: R₂ determines what fraction of V<sub>in</sub> appears at V<sub>out</sub>. Larger R₂ = larger Vout."
+                correct: "Correct! ✓ Larger R₂ = bigger share of voltage. Vout increases.",
+                incorrect: "Remember: R₂ determines what fraction of Vin appears at Vout. Larger R₂ = larger Vout."
             },
             q4: {
                 correct: "Correct! ✓ LDR down → (R₁) down → (R₂ share up) → Vout up. Bright = high signal!",
@@ -1347,6 +1465,8 @@
             const feedbackDiv = document.getElementById(`${questionId}-feedback`);
             feedbackDiv.innerHTML = answerExplanations[questionId][selected.value];
             feedbackDiv.classList.add('show');
+
+            feedbackDiv.classList.remove('correct', 'incorrect');
             feedbackDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
             updateProgress();
         }
@@ -1354,69 +1474,86 @@
         // Exercise checks
         function checkSeriesCalculation() {
             const answer = document.getElementById('series-answer').value;
+            const btn = event.target;
             if (answer.includes('367') || answer.includes('370')) {
-                alert('✅ Correct! 47 + 100 + 220 = 367Ω');
+                btn.textContent = "Correct! ✓";
+                btn.style.backgroundColor = "var(--secondary-color)";
+                btn.style.color = "white";
             } else {
-                alert('❌ Not quite. Try: 47 + 100 + 220 = ?');
+                btn.textContent = "Try Again ❌";
+                btn.style.backgroundColor = "var(--accent-color)";
+                btn.style.color = "white";
+                setTimeout(() => {
+                    btn.textContent = "Check";
+                    btn.style.backgroundColor = "var(--secondary-color)";
+                    btn.style.color = "white";
+                }, 2000);
             }
         }
 
         function checkParallelCalculation() {
             const answer = document.getElementById('parallel-answer').value;
+            const btn = event.target;
             if (answer.includes('50')) {
-                alert('✅ Correct! (100 × 100) / (100 + 100) = 10000 / 200 = 50Ω');
+                btn.textContent = "Correct! ✓";
+                btn.style.backgroundColor = "var(--secondary-color)";
+                btn.style.color = "white";
             } else {
-                alert('❌ Not quite. Use: (R₁ × R₂) / (R₁ + R₂)');
+                btn.textContent = "Try Again ❌";
+                btn.style.backgroundColor = "var(--accent-color)";
+                btn.style.color = "white";
+                setTimeout(() => {
+                    btn.textContent = "Check";
+                    btn.style.backgroundColor = "var(--secondary-color)";
+                    btn.style.color = "white";
+                }, 2000);
             }
         }
 
         function checkDividerCalculation() {
             const answer = document.getElementById('divider-answer').value;
-            if (answer.includes('2.8') || answer.includes('2.9') || answer.includes('2.87')) {
-                alert('✅ Correct! (4700 / 14700) × 9 ≈ 2.88V');
+            const btn = event.target;
+            if (answer.includes('2.8') || answer.includes('2.9') || answer.includes('2.87') || answer.includes('2.88')) {
+                btn.textContent = "Correct! ✓";
+                btn.style.backgroundColor = "var(--secondary-color)";
+                btn.style.color = "white";
             } else {
-                alert('❌ Not quite. Use V<sub>out</sub> = (R₂ / (R₁ + R₂)) × V<sub>in</sub>');
+                btn.textContent = "Try Again ❌";
+                btn.style.backgroundColor = "var(--accent-color)";
+                btn.style.color = "white";
+                setTimeout(() => {
+                    btn.textContent = "Check";
+                    btn.style.backgroundColor = "var(--secondary-color)";
+                    btn.style.color = "white";
+                }, 2000);
             }
         }
 
-        // Progress tracking
         function updateProgress() {
             const totalQuestions = 4;
-            const answeredQuestions = document.querySelectorAll('.feedback.show').length;
+            const answeredQuestions = document.querySelectorAll('.feedback.show.correct').length;
             const percentage = (answeredQuestions / totalQuestions) * 100;
             document.getElementById('progress-bar').style.width = percentage + '%';
-            localStorage.setItem('progress', percentage);
+            localStorage.setItem('progress-class3', percentage);
         }
 
-        // Dyslexia mode
         function toggleDyslexiaMode() {
             document.body.classList.toggle('dyslexia-mode');
-            const btn = document.getElementById('dyslexia-btn');
-            btn.textContent = document.body.classList.contains('dyslexia-mode') ? 'Aa↔a' : 'A↔a';
             localStorage.setItem('dyslexia-mode', document.body.classList.contains('dyslexia-mode'));
         }
 
-        // Light mode
-        function toggleLightMode() {
+        function toggleMode() {
             document.body.classList.toggle('light-mode');
-            const btn = document.getElementById('light-btn');
-            btn.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
             localStorage.setItem('light-mode', document.body.classList.contains('light-mode'));
         }
 
-        // Difficulty tabs
         function switchDifficulty(event, level) {
-            document.querySelectorAll('.difficulty-content').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.querySelectorAll('.difficulty-tabs button').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.difficulty-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.difficulty-tabs button').forEach(btn => btn.classList.remove('active'));
             document.getElementById(level).classList.add('active');
             event.target.classList.add('active');
         }
 
-        // Scroll
         function scrollToSection(sectionId) {
             const section = document.getElementById(sectionId);
             if (section) {
@@ -1424,30 +1561,43 @@
             }
         }
 
-        // Save functions
         function saveOpeningResponse() {
             const response = document.getElementById('opening-response').value;
-            if (response.trim() === '') {
-                alert('Please write your response first.');
-                return;
-            }
-            localStorage.setItem('opening-response', response);
-            alert('Your opening response has been saved! 💾');
+            if (response.trim() === '') return;
+            localStorage.setItem('opening-response-class3', response);
+
+            const btn = event.target;
+            btn.textContent = "Saved! ✓";
+            btn.style.backgroundColor = "var(--secondary-color)";
+            btn.style.color = "white";
+            setTimeout(() => {
+                btn.textContent = "Save My Answer";
+            }, 2000);
         }
 
         function saveReflection() {
             const reflection = document.getElementById('reflection').value;
-            if (reflection.trim() === '') {
-                alert('Please write your reflection first.');
-                return;
-            }
-            localStorage.setItem('reflection', reflection);
-            alert('Your reflection has been saved! 💾');
+            if (reflection.trim() === '') return;
+            localStorage.setItem('reflection-class3', reflection);
+
+            const btn = event.target;
+            btn.textContent = "Saved! ✓";
+            btn.style.backgroundColor = "var(--secondary-color)";
+            btn.style.color = "white";
+            setTimeout(() => {
+                btn.textContent = "Save Reflection";
+            }, 2000);
         }
 
         function saveHomework() {
-            alert('Your homework answers have been saved! 📝');
-            localStorage.setItem('homework-saved', 'true');
+            localStorage.setItem('homework-saved-class3', 'true');
+            const btn = event.target;
+            btn.textContent = "Saved! ✓";
+            btn.style.backgroundColor = "var(--secondary-color)";
+            btn.style.color = "white";
+            setTimeout(() => {
+                btn.textContent = "Save Homework";
+            }, 2000);
         }
 
         function toggleAnswerKey() {
@@ -1455,40 +1605,30 @@
             key.style.display = key.style.display === 'none' ? 'block' : 'none';
         }
 
-        // Initialize
         window.addEventListener('load', () => {
             populateVocab();
 
             if (localStorage.getItem('dyslexia-mode') === 'true') {
                 document.body.classList.add('dyslexia-mode');
-                document.getElementById('dyslexia-btn').textContent = 'Aa↔a';
             }
             if (localStorage.getItem('light-mode') === 'true') {
                 document.body.classList.add('light-mode');
-                document.getElementById('light-btn').textContent = '☀️';
             }
 
-            const openingResponse = localStorage.getItem('opening-response');
+            const openingResponse = localStorage.getItem('opening-response-class3');
             if (openingResponse) {
                 document.getElementById('opening-response').value = openingResponse;
             }
 
-            const reflection = localStorage.getItem('reflection');
+            const reflection = localStorage.getItem('reflection-class3');
             if (reflection) {
                 document.getElementById('reflection').value = reflection;
             }
 
-            const savedProgress = localStorage.getItem('progress');
+            const savedProgress = localStorage.getItem('progress-class3');
             if (savedProgress) {
                 document.getElementById('progress-bar').style.width = savedProgress + '%';
             }
-
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrollPercent = (scrollTop / docHeight) * 100;
-                document.getElementById('progress-bar').style.width = Math.max(scrollPercent, localStorage.getItem('progress') || 0) + '%';
-            });
         });
     </script>
 </body>
