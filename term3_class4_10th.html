@@ -595,6 +595,29 @@
             background-color: var(--surface-color-hover);
         }
 
+        /* Styling for when the src is empty or broken */
+        .content-image[src=""],
+        .content-image:not([src]) {
+            min-height: 200px;
+            width: 100%;
+            border: 2px dashed var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .content-image[src=""]::after,
+        .content-image:not([src])::after {
+            content: "🖼️ Teacher: Paste your Image URL in the src=\"\" attribute";
+            position: absolute;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-style: italic;
+            text-align: center;
+            padding: 1rem;
+        }
+
         /* ------------------------------------- */
         /* CUSTOM STYLES FOR SENSOR SESSION      */
         /* ------------------------------------- */
@@ -726,6 +749,7 @@
             <button onclick="toggleDyslexiaMode()" id="dyslexia-btn">Aa Dyslexia</button>
             <button onclick="scrollToSection('opening-activity')">Opening</button>
             <button onclick="scrollToSection('concepts')">Concepts</button>
+            <button onclick="scrollToSection('build')">Build</button>
             <button onclick="scrollToSection('demo')">Simulator</button>
             <button onclick="scrollToSection('drill')">Drill</button>
             <button onclick="scrollToSection('vocab')">Vocab</button>
@@ -744,8 +768,8 @@
             <p>This orchid cannot speak. It cannot scream "it's too dark here!" or "it's too hot!" But if it could, your
                 Smart Garden would listen.</p>
 
-            <!-- PASTE YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
-            <img src="https://placehold.co/800x300/1e293b/94a3b8?text=Paste+Image+URL+Here:+LDR+and+Thermistor+Close-up"
+            <!-- 🖼️ TEACHER: Paste YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+            <img src="img/LDR_Thermistor_CloseUp.png"
                 alt="Detailed view of an LDR (Light Dependent Resistor) and a Thermistor component"
                 class="content-image">
 
@@ -833,8 +857,8 @@
             <p>An LDR's resistance decreases as light increases—and vice versa. It's like a shy person: in a bright
                 crowd, they open up. In the dark, they close off.</p>
 
-            <!-- PASTE YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
-            <img src="https://placehold.co/400x200/1e293b/94a3b8?text=Paste+Image+URL+Here:+LDR+Symbol+and+Physical"
+            <!-- 🖼️ TEACHER: Paste YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+            <img src="https://startingelectronics.org/beginners/components/LDR-photoresistor/LDR-photoresistor-symbol.png"
                 alt="Diagram showing the LDR schematic symbol and a physical LDR component" class="content-image"
                 style="max-width: 400px; margin-left: auto; margin-right: auto;">
 
@@ -845,6 +869,12 @@
 
             <div id="ldr-basic" class="difficulty-content active">
                 <h3>LDR Behaviour Table</h3>
+
+                <!-- 🖼️ TEACHER: Paste YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+                <img src="img/LDR_behaviour.png"
+                    alt="Graph showing LDR resistance decreasing as light intensity increases" class="content-image"
+                    style="max-width: 500px; margin-left: auto; margin-right: auto;">
+
                 <div style="overflow-x: auto;">
                     <table>
                         <tr>
@@ -893,8 +923,8 @@
             <p>A thermistor is a resistor whose value changes with temperature. The NTC type (Negative Temperature
                 Coefficient) is what we use: <strong>As temperature increases, resistance decreases.</strong></p>
 
-            <!-- PASTE YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
-            <img src="https://placehold.co/400x200/1e293b/94a3b8?text=Paste+Image+URL+Here:+Thermistor+Symbol+and+Physical"
+            <!-- 🖼️ TEACHER: Paste YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+            <img src="https://www.teamwavelength.com/wp-content/uploads/therm.png"
                 alt="Diagram showing the Thermistor schematic symbol and a physical NTC thermistor"
                 class="content-image" style="max-width: 400px; margin-left: auto; margin-right: auto;">
 
@@ -905,6 +935,12 @@
 
             <div id="therm-basic" class="difficulty-content active">
                 <h3>Thermistor Behaviour Table</h3>
+
+                <!-- 🖼️ TEACHER: Paste YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
+                <img src="img/Thermistor_behaviour.png"
+                    alt="Graph showing NTC Thermistor resistance decreasing as temperature increases"
+                    class="content-image" style="max-width: 500px; margin-left: auto; margin-right: auto;">
+
                 <div style="overflow-x: auto;">
                     <table>
                         <tr>
@@ -958,25 +994,39 @@
                 V<sub>out</sub> = (R₂ / (R<sub>LDR</sub> + R₂)) × V<sub>in</sub>
             </div>
 
-            <h3 style="margin-top: 2.5rem;">Real-World Scenarios (R₂ = 10kΩ, V<sub>in</sub> = 9V)</h3>
+            <h3 style="margin-top: 2.5rem;">Real-World Scenarios (R₂ = 10kΩ, V<sub>in</sub> = 7.4V)</h3>
 
             <div class="sensor-scenario">
-                <div class="tag" style="margin-bottom: 0.5rem;">🌞 Bright Sunlight</div>
+                <div class="tag" style="margin-bottom: 0.5rem;">🌞 Scenario 1: Bright Sunlight</div>
                 <p><strong>LDR = 120Ω</strong></p>
                 <div class="scenario-result">
                     <p style="font-family: monospace; color: var(--text-muted);">V<sub>out</sub> = (10k / (120 + 10k)) ×
-                        9</p>
-                    <div class="result-value">8.89V</div>
+                        7.4</p>
+                    <div class="result-value">7.31V</div>
                 </div>
             </div>
 
             <div class="sensor-scenario">
-                <div class="tag" style="margin-bottom: 0.5rem;">🌙 After Dark</div>
+                <div class="tag"
+                    style="margin-bottom: 0.5rem; background: rgba(234, 88, 12, 0.1); color: var(--secondary-color);">⛅
+                    Scenario 2: Cloudy / Ambient Light</div>
+                <p><strong>LDR = 5kΩ (5,000Ω)</strong></p>
+                <div class="scenario-result">
+                    <p style="font-family: monospace; color: var(--text-muted);">V<sub>out</sub> = (10k / (5k + 10k)) ×
+                        7.4</p>
+                    <div class="result-value">4.93V</div>
+                </div>
+            </div>
+
+            <div class="sensor-scenario">
+                <div class="tag"
+                    style="margin-bottom: 0.5rem; background: rgba(15, 23, 42, 0.1); color: var(--text-main);">🌙
+                    Scenario 3: After Dark</div>
                 <p><strong>LDR = 50kΩ</strong></p>
                 <div class="scenario-result">
                     <p style="font-family: monospace; color: var(--text-muted);">V<sub>out</sub> = (10k / (50k + 10k)) ×
-                        9</p>
-                    <div class="result-value">1.5V</div>
+                        7.4</p>
+                    <div class="result-value">1.23V</div>
                 </div>
             </div>
 
@@ -985,8 +1035,47 @@
                 <p style="font-weight: 700; color: var(--accent-color); text-align: center;">⭐ THE CRITICAL INSIGHT ⭐
                 </p>
                 <p style="margin-top: 1rem; color: var(--text-muted); text-align: center;">As darkness falls,
-                    V<sub>out</sub> falls from 8.89V down to 1.5V. The transistor (Week 7) switches ON at 0.6V. That
+                    V<sub>out</sub> falls from 7.31V down to 1.23V. The transistor (Week 7) switches ON at 0.6V. That
                     threshold is your garden's "bedtime alarm."</p>
+            </div>
+        </section>
+
+        <!-- The Build (Exercise 1) -->
+        <section class="section" id="build">
+            <h2>🛠️ The Build (Exercise 1): Live Sensor Test</h2>
+            <p>It is time to build this circuit on your breadboard. Connect your LDR and a 10kΩ resistor in series as a
+                potential divider, powered by your 7.4V battery pack. Measure V<sub>out</sub> across the 10kΩ resistor.
+            </p>
+
+            <div class="exercise">
+                <div style="overflow-x: auto;">
+                    <table>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Expected LDR Resistance</th>
+                            <th>Predicted V<sub>out</sub></th>
+                            <th>Actual Multimeter Reading</th>
+                        </tr>
+                        <tr>
+                            <td>1. Bright (Phone flashlight)</td>
+                            <td>~120Ω</td>
+                            <td><strong>~7.31V</strong></td>
+                            <td><input type="text" placeholder="e.g., 7.2V" style="margin: 0;"></td>
+                        </tr>
+                        <tr>
+                            <td>2. Cloudy (Ambient room light)</td>
+                            <td>~5kΩ</td>
+                            <td><strong>~4.93V</strong></td>
+                            <td><input type="text" placeholder="e.g., 4.8V" style="margin: 0;"></td>
+                        </tr>
+                        <tr>
+                            <td>3. Dark (Covered with hand)</td>
+                            <td>~50kΩ</td>
+                            <td><strong>~1.23V</strong></td>
+                            <td><input type="text" placeholder="e.g., 1.3V" style="margin: 0;"></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -1053,7 +1142,7 @@
 
             <div class="concept-check">
                 <h4>Question 3: Signal Logic</h4>
-                <p class="question-text">InScenario 3 (After Dark), V<sub>out</sub> drops to 1.5V. Does this mean
+                <p class="question-text">In Scenario 3 (After Dark), V<sub>out</sub> drops to 1.23V. Does this mean
                     darkness produces a HIGH or LOW voltage signal at V<sub>out</sub>?</p>
                 <div class="options">
                     <div class="option">
@@ -1094,13 +1183,16 @@
                 <h3 style="margin-top: 0;">Key Takeaways</h3>
                 <p class="question-text" style="color: var(--text-muted); font-size: 0.95rem;">
                     <strong>Transducers</strong> convert physical conditions (light, temperature) into electrical
-                    resistance changes.</p>
+                    resistance changes.
+                </p>
                 <p class="question-text" style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">
                     <strong>LDRs are "eyes":</strong> resistance ↓ as light ↑. <strong>NTC Thermistors are
-                        "skin":</strong> resistance ↓ as temperature ↑.</p>
+                        "skin":</strong> resistance ↓ as temperature ↑.
+                </p>
                 <p class="question-text" style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">
                     <strong>Signals:</strong> Bright light → high voltage V<sub>out</sub>. Darkness → low voltage
-                    V<sub>out</sub>.</p>
+                    V<sub>out</sub>.
+                </p>
             </div>
 
             <h3 style="margin-top: 2rem;">Objective Confirmation</h3>
@@ -1136,7 +1228,7 @@
 
             <div class="exercise">
                 <p class="question-text" style="margin-bottom: 1.5rem;">A light-sensing circuit uses an LDR and a fixed
-                    10kΩ resistor in series across a 9V supply. Output (V<sub>out</sub>) is taken across R₂.</p>
+                    10kΩ resistor in series across a 7.4V supply. Output (V<sub>out</sub>) is taken across R₂.</p>
 
                 <h4 style="margin-top: 1rem;">(a) What is meant by the term "transducer"? (1 mark)</h4>
                 <textarea placeholder="Your answer..." rows="2"></textarea>
@@ -1160,7 +1252,7 @@
                     <p><strong>(a) A device that converts one energy form to another (e.g. light to resistance)</strong>
                     </p>
                     <p style="margin-top: 0.75rem;"><strong>(b) Resistance decreases</strong></p>
-                    <p style="margin-top: 0.75rem;"><strong>(c) Vout = (10k / (500 + 10k)) × 9 ≈ 8.57V</strong></p>
+                    <p style="margin-top: 0.75rem;"><strong>(c) Vout = (10k / (500 + 10k)) × 7.4 ≈ 7.05V</strong></p>
                 </div>
             </div>
         </section>
@@ -1225,7 +1317,7 @@
         function updateSensorSimulation() {
             const ldrValue = parseInt(document.getElementById('ldr-slider').value);
             const r2 = 10000;
-            const vin = 9;
+            const vin = 7.4;
             const vout = (r2 / (ldrValue + r2)) * vin;
 
             let condition = '';
@@ -1243,7 +1335,7 @@
 
             document.getElementById('sensor-output').innerHTML = `
                 <div class="scenario-result">
-                    <p style="font-family: monospace; color: var(--text-muted);">V<sub>out</sub> = (10k / (${ldrValue} + 10k)) × 9</p>
+                    <p style="font-family: monospace; color: var(--text-muted);">V<sub>out</sub> = (10k / (${ldrValue} + 10k)) × 7.4</p>
                     <div class="result-value">${vout.toFixed(2)}V</div>
                     <p style="margin-top: 1rem;">${triggerState}</p>
                 </div>
@@ -1255,7 +1347,7 @@
         const answerExplanations = {
             q1: { correct: "Correct! ✓ Transducers like LDRs bridge the physical and electrical worlds.", incorrect: "A transducer converts one form of energy to another." },
             q2: { correct: "Correct! ✓ More light = more free electrons = lower resistance.", incorrect: "Remember the pattern: Light UP, Resistance DOWN." },
-            q4: { correct: "Correct! ✓ 1.5V is the lowest scenario, nearing the 0.6V trigger point.", incorrect: "Darkness leads to the lowest voltage output in this configuration." }
+            q4: { correct: "Correct! ✓ 1.23V is the lowest scenario, nearing the 0.6V trigger point.", incorrect: "Darkness leads to the lowest voltage output in this configuration." }
         };
 
         function checkAnswer(questionId) {
@@ -1344,4 +1436,3 @@
 </body>
 
 </html>
-

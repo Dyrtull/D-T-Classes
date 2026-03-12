@@ -736,7 +736,7 @@
                 </div>
                 <div class="highlight-box" style="margin: 0; border-left: 4px solid var(--secondary-color);">
                     <strong>✓ Build the Power Rail—your circuit's foundation</strong>
-                    <p style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--text-muted);">Create a 9V power
+                    <p style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--text-muted);">Create a 7.4V power
                         supply with a switch and LED indicator that stays on your board for 9 weeks.</p>
                 </div>
             </div>
@@ -841,15 +841,19 @@
                 </div>
 
                 <h4>Worked Example: Circuit Design</h4>
-                <p>You want an LED that draws safely at 15 mA (0.015 A) from a 9V battery. What resistor do you need?
+                <p>You want an LED that draws safely at 15 mA (0.015 A) from a 7.4V battery pack. (Remember, a standard
+                    red LED naturally drops about 2V, so the resistor needs to drop the rest!). What resistor do you
+                    need?
                 </p>
                 <div class="highlight-box" style="border-left: 4px solid var(--accent-color);" class="question-text">
-                    <strong>Given:</strong> V = 9V, I = 0.015 A<br>
+                    <strong>Given:</strong> V_supply = 7.4V, V_led = 2.0V, I = 0.015 A<br>
                     <strong>Find:</strong> R = ?<br><br>
-                    <strong>Solution:</strong> R = V / I = 9V / 0.015A = <span
-                        style="color: var(--accent-color); font-weight: bold;">600 Ω</span><br><br>
-                    <span style="color: var(--text-muted);">→ Use a 470Ω resistor (nearest standard value; current will
-                        be ~19 mA, which is safe)</span>
+                    <strong>Solution:</strong> First, find the voltage the resistor must drop:<br>
+                    V_resistor = 7.4V - 2.0V = 5.4V.<br><br>
+                    R = V_resistor / I = 5.4V / 0.015A = <span
+                        style="color: var(--accent-color); font-weight: bold;">360 Ω</span><br><br>
+                    <span style="color: var(--text-muted);">→ Use a 470Ω resistor (nearest standard higher value we
+                        have; current will be 5.4V / 470Ω ≈ 11.5 mA, which is safe and bright enough)</span>
                 </div>
             </div>
         </section>
@@ -882,20 +886,21 @@
 
             <div class="concept-check">
                 <h4>Question 2: Ohm's Law Application</h4>
-                <p class="question-text">In the worked example, we calculated: I = V/R = 9V / 470Ω ≈ 19 mA. If we
-                    doubled the voltage to 18V (keeping the same 470Ω resistor), how would the current change?</p>
+                <p class="question-text">In the worked example, we calculated the current using the voltage across the
+                    resistor: I = V/R = 5.4V / 470Ω ≈ 11.5 mA. If we doubled the voltage drop across the resistor to
+                    10.8V (keeping the same 470Ω resistor), how would the current change?</p>
                 <div class="options">
                     <div class="option">
                         <input type="radio" id="q2a" name="q2" value="incorrect">
-                        <label for="q2a" class="answer-option">It would stay the same (19 mA)</label>
+                        <label for="q2a" class="answer-option">It would stay the same (11.5 mA)</label>
                     </div>
                     <div class="option">
                         <input type="radio" id="q2b" name="q2" value="correct">
-                        <label for="q2b" class="answer-option">It would double to ~38 mA</label>
+                        <label for="q2b" class="answer-option">It would double to ~23 mA</label>
                     </div>
                     <div class="option">
                         <input type="radio" id="q2c" name="q2" value="incorrect">
-                        <label for="q2c" class="answer-option">It would halve to ~9.5 mA</label>
+                        <label for="q2c" class="answer-option">It would halve to ~5.75 mA</label>
                     </div>
                 </div>
                 <button class="btn-accent" onclick="checkAnswer('q2')">Check Answer</button>
@@ -943,8 +948,9 @@
 
             <div class="highlight-box">
                 <p class="question-text">
-                    <span class="tag" style="margin-right: 0.5rem;">🌱 Smart Garden</span> Everything runs on 9V DC from
-                    a battery—as safe as a TV remote control battery. We NEVER touch mains voltage in this lab.
+                    <span class="tag" style="margin-right: 0.5rem;">🌱 Smart Garden</span> Everything runs on 7.4V DC
+                    from
+                    a battery pack—as safe as a TV remote control battery. We NEVER touch mains voltage in this lab.
                 </p>
             </div>
         </section>
@@ -964,11 +970,11 @@
                         <td><strong>Battery</strong></td>
                         <td style="text-align: center;">
                             <!-- 🖼️ TEACHER: Paste your Battery symbol image URL below -->
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpa1BOZLEFO5EI2gEk_KEdiw82SFA6MZQMA&s" alt="Battery Symbol"
-                                class="lesson-image symbol-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpa1BOZLEFO5EI2gEk_KEdiw82SFA6MZQMA&s"
+                                alt="Battery Symbol" class="lesson-image symbol-img">
                         </td>
                         <td>Long + short parallel lines (+ = longer line)</td>
-                        <td>✅ 9V Power</td>
+                        <td>✅ 7.4V Power</td>
                     </tr>
                     <tr>
                         <td><strong>Switch</strong></td>
@@ -984,8 +990,8 @@
                         <td><strong>Resistor</strong></td>
                         <td style="text-align: center;">
                             <!-- 🖼️ TEACHER: Paste your Resistor symbol image URL below -->
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkv0DvpQtxjGy9mG6HaegtdP9jaMe5Dkkqgw&s" alt="Resistor Symbol"
-                                class="lesson-image symbol-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkv0DvpQtxjGy9mG6HaegtdP9jaMe5Dkkqgw&s"
+                                alt="Resistor Symbol" class="lesson-image symbol-img">
                         </td>
                         <td>Rectangle (or zigzag)</td>
                         <td>✅ Protection</td>
@@ -994,8 +1000,8 @@
                         <td><strong>LED</strong></td>
                         <td style="text-align: center;">
                             <!-- 🖼️ TEACHER: Paste your LED symbol image URL below -->
-                            <img src="https://w7.pngwing.com/pngs/850/81/png-transparent-electronic-symbol-wiring-diagram-circuit-diagram-light-emitting-diode-led-circuit-circut-miscellaneous-angle-electronics.png" alt="LED Symbol"
-                                class="lesson-image symbol-img">
+                            <img src="https://w7.pngwing.com/pngs/850/81/png-transparent-electronic-symbol-wiring-diagram-circuit-diagram-light-emitting-diode-led-circuit-circut-miscellaneous-angle-electronics.png"
+                                alt="LED Symbol" class="lesson-image symbol-img">
                         </td>
                         <td>Triangle with arrows pointing outward</td>
                         <td>✅ Indicator</td>
@@ -1004,8 +1010,8 @@
                         <td><strong>Wire Node</strong></td>
                         <td style="text-align: center;">
                             <!-- 🖼️ TEACHER: Paste your Wire Node symbol image URL below -->
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmc-0sJchDKxK3uB_UR09PlvVTmvcJD_a2-Q&s" alt="Wire Node Symbol"
-                                class="lesson-image symbol-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmc-0sJchDKxK3uB_UR09PlvVTmvcJD_a2-Q&s"
+                                alt="Wire Node Symbol" class="lesson-image symbol-img">
                         </td>
                         <td>Filled dot (●)</td>
                         <td>✅ Connection</td>
@@ -1017,7 +1023,7 @@
         <!-- Section 6: Practical Build -->
         <section class="section" id="demo">
             <h2>🛠️ The Build: Your Power Rail</h2>
-            <p>Today, you are building the <strong>foundation</strong> of your Smart Garden: a stable 9V power supply
+            <p>Today, you are building the <strong>foundation</strong> of your Smart Garden: a stable 7.4V power supply
                 with a visual indicator (LED). This Power Rail will stay on your board for the entire 9-week project. Do
                 it right.</p>
 
@@ -1026,7 +1032,7 @@
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;"
                     class="question-text">
                     <label><input type="checkbox"> 1× Prototype board</label>
-                    <label><input type="checkbox"> 1× 9V battery + clip</label>
+                    <label><input type="checkbox"> 1× 7.4V battery pack (2x 18650) + clip</label>
                     <label><input type="checkbox"> 1× SPST switch</label>
                     <label><input type="checkbox"> 1× Red LED</label>
                     <label><input type="checkbox"> 1× 470Ω resistor</label>
@@ -1052,7 +1058,7 @@
 
                 <h4 style="margin-top: 1.5rem;" class="question-text">Step 2: Connect the Power Rail</h4>
                 <p class="question-text" style="color: var(--text-muted); font-size: 0.95rem;">Connect the red wire from
-                    your battery's positive (+) terminal to the top rail (label: +9V in pencil)</p>
+                    your battery's positive (+) terminal to the top rail (label: +7.4V in pencil)</p>
                 <p class="question-text" style="color: var(--text-muted); font-size: 0.95rem;">Connect the black wire
                     from the negative (−) terminal to the bottom rail (label: 0V / GND)</p>
 
@@ -1096,9 +1102,9 @@
                     to DC Voltage:</p>
                 <ul style="margin-left: 2rem; margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;"
                     class="question-text">
-                    <li>Battery: <strong>~9V</strong> ✅</li>
+                    <li>Battery: <strong>~7.4V to ~8.4V</strong> (depending on charge) ✅</li>
                     <li>Across LED: <strong>~2V</strong> ✅</li>
-                    <li>Across resistor: <strong>~7V</strong> ✅</li>
+                    <li>Across resistor: <strong>~5.4V</strong> ✅</li>
                 </ul>
             </div>
         </section>
@@ -1158,7 +1164,7 @@
                 <h3 style="margin-top: 2rem;" class="question-text">Documentation Task</h3>
 
                 <h4 style="margin-top: 1rem;" class="question-text">1. Ohm's Law Calculation</h4>
-                <textarea placeholder="I = V/R = 7V / 470Ω ≈ 15 mA" rows="2"></textarea>
+                <textarea placeholder="I = V/R = 5.4V / 470Ω ≈ 11.5 mA" rows="2"></textarea>
 
                 <h4 style="margin-top: 1rem;" class="question-text">2. Reflection</h4>
                 <textarea placeholder="Today I learned that..." rows="3"></textarea>
@@ -1271,7 +1277,7 @@
                 incorrect: "Not quite. Resistance is the opposition to flow, not the flow itself."
             },
             q2: {
-                correct: "Correct! ✓ Voltage and current are directly proportional. Double the voltage → double the current.",
+                correct: "Correct! ✓ Voltage and current are directly proportional. Double the voltage drop → double the current flowing.",
                 incorrect: "Try using I = V/R again."
             },
             q3: {

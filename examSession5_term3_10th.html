@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Exam - Smart Vertical Garden — Session 5 Exam">
+    <title>Smart Vertical Garden — Session 5 Exam</title>
+
+    <style>
+        :root {
+            --primary-color: #1F4E78;
+            --secondary-color: #27AE60;
+            --accent-color: #E74C3C;
+            --bg-color: #F8FAFC;
+            --surface-color: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --success-color: #27AE60;
+            --error-color: #E74C3C;
+            --warning-color: #F39C12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Containers */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Screens */
+        #setSelectionScreen,
+        #studentInfoScreen,
+        #examContainer,
+        #waitingScreen,
+        #resultsScreen {
+            display: none;
+        }
+
+        #setSelectionScreen.active,
+        #examContainer.active,
+        #resultsScreen.active {
+            display: block;
+        }
+
+        /* Set Selection */
+        .set-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .set-option {
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .set-option:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .set-option h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .set-option .warning {
+            background: #FFF3CD;
+            border-left: 4px solid var(--warning-color);
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #856404;
+        }
+
+        /* Exam Header */
+        .exam-header {
+            background: linear-gradient(135deg, var(--primary-color), #2E75B6);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exam-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .exam-header .info {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        #timer {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            font-family: 'Courier New', monospace;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        #timer.warning {
+            color: var(--warning-color);
+            animation: pulse 1s infinite;
+        }
+
+        #timer.critical {
+            color: var(--error-color);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* Questions Container */
+        .questions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .question-card {
+            background: var(--surface-color);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-number {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .question-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Multiple Choice Options */
+        .mc-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mc-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--surface-color);
+        }
+
+        .mc-option:hover {
+            border-color: var(--primary-color);
+            background: #F0F7FF;
+        }
+
+        .mc-option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--secondary-color);
+        }
+
+        .mc-option label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .mc-option input[type="radio"]:checked+label {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .mc-option.selected {
+            border-color: var(--secondary-color);
+            background: rgba(39, 174, 96, 0.05);
+        }
+
+        /* Open-Ended Input */
+        .open-ended-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .open-ended-container textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 15px;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+
+        .open-ended-container textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+        }
+
+        .char-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        /* Buttons */
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #219653;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-danger {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #C0392B;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            margin-bottom: 10px;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        /* Results Screen */
+        .results-container {
+            background: var(--surface-color);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .results-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .score-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, var(--primary-color), #2E75B6);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .score-card .label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .grade-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .breakdown-table th,
+        .breakdown-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .breakdown-table th {
+            background: var(--bg-color);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .breakdown-table tr:hover {
+            background: var(--bg-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .exam-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            #timer {
+                font-size: 24px;
+            }
+
+            .set-options {
+                grid-template-columns: 1fr;
+            }
+
+            .score-display {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            button,
+            #timer,
+            .exam-header {
+                display: none;
+            }
+
+            .question-card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SET SELECTION SCREEN -->
+    <div id="setSelectionScreen" class="active">
+        <div class="container">
+            <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 10px;">
+                Exam: Smart Vertical Garden — Session 5
+            </h1>
+
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">
+                Choose your exam set. This determines your maximum possible grade.
+            </p>
+
+            <div class="set-options">
+                <div class="set-option" onclick="selectSet('A')">
+                    <h3>🌱 SET A</h3>
+                    <p style="color: var(--text-main); margin: 10px 0;">Basic Difficulty</p>
+                    <div class="warning">
+                        <strong>⚠️ Maximum Grade: 2.0</strong><br>
+                        <small>Foundational questions covering core concepts</small>
+                    </div>
+                </div>
+
+                <div class="set-option" onclick="selectSet('B')">
+                    <h3>🌿 SET B</h3>
+                    <p style="color: var(--text-main); margin: 10px 0;">Intermediate Difficulty</p>
+                    <div class="warning">
+                        <strong>⚠️ Maximum Grade: 3.0</strong><br>
+                        <small>Mixed questions requiring deeper understanding</small>
+                    </div>
+                </div>
+
+                <div class="set-option" onclick="selectSet('C')">
+                    <h3>🌳 SET C</h3>
+                    <p style="color: var(--text-main); margin: 10px 0;">Advanced Difficulty</p>
+                    <div class="warning">
+                        <strong>⚠️ Maximum Grade: 4.0</strong><br>
+                        <small>Challenging questions requiring synthesis and analysis</small>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: #FFF3CD; border-left: 4px solid var(--warning-color); padding: 15px; border-radius: 4px; margin-top: 40px;">
+                <strong>⚠️ Important:</strong> Once you select a set, you <strong>cannot change</strong> during the
+                exam. Choose the set that honestly reflects your current understanding.
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT INFO SCREEN -->
+    <div id="studentInfoScreen">
+        <div class="container">
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;">Student Information</h2>
+            <form id="studentInfoForm">
+                <div style="margin-bottom: 20px;">
+                    <label for="studentName" style="display: block; margin-bottom: 5px; font-weight: 600;">
+                        Your Full Name *
+                    </label>
+                    <input type="text" id="studentName" placeholder="e.g., Alice Chen" required
+                        style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 16px;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="studentClass" style="display: block; margin-bottom: 5px; font-weight: 600;">
+                        Your Class *
+                    </label>
+                    <select id="studentClass" required
+                        style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 6px; font-size: 16px;">
+                        <option value="">-- Select Your Class --</option>
+                        <option value="10A">10A</option>
+                        <option value="10B">10B</option>
+                        <option value="10C">10C</option>
+                    </select>
+                </div>
+
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+                    Your name and class will be used to identify your submission.
+                </p>
+
+                <button type="button" class="btn-primary" onclick="startExam()" style="width: 100%;">
+                    Start Exam
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- EXAM CONTAINER -->
+    <div id="examContainer">
+        <div class="container">
+            <div class="exam-header">
+                <div>
+                    <h1>Smart Vertical Garden — Session 5</h1>
+                    <div class="info">
+                        Set <span id="setDisplay"></span> | Name: <span id="studentNameDisplay"></span> | Class: <span
+                            id="classDisplay"></span>
+                    </div>
+                </div>
+                <div id="timer">60:00</div>
+            </div>
+
+            <div id="questionsContainer" class="questions-container">
+                <!-- Questions inserted here by JavaScript -->
+            </div>
+
+            <div style="margin-top: 40px; display: flex; gap: 10px;">
+                <button type="button" class="btn-primary" onclick="submitExam()" style="flex: 1;">
+                    Submit Exam
+                </button>
+                <button type="button" style="flex: 1; background: #95A3B3;" onclick="saveDraft()">
+                    Save Draft
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WAITING SCREEN -->
+    <div id="waitingScreen">
+        <div class="container" style="text-align: center;">
+            <h1 style="color: var(--primary-color); margin-bottom: 20px;">Submission Received</h1>
+            <p style="font-size: 18px; color: var(--text-muted); margin-bottom: 20px;">
+                Your exam has been submitted successfully.
+            </p>
+            <p style="font-size: 16px; margin-bottom: 20px;">
+                ⏱️ <strong>Results will display when the exam time ends.</strong>
+            </p>
+            <p style="color: var(--text-muted);">
+                Please keep this tab open. Do not refresh or navigate away.
+            </p>
+            <div style="margin-top: 30px; padding: 20px; background: #E8F5E9; border-radius: 8px;">
+                <p style="font-size: 14px; color: #2E7D32;">
+                    ✓ Your submission is safe. You can relax until the timer expires.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen">
+        <div class="container">
+            <div class="results-container">
+                <div class="results-header">
+                    <h1>Exam Complete! 🎉</h1>
+                    <p style="color: var(--text-muted);">
+                        <span id="resultsName"></span> — <span id="resultsClass"></span>
+                    </p>
+                </div>
+
+                <div class="score-display">
+                    <div class="score-card">
+                        <div class="label">Multiple Choice</div>
+                        <div class="value" id="mcScoreDisplay">0/0</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="label">Open-Ended</div>
+                        <div class="value" id="openScoreDisplay">0/0</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="label">Total Score</div>
+                        <div class="value" id="totalScoreDisplay">0/60</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 10px;">Your Grade</p>
+                    <div class="grade-display" id="gradeDisplay">—</div>
+                    <p id="gradeDescription" style="color: var(--text-muted); font-size: 14px;"></p>
+                </div>
+
+                <div
+                    style="background: #F0F7FF; border-left: 4px solid var(--primary-color); padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <p style="margin-bottom: 10px;"><strong>📝 Feedback:</strong></p>
+                    <p id="feedbackText" style="color: var(--text-main); line-height: 1.6;"></p>
+                </div>
+
+                <h3 style="color: var(--primary-color); margin-top: 30px; margin-bottom: 15px;">Question Breakdown</h3>
+                <table class="breakdown-table">
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Section</th>
+                            <th>Type</th>
+                            <th>Points</th>
+                            <th>Your Answer</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="breakdownBody"></tbody>
+                </table>
+
+                <div
+                    style="text-align: center; margin-top: 40px; padding: 20px; background: var(--bg-color); border-radius: 8px;">
+                    <p style="color: var(--text-muted); margin-bottom: 10px;">
+                        Thank you for completing this exam.
+                    </p>
+                    <p style="font-size: 14px; color: var(--text-muted);">
+                        Your results have been submitted and will be reviewed by your instructor.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div id="warningModal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--warning-color);">⚠️ Warning</h2>
+            <p id="warningText">You left the exam tab. Continuing will result in points deducted.</p>
+            <div class="modal-buttons">
+                <button type="button" class="btn-primary" onclick="closeWarningModal()">Return to Exam</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmSubmitModal" class="modal">
+        <div class="modal-content">
+            <h2>Submit Exam?</h2>
+            <p>Are you sure you want to submit? <strong>You cannot go back.</strong></p>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 10px;">
+                Time remaining: <span id="confirmTimeRemaining">00:00</span>
+            </p>
+            <div class="modal-buttons">
+                <button type="button" onclick="closeConfirmSubmitModal()"
+                    style="background: var(--text-muted); color: white;">Cancel</button>
+                <button type="button" class="btn-danger" onclick="confirmSubmit()">Submit Now</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="refreshBlockedModal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--error-color);">❌ Refresh Not Allowed</h2>
+            <p>Refreshing is not permitted during the exam. Your answers are being auto-saved every 5 seconds.</p>
+            <div class="modal-buttons">
+                <button type="button" class="btn-primary" onclick="closeRefreshBlockedModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION & DATA STRUCTURE ---
+        const examConfig = {
+            title: 'Smart Vertical Garden — Session 5 Exam',
+            totalPoints: 60,
+            durationMinutes: 60,
+            appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwgTjuuT3xMSOFhF4zcVmo8rOO6HjjNn0xI4T9yO4TfwX_j2Rl6LNCSMV9wbdXRr6jT/exec'
+        };
+
+        const questions = {
+            A: [
+                { id: 'A_A1', number: 1, section: 'A', type: 'openEnded', points: 6, text: 'A1. Complete the table. State the missing parameters:\n1. Unit of measurement for Voltage?\n2. Symbol used in formulae for Current?\n3. Symbol used in formulae for Resistance?\n4. Unit of measurement for Electrical Power?\n5. Symbol used in formulae for Capacitance?\n6. Unit of measurement for Frequency?', maxLength: 500 },
+                { id: 'A_A2a', number: 2, section: 'A', type: 'mc', points: 1, text: 'A2(a). Electrical current is the flow of _____________ through a circuit.', options: ['electrons', 'opposition', 'voltage', 'Ohms'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_A2b', number: 3, section: 'A', type: 'mc', points: 1, text: 'A2(b). The unit of resistance is _____________.', options: ['Ohms', 'tolerance', 'electrons', 'transducer'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_A2c', number: 4, section: 'A', type: 'mc', points: 1, text: 'A2(c). A _____________ is a device that converts energy from one form to another.', options: ['transducer', 'voltage', 'tolerance', 'opposition'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_A2d', number: 5, section: 'A', type: 'mc', points: 1, text: 'A2(d). The difference in electrical energy between two points in a circuit is called _____________.', options: ['voltage', 'electrons', 'Ohms', 'opposition'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_A2e', number: 6, section: 'A', type: 'mc', points: 1, text: 'A2(e). The _____________ of a resistor tells you the maximum percentage by which its actual resistance may differ from its labelled value.', options: ['tolerance', 'transducer', 'voltage', 'Ohms'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_A2f', number: 7, section: 'A', type: 'mc', points: 1, text: 'A2(f). Resistance is the _____________ a material offers to the flow of electrical current.', options: ['opposition', 'electrons', 'voltage', 'tolerance'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_B1', number: 8, section: 'B', type: 'openEnded', points: 5, text: 'B1. Match each component name to its correct circuit symbol description.\nComponents: Fixed resistor, Variable resistor, LDR, Diode, Battery.\n\nProvide the matching component for:\n1. Triangle pointing right with a vertical bar\n2. Long line + short line (repeated pair)\n3. Rectangle with a plain outline\n4. Rectangle with two arrows pointing inward\n5. Rectangle with a diagonal arrow through it', maxLength: 500 },
+                { id: 'A_B2', number: 9, section: 'B', type: 'openEnded', points: 2, text: 'B2. Complete the sentences using the words "direct" or "alternating".\n(a) The current supplied by a battery flows in one direction only. This is called _____________ current (DC).\n(b) The current from the mains electricity supply reverses direction continuously. This is called _____________ current (AC).', maxLength: 200 },
+                { id: 'A_B3a', number: 10, section: 'B', type: 'mc', points: 1, text: 'B3(a). To measure voltage across a resistor, the multimeter must be connected:', options: ['in parallel with the component', 'in series with the component', 'in reverse with the component', 'directly to the power supply'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_B3b', number: 11, section: 'B', type: 'mc', points: 1, text: 'B3(b). To measure current through a resistor, the multimeter must be connected:', options: ['in series with the component', 'in parallel with the component', 'in reverse with the component', 'directly to the power supply'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_B3c', number: 12, section: 'B', type: 'mc', points: 1, text: 'B3(c). Before measuring resistance, the student must:', options: ['Switch off the power supply', 'Turn up the voltage supply', 'Add another resistor to the circuit', 'Increase the current'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
+                { id: 'A_C1', number: 13, section: 'C', type: 'openEnded', points: 3, text: "C1. The formula for Ohm's Law is V = I × R. Write what each symbol stands for:\nV = ?\nI = ?\nR = ?", maxLength: 300 },
+                { id: 'A_C2', number: 14, section: 'C', type: 'openEnded', points: 4, text: 'C2. A garden lantern bulb has a resistance of 60Ω and is connected to a 12V battery.\n(a) Calculate the current through the bulb. (Show working)\n(b) Calculate the power dissipated by the bulb. (Show working)', maxLength: 500 },
+                { id: 'A_C3', number: 15, section: 'C', type: 'openEnded', points: 4, text: 'C3. An LED in the Smart Garden circuit has a 2V voltage drop. The supply voltage is 9V. The current through the circuit is 0.015A.\n(a) Calculate the voltage dropped across the resistor protecting the LED.\n(b) Calculate the resistance needed.', maxLength: 500 },
+                { id: 'A_C4', number: 16, section: 'C', type: 'openEnded', points: 3, text: 'C4. A resistor has a power rating of 0.5W and is used in a circuit with a 9V supply.\n(a) Calculate the maximum safe current.\n(b) What happens if this current is exceeded?', maxLength: 500 },
+                { id: 'A_D1', number: 17, section: 'D', type: 'openEnded', points: 3, text: 'D1. A resistor has colour bands: Orange — Orange — Red — Gold.\n(a) Decode the nominal resistance in Ohms.\n(b) The gold band represents ±5% tolerance. Calculate the maximum and minimum resistance.', maxLength: 500 },
+                { id: 'A_D2', number: 18, section: 'D', type: 'openEnded', points: 2, text: 'D2. What four colour bands represent a 4.7kΩ ±5% resistor?', maxLength: 200 },
+                { id: 'A_D3', number: 19, section: 'D', type: 'openEnded', points: 3, text: 'D3. Three resistors — 220Ω, 470Ω and 1kΩ — are connected in series.\n(a) Calculate total resistance.\n(b) If a 9V battery is connected, calculate the current in mA.', maxLength: 500 },
+                { id: 'A_D4', number: 20, section: 'D', type: 'openEnded', points: 3, text: 'D4. Two resistors — 330Ω and 1kΩ — are connected in parallel.\nCalculate their combined resistance. State if the combined resistance is greater than or less than either individual resistor.', maxLength: 500 },
+                { id: 'A_D5', number: 21, section: 'D', type: 'openEnded', points: 3, text: 'D5. In the Smart Garden sensing circuit, an LDR is connected in series with a variable resistor. State ONE reason why the variable resistor is included.', maxLength: 500 },
+                { id: 'A_E1', number: 22, section: 'E', type: 'openEnded', points: 10, text: 'E1. A potential divider uses an LDR (R1, top) and a fixed 10kΩ resistor (R2, bottom) across a 9V supply. Vout is taken between R1 and R2.\n(a) In normal light, LDR resistance is 8kΩ. Calculate Vout.\n(b) A cloud passes and LDR resistance rises to 40kΩ. Calculate the new Vout.\n(c) Complete the sentence: As light level increases, the LDR resistance _____, and Vout _____.\n(d) If replaced by an NTC thermistor: When temperature falls, thermistor resistance (increases/decreases).\n(e) Does Vout increase or decrease when temperature falls?\n(f) Explain WHY Vout changes in that direction.', maxLength: 1000 }
+            ],
+            B: [
+                { id: 'B_A1', number: 1, section: 'A', type: 'openEnded', points: 6, text: 'A1. Complete the table. Provide the missing parameters:\n1. Unit of measurement for Voltage?\n2. Symbol used in formulae for Current?\n3. Unit of measurement for Resistance?\n4. Symbol used in formulae for Electrical Power?\n5. Unit of measurement for Capacitance?\n6. Symbol used in formulae for Frequency?', maxLength: 500 },
+                { id: 'B_A2', number: 2, section: 'A', type: 'openEnded', points: 6, text: 'A2. Define the following terms in your own words:\n(a) Electrical current\n(b) Potential difference\n(c) Resistance\n(d) Transducer\n(e) Nominal resistance\n(f) Resistor tolerance', maxLength: 1000 },
+                { id: 'B_B1', number: 3, section: 'B', type: 'openEnded', points: 5, text: 'B1. Name the component represented by each circuit symbol:\n1. Plain rectangle\n2. Rectangle with diagonal arrow through it\n3. Rectangle with two arrows pointing inward\n4. Triangle pointing right with a vertical bar\n5. Long line + short line (repeated pair)', maxLength: 500 },
+                { id: 'B_B2', number: 4, section: 'B', type: 'openEnded', points: 2, text: 'B2. State TWO differences between direct current (DC) and alternating current (AC).', maxLength: 400 },
+                { id: 'B_B3', number: 5, section: 'B', type: 'openEnded', points: 3, text: 'B3. A student measures voltage and current in a circuit using a multimeter.\n(a) State how the multimeter must be connected to measure voltage across a resistor.\n(b) State ONE change the student must make to measure current through the same resistor.\n(c) State the ONE precaution the student must take before measuring resistance.', maxLength: 500 },
+                { id: 'B_C1', number: 6, section: 'C', type: 'openEnded', points: 3, text: "C1. State Ohm's Law as a formula and define each symbol.", maxLength: 300 },
+                { id: 'B_C2', number: 7, section: 'C', type: 'openEnded', points: 4, text: 'C2. A garden lantern bulb has a resistance of 60Ω connected to a 12V battery.\n(a) Calculate the current flowing through the bulb.\n(b) Calculate the electrical power dissipated.', maxLength: 500 },
+                { id: 'B_C3', number: 8, section: 'C', type: 'openEnded', points: 4, text: 'C3. A resistor protecting an LED carries 0.015A from a 9V supply. The LED has a 2V drop.\n(a) Calculate the voltage dropped across the resistor.\n(b) Calculate the resistance of the resistor, and state the nearest E12 standard value.', maxLength: 500 },
+                { id: 'B_C4', number: 9, section: 'C', type: 'openEnded', points: 3, text: 'C4. A resistor rated at 0.5W is used in a 9V circuit.\n(a) Calculate the maximum safe current.\n(b) Describe what would happen if this current were exceeded.', maxLength: 500 },
+                { id: 'B_D1', number: 10, section: 'D', type: 'openEnded', points: 3, text: 'D1. A resistor has colour bands: Orange — Orange — Red — Gold.\n(a) Decode the resistor value. Show all working.\n(b) State the tolerance and calculate maximum and minimum resistance.', maxLength: 500 },
+                { id: 'B_D2', number: 11, section: 'D', type: 'openEnded', points: 2, text: 'D2. Identify the colour bands for a 4.7kΩ ±5% resistor.', maxLength: 200 },
+                { id: 'B_D3', number: 12, section: 'D', type: 'openEnded', points: 3, text: 'D3. Three resistors — 220Ω, 470Ω and 1kΩ — are connected in series.\n(a) Calculate total resistance.\n(b) A 9V battery is connected. Calculate the current in mA.', maxLength: 500 },
+                { id: 'B_D4', number: 13, section: 'D', type: 'openEnded', points: 3, text: 'D4. Two resistors — 330Ω and 1kΩ — are connected in parallel.\nCalculate their combined resistance using the correct formula. State if it is greater or less than individual resistors.', maxLength: 500 },
+                { id: 'B_D5', number: 14, section: 'D', type: 'openEnded', points: 3, text: 'D5. Explain why a variable resistor is used alongside the LDR in the Smart Garden sensing circuit.', maxLength: 600 },
+                { id: 'B_E1', number: 15, section: 'E', type: 'openEnded', points: 10, text: 'E1. A light-sensing potential divider uses an LDR (R1, top) and a fixed 10kΩ resistor (R2, bottom) across a 9V supply. Vout is taken from the junction between R1 and R2.\n(a) Write the formula for Vout.\n(b) In normal classroom light, LDR resistance = 8kΩ. Calculate Vout.\n(c) A cloud passes and LDR resistance rises to 40kΩ. Calculate the new Vout.\n(d) Describe the general relationship between light level and Vout.\n(e) If the LDR is replaced with an NTC thermistor, what temperature change would cause Vout to decrease? Explain your reasoning fully.', maxLength: 1000 }
+            ],
+            C: [
+                { id: 'C_A1', number: 1, section: 'A', type: 'openEnded', points: 6, text: 'A1. Complete the table. Provide the Unit and Symbol for:\n1. Voltage\n2. Current\n3. Resistance\n4. Electrical Power\n5. Capacitance\n6. Frequency', maxLength: 500 },
+                { id: 'C_A2', number: 2, section: 'A', type: 'openEnded', points: 6, text: 'A2. Define the following terms precisely (state the unit where applicable):\n(a) Electrical current\n(b) Potential difference\n(c) Resistance\n(d) Transducer (give ONE specific example from the Smart Garden project)\n(e) Nominal resistance\n(f) Resistor tolerance (explain why it matters in a real circuit)', maxLength: 1000 },
+                { id: 'C_B1', number: 3, section: 'B', type: 'openEnded', points: 5, text: 'B1. Name the component and state ONE specific function in the Smart Garden for each symbol:\n1. Plain rectangle\n2. Rectangle with diagonal arrow\n3. Rectangle with two inward arrows\n4. Triangle pointing right with bar\n5. Long line + short line (repeated pair)', maxLength: 600 },
+                { id: 'C_B2', number: 4, section: 'B', type: 'openEnded', points: 2, text: 'B2. State TWO differences between DC and AC. For each difference, state which type is used in the Smart Garden and why.', maxLength: 500 },
+                { id: 'C_B3', number: 5, section: 'B', type: 'openEnded', points: 3, text: 'B3. A student makes THREE mistakes when measuring. Identify what each mistake would cause:\n(a) Connecting the multimeter in series to measure voltage.\n(b) Connecting the multimeter in parallel to measure current.\n(c) Measuring resistance with power on.', maxLength: 600 },
+                { id: 'C_C1', number: 6, section: 'C', type: 'openEnded', points: 3, text: "C1. State Ohm's Law as a formula, define each symbol, and state the condition under which Ohm's Law is valid.", maxLength: 400 },
+                { id: 'C_C2', number: 7, section: 'C', type: 'openEnded', points: 4, text: 'C2. A garden lantern bulb has a resistance of 60Ω connected to a 12V battery.\n(a) Calculate the current and express the answer in both A and mA.\n(b) Calculate the power dissipated. Then determine how long the bulb could run from a 1200mAh battery before it drains.', maxLength: 600 },
+                { id: 'C_C3', number: 8, section: 'C', type: 'openEnded', points: 4, text: 'C3. A resistor protecting an LED carries 0.015A from a 9V supply. The LED has a 2V forward voltage drop.\n(a) Calculate the voltage across the resistor and explain why V_LED must be subtracted.\n(b) Calculate the resistance. State the nearest E12 value and calculate the actual current that would flow using that E12 resistor.', maxLength: 600 },
+                { id: 'C_C4', number: 9, section: 'C', type: 'openEnded', points: 3, text: 'C4. A resistor rated at 0.5W is used in a 9V circuit.\n(a) Calculate the maximum safe current and the minimum resistance this implies.\n(b) A student replaces the resistor with one of half the resistance. Explain the consequence in terms of power.', maxLength: 500 },
+                { id: 'C_D1', number: 10, section: 'D', type: 'openEnded', points: 3, text: 'D1. A resistor has colour bands: Orange — Orange — Red — Gold.\n(a) Decode fully and express the value in both Ω and kΩ.\n(b) A measured value of 3,180Ω is recorded. Is this within tolerance? Show your working.', maxLength: 500 },
+                { id: 'C_D2', number: 11, section: 'D', type: 'openEnded', points: 2, text: 'D2. A Smart Garden circuit needs a 4.7kΩ ±5% resistor. State its colour bands AND calculate the resistance range within which a measured value must fall to be acceptable.', maxLength: 400 },
+                { id: 'C_D3', number: 12, section: 'D', type: 'openEnded', points: 3, text: 'D3. Three resistors — 220Ω, 470Ω and 1kΩ — are connected in series across a 9V battery.\n(a) Calculate total resistance and total current.\n(b) Calculate the voltage dropped across the 470Ω resistor only.', maxLength: 500 },
+                { id: 'C_D4', number: 13, section: 'D', type: 'openEnded', points: 3, text: 'D4. Two resistors — 330Ω and 1kΩ — are connected in parallel.\n(a) Calculate combined resistance.\n(b) A 9V supply is connected across the parallel pair. Calculate the total current drawn from the supply.', maxLength: 500 },
+                { id: 'C_D5', number: 14, section: 'D', type: 'openEnded', points: 3, text: 'D5. Analyse the role of the variable resistor in the Smart Garden LDR sensing circuit. Your answer must refer to: sensitivity adjustment, threshold voltage, and at least one real environmental condition in which recalibration would be needed.', maxLength: 800 },
+                { id: 'C_E1', number: 15, section: 'E', type: 'openEnded', points: 10, text: "E1. A light-sensing potential divider uses an LDR (R1, top) and a fixed 10kΩ resistor (R2, bottom) across a 9V supply. Vout is taken from the junction between R1 and R2.\n(a) Derive the potential divider formula from first principles using Ohm's Law.\n(b) LDR resistance = 8kΩ in normal light. Calculate Vout.\n(c) LDR resistance rises to 40kΩ when a cloud passes. Calculate the new Vout.\n(d) Describe the relationship between light level and Vout, explaining the physical reason in terms of resistance and voltage sharing.\n(e) The LDR is replaced with an NTC thermistor. A student claims: 'When the temperature rises, Vout will fall.' Evaluate this claim.", maxLength: 1200 }
+            ]
+        };
+
+        const gradeBoundaries = {
+            A: [
+                { grade: 2.0, percentage: 70 },
+                { grade: 1.7, percentage: 55 },
+                { grade: 1.3, percentage: 40 },
+                { grade: 1.0, percentage: 25 },
+                { grade: 1.0, percentage: 0 }
+            ],
+            B: [
+                { grade: 3.0, percentage: 92 },
+                { grade: 2.7, percentage: 85 },
+                { grade: 2.3, percentage: 78 },
+                { grade: 2.0, percentage: 70 },
+                { grade: 1.7, percentage: 55 },
+                { grade: 1.3, percentage: 40 },
+                { grade: 1.0, percentage: 25 },
+                { grade: 1.0, percentage: 0 }
+            ],
+            C: [
+                { grade: 4.0, percentage: 96 },
+                { grade: 3.7, percentage: 91 },
+                { grade: 3.3, percentage: 84 },
+                { grade: 3.0, percentage: 79 },
+                { grade: 2.7, percentage: 73 },
+                { grade: 2.3, percentage: 67 },
+                { grade: 2.0, percentage: 60 },
+                { grade: 1.7, percentage: 45 },
+                { grade: 1.3, percentage: 25 },
+                { grade: 1.0, percentage: 0 }
+            ]
+        };
+
+        // --- 2. GLOBAL VARIABLES ---
+        let selectedSet = null;
+        let currentStudentName = null;
+        let currentStudentClass = null;
+        let examActive = false;
+        let examStartTime = null;
+        let tabSwitches = 0;
+        let answers = { mc: {}, openEnded: {} };
+
+        // --- 3. SET SELECTION & EXAM START ---
+        function selectSet(setLetter) {
+            selectedSet = setLetter.toUpperCase();
+            document.getElementById('setSelectionScreen').classList.remove('active');
+            document.getElementById('studentInfoScreen').style.display = 'block';
+        }
+
+        function startExam() {
+            const nameInput = document.getElementById('studentName');
+            const classInput = document.getElementById('studentClass');
+
+            if (!nameInput.value.trim()) { alert('Please enter your name'); return; }
+            if (!classInput.value) { alert('Please select your class'); return; }
+
+            currentStudentName = nameInput.value.trim();
+            currentStudentClass = classInput.value;
+
+            document.getElementById('studentInfoScreen').style.display = 'none';
+            document.getElementById('examContainer').classList.add('active');
+
+            renderQuestions();
+
+            examActive = true;
+            examStartTime = Date.now();
+            startTimer();
+            enableAntiCheating();
+            enableAutoSave();
+
+            document.getElementById('setDisplay').textContent = selectedSet;
+            document.getElementById('studentNameDisplay').textContent = currentStudentName;
+            document.getElementById('classDisplay').textContent = currentStudentClass;
+
+            restoreSavedAnswers();
+        }
+
+        // --- 4. RENDER QUESTIONS ---
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            const setQuestions = questions[selectedSet];
+
+            setQuestions.forEach((question, index) => {
+                const questionNum = index + 1;
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `question-${question.id}`;
+
+                let html = `
+          <div class="question-number">Question ${questionNum}</div>
+          <div class="question-text">${escapeHtml(question.text)}</div>
+          <div class="question-meta">
+            Section ${question.section} • ${question.points} point${question.points > 1 ? 's' : ''}
+          </div>
+        `;
+
+                if (question.type === 'mc') {
+                    html += renderMCOptions(question);
+                } else if (question.type === 'openEnded') {
+                    html += renderOpenEndedInput(question);
+                }
+
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+        function renderMCOptions(question) {
+            let html = '<div class="mc-options">';
+            const shuffledIndices = question.shuffled;
+
+            shuffledIndices.forEach((originalIndex, displayIndex) => {
+                const optionLetter = String.fromCharCode(65 + displayIndex); // A, B, C, D
+                const optionText = question.options[originalIndex];
+                const isChecked = answers.mc[question.id] === optionLetter ? 'checked' : '';
+
+                html += `
+          <label class="mc-option ${isChecked ? 'selected' : ''}">
+            <input
+              type="radio"
+              name="${question.id}"
+              value="${optionLetter}"
+              ${isChecked}
+              onchange="recordMCAnswer(event, '${question.id}', '${optionLetter}', ${originalIndex})"
+            >
+            <span>${optionLetter}</span>. ${escapeHtml(optionText)}
+          </label>
+        `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function renderOpenEndedInput(question) {
+            const savedAnswer = answers.openEnded[question.id] || '';
+            const charCount = savedAnswer.length;
+
+            return `
+        <div class="open-ended-container">
+          <textarea
+            id="${question.id}-textarea"
+            placeholder="Type your answer or calculations here..."
+            maxlength="${question.maxLength || 1000}"
+            onchange="recordOpenEndedAnswer('${question.id}')"
+            oninput="updateCharCount('${question.id}')"
+          >${escapeHtml(savedAnswer)}</textarea>
+          <div class="char-count">
+            <span id="${question.id}-charcount">${charCount}</span>/${question.maxLength || 1000} characters
+          </div>
+        </div>
+      `;
+        }
+
+        // --- 5. RECORDING ANSWERS ---
+        function recordMCAnswer(e, questionId, selectedLetter, originalIndex) {
+            answers.mc[questionId] = selectedLetter;
+            const card = document.getElementById(`question-${questionId}`);
+            const options = card.querySelectorAll('.mc-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            if (e && e.target) {
+                e.target.closest('.mc-option').classList.add('selected');
+            }
+            saveAnswersLocally();
+        }
+
+        function recordOpenEndedAnswer(questionId) {
+            const textarea = document.getElementById(`${questionId}-textarea`);
+            answers.openEnded[questionId] = textarea.value;
+            saveAnswersLocally();
+        }
+
+        function updateCharCount(questionId) {
+            const textarea = document.getElementById(`${questionId}-textarea`);
+            const countSpan = document.getElementById(`${questionId}-charcount`);
+            countSpan.textContent = textarea.value.length;
+        }
+
+        // --- 6. TIMER & ANTI-CHEATING ---
+        function startTimer() {
+            const timerDisplay = document.getElementById('timer');
+            let timeRemaining = examConfig.durationMinutes * 60;
+
+            const timerInterval = setInterval(() => {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeRemaining === 300) {
+                    timerDisplay.classList.add('warning');
+                    showNotification('⏰ 5 minutes remaining');
+                }
+                if (timeRemaining === 60) {
+                    timerDisplay.classList.add('critical');
+                    showNotification('⏰ 1 minute remaining - START SUBMITTING');
+                }
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    examActive = false;
+                    submitExamImmediately();
+                }
+            }, 1000);
+        }
+
+        function enableAntiCheating() {
+            window.addEventListener('beforeunload', (e) => {
+                if (examActive) {
+                    e.preventDefault();
+                    e.returnValue = 'Refreshing is not allowed during the exam.';
+                    showRefreshBlockedModal();
+                    return 'Refreshing is not allowed';
+                }
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (!examActive) return;
+                if (document.hidden) {
+                    tabSwitches++;
+                    if (tabSwitches === 1) {
+                        showWarningModal('You left the exam tab. Continuing will result in points deducted.');
+                    } else if (tabSwitches === 2) {
+                        deductPoints(5);
+                        showWarningModal('⚠️ 5 points deducted. One more switch = automatic submission.');
+                    } else if (tabSwitches >= 3) {
+                        showWarningModal('❌ Exam submitted due to multiple tab switches.');
+                        submitExamImmediately();
+                    }
+                }
+            });
+        }
+
+        function deductPoints(points) {
+            console.log(`Points deducted: ${points}`);
+        }
+
+        function showWarningModal(message) {
+            document.getElementById('warningText').textContent = message;
+            document.getElementById('warningModal').classList.add('active');
+        }
+
+        function closeWarningModal() { document.getElementById('warningModal').classList.remove('active'); }
+        function showRefreshBlockedModal() { document.getElementById('refreshBlockedModal').classList.add('active'); }
+        function closeRefreshBlockedModal() { document.getElementById('refreshBlockedModal').classList.remove('active'); }
+
+        // --- 7. AUTO SAVE ---
+        function enableAutoSave() {
+            setInterval(saveAnswersLocally, 5000);
+        }
+
+        function saveAnswersLocally() {
+            const dataToSave = {
+                studentName: currentStudentName,
+                studentClass: currentStudentClass,
+                selectedSet: selectedSet,
+                answers: answers,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(`exam_${currentStudentName}_${currentStudentClass}`, JSON.stringify(dataToSave));
+        }
+
+        function restoreSavedAnswers() {
+            const savedData = localStorage.getItem(`exam_${currentStudentName}_${currentStudentClass}`);
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    answers = data.answers;
+                    setTimeout(renderQuestions, 100);
+                } catch (e) {
+                    console.error('Error restoring answers:', e);
+                }
+            }
+        }
+
+        function saveDraft() {
+            saveAnswersLocally();
+            alert('Your answers have been saved. Continue when ready.');
+        }
+
+        // --- 8. SUBMISSION & RESULTS ---
+        function submitExam() { showConfirmSubmitModal(); }
+        function showConfirmSubmitModal() {
+            document.getElementById('confirmTimeRemaining').textContent = formatTime(getTimeRemaining());
+            document.getElementById('confirmSubmitModal').classList.add('active');
+        }
+        function closeConfirmSubmitModal() { document.getElementById('confirmSubmitModal').classList.remove('active'); }
+
+        function confirmSubmit() {
+            closeConfirmSubmitModal();
+            submitExamImmediately();
+        }
+
+        function submitExamImmediately() {
+            examActive = false;
+            const scores = calculateScores();
+            const timeRemaining = getTimeRemaining();
+
+            if (timeRemaining > 0) {
+                document.getElementById('examContainer').classList.remove('active');
+                document.getElementById('waitingScreen').style.display = 'block';
+                setTimeout(() => { showResults(scores); }, timeRemaining * 1000);
+            } else {
+                showResults(scores);
+            }
+            sendSubmissionToBackend(scores);
+        }
+
+        function calculateScores() {
+            let mcScore = 0;
+            let openScoreEstimated = 0; // Requires manual grading
+
+            questions[selectedSet].forEach((question) => {
+                if (question.type === 'mc') {
+                    const selectedAnswer = answers.mc[question.id];
+                    if (selectedAnswer) {
+                        const selectedIndex = selectedAnswer.charCodeAt(0) - 65;
+                        const originalIndex = question.shuffled[selectedIndex];
+                        if (originalIndex === question.correctIndex) {
+                            mcScore += question.points;
+                        }
+                    }
+                } else if (question.type === 'openEnded') {
+                    // Providing a baseline for answered open questions (0 for unreviewed)
+                    if (answers.openEnded[question.id] && answers.openEnded[question.id].trim().length > 0) {
+                        openScoreEstimated += 0;
+                    }
+                }
+            });
+
+            return {
+                mcScore: mcScore,
+                totalMaxScore: 60,
+                percentage: (mcScore / calculateMaxMCScore()) * 100 || 0,
+                answers: answers,
+                tabSwitches: tabSwitches
+            };
+        }
+
+        function sendSubmissionToBackend(scores) {
+            const submissionData = {
+                studentName: currentStudentName,
+                class: currentStudentClass,
+                set: selectedSet,
+                mcAnswers: getFormattedMCAnswers(),
+                openEnded: Object.values(answers.openEnded),
+                mcScore: scores.mcScore,
+                tabSwitches: tabSwitches,
+                timestamp: new Date().toISOString()
+            };
+
+            fetch(examConfig.appsScriptUrl, {
+                method: 'POST',
+                body: JSON.stringify(submissionData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Submission successful:', data);
+                    localStorage.removeItem(`exam_${currentStudentName}_${currentStudentClass}`);
+                })
+                .catch(error => {
+                    console.error('Submission recorded locally:', error);
+                });
+        }
+
+        function getFormattedMCAnswers() {
+            const result = [];
+            questions[selectedSet].forEach((question) => {
+                if (question.type === 'mc') {
+                    const selectedAnswer = answers.mc[question.id];
+                    let isCorrect = false;
+                    if (selectedAnswer) {
+                        const selectedIndex = selectedAnswer.charCodeAt(0) - 65;
+                        const originalIndex = question.shuffled[selectedIndex];
+                        isCorrect = originalIndex === question.correctIndex;
+                    }
+                    result.push({ questionId: question.id, selected: selectedAnswer || null, correct: isCorrect, points: question.points });
+                }
+            });
+            return result;
+        }
+
+        function showResults(scores) {
+            document.getElementById('waitingScreen').style.display = 'none';
+            document.getElementById('resultsScreen').classList.add('active');
+
+            const maxMC = calculateMaxMCScore();
+            const openPoints = 60 - maxMC;
+
+            document.getElementById('resultsName').textContent = currentStudentName;
+            document.getElementById('resultsClass').textContent = currentStudentClass;
+
+            document.getElementById('mcScoreDisplay').textContent = `${scores.mcScore}/${maxMC}`;
+            document.getElementById('openScoreDisplay').textContent = `Pending/${openPoints}`;
+            document.getElementById('totalScoreDisplay').textContent = `${scores.mcScore + ' + ?'}/60`;
+
+            document.getElementById('gradeDisplay').textContent = 'Pending';
+            document.getElementById('gradeDescription').textContent = "Final grade depends on manual review of your open-ended calculations and explanations.";
+            document.getElementById('feedbackText').textContent = generateFeedback(scores);
+
+            populateBreakdownTable();
+        }
+
+        function generateFeedback(scores) {
+            let feedback = "Your multiple choice portion has been auto-graded. Your open-ended working will be manually reviewed by the instructor according to the rubric.";
+            if (scores.tabSwitches > 0) {
+                feedback += `\n⚠️ Note: ${scores.tabSwitches} tab switch${scores.tabSwitches > 1 ? 'es' : ''} were recorded and flagged for review.`;
+            }
+            return feedback;
+        }
+
+        function populateBreakdownTable() {
+            const tbody = document.getElementById('breakdownBody');
+            tbody.innerHTML = '';
+
+            questions[selectedSet].forEach((question, index) => {
+                const row = document.createElement('tr');
+                const questionNum = index + 1;
+                const studentAnswer = answers.mc[question.id] || answers.openEnded[question.id] || '(Not answered)';
+                const status = question.type === 'mc'
+                    ? (answers.mc[question.id] ? '✓ Answered (MC)' : '✗ Not answered')
+                    : (answers.openEnded[question.id] ? '⏳ Pending Review' : '✗ Not answered');
+
+                row.innerHTML = `
+          <td>Q${questionNum}</td>
+          <td>${question.section}</td>
+          <td>${question.type === 'mc' ? 'Multiple Choice' : 'Open-Ended'}</td>
+          <td>${question.points}</td>
+          <td style="max-width: 200px; word-wrap: break-word; white-space: pre-wrap;">${escapeHtml(String(studentAnswer).substring(0, 80))}${studentAnswer.length > 80 ? '...' : ''}</td>
+          <td>${status}</td>
+        `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // --- 9. UTILITIES ---
+        function calculateMaxMCScore() {
+            let total = 0;
+            questions[selectedSet].forEach(q => { if (q.type === 'mc') total += q.points; });
+            return total;
+        }
+
+        function getTimeRemaining() {
+            if (!examStartTime) return 0;
+            const elapsed = (Date.now() - examStartTime) / 1000;
+            const remaining = (examConfig.durationMinutes * 60) - elapsed;
+            return Math.max(0, Math.ceil(remaining));
+        }
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background: #27AE60; color: white;
+        padding: 15px 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 9999; animation: slideIn 0.3s ease-out;
+      `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => { notification.remove(); }, 3000);
+        }
+    </script>
+</body>
+
+</html>

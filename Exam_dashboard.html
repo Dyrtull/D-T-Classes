@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Grading Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .login-screen {
+            padding: 50px;
+            text-align: center;
+        }
+
+        .login-screen input {
+            padding: 12px;
+            margin: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-screen button {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-screen button:hover {
+            background: #764ba2;
+        }
+
+        .dashboard {
+            display: none;
+            padding: 30px;
+        }
+
+        .dashboard table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .dashboard table th,
+        .dashboard table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dashboard table th {
+            background: #f5f5f5;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .dashboard table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .action-btn:hover {
+            background: #764ba2;
+        }
+
+        .export-btn {
+            padding: 10px 20px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Exam Grading Dashboard</h1>
+            <p>Review and grade student submissions</p>
+        </div>
+
+        <div id="loginScreen" class="login-screen">
+            <h2>Login to Grade Exams</h2>
+            <input type="password" id="passwordInput" placeholder="Enter dashboard password">
+            <button onclick="authenticateTeacher()">Login</button>
+        </div>
+
+        <div id="dashboard" class="dashboard">
+            <button class="export-btn" onclick="exportToCSV()">📥 Export Results to CSV</button>
+
+            <table id="submissionsTable">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Set</th>
+                        <th>MC Score</th>
+                        <th>Gemini Grade</th>
+                        <th>Final Grade</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal for reviewing answers -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReviewModal()">&times;</span>
+            <h2 id="modalStudentName"></h2>
+            <div id="modalContent"></div>
+            <button class="action-btn" onclick="saveTeacherGrade()">Save Grade</button>
+        </div>
+    </div>
+
+    <script>
+        // Dashboard functionality here
+        const TEACHER_PASSWORD = 'RtuVb21o7O';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgTjuuT3xMSOFhF4zcVmo8rOO6HjjNn0xI4T9yO4TfwX_j2Rl6LNCSMV9wbdXRr6jT/exec';
+
+        function authenticateTeacher() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === TEACHER_PASSWORD) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadSubmissions();
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        function loadSubmissions() {
+            // Fetch from Google Sheets
+            // Display in table
+            // Load submission data from Apps Script
+        }
+
+        function exportToCSV() {
+            // Export table to CSV file
+        }
+
+        // Additional functions for reviewing and grading...
+    </script>
+</body>
+
+</html>

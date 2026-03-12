@@ -753,7 +753,7 @@
             <div class="highlight-box">
                 <p style="font-style: italic; color: var(--text-muted); margin: 0;">
                     <span style="font-style: normal">💡</span> Electricity works exactly the same way.
-                    Your smart garden sensor cannot work with the full 9V from the battery. It needs a smaller, more
+                    Your smart garden sensor cannot work with the full 7.4V from the battery. It needs a smaller, more
                     delicate voltage—just like the tiny orchid needs less water. We need a circuit that divides the
                     voltage
                     intelligently.
@@ -835,10 +835,10 @@
                             style="color: var(--secondary-color); font-weight: 700;">440Ω</span></p>
                 </div>
 
-                <p style="margin-top: 1rem;">If 9V is applied across this chain, what current flows?</p>
+                <p style="margin-top: 1rem;">If 7.4V is applied across this chain, what current flows?</p>
                 <div class="result-box">
-                    <p>I = V / R<sub>T</sub> = 9V / 440Ω ≈ <span
-                            style="color: var(--secondary-color); font-weight: 700;">20 mA</span></p>
+                    <p>I = V / R<sub>T</sub> = 7.4V / 440Ω ≈ <span
+                            style="color: var(--secondary-color); font-weight: 700;">16.8 mA</span></p>
                 </div>
             </div>
 
@@ -857,15 +857,15 @@
 
                 <div class="highlight-box" style="border-left: 4px solid var(--secondary-color);">
                     <p style="margin-bottom: 0.5rem; color: var(--text-main);"><strong>Example calculation:</strong> If
-                        100Ω, 120Ω, and 220Ω are in series with 9V:</p>
+                        100Ω, 120Ω, and 220Ω are in series with 7.4V:</p>
                     <ul style="list-style-type: none; margin: 0; padding: 0; color: var(--text-muted);">
                         <li>Total R = 440Ω</li>
-                        <li>Current = 9V / 440Ω = 20.45 mA</li>
-                        <li>Voltage across 220Ω = 20.45mA × 220Ω = 4.5V</li>
-                        <li>Voltage across 120Ω = 20.45mA × 120Ω = 2.45V</li>
-                        <li>Voltage across 100Ω = 20.45mA × 100Ω = 2.05V</li>
-                        <li style="margin-top: 0.5rem; color: var(--secondary-color); font-weight: 600;">Sum = 4.5 +
-                            2.45 + 2.05 = 9V ✓</li>
+                        <li>Current = 7.4V / 440Ω ≈ 16.82 mA</li>
+                        <li>Voltage across 220Ω = 16.82mA × 220Ω = 3.70V</li>
+                        <li>Voltage across 120Ω = 16.82mA × 120Ω = 2.02V</li>
+                        <li>Voltage across 100Ω = 16.82mA × 100Ω = 1.68V</li>
+                        <li style="margin-top: 0.5rem; color: var(--secondary-color); font-weight: 600;">Sum = 3.70 +
+                            2.02 + 1.68 = 7.4V ✓</li>
                     </ul>
                 </div>
             </div>
@@ -960,9 +960,8 @@
                 two resistors.</p>
 
             <!-- PASTE YOUR IMAGE URL IN THE SRC ATTRIBUTE BELOW -->
-            <img src="img/potential-divider.png"
-                alt="img/potential-divider.png"
-                class="content-image" style="max-width: 400px; margin: 2rem auto;">
+            <img src="img/potential-divider.png" alt="img/potential-divider.png" class="content-image"
+                style="max-width: 400px; margin: 2rem auto;">
 
             <h3 style="margin-top: 2rem;">The Formula</h3>
             <div class="formula-box">
@@ -980,42 +979,42 @@
             </div>
 
             <h3 style="margin-top: 2rem;">Worked Example 1: Fixed Resistors</h3>
-            <p><strong>R₁ = 10kΩ, R₂ = 18kΩ, V<sub>in</sub> = 9V. What is V<sub>out</sub>?</strong></p>
+            <p><strong>R₁ = 10kΩ, R₂ = 18kΩ, V<sub>in</sub> = 7.4V. What is V<sub>out</sub>?</strong></p>
 
             <div class="result-box">
-                <p style="font-family: monospace;">V<sub>out</sub> = (18,000 / (10,000 + 18,000)) × 9</p>
-                <p style="margin-top: 0.5rem; font-family: monospace;">= (18,000 / 28,000) × 9</p>
-                <p style="margin-top: 0.5rem; font-family: monospace;">= 0.643 × 9</p>
+                <p style="font-family: monospace;">V<sub>out</sub> = (18,000 / (10,000 + 18,000)) × 7.4</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= (18,000 / 28,000) × 7.4</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= 0.643 × 7.4</p>
                 <p style="margin-top: 0.5rem; font-family: monospace;">= <span
-                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">5.79V</span></p>
+                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">4.76V</span></p>
             </div>
 
             <div class="highlight-box" style="border-left: 4px solid var(--text-muted);">
                 <p style="margin: 0; color: var(--text-muted);">
-                    💬 <strong>Key insight:</strong> 9V goes in at the top. 5.79V comes out at the middle. We have
+                    💬 <strong>Key insight:</strong> 7.4V goes in at the top. 4.76V comes out at the middle. We have
                     divided
                     the voltage—without using a single extra battery or power source. Just two resistors. Elegant.</p>
             </div>
 
             <h3 style="margin-top: 2.5rem;">Worked Example 2: The Garden Preview (MOST IMPORTANT)</h3>
             <p><strong>Now imagine R₁ is our LDR (light sensor). In bright light, the LDR has LOW resistance: 1kΩ. R₂ is
-                    a fixed 10kΩ. V<sub>in</sub> = 9V. What is V<sub>out</sub> in bright light?</strong></p>
+                    a fixed 10kΩ. V<sub>in</sub> = 7.4V. What is V<sub>out</sub> in bright light?</strong></p>
 
             <div class="result-box">
-                <p style="font-family: monospace;">V<sub>out</sub> = (10,000 / (1,000 + 10,000)) × 9</p>
-                <p style="margin-top: 0.5rem; font-family: monospace;">= (10,000 / 11,000) × 9</p>
+                <p style="font-family: monospace;">V<sub>out</sub> = (10,000 / (1,000 + 10,000)) × 7.4</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= (10,000 / 11,000) × 7.4</p>
                 <p style="margin-top: 0.5rem; font-family: monospace;">= <span
-                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">8.18V</span></p>
+                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">6.73V</span></p>
             </div>
 
             <p style="margin-top: 2rem;"><strong>In darkness, the LDR resistance rises to 50kΩ. Same R₂ = 10kΩ. What
                     is V<sub>out</sub> in darkness?</strong></p>
 
             <div class="result-box">
-                <p style="font-family: monospace;">V<sub>out</sub> = (10,000 / (50,000 + 10,000)) × 9</p>
-                <p style="margin-top: 0.5rem; font-family: monospace;">= (10,000 / 60,000) × 9</p>
+                <p style="font-family: monospace;">V<sub>out</sub> = (10,000 / (50,000 + 10,000)) × 7.4</p>
+                <p style="margin-top: 0.5rem; font-family: monospace;">= (10,000 / 60,000) × 7.4</p>
                 <p style="margin-top: 0.5rem; font-family: monospace;">= <span
-                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">1.5V</span></p>
+                        style="color: var(--secondary-color); font-weight: 700; font-size: 1.25rem;">1.23V</span></p>
             </div>
 
             <div class="highlight-box"
@@ -1024,9 +1023,9 @@
                     BREAKTHROUGH ⭐</p>
                 <p style="margin-top: 1rem; color: var(--text-main); text-align: center;">Bright light → HIGH resistance
                     → HIGH V<sub>out</sub>
-                    (8.18V)</p>
+                    (6.73V)</p>
                 <p style="margin-top: 0.5rem; color: var(--text-main); text-align: center;">Darkness → LOW resistance →
-                    LOW V<sub>out</sub> (1.5V)
+                    LOW V<sub>out</sub> (1.23V)
                 </p>
                 <p style="margin-top: 1.5rem; font-style: italic; color: var(--text-muted); text-align: center;">This
                     changing voltage is
@@ -1056,8 +1055,8 @@
 
                     <div class="simulator-input">
                         <label>V<sub>in</sub> (Supply Volts)</label>
-                        <input type="number" id="vin-input" value="9" step="0.1" onchange="calculateDivider()"
-                            placeholder="e.g., 9">
+                        <input type="number" id="vin-input" value="7.4" step="0.1" onchange="calculateDivider()"
+                            placeholder="e.g., 7.4">
                     </div>
                 </div>
 
@@ -1229,7 +1228,8 @@
             <h3 style="margin-top: 2rem;">Exercise 3: Potential Divider</h3>
             <div class="exercise">
                 <h4 style="margin-top: 0;" class="question-text">Calculate V<sub>out</sub>:</h4>
-                <p style="margin-bottom: 1rem; color: var(--text-muted);">R₁ = 10kΩ, R₂ = 4.7kΩ, V<sub>in</sub> = 9V</p>
+                <p style="margin-bottom: 1rem; color: var(--text-muted);">R₁ = 10kΩ, R₂ = 4.7kΩ, V<sub>in</sub> = 7.4V
+                </p>
                 <input type="text" id="divider-answer" placeholder="Your answer in Volts...">
                 <button onclick="checkDividerCalculation()">Check</button>
             </div>
@@ -1262,11 +1262,13 @@
                 </p>
                 <p class="question-text" style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">
                     <strong>Parallel resistors combine differently:</strong> 1/R<sub>T</sub>
-                    = 1/R₁ + 1/R₂. Total resistance DECREASES.</p>
+                    = 1/R₁ + 1/R₂. Total resistance DECREASES.
+                </p>
                 <p class="question-text" style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.95rem;">
                     <strong>Potential divider formula:</strong> V<sub>out</sub> = (R₂ / (R₁ +
                     R₂)) × V<sub>in</sub>. This formula lets us create sensors that respond to light, temperature, and
-                    other environmental changes.</p>
+                    other environmental changes.
+                </p>
             </div>
 
             <h3 style="margin-top: 2rem;">Reflection</h3>
@@ -1306,7 +1308,8 @@
                 <p class="question-text" style="margin-bottom: 1.5rem;">A potential divider is connected to a
                     <strong>12V supply</strong>.<br>
                     R₁ = 10kΩ (between +12V and output node)<br>
-                    R₂ = 18kΩ (between output node and 0V)</p>
+                    R₂ = 18kΩ (between output node and 0V)
+                </p>
 
                 <h4 style="margin-top: 1rem;" class="question-text">(a) Calculate V<sub>out</sub> using the potential
                     divider formula. Show
@@ -1513,7 +1516,7 @@
         function checkDividerCalculation() {
             const answer = document.getElementById('divider-answer').value;
             const btn = event.target;
-            if (answer.includes('2.8') || answer.includes('2.9') || answer.includes('2.87') || answer.includes('2.88')) {
+            if (answer.includes('2.36') || answer.includes('2.37') || answer.includes('2.3') || answer.includes('2.4')) {
                 btn.textContent = "Correct! ✓";
                 btn.style.backgroundColor = "var(--secondary-color)";
                 btn.style.color = "white";
