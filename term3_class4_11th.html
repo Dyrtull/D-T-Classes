@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medellín 2050: Smart City Database - Session 3</title>
+    <title>Medellín 2050: Smart City Database - Session 4</title>
 
     <!-- Modern Font Import -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -502,7 +502,7 @@
             padding: 1rem 1.25rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
-            white-space: normal;
+            white-space: nowrap;
         }
 
         th {
@@ -660,7 +660,7 @@
     <header>
         <div>
             <h1>🏙️ Medellín 2050: Smart City</h1>
-            <p>IGCSE ICT (0417) | Session 3: Wiring the City's Nervous System</p>
+            <p>IGCSE ICT (0417) | Session 4: Teaching the City to Think</p>
         </div>
         <nav>
             <button onclick="toggleMode()">🌙 Theme</button>
@@ -679,464 +679,467 @@
     <main>
         <!-- OPENING ACTIVITY (MANDATORY & INTERACTIVE) -->
         <section class="section" id="opening-activity">
-            <h2>⚡ The Hook: The Ghost Bills</h2>
+            <h2>⚡ The Hook: The AI Enforcement Challenge</h2>
             <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
-                <p><strong>2050. The city's Finance Minister calls an emergency meeting.</strong></p>
-                <p>47,000 energy bills have been issued to citizens — but when the AI cross-references the citizen
-                    registry, it finds that 312 of those bills are linked to <code>CitizenID</code>s that no longer
-                    exist. The citizens were deleted from the registry after a data migration, but their bills stayed
-                    behind — orphaned records floating in the system, attached to nobody.</p>
-                <p>The city can't collect the fines. The courts can't prosecute. The data is legally worthless.</p>
+                <p>The city's AI Enforcement Unit has issued a challenge. They have three questions that need answering
+                    — right now, before the morning briefing in 20 minutes:</p>
+                <ol>
+                    <li>Which citizens in El Poblado or Laureles have unpaid energy bills over 300 units consumed?</li>
+                    <li>What is the total amount owed per citizen across all their unpaid bills?</li>
+                    <li>Which sensor IDs contain the letters 'SN-00' and are currently active?</li>
+                </ol>
+                <p>Your city planner opens the three tables and starts scrolling manually. At record 847, they give up.
+                </p>
             </div>
 
             <div class="exercise">
-                <p class="question-text">The two tables — CITIZENS and ENERGY_BILLS — were never formally linked. What
-                    specific database term describes the law we need to install: "If a citizen doesn't exist, their
-                    bills cannot exist either"?</p>
+                <p class="question-text">A query is NOT a search — it is a question written in the language the database
+                    understands. How long does a query take to answer all three questions simultaneously across
+                    thousands of records?</p>
 
                 <div class="options">
                     <div class="option">
-                        <input type="radio" name="hook-guess3" id="hook3-1" value="wrong1">
-                        <label class="radio-label" for="hook3-1">Flat-file Integration</label>
+                        <input type="radio" name="hook-guess4" id="hook4-1" value="wrong1">
+                        <label class="radio-label" for="hook4-1">About 10 to 15 minutes, depending on the
+                            computer.</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="hook-guess3" id="hook3-2" value="wrong2">
-                        <label class="radio-label" for="hook3-2">Primary Lookup Checking</label>
+                        <input type="radio" name="hook-guess4" id="hook4-2" value="wrong2">
+                        <label class="radio-label" for="hook4-2">It has to be done one table at a time, so maybe 5
+                            minutes.</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="hook-guess3" id="hook3-3" value="correct">
-                        <label class="radio-label" for="hook3-3">Referential Integrity</label>
+                        <input type="radio" name="hook-guess4" id="hook4-3" value="correct">
+                        <label class="radio-label" for="hook4-3">About 0.003 seconds.</label>
                     </div>
                 </div>
-                <button onclick="checkHook3()">Verify Term</button>
-                <div id="hook3-feedback" class="feedback"></div>
+                <button onclick="checkHook4()">Submit Answer</button>
+                <div id="hook4-feedback" class="feedback"></div>
             </div>
-            <p><em>Today, we build the bridges between those islands. And we install the city's immune system.</em></p>
+            <p><em>Today, you learn to speak that language fluently. By the end of this session, you will be able to ask
+                    the database anything, and it will answer instantly, correctly, every time.</em></p>
         </section>
 
         <!-- LEARNING OBJECTIVES -->
         <section class="section" id="learning-objectives">
             <h2>🎯 Mission Objectives</h2>
-            <p>To wire the city's nervous system, you must learn to link tables together properly. By the end of this
-                session, you will be able to:</p>
+            <p>By the end of this session, you will be able to:</p>
 
             <div class="highlight-box">
                 <div class="checklist-item">
-                    <input type="checkbox" id="s3-obj-1" onchange="saveProgressS3()">
-                    <label for="s3-obj-1"><strong>Cognitive:</strong> Define Primary Key, Foreign Key, and Referential
-                        Integrity.</label>
+                    <input type="checkbox" id="s4-obj-1" onchange="saveProgressS4()">
+                    <label for="s4-obj-1"><strong>Cognitive:</strong> Build Queries using complex Criteria, including
+                        Wildcards (*, ?) and Date Ranges.</label>
                 </div>
                 <div class="checklist-item">
-                    <input type="checkbox" id="s3-obj-2" onchange="saveProgressS3()">
-                    <label for="s3-obj-2"><strong>Cognitive:</strong> Explain the difference between Flat-file and
-                        Relational databases.</label>
+                    <input type="checkbox" id="s4-obj-2" onchange="saveProgressS4()">
+                    <label for="s4-obj-2"><strong>Cognitive:</strong> Correctly apply Boolean logic (AND / OR) without
+                        creating impossible conditions.</label>
                 </div>
                 <div class="checklist-item">
-                    <input type="checkbox" id="s3-obj-3" onchange="saveProgressS3()">
-                    <label for="s3-obj-3"><strong>Cognitive:</strong> Build One-to-Many relationships between tables in
-                        MS Access.</label>
+                    <input type="checkbox" id="s4-obj-3" onchange="saveProgressS4()">
+                    <label for="s4-obj-3"><strong>Cognitive:</strong> Create Calculated Fields to generate new data
+                        dynamically on the fly.</label>
                 </div>
                 <div class="checklist-item">
-                    <input type="checkbox" id="s3-obj-4" onchange="saveProgressS3()">
-                    <label for="s3-obj-4"><strong>Social-Emotional:</strong> Appreciate how structural integrity
-                        prevents systemic chaos in large organizations.</label>
+                    <input type="checkbox" id="s4-obj-4" onchange="saveProgressS4()">
+                    <label for="s4-obj-4"><strong>Social-Emotional:</strong> Develop precise logical thinking,
+                        understanding that computers answer exactly what you ask, not what you meant.</label>
                 </div>
             </div>
-            <p><small><em>Prior Knowledge Required: Creating tables, defining data types, and setting Primary Keys
-                        (Session 1 & 2).</em></small></p>
+            <p><small><em>Prior Knowledge Required: Tables and Relationships built in Sessions 1-3.</em></small></p>
         </section>
 
         <!-- CONCEPT EXPLORATION -->
         <section class="section" id="concepts">
-            <h2>📚 The City Planner's Cheat Sheet</h2>
-            <p>Without relationships, your tables are just isolated spreadsheets that happen to live in the same file.
-                Relationships are what make a database <em>relational</em>.</p>
+            <h2>📚 The Intelligence Analyst's Cheat Sheet</h2>
 
             <div class="difficulty-tabs">
-                <button class="active" onclick="switchDifficulty('basic')">Basic: Core Vocabulary</button>
-                <button onclick="switchDifficulty('intermediate')">Intermediate: Relationship Types</button>
-                <button onclick="switchDifficulty('advanced')">Advanced: Referential Integrity Options</button>
+                <button class="active" onclick="switchDifficulty('basic')">Basic: Query vs Table</button>
+                <button onclick="switchDifficulty('intermediate')">Intermediate: Criteria Syntax</button>
+                <button onclick="switchDifficulty('advanced')">Advanced: Calculations & Logic</button>
             </div>
 
             <!-- Basic Concept -->
             <div id="content-basic" class="difficulty-content active">
-                <h3>The Core Vocabulary (0417 Precision)</h3>
+                <h3>What is a Query? (0417 Precision)</h3>
+                <p><strong>🎯 Exam-Precision Definition:</strong> A query is a search of a database that extracts
+                    records meeting specified criteria, and can display selected fields from one or more tables in a
+                    specified order.</p>
                 <table>
                     <tr>
-                        <th>Term</th>
-                        <th>Formal IGCSE Definition</th>
-                        <th>Medellín 2050 Analogy</th>
+                        <th>Feature</th>
+                        <th>Table</th>
+                        <th>Query</th>
                     </tr>
                     <tr>
-                        <td><strong>Primary Key</strong></td>
-                        <td>A field that uniquely identifies each record in its own table; cannot be null or duplicated.
-                        </td>
-                        <td>The citizen's biometric chip ID.</td>
+                        <td><strong>Stores data?</strong></td>
+                        <td>✅ Yes — permanently</td>
+                        <td>❌ No — shows a live view of data</td>
                     </tr>
                     <tr>
-                        <td><strong>Foreign Key</strong></td>
-                        <td>A field in one table that references the primary key of another table, creating a link
-                            between them.</td>
-                        <td>The <code>CitizenID</code> field inside ENERGY_BILLS — it points back to a real person.</td>
+                        <td><strong>Updates when data changes?</strong></td>
+                        <td>N/A</td>
+                        <td>✅ Yes — re-runs against current data</td>
                     </tr>
                     <tr>
-                        <td><strong>Relationship</strong></td>
-                        <td>A defined link between two tables based on matching key fields.</td>
-                        <td>The bridge connecting the Citizens Registry to the Finance Department.</td>
+                        <td><strong>Can combine tables?</strong></td>
+                        <td>No</td>
+                        <td>✅ Yes — via JOIN relationships</td>
                     </tr>
                     <tr>
-                        <td><strong>Referential Integrity</strong></td>
-                        <td>A rule preventing a foreign key value from existing without a matching primary key value in
-                            the related table.</td>
-                        <td>The city law: "You cannot bill a citizen who doesn't exist."</td>
+                        <td><strong>Can calculate new values?</strong></td>
+                        <td>No</td>
+                        <td>✅ Yes — via Calculated Fields</td>
                     </tr>
                 </table>
             </div>
 
             <!-- Intermediate Concept -->
             <div id="content-intermediate" class="difficulty-content">
-                <h3>Relationship Types: The Three City Structures</h3>
-                <p>The syllabus expects you to recognise all three, even though you mainly build One-to-Many.</p>
+                <h3>The Criteria Arsenal</h3>
+                <p>This is the vocabulary of database intelligence. You must know these for Paper 2.</p>
                 <table>
                     <tr>
-                        <th>Type</th>
-                        <th>Description</th>
-                        <th>City Example</th>
+                        <th>Operator</th>
+                        <th>Syntax in Access QBE</th>
+                        <th>What it Does</th>
                     </tr>
                     <tr>
-                        <td><strong>One-to-One</strong></td>
-                        <td>One record in A matches exactly one record in B.</td>
-                        <td>One citizen ↔ one biometric profile.</td>
+                        <td><strong>Equals</strong></td>
+                        <td><code>"El Poblado"</code></td>
+                        <td>Exact text match.</td>
                     </tr>
                     <tr>
-                        <td><strong>One-to-Many</strong></td>
-                        <td>One record in A can be linked to many records in B.</td>
-                        <td>One district ↔ many citizens.</td>
+                        <td><strong>Not Equals</strong></td>
+                        <td><code><>"El Poblado"</code></td>
+                        <td>Excludes the exact match.</td>
                     </tr>
                     <tr>
-                        <td><strong>Many-to-Many</strong></td>
-                        <td>Many in A match many in B.</td>
-                        <td>Many citizens ↔ many transport routes. (Requires a junction table).</td>
+                        <td><strong>Greater/Less</strong></td>
+                        <td><code>>300</code> or <code><100</code></td>
+                        <td>Numeric comparison.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Between</strong></td>
+                        <td><code>Between 100 And 500</code></td>
+                        <td>Inclusive numeric range.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wildcard (Many)</strong></td>
+                        <td><code>Like "C-001*"</code></td>
+                        <td><code>*</code> matches any number of characters.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wildcard (One)</strong></td>
+                        <td><code>Like "SN-00?"</code></td>
+                        <td><code>?</code> matches exactly one character.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Null Check</strong></td>
+                        <td><code>Is Null</code> or <code>Is Not Null</code></td>
+                        <td>Finds empty or non-empty fields.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Date Range</strong></td>
+                        <td><code>>=#01/02/2050#</code></td>
+                        <td>Uses hashes <code>#</code> around dates.</td>
                     </tr>
                 </table>
-                <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
-                    <strong>🎯 Exam Trap:</strong> Do not write "two-to-many" or "multiple-to-one." The correct terms
-                    are strictly one-to-one, one-to-many, and many-to-many. Marks are lost for informal descriptions.
-                </div>
             </div>
 
             <!-- Advanced Concept -->
             <div id="content-advanced" class="difficulty-content">
-                <h3>Referential Integrity: The Two Cascade Options</h3>
-                <p>When you enforce referential integrity in Access, you get two optional cascade rules:</p>
+                <h3>1. Calculated Fields</h3>
+                <p>A calculated field does not exist in the table — the database computes it on the fly each time the
+                    query runs. The syntax is:</p>
+                <div class="highlight-box">
+                    <code>NewFieldName: [ExistingField1] operator [ExistingField2]</code><br><br>
+                    <strong>Example:</strong> <code>SurchargeTotal: [AmountDue]*1.1</code>
+                </div>
+                <p>⚠️ <strong>Critical Rule:</strong> You must use square brackets <code>[ ]</code> around existing
+                    field names so Access knows they are fields, not text.</p>
+
+                <h3>2. The AND vs. OR Trap (Crucial for Paper 2)</h3>
                 <ul>
-                    <li><strong>Cascade Update Related Fields:</strong> If a Primary Key value changes in Table A, all
-                        matching Foreign Key values in Table B update automatically. <em>(Safe: Use when PK values might
-                            legitimately change).</em></li>
-                    <li><strong>Cascade Delete Related Records:</strong> If a record is deleted from Table A, all linked
-                        records in Table B are deleted automatically. <em>(Dangerous: Deleting a district deletes all
-                            citizens in it!).</em></li>
+                    <li><strong>AND:</strong> Both conditions must be true simultaneously. In Access, put criteria on
+                        the <strong>same row</strong>.</li>
+                    <li><strong>OR:</strong> Either condition can be true. In Access, put criteria on <strong>different
+                            rows</strong> (the "or:" row).</li>
                 </ul>
-                <p>⚠️ <strong>Teaching point:</strong> In most exam scenarios, cascade delete is dangerous. The safer
-                    answer on Paper 1 is: "Referential integrity should prevent deletion of a parent record while child
-                    records still exist."</p>
+                <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
+                    <strong>⚠️ The Trap:</strong> If you want "citizens in El Poblado and Laureles", and you write
+                    <code>"El Poblado" AND "Laureles"</code> in the same row, it means a citizen must live in BOTH
+                    sectors at the exact same time. Impossible. They must be on separate OR rows.
+                </div>
             </div>
         </section>
 
         <!-- APPLIED EXAMPLES / DEMO -->
         <section class="section" id="demo">
-            <h2>🛠️ The Live Build: Bridging the Islands</h2>
-            <p>We are going to link three tables: <code>DISTRICTS</code>, <code>CITIZENS</code>, and
-                <code>ENERGY_BILLS</code>.</p>
-
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                <button
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1_fhxLGvXQcHWuoUglRP_yZqYVxzLdjoBfLQbXRnWwuM/edit?usp=sharing', '_blank')">
-                    📥 Download DISTRICTS (CSV)
-                </button>
-                <button
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1vKQPvOnHeLIgWuoCHgdPk22Hk0enEKLg3Gj_APUbfXI/edit?usp=sharing', '_blank')">
-                    📥 Download ENERGY_BILLS (CSV)
-                </button>
-            </div>
+            <h2>🛠️ The Live Build: Query Construction</h2>
+            <p>Open <code>Medellin2050_SmartCity.accdb</code>. Go to <strong>Create → Query Design</strong>. Build these
+                with your teacher.</p>
 
             <div class="highlight-box">
-                <h4>Step 1: The DISTRICTS Reference Table</h4>
-                <p>Create a new table called <code>DISTRICTS</code> in Design View. Set <code>DistrictCode</code> as the
-                    Primary Key 🔑 (Short Text). Import the CSV.</p>
+                <h4>📍 Q1: "The Debtors List" (AND Logic)</h4>
+                <p><strong>Goal:</strong> Find citizens in El Poblado who are NOT verified.<br>
+                    <strong>Criteria:</strong> Sector: <code>"El Poblado"</code> <strong>(Same Row)</strong> IsVerified:
+                    <code>No</code>
+                </p>
 
-                <h4>Step 2: Modify CITIZENS (Adding the Foreign Key)</h4>
-                <p>Open <code>CITIZENS</code> in Design View. Add a new field called <code>DistrictCode</code> (Short
-                    Text). <em>This is your Foreign Key.</em> It must have the same data type as the Primary Key it
-                    points to.</p>
-                <p>Save the table. Switch to Datasheet View and update each of the 10 citizens with their correct
-                    <code>DistrictCode</code>:</p>
-                <table>
-                    <tr>
-                        <th>CitizenID</th>
-                        <th>DistrictCode to enter</th>
-                    </tr>
-                    <tr>
-                        <td>C-00101 (El Poblado)</td>
-                        <td>D-001</td>
-                    </tr>
-                    <tr>
-                        <td>C-00102 (Laureles)</td>
-                        <td>D-002</td>
-                    </tr>
-                    <tr>
-                        <td>C-00103 (Envigado)</td>
-                        <td>D-003</td>
-                    </tr>
-                    <tr>
-                        <td>C-00104 (El Poblado)</td>
-                        <td>D-001</td>
-                    </tr>
-                    <tr>
-                        <td>C-00105 (Belén)</td>
-                        <td>D-004</td>
-                    </tr>
-                    <tr>
-                        <td>C-00106 (Laureles)</td>
-                        <td>D-002</td>
-                    </tr>
-                    <tr>
-                        <td>C-00107 (Envigado)</td>
-                        <td>D-003</td>
-                    </tr>
-                    <tr>
-                        <td>C-00108 (El Poblado)</td>
-                        <td>D-001</td>
-                    </tr>
-                    <tr>
-                        <td>C-00109 (Belén)</td>
-                        <td>D-004</td>
-                    </tr>
-                    <tr>
-                        <td>C-00110 (Laureles)</td>
-                        <td>D-002</td>
-                    </tr>
-                </table>
+                <h4>📍 Q2: "Multi-Zone Alert" (OR Logic)</h4>
+                <p><strong>Goal:</strong> Find citizens in EITHER Belén OR Centro.<br>
+                    <strong>Criteria:</strong> Sector row 1: <code>"Belén"</code>. Sector row 2 (the "or" row):
+                    <code>"Centro"</code>.
+                </p>
 
-                <h4>Step 3: The ENERGY_BILLS Table</h4>
-                <p>Create a new table called <code>ENERGY_BILLS</code>. Set <code>BillID</code> as AutoNumber (Primary
-                    Key 🔑). Ensure it has a <code>CitizenID</code> field (Short Text) acting as its Foreign Key. Import
-                    the CSV.</p>
+                <h4>📍 Q3: "The Energy Crisis Watch" (Ranges)</h4>
+                <p><strong>Goal:</strong> Energy credits < 100 AND Fine Amount> 200.<br>
+                        <strong>Criteria (Same Row):</strong> EnergyCredits: <code><100</code> | FineAmount:
+                        <code>>200</code></p>
+
+                <h4>📍 Q4: "The Bill Tracker" (Multi-Table JOIN)</h4>
+                <p><strong>Goal:</strong> Unpaid bills with Citizen's Full Name.<br>
+                    <strong>Setup:</strong> Add CITIZENS and ENERGY_BILLS tables. Access uses the Relationship line to
+                    join them. Pull <em>Surname</em> from Citizens and <em>AmountDue</em> from Bills. Criteria on
+                    IsPaid: <code>No</code>.
+                </p>
+
+                <h4>📍 Q5: "Wildcard Search"</h4>
+                <p><strong>Goal:</strong> Surnames beginning with "R".<br>
+                    <strong>Criteria:</strong> Surname: <code>Like "R*"</code>.
+                </p>
+
+                <h4>📍 Q6: "The Calculated Field"</h4>
+                <p><strong>Goal:</strong> Add a 10% late payment surcharge to unpaid bills.<br>
+                    <strong>Field 1:</strong> <code>Surcharge: [AmountDue]*0.1</code><br>
+                    <strong>Field 2:</strong> <code>TotalOwed: [AmountDue]+[AmountDue]*0.1</code><br>
+                    <strong>Criteria:</strong> IsPaid: <code>No</code>
+                </p>
             </div>
-
-            <h3>Step 4: Build the Relationships in Access</h3>
-            <ol>
-                <li>Go to <strong>Database Tools</strong> → <strong>Relationships</strong>.</li>
-                <li>Add all three tables to the window.</li>
-                <li><strong>Relationship 1 (DISTRICTS → CITIZENS):</strong> Drag <code>DistrictCode</code> from
-                    DISTRICTS onto <code>DistrictCode</code> in CITIZENS. Check <em>Enforce Referential Integrity</em>
-                    and <em>Cascade Update</em>. Click Create. (You should see a 1 to ∞ line).</li>
-                <li><strong>Relationship 2 (CITIZENS → ENERGY_BILLS):</strong> Drag <code>CitizenID</code> from CITIZENS
-                    onto <code>CitizenID</code> in ENERGY_BILLS. Check <em>Enforce Referential Integrity</em> and
-                    <em>Cascade Update</em>. Click Create.</li>
-            </ol>
-
-            <p><strong>The Breaking Test:</strong> Go to ENERGY_BILLS in Datasheet View. Try to add a new record with
-                CitizenID = C-00999. Access blocks it because C-00999 doesn't exist in the CITIZENS table. You have
-                successfully prevented orphan records!</p>
         </section>
 
         <!-- INTERACTIVE ACTIVITIES / MISSION -->
         <section class="section" id="mission">
-            <h2>🎯 Student Mission: The Transport Network</h2>
-            <p>The Metro Authority needs its vehicle table (from Session 2) properly linked to a new
-                <code>METRO_LINES</code> reference table. Right now, the LineCode field in METRO_VEHICLES is just free
-                text.</p>
+            <h2>🎯 Student Mission: The Intelligence Briefing</h2>
+            <p>The Mayor of Medellín 2050 needs five specific intelligence reports before her 2 PM cabinet meeting. You
+                have been assigned as the city's Data Intelligence Officer. Build all five queries, save them with the
+                exact names, and prepare the results.</p>
 
-            <button
-                onclick="window.open('https://docs.google.com/spreadsheets/d/120urV6z__vdl80WR1pUVwGhsb6VdRnJ1mXA6E-yKZDc/edit?usp=sharing', '_blank')"
-                class="btn-accent" style="margin-bottom: 1.5rem;">
-                📥 Download METRO_LINES (CSV)
-            </button>
+            <div class="exercise">
+                <h4>🔴 M1: "High Consumption Alert"</h4>
+                <p>Find all energy bills where UnitsConsumed is greater than 500, sorted by UnitsConsumed descending.
+                </p>
+                <p><em>Save as:</em> <code>M1_HighConsumption</code></p>
 
-            <h3>Mission Execution Steps</h3>
-            <p><strong>Step 1:</strong> Create the <code>METRO_LINES</code> Reference Table. Determine the Primary Key
-                and appropriate data types before importing the CSV.</p>
-            <p><strong>Step 2:</strong> Modify <code>METRO_VEHICLES</code>. Ensure the <code>LineCode</code> field
-                exists and its Data Type perfectly matches the Primary Key in METRO_LINES.</p>
-            <p><strong>Step 3:</strong> Build and enforce the relationship in the Relationships window (Cascade Update:
-                Yes, Cascade Delete: No).</p>
+                <h4>🔴 M2: "The Unverified Multi-Zone Citizens"</h4>
+                <p>Find all citizens who are not verified AND live in either Envigado or Belén. (Sort Surname
+                    ascending).</p>
+                <p><em>Save as:</em> <code>M2_Unverified_Envigado_Belen</code></p>
 
-            <div class="exercise" id="mission-checks3">
-                <h4>Pre-Flight Checklist</h4>
+                <h4>🔴 M3: "The Ghost Sensors"</h4>
+                <p>From ENV_SENSORS, find all sensors where IsActive = No OR PollutionIndex > 85. (Sort PollutionIndex
+                    descending).</p>
+                <p><em>Save as:</em> <code>M3_Problem_Sensors</code></p>
+
+                <h4>🔴 M4: "The Cost Per Unit Analysis"</h4>
+                <p>For ALL energy bills, create a calculated field showing the cost per unit consumed. Syntax:
+                    <code>CostPerUnit: [AmountDue]/[UnitsConsumed]</code></p>
+                <p><em>Save as:</em> <code>M4_CostPerUnit</code></p>
+
+                <h4>🔴 M5: "The Full Debtor Profile" (Multi-table)</h4>
+                <p>Join CITIZENS and ENERGY_BILLS. Show only unpaid bills where AmountDue > 100. Include citizen's full
+                    name, sector, and bill details.</p>
+                <p><em>Save as:</em> <code>M5_Full_Debtor_Profile</code></p>
+            </div>
+
+            <h3>Pre-Flight Intelligence Checklist</h3>
+            <div class="exercise" id="mission-checks4">
                 <div class="checklist-item">
-                    <input type="checkbox" id="m3-chk1" onchange="checkMission3()">
-                    <label for="m3-chk1"><code>METRO_LINES</code> table exists with <code>LineCode</code> as Primary Key
-                        🔑.</label>
+                    <input type="checkbox" id="m4-chk1" onchange="checkMission4()">
+                    <label for="m4-chk1"><strong>M2</strong> uses OR rows correctly for the sectors, but keeps
+                        IsVerified=No on BOTH rows.</label>
                 </div>
                 <div class="checklist-item">
-                    <input type="checkbox" id="m3-chk2" onchange="checkMission3()">
-                    <label for="m3-chk2">The <code>LineCode</code> field in METRO_VEHICLES matches data type of
-                        METRO_LINES.LineCode.</label>
+                    <input type="checkbox" id="m4-chk2" onchange="checkMission4()">
+                    <label for="m4-chk2"><strong>M4</strong> calculated field uses exact syntax with square brackets:
+                        <code>[AmountDue]</code>.</label>
                 </div>
                 <div class="checklist-item">
-                    <input type="checkbox" id="m3-chk3" onchange="checkMission3()">
-                    <label for="m3-chk3">Relationship line is visible in Relationships window with 1 and ∞
-                        symbols.</label>
+                    <input type="checkbox" id="m4-chk3" onchange="checkMission4()">
+                    <label for="m4-chk3"><strong>M5</strong> shows a JOIN line between the two tables in the Query
+                        Design view.</label>
                 </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m3-chk4" onchange="checkMission3()">
-                    <label for="m3-chk4">Referential Integrity is enforced (checkbox ticked).</label>
-                </div>
-                <div id="mission-success3" class="feedback correct" style="display:none;">
-                    ✅ Outstanding! The Metro infrastructure is now relationally sound.
+                <div id="mission-success4" class="feedback correct" style="display:none;">
+                    ✅ Excellent work, Officer. The Mayor has the intelligence data she needs.
                 </div>
             </div>
 
-            <div class="highlight-box" style="border-left: 4px solid var(--secondary-color);">
-                <h4>🔴 Stretch Challenge: Decommissioning</h4>
-                <p>Line-D is decommissioned. The city engineer wants to delete its record from METRO_LINES. The data
-                    archivist says the vehicles must be dealt with first. Describe, in the correct order, the exact
-                    steps required to delete Line-D's record without violating referential integrity.</p>
-                <textarea id="stretch-answer3" rows="3"
-                    placeholder="Use terms: primary key, foreign key, referential integrity..."></textarea>
+            <div class="highlight-box" style="border-left: 4px solid var(--primary-color);">
+                <h4>🔴 Stretch Challenge: The Dynamic Question</h4>
+                <p>The Mayor asks: "Can I modify M5 so that instead of a fixed 100, the query asks me what minimum
+                    threshold to use every time I run it?" Describe what query feature does this, and write the syntax
+                    for the AmountDue criteria row.</p>
+                <textarea id="stretch-answer4" rows="3"
+                    placeholder="Identify the query type and the syntax (e.g., >[Prompt Text])..."></textarea>
                 <button
-                    onclick="saveToLocalStorage('stretch-answer3', document.getElementById('stretch-answer3').value); alert('Saved!');">Save
+                    onclick="saveToLocalStorage('stretch-answer4', document.getElementById('stretch-answer4').value); alert('Saved!');">Save
                     Solution</button>
             </div>
         </section>
 
         <!-- PRACTICE EXERCISES & CCQs -->
         <section class="section" id="drill">
-            <h2>📝 Theory Drill: Structural Logic (Paper 1 Style)</h2>
-            <p>Test your understanding of relational database theory.</p>
+            <h2>📝 Theory Drill: The Language of Data (Paper 1 Style)</h2>
+            <p>Queries are heavily tested in both Paper 1 (Theory) and Paper 2 (Practical). Master the logic.</p>
 
             <!-- CCQ 1 -->
             <div class="concept-check">
-                <h4>Question 1: The Key Difference</h4>
-                <p>Which of the following best explains the difference between a Primary Key and a Foreign Key?</p>
+                <h4>Question 1: AND vs OR</h4>
+                <p>Explain the difference between using AND criteria and OR criteria in a database query.</p>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" name="ccq3_1" id="ccq3_1-a" value="wrong">
-                        <label for="ccq3_1-a">A primary key contains numbers, while a foreign key contains
-                            letters.</label>
+                        <input type="radio" name="ccq4_1" id="ccq4_1-a" value="wrong">
+                        <label for="ccq4_1-a">AND returns more results than OR because it adds the criteria
+                            together.</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="ccq3_1" id="ccq3_1-b" value="correct">
-                        <label for="ccq3_1-b">A primary key uniquely identifies a record in its own table; a foreign key
-                            links to the primary key of another table.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_1" id="ccq3_1-c" value="wrong">
-                        <label for="ccq3_1-c">A primary key is created first, and a foreign key is created automatically
-                            by Access.</label>
+                        <input type="radio" name="ccq4_1" id="ccq4_1-b" value="correct">
+                        <label for="ccq4_1-b">AND requires both conditions to be true simultaneously. OR requires at
+                            least one condition to be true.</label>
                     </div>
                 </div>
-                <button onclick="checkCCQ('ccq3_1', 'ccq3_1-b', 'ccq3_1-feedback')">Submit Answer</button>
-                <div id="ccq3_1-feedback" class="feedback"></div>
+                <button onclick="checkCCQ('ccq4_1', 'ccq4_1-b', 'ccq4_1-feedback')">Submit Answer</button>
+                <div id="ccq4_1-feedback" class="feedback"></div>
             </div>
 
             <!-- CCQ 2 -->
             <div class="concept-check">
-                <h4>Question 2: Solving the Update Anomaly</h4>
-                <p>In a flat-file database, changing a district's mayor requires updating hundreds of rows manually. How
-                    does a relational database solve this specific problem?</p>
+                <h4>Question 2: Wildcard Application</h4>
+                <p>If you apply the criterion <code>Like "*son"</code> to a Surname field, what will the query return?
+                </p>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" name="ccq3_2" id="ccq3_2-a" value="correct">
-                        <label for="ccq3_2-a">By storing the mayor's name once in the DISTRICTS table, so updating that
-                            single record automatically applies to all linked citizens.</label>
+                        <input type="radio" name="ccq4_2" id="ccq4_2-a" value="wrong">
+                        <label for="ccq4_2-a">Surnames starting with "son" (e.g. Sontag).</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="ccq3_2" id="ccq3_2-b" value="wrong">
-                        <label for="ccq3_2-b">By using a validation rule to ensure no one spells the mayor's name
-                            incorrectly.</label>
+                        <input type="radio" name="ccq4_2" id="ccq4_2-b" value="correct">
+                        <label for="ccq4_2-b">Surnames ending with "son" (e.g. Jackson, Richardson).</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq4_2" id="ccq4_2-c" value="wrong">
+                        <label for="ccq4_2-c">Surnames with "son" anywhere in the middle.</label>
                     </div>
                 </div>
-                <button onclick="checkCCQ('ccq3_2', 'ccq3_2-a', 'ccq3_2-feedback')">Submit Answer</button>
-                <div id="ccq3_2-feedback" class="feedback"></div>
+                <button onclick="checkCCQ('ccq4_2', 'ccq4_2-b', 'ccq4_2-feedback')">Submit Answer</button>
+                <div id="ccq4_2-feedback" class="feedback"></div>
             </div>
 
             <!-- CCQ 3 -->
             <div class="concept-check">
-                <h4>Question 3: Identifying the Relationship</h4>
-                <p>A single citizen can be issued multiple energy bills over a year, but an individual bill belongs to
-                    only one citizen. What type of relationship is this?</p>
+                <h4>Question 3: Wildcard Precision</h4>
+                <p>Write the exact criterion that would return only surnames that are exactly 5 characters long and
+                    begin with "M".</p>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" name="ccq3_3" id="ccq3_3-a" value="wrong">
-                        <label for="ccq3_3-a">One-to-One</label>
+                        <input type="radio" name="ccq4_3" id="ccq4_3-a" value="wrong">
+                        <label for="ccq4_3-a"><code>Like "M*5"</code></label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="ccq3_3" id="ccq3_3-b" value="correct">
-                        <label for="ccq3_3-b">One-to-Many</label>
+                        <input type="radio" name="ccq4_3" id="ccq4_3-b" value="wrong">
+                        <label for="ccq4_3-b"><code>Like "M*"</code></label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="ccq3_3" id="ccq3_3-c" value="wrong">
-                        <label for="ccq3_3-c">Many-to-Many</label>
+                        <input type="radio" name="ccq4_3" id="ccq4_3-c" value="correct">
+                        <label for="ccq4_3-c"><code>Like "M????"</code></label>
                     </div>
                 </div>
-                <button onclick="checkCCQ('ccq3_3', 'ccq3_3-b', 'ccq3_3-feedback')">Submit Answer</button>
-                <div id="ccq3_3-feedback" class="feedback"></div>
+                <button onclick="checkCCQ('ccq4_3', 'ccq4_3-c', 'ccq4_3-feedback')">Submit Answer</button>
+                <div id="ccq4_3-feedback" class="feedback"></div>
             </div>
 
             <!-- CCQ 4 -->
             <div class="concept-check">
-                <h4>Question 4: Defining the Law</h4>
-                <p>State what is meant by "Referential Integrity".</p>
+                <h4>Question 4: Calculated Field Nature</h4>
+                <p>Which of the following is TRUE about a Calculated Field?</p>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" name="ccq3_4" id="ccq3_4-a" value="wrong">
-                        <label for="ccq3_4-a">A rule that ensures all fields in a table have data entered into
-                            them.</label>
+                        <input type="radio" name="ccq4_4" id="ccq4_4-a" value="wrong">
+                        <label for="ccq4_4-a">It permanently stores the mathematical result in the original
+                            table.</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="ccq3_4" id="ccq3_4-b" value="correct">
-                        <label for="ccq3_4-b">A rule ensuring a foreign key value must always have a matching primary
-                            key value in the related table.</label>
+                        <input type="radio" name="ccq4_4" id="ccq4_4-b" value="correct">
+                        <label for="ccq4_4-b">It is computed dynamically every time the query runs and exists only while
+                            the query is open.</label>
                     </div>
                 </div>
-                <button onclick="checkCCQ('ccq3_4', 'ccq3_4-b', 'ccq3_4-feedback')">Submit Answer</button>
-                <div id="ccq3_4-feedback" class="feedback"></div>
+                <button onclick="checkCCQ('ccq4_4', 'ccq4_4-b', 'ccq4_4-feedback')">Submit Answer</button>
+                <div id="ccq4_4-feedback" class="feedback"></div>
             </div>
 
             <!-- CCQ 5 -->
             <div class="concept-check">
-                <h4>Question 5: Cascade Rules</h4>
-                <p>Why might a database administrator choose to enable <em>Cascade Update</em> but intentionally leave
-                    <em>Cascade Delete</em> unchecked?</p>
+                <h4>Question 5: Query Calculation Math</h4>
+                <p>A calculated field is defined as: <code>TotalOwed: [AmountDue]+[AmountDue]*0.1</code>. If the
+                    AmountDue for one record is <strong>232.00</strong>, what value will TotalOwed display?</p>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" name="ccq3_5" id="ccq3_5-a" value="wrong">
-                        <label for="ccq3_5-a">Because Cascade Update is required to make the relationship work, but
-                            Cascade Delete takes up too much memory.</label>
+                        <input type="radio" name="ccq4_5" id="ccq4_5-a" value="wrong">
+                        <label for="ccq4_5-a">23.20</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="ccq3_5" id="ccq3_5-b" value="correct">
-                        <label for="ccq3_5-b">Cascade Delete is dangerous (deleting a district accidentally wipes out
-                            all its citizens). Cascade Update safely keeps keys synchronized if an ID changes.</label>
+                        <input type="radio" name="ccq4_5" id="ccq4_5-b" value="wrong">
+                        <label for="ccq4_5-b">250.00</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq4_5" id="ccq4_5-c" value="correct">
+                        <label for="ccq4_5-c">255.20</label>
                     </div>
                 </div>
-                <button onclick="checkCCQ('ccq3_5', 'ccq3_5-b', 'ccq3_5-feedback')">Submit Answer</button>
-                <div id="ccq3_5-feedback" class="feedback"></div>
+                <button onclick="checkCCQ('ccq4_5', 'ccq4_5-c', 'ccq4_5-feedback')">Submit Answer</button>
+                <div id="ccq4_5-feedback" class="feedback"></div>
             </div>
 
             <!-- CCQ 6 -->
             <div class="concept-check">
-                <h4>Question 6: The Deletion Test</h4>
-                <p>If you try to delete Citizen C-00101 from the CITIZENS table while they still have three unpaid bills
-                    in ENERGY_BILLS, what will happen if referential integrity is enforced (without cascade delete)?</p>
+                <h4>Question 6: Multi-Table Utility</h4>
+                <p>Why is a multi-table query more useful than a single-table query when producing a list of unpaid
+                    bills that includes the citizen's name?</p>
                 <div class="options">
                     <div class="option">
-                        <input type="radio" name="ccq3_6" id="ccq3_6-a" value="correct">
-                        <label for="ccq3_6-a">Access will block the deletion completely to prevent the bills from
-                            becoming orphaned records.</label>
+                        <input type="radio" name="ccq4_6" id="ccq4_6-a" value="correct">
+                        <label for="ccq4_6-a">The name is in CITIZENS, the bill is in ENERGY_BILLS. The query joins them
+                            so you get both pieces of info without duplicating data in your tables.</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="ccq3_6" id="ccq3_6-b" value="wrong">
-                        <label for="ccq3_6-b">Access will delete the citizen and automatically change the bills'
-                            CitizenID to "Unknown".</label>
+                        <input type="radio" name="ccq4_6" id="ccq4_6-b" value="wrong">
+                        <label for="ccq4_6-b">Because single-table queries cannot use Criteria or Sorting.</label>
                     </div>
                 </div>
-                <button onclick="checkCCQ('ccq3_6', 'ccq3_6-a', 'ccq3_6-feedback')">Submit Answer</button>
-                <div id="ccq3_6-feedback" class="feedback"></div>
+                <button onclick="checkCCQ('ccq4_6', 'ccq4_6-a', 'ccq4_6-feedback')">Submit Answer</button>
+                <div id="ccq4_6-feedback" class="feedback"></div>
             </div>
 
+            <!-- CCQ 7 -->
+            <div class="concept-check">
+                <h4>Question 7: The "Between" Operator</h4>
+                <p>Write the Access criterion expression to find all Energy Credits between 100 and 500 inclusive.</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq4_7" id="ccq4_7-a" value="correct">
+                        <label for="ccq4_7-a"><code>Between 100 And 500</code> (or <code>>=100 And <=500</code>)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq4_7" id="ccq4_7-b" value="wrong">
+                        <label for="ccq4_7-b"><code>>100 And <500</code></label>
+                    </div>
+                </div>
+                <button onclick="checkCCQ('ccq4_7', 'ccq4_7-a', 'ccq4_7-feedback')">Submit Answer</button>
+                <div id="ccq4_7-feedback" class="feedback"></div>
+            </div>
         </section>
 
         <!-- VOCABULARY SECTION -->
@@ -1149,43 +1152,44 @@
 
             <div id="vocab-list">
                 <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Primary Key</div>
-                    <div class="vocab-definition">A field that uniquely identifies each record in its own table; cannot
-                        be null or duplicated.</div>
+                    <div class="vocab-term">Query</div>
+                    <div class="vocab-definition">A search of a database that extracts records meeting specified
+                        criteria, and can display selected fields from one or more tables.</div>
                 </div>
                 <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Foreign Key</div>
-                    <div class="vocab-definition">A field in one table that references the primary key of another table,
-                        creating a link between them.</div>
+                    <div class="vocab-term">Criteria</div>
+                    <div class="vocab-definition">The specific conditions or rules that data must match to be included
+                        in the query results.</div>
                 </div>
                 <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Relationship</div>
-                    <div class="vocab-definition">A defined link between two tables based on matching key fields.</div>
+                    <div class="vocab-term">Calculated Field</div>
+                    <div class="vocab-definition">A field in a query that computes new values (using math or logic)
+                        based on existing data, created on the fly and not stored in the table.</div>
                 </div>
                 <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Referential Integrity</div>
-                    <div class="vocab-definition">A rule that prevents a foreign key value from existing without a
-                        matching primary key value in the related table.</div>
+                    <div class="vocab-term">Wildcard (*)</div>
+                    <div class="vocab-definition">A symbol that substitutes for any number of unknown characters in a
+                        text search (e.g., Like "R*").</div>
                 </div>
                 <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">One-to-Many</div>
-                    <div class="vocab-definition">One record in Table A can be linked to many records in Table B, but
-                        each record in B links to only one record in A.</div>
+                    <div class="vocab-term">Wildcard (?)</div>
+                    <div class="vocab-definition">A symbol that substitutes for exactly one unknown character in a text
+                        search (e.g., Like "M????").</div>
                 </div>
                 <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Orphan Record</div>
-                    <div class="vocab-definition">A record in a child table (like ENERGY_BILLS) whose foreign key points
-                        to a primary key that no longer exists in the parent table.</div>
+                    <div class="vocab-term">AND Logic</div>
+                    <div class="vocab-definition">A condition where multiple criteria must ALL be true simultaneously
+                        for a record to be selected.</div>
                 </div>
                 <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Cascade Update</div>
-                    <div class="vocab-definition">A referential integrity option: If a Primary Key value changes, all
-                        matching Foreign Key values update automatically.</div>
+                    <div class="vocab-term">OR Logic</div>
+                    <div class="vocab-definition">A condition where at least ONE of the criteria must be true for a
+                        record to be selected.</div>
                 </div>
                 <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Cascade Delete</div>
-                    <div class="vocab-definition">A referential integrity option: If a record is deleted from the parent
-                        table, all linked records in the child table are deleted automatically.</div>
+                    <div class="vocab-term">Parameter Query</div>
+                    <div class="vocab-definition">A query that prompts the user for input (criteria) via a dialog box
+                        every time it is run (e.g., >[Enter minimum amount:]).</div>
                 </div>
             </div>
         </section>
@@ -1195,42 +1199,43 @@
             <h2>🚀 Session De-Brief</h2>
 
             <div class="highlight-box">
-                <h4>1. Knowledge Consolidation: The Architect's Explaination</h4>
-                <p>Explain the concept of Referential Integrity to a friend who has never used a database before.</p>
-                <textarea id="wrap-summary3" rows="2"
-                    placeholder="e.g., 'Imagine a library system where you can't checkout a book if...'"></textarea>
-                <button onclick="saveWrapUp3()">Save Explanation</button>
-                <span id="save-conf3"
+                <h4>1. Knowledge Consolidation: Plain English translation</h4>
+                <p>Pick ONE of the queries you just built. Write a one-sentence description of what the query does in
+                    plain English, as if explaining it to the Mayor (who is not a technical person).</p>
+                <textarea id="wrap-summary4" rows="2"
+                    placeholder="e.g., 'Mayor, this list shows us exactly who...'"></textarea>
+                <button onclick="saveWrapUp4()">Save Explanation</button>
+                <span id="save-conf4"
                     style="display:none; color: var(--secondary-color); margin-left:10px;">Saved!</span>
             </div>
 
-            <h4>2. Mastery Check: How confident are you with Relationships?</h4>
+            <h4>2. Mastery Check: How confident are you writing Queries?</h4>
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button onclick="setConfidence3('green')" style="background-color: #27ae60;">🟢 Got it all</button>
-                <button onclick="setConfidence3('yellow')" style="background-color: #f1c40f; color:#000;">🟡 Need
+                <button onclick="setConfidence4('green')" style="background-color: #27ae60;">🟢 Got it all</button>
+                <button onclick="setConfidence4('yellow')" style="background-color: #f1c40f; color:#000;">🟡 Need
                     review</button>
-                <button onclick="setConfidence3('red')" style="background-color: #e74c3c;">🔴 Need help</button>
+                <button onclick="setConfidence4('red')" style="background-color: #e74c3c;">🔴 Need help</button>
             </div>
 
             <h4>3. Reflection</h4>
-            <select id="reflection-prompt3">
+            <select id="reflection-prompt4">
                 <option value="">-- Choose a reflection prompt --</option>
-                <option value="challenging">What was the trickiest part of setting up relationships in Access?</option>
-                <option value="real-world">Think of an app you use. Where might a one-to-many relationship exist?
-                </option>
+                <option value="challenging">What is the hardest part about writing Calculated Fields?</option>
+                <option value="real-world">Why is it important that calculated fields don't save their data permanently
+                    to the table?</option>
                 <option value="questions">What question do you still have?</option>
             </select>
-            <textarea id="reflection-answer3" rows="3" placeholder="Write your reflection here..."
+            <textarea id="reflection-answer4" rows="3" placeholder="Write your reflection here..."
                 style="margin-top: 10px;"></textarea>
 
             <div class="concept-check"
-                style="border-left: 4px solid var(--primary-color); background-color: rgba(44, 62, 80, 0.05);">
-                <h4>🔭 Preview: What Session 4 Will Build On</h4>
-                <p>"The city's tables are now linked and protected. But right now, to find all unpaid bills from
-                    citizens in El Poblado, you'd have to manually scroll through hundreds of records. That's a 1990s
-                    filing cabinet. Next session, we teach the database to answer questions instantly:
-                    <strong>Queries</strong>. We will build an on-demand intelligence system for the city's AI."</p>
-                <p><em>Excellent work wiring the nervous system today!</em></p>
+                style="border-left: 4px solid var(--accent-color); background-color: rgba(231, 76, 60, 0.05);">
+                <h4>🔭 PREVIEW: Session 5 (The Mid-Term Gate)</h4>
+                <p>"You have built the city. You have secured it. You have connected it. You have taught it to answer
+                    questions. Now the examiner is going to test everything — in exam conditions, in 90 minutes, using a
+                    real past paper. Session 5 is the Mid-Term Mock. What you get wrong in Session 5 is exactly what we
+                    will surgically fix in Session 6. This is a diagnostic scan of your database brain."</p>
+                <p><em>Prepare yourselves. You are ready.</em></p>
             </div>
         </section>
     </main>
@@ -1275,31 +1280,31 @@
             if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
             if (localStorage.getItem('dyslexia') === 'true') document.body.classList.add('dyslexia-mode');
 
-            // Retrieve saved text specific to Session 3
-            if (localStorage.getItem('stretch-answer3')) document.getElementById('stretch-answer3').value = localStorage.getItem('stretch-answer3');
-            if (localStorage.getItem('wrap-summary3')) document.getElementById('wrap-summary3').value = localStorage.getItem('wrap-summary3');
-            if (localStorage.getItem('reflection-answer3')) document.getElementById('reflection-answer3').value = localStorage.getItem('reflection-answer3');
-            if (localStorage.getItem('reflection-prompt3')) document.getElementById('reflection-prompt3').value = localStorage.getItem('reflection-prompt3');
+            // Retrieve saved text specific to Session 4
+            if (localStorage.getItem('stretch-answer4')) document.getElementById('stretch-answer4').value = localStorage.getItem('stretch-answer4');
+            if (localStorage.getItem('wrap-summary4')) document.getElementById('wrap-summary4').value = localStorage.getItem('wrap-summary4');
+            if (localStorage.getItem('reflection-answer4')) document.getElementById('reflection-answer4').value = localStorage.getItem('reflection-answer4');
+            if (localStorage.getItem('reflection-prompt4')) document.getElementById('reflection-prompt4').value = localStorage.getItem('reflection-prompt4');
 
-            // Retrieve checkboxes for Session 3
+            // Retrieve checkboxes for Session 4
             for (let i = 1; i <= 4; i++) {
-                if (localStorage.getItem('s3-obj-' + i) === 'true') {
-                    document.getElementById('s3-obj-' + i).checked = true;
+                if (localStorage.getItem('s4-obj-' + i) === 'true') {
+                    document.getElementById('s4-obj-' + i).checked = true;
                 }
             }
         }
 
         // Save Objectives Progress
-        function saveProgressS3() {
+        function saveProgressS4() {
             for (let i = 1; i <= 4; i++) {
-                localStorage.setItem('s3-obj-' + i, document.getElementById('s3-obj-' + i).checked);
+                localStorage.setItem('s4-obj-' + i, document.getElementById('s4-obj-' + i).checked);
             }
         }
 
         // Hook Activity Check
-        function checkHook3() {
-            const selected = document.querySelector('input[name="hook-guess3"]:checked');
-            const feedback = document.getElementById('hook3-feedback');
+        function checkHook4() {
+            const selected = document.querySelector('input[name="hook-guess4"]:checked');
+            const feedback = document.getElementById('hook4-feedback');
             if (!selected) {
                 alert("Please select an option!");
                 return;
@@ -1307,24 +1312,23 @@
             feedback.classList.remove("correct", "incorrect", "show");
 
             if (selected.value === "correct") {
-                feedback.innerHTML = "✅ Correct! Referential Integrity is the rule that forces child records (bills) to strictly belong to valid parent records (citizens).";
+                feedback.innerHTML = "✅ Correct! A database query processes these complex cross-referenced rules in milliseconds. Manual searching is for the 1990s.";
                 feedback.classList.add("correct", "show");
             } else {
-                feedback.innerHTML = "❌ Not quite. Those sound plausible, but the precise database term deals with maintaining the 'integrity' of data 'references'.";
+                feedback.innerHTML = "❌ Not quite. Databases are built for extreme speed. The answer is measured in fractions of a second.";
                 feedback.classList.add("incorrect", "show");
             }
-            saveToLocalStorage('hook-guess3', selected.id);
+            saveToLocalStorage('hook-guess4', selected.id);
         }
 
         // Mission Check Checkboxes
-        function checkMission3() {
-            const c1 = document.getElementById('m3-chk1').checked;
-            const c2 = document.getElementById('m3-chk2').checked;
-            const c3 = document.getElementById('m3-chk3').checked;
-            const c4 = document.getElementById('m3-chk4').checked;
-            const feedback = document.getElementById('mission-success3');
+        function checkMission4() {
+            const c1 = document.getElementById('m4-chk1').checked;
+            const c2 = document.getElementById('m4-chk2').checked;
+            const c3 = document.getElementById('m4-chk3').checked;
+            const feedback = document.getElementById('mission-success4');
 
-            if (c1 && c2 && c3 && c4) {
+            if (c1 && c2 && c3) {
                 feedback.style.display = "block";
             } else {
                 feedback.style.display = "none";
@@ -1377,21 +1381,21 @@
         }
 
         // Wrap-Up Actions
-        function saveWrapUp3() {
-            saveToLocalStorage('wrap-summary3', document.getElementById('wrap-summary3').value);
-            saveToLocalStorage('reflection-answer3', document.getElementById('reflection-answer3').value);
-            saveToLocalStorage('reflection-prompt3', document.getElementById('reflection-prompt3').value);
+        function saveWrapUp4() {
+            saveToLocalStorage('wrap-summary4', document.getElementById('wrap-summary4').value);
+            saveToLocalStorage('reflection-answer4', document.getElementById('reflection-answer4').value);
+            saveToLocalStorage('reflection-prompt4', document.getElementById('reflection-prompt4').value);
 
-            document.getElementById('save-conf3').style.display = 'inline';
-            setTimeout(() => { document.getElementById('save-conf3').style.display = 'none'; }, 2000);
+            document.getElementById('save-conf4').style.display = 'inline';
+            setTimeout(() => { document.getElementById('save-conf4').style.display = 'none'; }, 2000);
         }
 
-        function setConfidence3(level) {
-            let msg = level === 'green' ? "Awesome! You've mastered relational theory." :
-                level === 'yellow' ? "Good self-awareness! Review the CCQs above." :
-                    "Don't worry! Ask your teacher to review PKs and FKs with you.";
+        function setConfidence4(level) {
+            let msg = level === 'green' ? "Awesome! You are an intelligence analyst now." :
+                level === 'yellow' ? "Good self-awareness! Review the Syntax Cheat Sheet." :
+                    "Don't worry! Queries take practice. Ask your teacher to review the syntax.";
             alert(msg);
-            saveToLocalStorage('confidence3', level);
+            saveToLocalStorage('confidence4', level);
         }
     </script>
 </body>

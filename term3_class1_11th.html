@@ -4,25 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medellín 2050: Smart City Database — Session 1</title>
+    <title>Medellín 2050: Smart City Database</title>
+
+    <!-- Modern Font Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            /* CONSISTENT COLOR PALETTE - Topic-specific customization */
-            --primary-color: #1a472a;
-            --secondary-color: #00b366;
-            --accent-color: #ff6b6b;
-            /* ACCESSIBILITY & SPACING (DO NOT MODIFY) */
+            /* CONSISTENT COLOR PALETTE - ICT/Database Colors */
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+
+            /* Modern Dark Mode Base (Slate/Zinc inspired) */
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-color-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+
+            /* Accessibility & Spacing (DO NOT MODIFY) */
             --base-spacing: 1rem;
-            --line-height: 1.8;
-            --letter-spacing: 0.5px;
+            --line-height: 1.6;
+            --letter-spacing: 0.2px;
             --font-size-base: 16px;
             --font-size-large: 18px;
             --font-size-xl: 20px;
-            --border-radius: 8px;
-            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* DYSLEXIA-FRIENDLY MODE */
+        /* 1. LIGHT MODE OVERRIDES */
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --surface-color-hover: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        /* 2. DYSLEXIA-FRIENDLY MODE FIX */
         body.dyslexia-mode {
             --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
             --font-size-base: 18px;
@@ -31,18 +56,27 @@
             --line-height: 2;
             --letter-spacing: 1px;
             background-color: #f4f1de !important;
+            color: #2c3e50 !important;
         }
 
-        /* FIXED CODE */
-        body.dyslexia-mode .section {
+        body.dyslexia-mode .section,
+        body.dyslexia-mode header,
+        body.dyslexia-mode .exercise,
+        body.dyslexia-mode .concept-check {
             background-color: #fffcf9 !important;
             color: #2c3e50 !important;
-            /* <--- This forces text to be dark in Dyslexia mode */
             border-left: 6px solid var(--secondary-color) !important;
-            padding: 2rem !important;
         }
 
-        /* UNIVERSAL STYLES */
+        body.dyslexia-mode .section h2 {
+            color: var(--primary-color) !important;
+        }
+
+        body.dyslexia-mode .section h3 {
+            color: var(--secondary-color) !important;
+        }
+
+        /* Universal Styles */
         * {
             margin: 0;
             padding: 0;
@@ -54,101 +88,72 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Arial', sans-serif;
+            font-family: var(--font-family, 'Inter', 'Segoe UI', sans-serif);
             font-size: var(--font-size-base);
             line-height: var(--line-height);
             letter-spacing: var(--letter-spacing);
-            color: #2c3e50;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            padding: 0;
-            margin: 0;
-            transition: var(--transition);
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        body.light-mode {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ecf0f1 100%);
-            color: #2c3e50;
-        }
-
-        body.light-mode .section {
-            background-color: white;
-            color: #2c3e50;
-            /* <--- Adds dark text color so it's visible */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Add this right after the 'body.light-mode .section' block */
-
-        /* Fix explicit white text elements */
-        body.light-mode .question-text,
-        body.light-mode .vocab-definition,
-        body.light-mode .answer-option {
-            color: #2c3e50;
-        }
-
-        /* Fix input boxes to look better in light mode */
-        body.light-mode input[type="text"],
-        body.light-mode input[type="number"],
-        body.light-mode textarea,
-        body.light-mode select {
-            background-color: #f8f9fa;
-            color: #2c3e50;
-            border-color: #ddd;
-        }
-
-        /* HEADER & NAVIGATION */
-        /* ULTRA-COMPACT HEADER */
+        /* HEADER & NAVIGATION (MODERN, GLASSMORPHISM) */
         header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            padding: 0.5rem 1rem;
-            /* Very tight padding */
-            text-align: center;
+            background-color: rgba(var(--surface-color-rgb), 0.85);
+            background: var(--surface-color);
+            color: var(--text-main);
+            padding: 1rem 1.5rem;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            /* Stack title and nav closely */
-            gap: 0.25rem;
+            text-align: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        header h1 {
-            font-size: 1.4rem;
-            /* Much smaller title */
-            margin: 0;
-            line-height: 1.2;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        header p {
-            font-size: 0.85rem;
-            /* Tiny subtitle */
-            margin: 0;
-            opacity: 0.9;
-            display: none;
-            /* Hides the subtitle on small screens to save space */
-        }
-
-        /* Show subtitle only on larger screens if needed */
-        @media (min-width: 768px) {
-            header p {
-                display: block;
-            }
-
+        @media (min-width: 900px) {
             header {
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-            }
-
-            header .header-text {
                 text-align: left;
+                padding: 1rem 3rem;
             }
+        }
 
-            nav {
-                margin: 0;
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 900px) {
+            header h1 {
+                justify-content: flex-start;
+            }
+        }
+
+        header p {
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            header p {
+                display: block;
             }
         }
 
@@ -156,239 +161,193 @@
             display: flex;
             justify-content: center;
             gap: 0.5rem;
-            /* Tight gap between buttons */
             flex-wrap: wrap;
-            margin-top: 0;
         }
 
-        nav button {
-            background-color: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            /* Thinner border */
-            padding: 0.25rem 0.75rem;
-            /* Tiny buttons */
-            border-radius: 4px;
-            font-size: 0.8rem;
-            /* Smaller text */
-            font-weight: 600;
-            color: white;
-            transition: all 0.2s ease;
-        }
-
-        nav button:hover {
-            background-color: white;
-            color: var(--primary-color);
+        nav button,
+        nav a {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: inherit;
+            transition: var(--transition);
+            text-decoration: none;
         }
 
         nav button:hover,
         nav a:hover {
-            background-color: white;
-            color: var(--primary-color);
-            transform: translateY(-2px);
+            background-color: var(--surface-color-hover);
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
         }
 
-        /* PROGRESS BAR */
+        /* Progress Bar */
         .progress-container {
             width: 100%;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.2);
+            height: 3px;
+            background-color: transparent;
             position: absolute;
             bottom: 0;
+            left: 0;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            background: var(--secondary-color);
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.4s ease-out;
+            box-shadow: 0 0 8px var(--secondary-color);
         }
 
-        /* MAIN CONTENT */
+        /* Main Content */
         main {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2rem 1rem;
         }
 
+        /* Modern Cards for Sections */
         .section {
-            background-color: #1e1e1e;
-            color: #ecf0f1;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
-            padding: 2rem;
+            padding: 2.5rem;
             margin: 2rem 0;
-            border-left: 5px solid var(--secondary-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
             transition: var(--transition);
-            scroll-margin-top: 100px;
+            scroll-margin-top: 120px;
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
         }
 
-        .section h2 {
-            color: var(--secondary-color);
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .section h3 {
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .section h4 {
-            color: var(--secondary-color);
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        /* CONTENT DIFFERENTIATION TABS */
-        .difficulty-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .difficulty-tabs button {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid var(--secondary-color);
-            background-color: transparent;
-            color: var(--secondary-color);
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .difficulty-tabs button.active {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-
-        .difficulty-tabs button:hover {
-            background-color: var(--secondary-color);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* CARDS & EXPANDABLE SECTIONS */
-        .card {
-            background-color: rgba(0, 179, 102, 0.1);
-            border-left: 4px solid var(--secondary-color);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin: 1rem 0;
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            box-shadow: 0 4px 12px rgba(0, 179, 102, 0.2);
-            transform: translateX(4px);
-        }
-
-        .expandable {
-            cursor: pointer;
-            padding: 1rem;
-            background-color: rgba(0, 179, 102, 0.05);
-            border-radius: var(--border-radius);
-            margin: 0.75rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            transition: var(--transition);
-            user-select: none;
-        }
-
-        .expandable:hover {
-            background-color: rgba(0, 179, 102, 0.15);
-        }
-
-        .expandable.active {
-            background-color: rgba(0, 179, 102, 0.2);
-        }
-
-        .expandable-content {
-            display: none;
-            padding: 1.5rem;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: var(--border-radius);
-            margin-top: 0.5rem;
-            animation: slideDown 0.3s ease;
-        }
-
-        .expandable.active~.expandable-content {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
+        @keyframes slideIn {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        /* HIDDEN CONTENT TOGGLE */
+        .section h2 {
+            color: var(--text-main);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section h3 {
+            color: var(--text-main);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section p {
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+        }
+
+        .question-text {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* Difficulty Tabs - Modernized */
+        .difficulty-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            background: var(--bg-color);
+            padding: 0.25rem;
+            border-radius: 12px;
+            display: inline-flex;
+        }
+
+        .difficulty-tabs button {
+            padding: 0.5rem 1.25rem;
+            border: none;
+            background-color: transparent;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: inherit;
+            transition: var(--transition);
+            margin-top: 0;
+        }
+
+        .difficulty-tabs button.active {
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
         .difficulty-content {
             display: none;
+            padding: 1.5rem;
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--secondary-color);
+            animation: fadeIn 0.3s ease;
         }
 
         .difficulty-content.active {
             display: block;
-            animation: slideDown 0.3s ease;
         }
 
-        /* INTERACTIVE ELEMENTS */
-        button,
-        input[type="button"],
-        input[type="submit"] {
-            padding: 0.75rem 1.5rem;
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Interactive Exercises */
+        .exercise {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             border-radius: var(--border-radius);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-            margin: 0.5rem 0.5rem 0.5rem 0;
         }
 
-        button:hover,
-        input[type="button"]:hover,
-        input[type="submit"]:hover {
-            background-color: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 179, 102, 0.3);
-        }
-
-        button:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        /* FORM ELEMENTS */
+        /* Modern Form Elements */
         input[type="text"],
         input[type="number"],
-        textarea,
-        select {
+        select,
+        textarea {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.875rem 1rem;
             margin: 0.5rem 0;
-            border: 2px solid var(--secondary-color);
-            border-radius: var(--border-radius);
-            background-color: #2d2d2d;
-            color: #ecf0f1;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--surface-color);
+            color: var(--text-main);
             font-family: inherit;
             font-size: 1rem;
             transition: var(--transition);
@@ -396,1621 +355,1115 @@
 
         input[type="text"]:focus,
         input[type="number"]:focus,
-        textarea:focus,
-        select:focus {
+        select:focus,
+        textarea:focus {
             outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
         }
 
-        /* ACTIVITY CONTAINERS */
-        .activity-container {
-            background-color: rgba(0, 179, 102, 0.1);
-            border: 2px dashed var(--secondary-color);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .activity-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-            display: flex;
+        /* Primary Buttons */
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            margin-top: 1rem;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
         }
 
-        /* FEEDBACK MESSAGES */
-        .feedback {
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            margin: 1rem 0;
-            display: none;
-            animation: fadeIn 0.3s ease;
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(52, 152, 219, 0.2);
         }
 
-        .feedback.show {
-            display: block;
+        button.btn-accent {
+            background-color: var(--accent-color);
         }
 
-        .feedback.correct {
-            background-color: rgba(46, 204, 113, 0.2);
-            border-left: 4px solid #2ecc71;
-            color: #2ecc71;
+        button.btn-accent:hover {
+            background-color: #c0392b;
+            box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.2);
         }
 
-        .feedback.incorrect {
-            background-color: rgba(231, 76, 60, 0.2);
-            border-left: 4px solid #e74c3c;
-            color: #e74c3c;
-        }
-
-        .feedback.info {
-            background-color: rgba(0, 179, 102, 0.2);
-            border-left: 4px solid var(--secondary-color);
-            color: var(--secondary-color);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* QUIZ & PRACTICE STYLES */
-        .question-container {
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin: 1.5rem 0;
+        /* Concept Checking Questions */
+        .concept-check {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
             border-left: 4px solid var(--accent-color);
-        }
-
-        .question-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #ecf0f1;
-            margin-bottom: 1rem;
-        }
-
-        .answer-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .answer-option {
-            padding: 1rem;
-            border: 2px solid var(--secondary-color);
-            border-radius: var(--border-radius);
-            background-color: transparent;
-            color: #ecf0f1;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: left;
-            font-size: 1rem;
-        }
-
-        .answer-option:hover {
-            background-color: rgba(0, 179, 102, 0.2);
-            border-color: var(--accent-color);
-        }
-
-        .answer-option.selected {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-            color: white;
-        }
-
-        .answer-option.correct {
-            background-color: rgba(46, 204, 113, 0.3);
-            border-color: #2ecc71;
-        }
-
-        .answer-option.incorrect {
-            background-color: rgba(231, 76, 60, 0.3);
-            border-color: #e74c3c;
-        }
-
-        /* CCQ CRITICAL REQUIREMENT */
-        .ccq-section {
-            background-color: rgba(255, 107, 107, 0.1);
-            border: 2px solid var(--accent-color);
             padding: 1.5rem;
             margin: 2rem 0;
             border-radius: var(--border-radius);
         }
 
-        .ccq-label {
-            font-weight: 700;
+        .concept-check h4 {
             color: var(--accent-color);
-            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+
+        /* Modern Radio Button List */
+        .concept-check .options {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 0.5rem;
+            margin: 1.25rem 0;
         }
 
-        /* PROGRESS TRACKING */
-        .progress-tracking {
-            background-color: rgba(0, 179, 102, 0.1);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin: 1.5rem 0;
+        .concept-check .option {
+            position: relative;
         }
 
-        .progress-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 0.75rem 0;
-        }
-
-        .progress-checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .progress-checkbox.completed {
-            background-color: #2ecc71;
-            border-color: #2ecc71;
-            color: white;
-        }
-
-        /* BADGES & ACHIEVEMENTS */
-        .achievement-badge {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
-            color: white;
-            border-radius: 50px;
-            font-weight: 700;
-            margin: 0.5rem;
-            animation: bounceIn 0.5s ease;
-        }
-
-        @keyframes bounceIn {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* ACCESSIBILITY CONTROLS */
-        .accessibility-controls {
-            display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
-            flex-wrap: wrap;
-        }
-
-        .accessibility-controls label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
-
-        .accessibility-controls input[type="checkbox"] {
-            width: auto;
-            margin: 0;
+        .concept-check input[type="radio"],
+        .exercise input[type="radio"] {
+            position: absolute;
+            opacity: 0;
             cursor: pointer;
         }
 
-        /* VOCABULARY SECTION */
-        .vocab-item {
-            background-color: rgba(0, 179, 102, 0.05);
-            border-left: 4px solid var(--secondary-color);
+        .concept-check label,
+        .exercise label.radio-label {
+            display: block;
+            padding: 1rem 1.25rem;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .concept-check label:hover,
+        .exercise label.radio-label:hover {
+            border-color: var(--text-muted);
+            background-color: var(--surface-color-hover);
+        }
+
+        .concept-check input[type="radio"]:checked+label,
+        .exercise input[type="radio"]:checked+label.radio-label {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+            box-shadow: 0 0 0 1px var(--secondary-color);
+        }
+
+        /* Feedback Boxes */
+        .feedback {
+            margin-top: 1.25rem;
             padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.correct {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Modern Tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            display: block;
+            overflow-x: auto;
+        }
+
+        th,
+        td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: var(--bg-color);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: var(--surface-color-hover);
+        }
+
+        /* Vocabulary Section */
+        .vocab-search input {
+            border-radius: 20px;
+            padding-left: 1.5rem;
+        }
+
+        .vocab-item {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.25rem;
             margin: 0.75rem 0;
             border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .vocab-item:hover {
+            transform: translateX(4px);
+            border-color: var(--text-muted);
+        }
+
+        .vocab-item.hidden {
+            display: none;
         }
 
         .vocab-term {
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1.05rem;
         }
 
         .vocab-definition {
-            color: #ecf0f1;
-            margin-bottom: 0.5rem;
+            display: none;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            line-height: 1.5;
         }
 
-        .vocab-example {
-            font-style: italic;
-            color: #aaa;
-            margin-top: 0.5rem;
+        .vocab-definition.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
         }
 
-        /* SEARCH & FILTER */
-        .search-box {
-            margin: 1rem 0;
-        }
-
-        .search-box input {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        /* TABLE STYLES */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-
-        table th,
-        table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(0, 179, 102, 0.2);
-        }
-
-        table th {
-            background-color: rgba(0, 179, 102, 0.1);
-            color: var(--secondary-color);
-            font-weight: 700;
-        }
-
-        table tr:hover {
-            background-color: rgba(0, 179, 102, 0.05);
-        }
-
-        /* REFLECTION AREA */
-        .reflection-area {
-            background-color: rgba(0, 0, 0, 0.3);
+        /* Highlights & Tags */
+        .highlight-box {
+            background-color: var(--bg-color);
             padding: 1.5rem;
-            border-radius: var(--border-radius);
+            border-radius: 12px;
             margin: 1.5rem 0;
-            border-left: 4px solid var(--secondary-color);
+            border: 1px solid var(--border-color);
         }
 
-        .reflection-prompt {
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
             font-weight: 600;
+            background: rgba(52, 152, 219, 0.1);
             color: var(--secondary-color);
-            margin-bottom: 0.75rem;
         }
 
-        /* RESPONSIVE DESIGN */
+        /* Checkbox lists for objectives */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: var(--surface-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--secondary-color);
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
-
-            nav {
-                gap: 0.75rem;
-            }
-
-            nav button,
-            nav a {
-                padding: 0.6rem 1rem;
-                font-size: 0.9rem;
-            }
-
             main {
-                padding: 1rem;
+                padding: 1rem 0.5rem;
             }
 
             .section {
                 padding: 1.5rem;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
             }
 
-            .difficulty-tabs {
-                gap: 0.25rem;
+            .section h2 {
+                font-size: 1.5rem;
             }
 
-            .difficulty-tabs button {
-                padding: 0.5rem 1rem;
+            th,
+            td {
+                padding: 0.75rem;
                 font-size: 0.9rem;
             }
+        }
 
-            .answer-option {
-                font-size: 0.95rem;
-                padding: 0.75rem;
+        /* PRINT STYLES */
+        @media print {
+
+            header,
+            nav,
+            button {
+                display: none;
+            }
+
+            .section {
+                page-break-inside: avoid;
+                border: 1px solid #ccc;
+                color: black;
+                background: white;
+            }
+
+            body {
+                background: white;
+                color: black;
             }
         }
     </style>
 </head>
 
-<body>
+<body class="dark-mode">
+
+    <!-- HEADER & NAVIGATION -->
     <header>
-        <h1>🏙️ Medellín 2050: Smart City Database</h1>
-        <p>Session 1: Building the City's DNA — Database Structure & Data Types</p>
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
+        <div>
+            <h1>🏙️ Medellín 2050: Smart City</h1>
+            <p>IGCSE ICT (0417) | Session 1: Building the City's DNA</p>
         </div>
         <nav>
-            <button onclick="toggleMode()">🌙 Mode</button>
+            <button onclick="toggleMode()">🌙 Theme</button>
             <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
             <button onclick="scrollToSection('concepts')">Concepts</button>
             <button onclick="scrollToSection('demo')">Demo</button>
             <button onclick="scrollToSection('mission')">Mission</button>
             <button onclick="scrollToSection('drill')">Drill</button>
-            <button onclick="scrollToSection('vocab')">Vocab</butt¿on>
+            <button onclick="scrollToSection('vocab')">Vocab</button>
         </nav>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
     </header>
 
     <main>
-        <!-- OPENING ACTIVITY SECTION -->
-        <section class="section" id="opening">
-            <h2>⚡ The Hook Scenario (5 min)</h2>
-            <div class="activity-container">
-                <div class="activity-title">🎯 The Crisis</div>
-                <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">
-                    <strong>It's 2050.</strong> Medellín's new AI-powered Metro system just crashed at rush hour,
-                    stranding 400,000 commuters. The city's lead engineer calls you in a panic. The culprit?
-                    <strong>The citizen database.</strong> Someone stored ages as TEXT fields ('thirty-two'),
-                    ticket prices as plain numbers with no currency format, and journey dates as free-text strings
-                    like 'next Tuesday.' The AI couldn't process any of it.
-                </p>
-                <p style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--accent-color); font-weight: 700;">
-                    ⚠️ Three lines went offline. The city is asking: <strong>Who built this broken schema?
-                        More importantly — can you fix it?</strong>
-                </p>
-                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
-                    <em>Today, you become the Architect of the City's DNA. Every field you design either keeps
-                        Medellín running — or shuts it down.</em>
-                </p>
-
-                <div style="background-color: rgba(0, 179, 102, 0.1); padding: 1.5rem; border-radius: 8px;">
-                    <h4>Your Task:</h4>
-                    <p style="margin-bottom: 1rem;">What would you have done differently to prevent this crash?
-                        Choose the most important factor:</p>
-                    <div class="answer-options" id="hookOptions">
-                        <button class="answer-option" onclick="selectHookAnswer(this, 'types')">
-                            ✓ Store age, price, and date using the correct data types
-                        </button>
-                        <button class="answer-option" onclick="selectHookAnswer(this, 'validation')">
-                            ✓ Add validation rules to prevent invalid entries
-                        </button>
-                        <button class="answer-option" onclick="selectHookAnswer(this, 'structure')">
-                            ✓ Design the database structure carefully from the start
-                        </button>
-                        <button class="answer-option" onclick="selectHookAnswer(this, 'testing')">
-                            ✓ Test the system thoroughly before going live
-                        </button>
-                    </div>
-                    <div id="hookFeedback" class="feedback"></div>
-                </div>
-                <button onclick="saveHookResponse()" style="margin-top: 1.5rem;">Save My Answer</button>
+        <!-- OPENING ACTIVITY (MANDATORY & INTERACTIVE) -->
+        <section class="section" id="opening-activity">
+            <h2>⚡ The Hook: 400,000 Commuters Stranded</h2>
+            <div class="highlight-box">
+                <p><strong>Year: 2050. Location: Medellín.</strong></p>
+                <p>The city's new AI-powered Metro system just crashed at rush hour, stranding 400,000 commuters. The
+                    city's lead engineer calls you in a panic. The culprit? The citizen database. Three lines went
+                    offline because the AI couldn't process the stored data.</p>
+                <p>The city is asking: <em>who built this broken schema?</em> More importantly — can you fix it?</p>
             </div>
+
+            <div class="exercise">
+                <p class="question-text">Look at these three snippets of data recovered from the crashed database logs.
+                    Which one do you think caused the critical math failure in the AI's ticket pricing algorithm?</p>
+
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="hook-guess" id="hook-1" value="wrong">
+                        <label class="radio-label" for="hook-1">Age: 32</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="hook-guess" id="hook-2" value="correct">
+                        <label class="radio-label" for="hook-2">Age: "thirty-two"</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="hook-guess" id="hook-3" value="wrong">
+                        <label class="radio-label" for="hook-3">Journey Date: 14/03/2050</label>
+                    </div>
+                </div>
+                <button onclick="checkHook()">Analyze Log</button>
+                <div id="hook-feedback" class="feedback"></div>
+            </div>
+            <p><em>Today, you become the Architect of the City's DNA. Every field you design either keeps Medellín
+                    running — or shuts it down.</em></p>
         </section>
 
         <!-- LEARNING OBJECTIVES -->
-        <section class="section">
-            <h2>📚 Learning Objectives (5 min)</h2>
+        <section class="section" id="learning-objectives">
+            <h2>🎯 Mission Objectives</h2>
+            <p>To restore the database, you must master the building blocks of data structures. By the end of this
+                session, you will be able to:</p>
 
-            <h3>Cognitive Objectives</h3>
-            <p style="margin-bottom: 1rem;">By the end of this lesson, <strong>I will be able to:</strong></p>
-            <div class="progress-tracking">
-                <div class="progress-item">
-                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
-                    <span>Define and classify the eight main data types (Text, Number, Currency, Date/Time, Yes/No,
-                        AutoNumber, OLE Object, Memo)</span>
+            <div class="highlight-box">
+                <div class="checklist-item">
+                    <input type="checkbox" id="obj-1" onchange="saveProgress()">
+                    <label for="obj-1"><strong>Cognitive:</strong> Identify and select appropriate data types for a
+                        given dataset in MS Access.</label>
                 </div>
-                <div class="progress-item">
-                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
-                    <span>Explain why selecting the correct data type is critical for database integrity and AI
-                        functionality</span>
+                <div class="checklist-item">
+                    <input type="checkbox" id="obj-2" onchange="saveProgress()">
+                    <label for="obj-2"><strong>Cognitive:</strong> Explain the difference between flat-file and
+                        relational databases.</label>
                 </div>
-                <div class="progress-item">
-                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
-                    <span>Identify the properties of a primary key and set one in MS Access</span>
+                <div class="checklist-item">
+                    <input type="checkbox" id="obj-3" onchange="saveProgress()">
+                    <label for="obj-3"><strong>Cognitive:</strong> Define and implement a Primary Key with its mandatory
+                        properties.</label>
                 </div>
-                <div class="progress-item">
-                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
-                    <span>Design a database table schema with appropriate field names and data types</span>
-                </div>
-                <div class="progress-item">
-                    <div class="progress-checkbox" onclick="toggleCheckbox(this)">✓</div>
-                    <span>Distinguish between flat-file and relational databases and explain the advantages of
-                        each</span>
+                <div class="checklist-item">
+                    <input type="checkbox" id="obj-4" onchange="saveProgress()">
+                    <label for="obj-4"><strong>Social-Emotional:</strong> Demonstrate attention to detail, recognizing
+                        that tiny structural errors have massive real-world impacts.</label>
                 </div>
             </div>
-
-            <h3 style="margin-top: 2rem;">Social-Emotional Objectives</h3>
-            <p style="margin-bottom: 1rem;">I will develop the ability to:</p>
-            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
-                <li style="margin: 0.75rem 0;">Think systematically about structure and consequences of design choices
-                </li>
-                <li style="margin: 0.75rem 0;">Take responsibility for data integrity in collaborative systems</li>
-                <li style="margin: 0.75rem 0;">Explain technical concepts clearly to peers</li>
-            </ul>
-
-            <h3>Prerequisites You Should Know:</h3>
-            <p style="margin: 0.75rem 0;">✓ How to open and navigate MS Access</p>
-            <p style="margin: 0.75rem 0;">✓ What a database table is (rows and columns)</p>
-            <p style="margin: 0.75rem 0;">✓ Basic keyboard and mouse navigation</p>
+            <p><small><em>Prior Knowledge required: Basic understanding of what a table is (rows and
+                        columns).</em></small></p>
         </section>
 
         <!-- CONCEPT EXPLORATION -->
         <section class="section" id="concepts">
-            <h2>🎓 Concept Exploration: The Architect's Cheat Sheet (20-25 min)</h2>
-
-            <p style="margin-bottom: 1.5rem;">
-                <strong>The Challenge:</strong> Medellín needs you to build tables that the AI can trust.
-                That means understanding the eight data types and when to use each one.
+            <h2>📚 The Architect's Cheat Sheet</h2>
+            <p>Before we touch the live servers, you need to understand the two core philosophies of data architecture.
             </p>
 
-            <!-- DIFFICULTY TABS -->
-            <h3>Choose Your Learning Level:</h3>
             <div class="difficulty-tabs">
-                <button class="active" onclick="switchDifficulty('basic')">🟢 Basic</button>
-                <button onclick="switchDifficulty('intermediate')">🟡 Intermediate</button>
-                <button onclick="switchDifficulty('advanced')">🔴 Advanced</button>
+                <button class="active" onclick="switchDifficulty('basic')">Basic: Architectures</button>
+                <button onclick="switchDifficulty('intermediate')">Intermediate: Data Types</button>
+                <button onclick="switchDifficulty('advanced')">Advanced: The Primary Key</button>
             </div>
 
-            <!-- BASIC LEVEL -->
-            <div id="basic-content" class="difficulty-content active">
-                <h3 style="color: #2ecc71;">Basic Level: The Essentials</h3>
-
-                <h4>The Eight Data Types (Simplified)</h4>
-                <p style="margin-bottom: 1.5rem;">Think of data types as containers. Each container only holds one kind
-                    of thing:</p>
-
-                <div class="card">
-                    <strong>📝 Text (Short Text)</strong>
-                    <p>Stores letters, numbers, and symbols combined. Max ~255 characters.</p>
-                    <p style="color: #aaa; font-size: 0.9rem;">Examples: CitizenID (C-00451), District Name, Status</p>
-                </div>
-
-                <div class="card">
-                    <strong>🔢 Number (Integer)</strong>
-                    <p>Stores whole numbers only. Allows math operations.</p>
-                    <p style="color: #aaa; font-size: 0.9rem;">Examples: Age (25), Capacity (120), Population</p>
-                </div>
-
-                <div class="card">
-                    <strong>💵 Currency</strong>
-                    <p>Stores money values with automatic formatting and rounding.</p>
-                    <p style="color: #aaa; font-size: 0.9rem;">Examples: MaintenanceCost ($5,200), Fare</p>
-                </div>
-
-                <div class="card">
-                    <strong>📅 Date/Time</strong>
-                    <p>Stores dates and times so they can be sorted chronologically.</p>
-                    <p style="color: #aaa; font-size: 0.9rem;">Examples: CommissionDate (25/03/2050), LastServiceDate
-                    </p>
-                </div>
-
-                <div class="card">
-                    <strong>☑️ Yes/No (Boolean)</strong>
-                    <p>Stores only two values: True or False (displayed as checkboxes).</p>
-                    <p style="color: #aaa; font-size: 0.9rem;">Examples: IsElectric, IsVerified, IsActive</p>
-                </div>
-
-                <div class="card">
-                    <strong>🔑 AutoNumber</strong>
-                    <p>Automatically generates unique numbers (1, 2, 3...). Cannot be edited.</p>
-                    <p style="color: #aaa; font-size: 0.9rem;">Examples: Auto-generated ID fields</p>
-                </div>
-
-                <div class="card">
-                    <strong>📦 OLE Object & Memo</strong>
-                    <p><strong>Memo:</strong> Long text (up to 65,000 characters)</p>
-                    <p><strong>OLE Object:</strong> Embedded files (images, documents)</p>
-                    <p style="color: #aaa; font-size: 0.9rem;">Examples: Notes, Description, Photos</p>
-                </div>
-
-                <div class="activity-container" style="margin-top: 2rem;">
-                    <div class="activity-title">Quick Check:</div>
-                    <p style="margin-bottom: 1rem;"><strong>Match the data type to the field:</strong></p>
-                    <div id="basicQuiz"></div>
-                </div>
+            <!-- Basic Concept -->
+            <div id="content-basic" class="difficulty-content active">
+                <h3>Flat-File vs. Relational Database</h3>
+                <table>
+                    <tr>
+                        <th>Architecture</th>
+                        <th>Flat-File Database</th>
+                        <th>Relational Database</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Structure</strong></td>
+                        <td>One single table containing all data.</td>
+                        <td>Multiple linked tables.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Redundancy</strong></td>
+                        <td>High — data is repeated across rows.</td>
+                        <td>Low — data stored once, referenced via keys.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Example</strong></td>
+                        <td>A single spreadsheet of all citizens + their districts + energy bills in one row.</td>
+                        <td>Separate <code>CITIZENS</code>, <code>DISTRICTS</code>, and <code>ENERGY_BILLS</code>
+                            tables, linked by ID.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Risk</strong></td>
+                        <td>Update anomaly — change one address, miss 50 duplicate rows.</td>
+                        <td>Requires careful key design.</td>
+                    </tr>
+                </table>
+                <p><strong>🎯 Exam-Precision Definition:</strong> A flat-file database stores all data in a single
+                    table, leading to data redundancy. A relational database uses multiple tables linked by key fields
+                    to eliminate redundancy and improve data integrity.</p>
             </div>
 
-            <!-- INTERMEDIATE LEVEL -->
-            <div id="intermediate-content" class="difficulty-content">
-                <h3 style="color: #f39c12;">Intermediate Level: Design Decisions</h3>
-
-                <h4>Why Data Types Matter</h4>
-                <p style="margin-bottom: 1.5rem;">
-                    Data types aren't just labels — they're <strong>contracts</strong>. When you declare a field as
-                    <strong>Currency</strong>, you're telling the database: "I promise this will only contain money
-                    values,
-                    and you should format it with a currency symbol and two decimal places."
-                </p>
-
-                <div class="expandable" onclick="toggleExpandable(this)">
-                    <span>🔴 Why the Metro Crash Happened</span>
-                    <span>→</span>
-                </div>
-                <div class="expandable-content">
-                    <p><strong>The Database Knew How to Store Text.</strong> But the AI couldn't sort "thirty-two"
-                        numerically. It couldn't calculate "next Tuesday" as a future date. It couldn't charge a fare
-                        in currency format.</p>
-                    <p style="margin-top: 1rem;"><strong>The System Failed</strong> because the schema didn't enforce
-                        the business rules. The data types were wrong.</p>
-                </div>
-
-                <h4 style="margin-top: 2rem;">The Primary Key: The City's Fingerprint</h4>
-                <p style="margin-bottom: 1rem;">
-                    <strong>Definition (IGCSE):</strong> A primary key is a field (or combination of fields)
-                    that uniquely identifies each record. It cannot be null and cannot contain duplicates.
-                </p>
-
-                <div class="card">
-                    <strong>🔑 Properties of a Primary Key:</strong>
-                    <ul style="margin-left: 1.5rem; margin-top: 0.75rem;">
-                        <li><strong>Unique:</strong> No two records can have the same value</li>
-                        <li><strong>Never empty (non-null):</strong> Every record must have a value</li>
-                        <li><strong>Stable:</strong> The value should not need to change</li>
-                        <li><strong>Minimal:</strong> As short as possible while remaining unique</li>
-                    </ul>
-                </div>
-
-                <p
-                    style="margin-top: 1.5rem; background-color: rgba(0, 179, 102, 0.1); padding: 1rem; border-radius: 8px;">
-                    <strong>Analogy:</strong> Every citizen of Medellín 2050 has a chip implanted at birth with a unique
-                    7-character ID. No two chips are identical—even twins have different IDs. That chip ID is the
-                    primary key of the CITIZENS table.
-                </p>
-
-                <h4 style="margin-top: 2rem;">Flat-File vs. Relational Databases</h4>
-
-                <div class="expandable" onclick="toggleExpandable(this)">
-                    <span>📋 Flat-File Database</span>
-                    <span>→</span>
-                </div>
-                <div class="expandable-content">
-                    <p><strong>Definition:</strong> All data stored in a single table.</p>
-                    <p style="margin-top: 0.75rem;"><strong>Problem:</strong> Data redundancy. If Medellín has 10
-                        citizens
-                        in District Centro, the district information is repeated 10 times.</p>
-                    <p style="margin-top: 0.75rem;"><strong>Risk:</strong> Update anomaly—changing the district manager
-                        requires updating 10 rows, and you might miss one, creating inconsistency.</p>
-                </div>
-
-                <div class="expandable" onclick="toggleExpandable(this)">
-                    <span>🔗 Relational Database</span>
-                    <span>→</span>
-                </div>
-                <div class="expandable-content">
-                    <p><strong>Definition:</strong> Multiple tables linked by keys. Each data element stored only once.
-                    </p>
-                    <p style="margin-top: 0.75rem;"><strong>Advantage:</strong> Change the district manager once, and
-                        all
-                        citizens instantly see the update. No redundancy. No inconsistency.</p>
-                    <p style="margin-top: 0.75rem;"><strong>Best for:</strong> Complex systems like cities where
-                        relationships
-                        matter (citizens → districts → energy grids → metro stations).</p>
-                </div>
-
-                <div class="activity-container" style="margin-top: 2rem;">
-                    <div class="activity-title">⚠️ CONCEPT CHECK 1 (Critical Understanding):</div>
-                    <p style="margin-bottom: 1rem;">
-                        <strong>Question:</strong> The Medellín database stores all citizen data, district data, and
-                        energy
-                        billing in one table. This is an example of which type of database? What is one consequence?
-                    </p>
-                    <div class="answer-options" id="ccq1-options"></div>
-                    <button onclick="checkCCQ('ccq1')" style="margin-top: 1rem;">Check Answer</button>
-                    <div id="ccq1-feedback" class="feedback"></div>
+            <!-- Intermediate Concept -->
+            <div id="content-intermediate" class="difficulty-content">
+                <h3>The Data Type Arsenal (0417 Taxonomy)</h3>
+                <p>Data types are contracts between the city and the database engine. Break the contract, and the system
+                    crashes.</p>
+                <table>
+                    <tr>
+                        <th>Data Type</th>
+                        <th>What It Stores</th>
+                        <th>Medellín 2050 Example</th>
+                        <th>Key Rule</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Text (Alphanumeric)</strong></td>
+                        <td>Letters, numbers, symbols — but NOT for calculation.</td>
+                        <td><code>CitizenID</code>, <code>Surname</code></td>
+                        <td>Use when you will NEVER calculate with the value.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integer (Numeric)</strong></td>
+                        <td>Whole numbers only.</td>
+                        <td><code>EnergyCredits</code>, <code>FloorNumber</code></td>
+                        <td>No decimal places.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Decimal (Numeric)</strong></td>
+                        <td>Numbers with decimal places.</td>
+                        <td><code>TemperatureSensor</code></td>
+                        <td>Specify decimal places.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Currency</strong></td>
+                        <td>Monetary values.</td>
+                        <td><code>FineAmount</code></td>
+                        <td>Prevents rounding errors, auto-adds symbol.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Date/Time</strong></td>
+                        <td>Dates and/or times.</td>
+                        <td><code>DateOfBirth</code></td>
+                        <td>Must set display format (e.g., dd/mm/yyyy).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Boolean / Logical</strong></td>
+                        <td>Two-state only: Yes/No, True/False.</td>
+                        <td><code>IsVerified</code></td>
+                        <td>Eliminates invalid entries like "maybe".</td>
+                    </tr>
+                </table>
+                <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
+                    <strong>⚠️ Common Error:</strong> Using <em>Integer</em> for a field like <code>CitizenID</code>
+                    (e.g. C-00451). This fails because the hyphen makes it non-numeric. IDs with letters or symbols are
+                    always <strong>Text</strong>.
                 </div>
             </div>
 
-            <!-- ADVANCED LEVEL -->
-            <div id="advanced-content" class="difficulty-content">
-                <h3 style="color: #e74c3c;">Advanced Level: Schema Design & Optimization</h3>
-
-                <h4>The Data Type Selection Algorithm</h4>
-                <p style="margin-bottom: 1.5rem;">
-                    When designing a schema, ask these questions in order:
-                </p>
-
-                <div
-                    style="background-color: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--secondary-color);">
-                    <p style="margin-bottom: 0.75rem;"><strong>1. Is this a unique identifier?</strong> → AutoNumber or
-                        a meaningful Text field (e.g., CitizenID)</p>
-                    <p style="margin-bottom: 0.75rem;"><strong>2. Is this currency?</strong> → Currency (not Number).
-                        Currency automatically handles rounding and formatting per local standards.</p>
-                    <p style="margin-bottom: 0.75rem;"><strong>3. Is this a date or time?</strong> → Date/Time. Never
-                        store as Text. Enables chronological sorting, calculations (age, duration), and query filtering
-                        by date range.</p>
-                    <p style="margin-bottom: 0.75rem;"><strong>4. Is this a yes/no value?</strong> → Yes/No (Boolean).
-                        Prevents invalid entries like "YES", "yes", "y", "1" cluttering the database.</p>
-                    <p style="margin-bottom: 0.75rem;"><strong>5. Is this numeric and mathematical?</strong> → Number
-                        (choose Integer or Double based on decimal need). Allows SUM, AVG, and comparison operators.</p>
-                    <p style="margin-bottom: 0.75rem;"><strong>6. Is this very long (>255 chars)?</strong> → Memo. For
-                        notes, descriptions, comments.</p>
-                    <p style="margin-bottom: 0;"><strong>7. Otherwise:</strong> → Short Text. Default for names,
-                        addresses, codes.</p>
-                </div>
-
-                <h4 style="margin-top: 2rem;">Natural Keys vs. Surrogate Keys</h4>
-
-                <div class="card">
-                    <strong>Natural Key (Composite)</strong>
-                    <p>A key based on real-world data: CitizenID (C-00451), VehicleCode (MV-A001)</p>
-                    <p style="margin-top: 0.75rem; color: #aaa;"><strong>Pros:</strong> Meaningful, self-describing,
-                        users understand it</p>
-                    <p style="color: #aaa;"><strong>Cons:</strong> Can change (city might renumber IDs); might be long
-                    </p>
-                </div>
-
-                <div class="card">
-                    <strong>Surrogate Key (AutoNumber)</strong>
-                    <p>An arbitrary number generated by the system: 1, 2, 3, 4...</p>
-                    <p style="margin-top: 0.75rem; color: #aaa;"><strong>Pros:</strong> Never changes, always unique,
-                        minimal storage</p>
-                    <p style="color: #aaa;"><strong>Cons:</strong> Meaningless to users, requires a natural key for
-                        indexing</p>
-                </div>
-
-                <p
-                    style="margin-top: 1.5rem; background-color: rgba(255, 107, 107, 0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-color);">
-                    <strong>IGCSE Insight:</strong> For this course, natural keys (like CitizenID) are preferred because
-                    they demonstrate understanding of data modeling. Surrogate keys are acceptable but require
-                    justification.
-                </p>
-
-                <h4 style="margin-top: 2rem;">Common Data Type Mistakes</h4>
-
-                <div class="expandable" onclick="toggleExpandable(this)">
-                    <span>❌ Storing Phone Numbers as Numbers</span>
-                    <span>→</span>
-                </div>
-                <div class="expandable-content">
-                    <p><strong>Problem:</strong> Phone numbers can start with 0 (which Numbers ignore).
-                        0123456789 becomes 123456789.</p>
-                    <p style="margin-top: 0.75rem;"><strong>Solution:</strong> Store as Text.</p>
-                </div>
-
-                <div class="expandable" onclick="toggleExpandable(this)">
-                    <span>❌ Using Currency for Quantities</span>
-                    <span>→</span>
-                </div>
-                <div class="expandable-content">
-                    <p><strong>Problem:</strong> Currency formats add symbol and decimals. A quantity of 5 becomes
-                        "$5.00",
-                        which confuses calculations.</p>
-                    <p style="margin-top: 0.75rem;"><strong>Solution:</strong> Use Number (Integer) for quantities,
-                        Currency only for money.</p>
-                </div>
-
-                <div class="expandable" onclick="toggleExpandable(this)">
-                    <span>❌ Storing Dates as Text ('25/03/2050')</span>
-                    <span>→</span>
-                </div>
-                <div class="expandable-content">
-                    <p><strong>Problem:</strong> Text dates can't be sorted chronologically. "01/12/2050" appears before
-                        "31/01/2050" alphabetically, but it's actually later.</p>
-                    <p style="margin-top: 0.75rem;"><strong>Solution:</strong> Use Date/Time. The database handles
-                        format display;
-                        internally it stores as a number (days since reference point) for sorting.</p>
-                </div>
-
-                <div class="activity-container" style="margin-top: 2rem;">
-                    <div class="activity-title">⚠️ CONCEPT CHECK 2 (Deep Analysis):</div>
-                    <p style="margin-bottom: 1rem;">
-                        <strong>Scenario:</strong> A field called VehicleCode contains values like MV-A001 and MV-D002.
-                        A student suggests using AutoNumber instead. Give two reasons why VehicleCode is better.
-                    </p>
-                    <textarea id="ccq2-answer" placeholder="Write your reasoning here..."
-                        style="min-height: 120px;"></textarea>
-                    <button onclick="checkCCQ('ccq2')" style="margin-top: 1rem;">Check Understanding</button>
-                    <div id="ccq2-feedback" class="feedback"></div>
-                </div>
+            <!-- Advanced Concept -->
+            <div id="content-advanced" class="difficulty-content">
+                <h3>The Primary Key: The City's Fingerprint</h3>
+                <p><strong>🎯 Exam-Precision Definition:</strong> A primary key is a field (or combination of fields)
+                    that uniquely identifies each record in a table. It cannot be null and cannot contain duplicate
+                    values.</p>
+                <p><strong>The Analogy:</strong> Every citizen of Medellín 2050 has a chip implanted at birth with a
+                    unique 7-character ID. No two chips are identical. Even twins. That chip ID is the primary key.</p>
+                <ul>
+                    <li>✅ <strong>Unique:</strong> No duplicates allowed.</li>
+                    <li>✅ <strong>Never empty:</strong> No nulls allowed.</li>
+                    <li>✅ <strong>Stable:</strong> It should never need to change.</li>
+                    <li>✅ <strong>Minimal:</strong> As short as possible while remaining unique.</li>
+                </ul>
             </div>
         </section>
 
-        <!-- GUIDED DEMONSTRATION -->
+        <!-- APPLIED EXAMPLES / DEMO -->
         <section class="section" id="demo">
-            <h2>🛠️ Guided Demonstration: Building the CITIZENS Table (0:25 – 0:55)</h2>
+            <h2>🛠️ The Live Build: CITIZENS Table</h2>
+            <p>Your Lead Engineer is restoring the <code>CITIZENS</code> table in MS Access. First, download the
+                recovered dataset.</p>
 
-            <h3>The Dataset</h3>
-            <p style="margin-bottom: 1rem;">
-                Below is the CITIZENS table—10 citizens registered in Medellín 2050's Smart Infrastructure grid.
-                Study it carefully. This is the table we're about to build in MS Access.
-            </p>
+            <button
+                onclick="window.open('https://docs.google.com/spreadsheets/d/1kdIxBR5eP3OwUH5Srg13fSAUOY-Bw6ZgTfHkkyC6IWU/edit?usp=sharing', '_blank')"
+                style="margin-bottom: 1.5rem;">
+                📥 Download Citizens Dataset (CSV)
+            </button>
 
-            <table>
-                <thead>
+            <div class="highlight-box">
+                <h4>Dataset Preview (First 3 Records)</h4>
+                <table>
                     <tr>
                         <th>CitizenID</th>
-                        <th>FullName</th>
-                        <th>Age</th>
-                        <th>RegistrationDate</th>
+                        <th>Surname</th>
+                        <th>FirstName</th>
+                        <th>DateOfBirth</th>
                         <th>EnergyCredits</th>
                         <th>IsVerified</th>
-                        <th>DistrictAssigned</th>
                     </tr>
-                </thead>
-                <tbody>
                     <tr>
                         <td>C-00101</td>
-                        <td>María García</td>
-                        <td>28</td>
-                        <td>01/03/2050</td>
+                        <td>Restrepo</td>
+                        <td>Valentina</td>
+                        <td>14/03/2001</td>
                         <td>850</td>
                         <td>Yes</td>
-                        <td>Centro</td>
                     </tr>
                     <tr>
                         <td>C-00102</td>
-                        <td>José Rodríguez</td>
-                        <td>45</td>
-                        <td>03/03/2050</td>
+                        <td>García</td>
+                        <td>Mateo</td>
+                        <td>22/07/1998</td>
                         <td>1200</td>
                         <td>Yes</td>
-                        <td>Laureles</td>
                     </tr>
                     <tr>
                         <td>C-00103</td>
-                        <td>Ana López</td>
-                        <td>32</td>
-                        <td>05/03/2050</td>
-                        <td>650</td>
-                        <td>No</td>
-                        <td>Sabaneta</td>
-                    </tr>
-                    <tr>
-                        <td>C-00104</td>
-                        <td>Carlos Martínez</td>
-                        <td>19</td>
-                        <td>02/03/2050</td>
+                        <td>Ospina</td>
+                        <td>Isabella</td>
+                        <td>05/11/2003</td>
                         <td>340</td>
-                        <td>Yes</td>
-                        <td>Envigado</td>
+                        <td>No</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>MS Access Implementation Steps</h3>
+            <ol>
+                <li><strong>Create new database:</strong> Open Microsoft Access, select Blank Desktop Database, and name
+                    it <code>Medellin2050_SmartCity.accdb</code>.</li>
+                <li><strong>Design View:</strong> Right-click on 'Table1', choose <strong>Design View</strong>, and save
+                    the table as <code>CITIZENS</code>. Define the field structure exactly as follows:
+                    <ul>
+                        <li><code>CitizenID</code> -> <strong>Short Text</strong> (Contains a hyphen).</li>
+                        <li><code>DateOfBirth</code> -> <strong>Date/Time</strong> (Use Field Properties to set format
+                            to Short Date: dd/mm/yyyy).</li>
+                        <li><code>EnergyCredits</code> -> <strong>Number</strong> (Set Field Size to Integer in
+                            properties - no fractions of credit).</li>
+                        <li><code>FineAmount</code> -> <strong>Currency</strong> (Handles the monetary symbol
+                            automatically).</li>
+                        <li><code>IsVerified</code> -> <strong>Yes/No</strong> (Boolean logic).</li>
+                    </ul>
+                </li>
+                <li><strong>Primary Key:</strong> Select the <code>CitizenID</code> row and click the 🔑 <strong>Primary
+                        Key</strong> button in the top ribbon. This is the city's fingerprint!</li>
+                <li><strong>The Deliberate Error:</strong> Temporarily change <code>EnergyCredits</code> to <em>Short
+                        Text</em>. Switch to Datasheet View, save, and type "plenty" in the field. When you switch back
+                    to <em>Number</em> in Design View, Access warns of data loss. <strong>The type is the law. Design
+                        schema BEFORE importing data.</strong></li>
+                <li><strong>Import the CSV:</strong> Go to the <strong>External Data</strong> tab &gt; <strong>New Data
+                        Source</strong> &gt; <strong>From File</strong> &gt; <strong>Text File</strong>. Select your
+                    downloaded CSV, choose to <em>Append a copy of the records to the table <code>CITIZENS</code></em>,
+                    and finish the wizard.</li>
+            </ol>
+        </section>
+
+        <!-- INTERACTIVE ACTIVITIES / MISSION -->
+        <section class="section" id="mission">
+            <h2>🎯 Student Mission: The Transport Registry</h2>
+            <p>The city's Metro Authority needs its own table. Your job is to design and build it from scratch in MS
+                Access using the dataset provided below. The autonomous trains won't run without it.</p>
+
+            <button
+                onclick="window.open('https://docs.google.com/spreadsheets/d/1OdXT1xkgeG38l-b7aoKIMNIvpMBpcoynSqF1c3wjXuM/edit?usp=sharing', '_blank')"
+                class="btn-accent" style="margin-bottom: 1.5rem;">
+                📥 Download Metro Vehicles (CSV)
+            </button>
+
+            <div class="highlight-box">
+                <h4>METRO_VEHICLES Table Preview</h4>
+                <table>
+                    <tr>
+                        <th>VehicleCode</th>
+                        <th>LineCode</th>
+                        <th>Capacity</th>
+                        <th>IsElectric</th>
+                        <th>CommissionDate</th>
+                        <th>MaintenanceCost</th>
+                        <th>Status</th>
                     </tr>
                     <tr>
-                        <td>C-00105</td>
-                        <td>Lucía Pérez</td>
-                        <td>67</td>
-                        <td>04/03/2050</td>
-                        <td>920</td>
+                        <td>MV-A001</td>
+                        <td>Line-A</td>
+                        <td>320</td>
                         <td>Yes</td>
-                        <td>Centro</td>
+                        <td>01/03/2040</td>
+                        <td>1500.00</td>
+                        <td>Active</td>
                     </tr>
-                </tbody>
-            </table>
-
-            <h3 style="margin-top: 2rem;">Step-by-Step Build Instructions</h3>
-
-            <div class="expandable" onclick="toggleExpandable(this)">
-                <span>📍 STEP 1: Create a New Database</span>
-                <span>→</span>
-            </div>
-            <div class="expandable-content">
-                <ol style="margin-left: 1.5rem;">
-                    <li>Open <strong>MS Access</strong></li>
-                    <li>Click <strong>Blank Desktop Database</strong></li>
-                    <li>Name it: <strong>Medellin2050_SmartCity.accdb</strong></li>
-                    <li>Choose your folder and click <strong>Create</strong></li>
-                </ol>
-                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ You now have an empty
-                        database.</strong></p>
-            </div>
-
-            <div class="expandable" onclick="toggleExpandable(this)">
-                <span>📍 STEP 2: Switch to Design View</span>
-                <span>→</span>
-            </div>
-            <div class="expandable-content">
-                <ol style="margin-left: 1.5rem;">
-                    <li>Access opens a default <strong>Table1</strong></li>
-                    <li>Right-click the table tab and select <strong>Design View</strong></li>
-                    <li>Save the table as <strong>CITIZENS</strong> when prompted</li>
-                </ol>
-                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ You're now in Design View where
-                        you define fields.</strong></p>
-            </div>
-
-            <div class="expandable" onclick="toggleExpandable(this)">
-                <span>📍 STEP 3: Define the Field Structure</span>
-                <span>→</span>
-            </div>
-            <div class="expandable-content">
-                <p style="margin-bottom: 1rem;">Enter these field definitions exactly:</p>
-                <table style="font-size: 0.9rem;">
-                    <thead>
-                        <tr>
-                            <th>Field Name</th>
-                            <th>Data Type</th>
-                            <th>Size (if applicable)</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>CitizenID</td>
-                            <td><strong>Short Text</strong></td>
-                            <td>7</td>
-                            <td>Primary key: unique citizen identifier</td>
-                        </tr>
-                        <tr>
-                            <td>FullName</td>
-                            <td><strong>Short Text</strong></td>
-                            <td>50</td>
-                            <td>Citizen's full name</td>
-                        </tr>
-                        <tr>
-                            <td>Age</td>
-                            <td><strong>Number</strong> (Integer)</td>
-                            <td>—</td>
-                            <td>Current age in years</td>
-                        </tr>
-                        <tr>
-                            <td>RegistrationDate</td>
-                            <td><strong>Date/Time</strong></td>
-                            <td>—</td>
-                            <td>Date joined the grid</td>
-                        </tr>
-                        <tr>
-                            <td>EnergyCredits</td>
-                            <td><strong>Number</strong> (Integer)</td>
-                            <td>—</td>
-                            <td>Available energy credits</td>
-                        </tr>
-                        <tr>
-                            <td>IsVerified</td>
-                            <td><strong>Yes/No</strong></td>
-                            <td>—</td>
-                            <td>Has identity been verified?</td>
-                        </tr>
-                        <tr>
-                            <td>DistrictAssigned</td>
-                            <td><strong>Short Text</strong></td>
-                            <td>30</td>
-                            <td>District name</td>
-                        </tr>
-                    </tbody>
+                    <tr>
+                        <td>MV-B002</td>
+                        <td>Line-B</td>
+                        <td>280</td>
+                        <td>No</td>
+                        <td>15/06/2041</td>
+                        <td>5000.00</td>
+                        <td>Maintenance</td>
+                    </tr>
                 </table>
-                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ All fields are now defined with
-                        the correct types.</strong></p>
             </div>
 
-            <div class="expandable" onclick="toggleExpandable(this)">
-                <span>📍 STEP 4: Set the Primary Key</span>
-                <span>→</span>
-            </div>
-            <div class="expandable-content">
-                <ol style="margin-left: 1.5rem;">
-                    <li>Click on the <strong>CitizenID</strong> row</li>
-                    <li>Click the <strong>Primary Key</strong> button (🔑) in the Design ribbon</li>
-                    <li>A key icon will appear next to CitizenID</li>
-                </ol>
-                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ CitizenID is now the fingerprint
-                        of the CITIZENS table. If you try to enter C-00101 twice, Access will reject it.</strong></p>
+            <h3>Pre-Flight Checklist</h3>
+            <p>Before using the External Data tool to import the CSV, verify you have built the correct architecture in
+                MS Access Design View:</p>
+
+            <div class="exercise" id="mission-checks">
+                <div class="checklist-item">
+                    <input type="checkbox" id="m-chk1" onchange="checkMission()">
+                    <label for="m-chk1"><code>VehicleCode</code> is set as <strong>Short Text</strong> and the 🔑
+                        <strong>Primary Key</strong> is assigned.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="m-chk2" onchange="checkMission()">
+                    <label for="m-chk2"><code>Capacity</code> is set to <strong>Number</strong> (with Field Size:
+                        Integer).</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="m-chk3" onchange="checkMission()">
+                    <label for="m-chk3"><code>IsElectric</code> is set to <strong>Yes/No</strong>.</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="m-chk4" onchange="checkMission()">
+                    <label for="m-chk4"><code>MaintenanceCost</code> is set to <strong>Currency</strong>.</label>
+                </div>
+                <div id="mission-success" class="feedback correct" style="display:none;">
+                    ✅ Great job architect! Your schema is ready. You can now safely use the External Data tab to append
+                    your CSV records to the METRO_VEHICLES table.
+                </div>
             </div>
 
-            <div class="expandable" onclick="toggleExpandable(this)">
-                <span>📍 STEP 5: Demonstration of a Data Type Error</span>
-                <span>→</span>
-            </div>
-            <div class="expandable-content">
-                <p><strong>This is a high-impact teaching moment!</strong></p>
-                <ol style="margin-left: 1.5rem;">
-                    <li>Temporarily change <strong>EnergyCredits</strong> to <strong>Short Text</strong></li>
-                    <li>Switch to Datasheet View</li>
-                    <li>Try entering "plenty" in the EnergyCredits field</li>
-                    <li>Switch the field back to <strong>Number</strong></li>
-                    <li>Access will warn: "Some data may be lost. Do you want to continue?"</li>
-                </ol>
-                <p style="margin-top: 1rem; color: var(--accent-color);"><strong>⚠️ Lesson:</strong> This is why we
-                    design the schema BEFORE entering data. The data type is the law. Choose it wrong, and you corrupt
-                    your system.</p>
-            </div>
-
-            <div class="expandable" onclick="toggleExpandable(this)">
-                <span>📍 STEP 6: Enter All 10 Records</span>
-                <span>→</span>
-            </div>
-            <div class="expandable-content">
-                <ol style="margin-left: 1.5rem;">
-                    <li>Switch back to <strong>Datasheet View</strong></li>
-                    <li>Enter the 10 citizen records from the table above</li>
-                    <li>Press <strong>Tab</strong> to move between fields</li>
-                    <li>Access will enforce your data types automatically</li>
-                    <li>If you try to enter text in the Age field, Access will reject it</li>
-                </ol>
-                <p style="margin-top: 1rem; color: var(--secondary-color);"><strong>✓ Your CITIZENS table is now
-                        complete and protected by data types.</strong></p>
-            </div>
-
-            <div class="activity-container" style="margin-top: 2rem;">
-                <div class="activity-title">⚠️ CONCEPT CHECK 3 (Practical Application):</div>
-                <p style="margin-bottom: 1rem;">
-                    <strong>You're entering a citizen record and attempt to type "thirty-two" in the Age field.
-                        What happens and why?</strong>
-                </p>
-                <div class="answer-options" id="ccq3-options"></div>
-                <button onclick="checkCCQ('ccq3')" style="margin-top: 1rem;">Check Answer</button>
-                <div id="ccq3-feedback" class="feedback"></div>
+            <div class="highlight-box" style="border-left: 4px solid var(--primary-color);">
+                <h4>🔴 Stretch Challenge</h4>
+                <p>The Metro Authority realizes <code>Status</code> only ever has three possible values: <em>Active,
+                        Maintenance, Decommissioned</em>. Write below why leaving it as "Short Text" is dangerous.</p>
+                <textarea id="stretch-answer" rows="3"
+                    placeholder="Type your architectural reasoning here..."></textarea>
+                <button
+                    onclick="saveToLocalStorage('stretch-answer', document.getElementById('stretch-answer').value); alert('Saved to local storage!');">Save
+                    Notes</button>
             </div>
         </section>
 
-        <!-- STUDENT MISSION -->
-        <section class="section" id="mission">
-            <h2>🎯 Student Mission: The Transport Registry (0:55 – 1:20)</h2>
+        <!-- PRACTICE EXERCISES & CCQs -->
+        <section class="section" id="drill">
+            <h2>📝 Theory Drill: Defending the Database</h2>
+            <p>To pass your Architect Certification (and Paper 1), you must prove your understanding of the schema
+                rules.</p>
 
-            <div class="activity-container">
-                <div class="activity-title">Mission Brief: Independent Practice</div>
-                <p style="margin-bottom: 1.5rem;">
-                    <strong>The Challenge:</strong> The Metro Authority needs its own table in your database.
-                    Your job is to design and build it <strong>from scratch</strong>—no template, no copying.
-                    The autonomous trains won't run unless the vehicle data is correct.
-                </p>
-
-                <h4>The Dataset — METRO_VEHICLES (Build This Table)</h4>
-                <p style="margin-bottom: 1rem;">You must design field names AND types yourself, then enter 8 records:
-                </p>
-
-                <table style="font-size: 0.9rem;">
-                    <thead>
-                        <tr>
-                            <th>VehicleCode</th>
-                            <th>TrainName</th>
-                            <th>Capacity</th>
-                            <th>IsElectric</th>
-                            <th>CommissionDate</th>
-                            <th>MaintenanceCost</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>MV-A001</td>
-                            <td>Línea Verde A</td>
-                            <td>240</td>
-                            <td>Yes</td>
-                            <td>15/01/2045</td>
-                            <td>$12,500.00</td>
-                            <td>Active</td>
-                        </tr>
-                        <tr>
-                            <td>MV-A002</td>
-                            <td>Línea Verde B</td>
-                            <td>240</td>
-                            <td>Yes</td>
-                            <td>20/01/2045</td>
-                            <td>$11,800.00</td>
-                            <td>Active</td>
-                        </tr>
-                        <tr>
-                            <td>MV-D001</td>
-                            <td>Línea Dorada A</td>
-                            <td>280</td>
-                            <td>Yes</td>
-                            <td>10/06/2048</td>
-                            <td>$8,200.00</td>
-                            <td>Active</td>
-                        </tr>
-                        <tr>
-                            <td>MV-D002</td>
-                            <td>Línea Dorada B</td>
-                            <td>280</td>
-                            <td>Yes</td>
-                            <td>15/06/2048</td>
-                            <td>$6,900.00</td>
-                            <td>Maintenance</td>
-                        </tr>
-                        <tr>
-                            <td>MV-R001</td>
-                            <td>Línea Roja A</td>
-                            <td>200</td>
-                            <td>No</td>
-                            <td>01/03/2040</td>
-                            <td>$18,500.00</td>
-                            <td>Active</td>
-                        </tr>
-                        <tr>
-                            <td>MV-R002</td>
-                            <td>Línea Roja B</td>
-                            <td>200</td>
-                            <td>No</td>
-                            <td>05/03/2040</td>
-                            <td>$19,200.00</td>
-                            <td>Active</td>
-                        </tr>
-                        <tr>
-                            <td>MV-B001</td>
-                            <td>Línea Azul A</td>
-                            <td>220</td>
-                            <td>Yes</td>
-                            <td>01/08/2046</td>
-                            <td>$9,700.00</td>
-                            <td>Decommissioned</td>
-                        </tr>
-                        <tr>
-                            <td>MV-B002</td>
-                            <td>Línea Azul B</td>
-                            <td>220</td>
-                            <td>Yes</td>
-                            <td>10/08/2046</td>
-                            <td>$10,100.00</td>
-                            <td>Active</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h4 style="margin-top: 2rem;">✅ Success Criteria (Self-Assess Before Teacher Check)</h4>
-                <p style="margin-bottom: 1rem;">Tick each box before calling the teacher:</p>
-                <div class="progress-tracking">
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>VehicleCode is set as <strong>Short Text</strong> and is the <strong>Primary
-                                Key</strong></span>
+            <!-- CCQ 1 (Based on Q3) -->
+            <div class="concept-check">
+                <h4>Question 1: The Architecture Choice</h4>
+                <p>The Medellín 2050 database currently stores all citizen data, district data, and energy billing data
+                    in ONE massive table. What type of database does this describe?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="ccq1-a" value="wrong">
+                        <label for="ccq1-a">A Relational Database</label>
                     </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>Capacity is set as <strong>Number / Integer</strong> (not Text, not Decimal)</span>
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="ccq1-b" value="correct">
+                        <label for="ccq1-b">A Flat-file Database</label>
                     </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>IsElectric is set as <strong>Yes/No</strong> with display format Yes/No</span>
-                    </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>CommissionDate is set as <strong>Date/Time</strong> with format dd/mm/yyyy</span>
-                    </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>MaintenanceCost is set as <strong>Currency</strong></span>
-                    </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>Status is set as <strong>Short Text</strong></span>
-                    </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>All 8 records are entered without errors</span>
-                    </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>No duplicate VehicleCode values exist</span>
-                    </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>Primary key icon (🔑) is visible on VehicleCode in Design View</span>
-                    </div>
-                    <div class="progress-item">
-                        <input type="checkbox" style="width: 20px; margin-right: 1rem;">
-                        <span>File is saved as .accdb with name <strong>Medellin2050_SmartCity</strong></span>
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="ccq1-c" value="wrong">
+                        <label for="ccq1-c">A Boolean Database</label>
                     </div>
                 </div>
-
-                <h4 style="margin-top: 2rem;">🔴 Stretch Challenge (for Fast Finishers)</h4>
-                <p style="margin-bottom: 1rem;">
-                    The Metro Authority realizes Status only ever has three possible values: Active, Maintenance,
-                    Decommissioned.
-                    Can you think of a better field design than free text? Write your answer in one sentence and explain
-                    the risk of leaving it as Short Text.
-                </p>
-                <textarea id="stretchAnswer" placeholder="Type your answer here..."
-                    style="min-height: 100px;"></textarea>
-                <button onclick="saveMissionAnswer()" style="margin-top: 1rem;">Save My Answer</button>
-                <div id="stretchFeedback" class="feedback"></div>
-            </div>
-        </section>
-
-        <!-- THEORY DRILL / PRACTICE QUESTIONS -->
-        <section class="section" id="drill">
-            <h2>📝 Theory Drill: Paper 1 Style (1:20 – 1:30)</h2>
-            <p style="margin-bottom: 1.5rem;">
-                <strong>5 questions, timed at 2 minutes each.</strong> Write answers on paper or a shared doc.
-            </p>
-
-            <div class="question-container">
-                <div class="question-text">Q1 (2 marks):</div>
-                <p style="margin-bottom: 1rem;">
-                    The EnergyCredits field in the CITIZENS table stores values such as 850, 1200, and 340.
-                    <strong>State the most appropriate data type for this field, and give one reason why Currency would
-                        be unsuitable.</strong>
-                </p>
-                <textarea id="q1-answer" placeholder="Write your answer..." style="min-height: 80px;"></textarea>
-                <button onclick="checkQ1()" style="margin-top: 0.75rem;">Check Answer</button>
-                <div id="q1-feedback" class="feedback"></div>
+                <button onclick="checkCCQ('ccq1', 'ccq1-b', 'ccq1-feedback')">Submit Answer</button>
+                <div id="ccq1-feedback" class="feedback"></div>
             </div>
 
-            <div class="question-container">
-                <div class="question-text">Q2 (3 marks):</div>
-                <p style="margin-bottom: 1rem;">
-                    <strong>Describe three properties of a primary key field.</strong>
-                </p>
-                <textarea id="q2-answer" placeholder="Write your answer..." style="min-height: 100px;"></textarea>
-                <button onclick="checkQ2()" style="margin-top: 0.75rem;">Check Answer</button>
-                <div id="q2-feedback" class="feedback"></div>
+            <!-- CCQ 2 (Based on Q3 extension) -->
+            <div class="concept-check">
+                <h4>Question 2: The Danger of Flat-Files</h4>
+                <p>Why is the "update anomaly" a major risk in the flat-file database described above?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq2" id="ccq2-a" value="correct">
+                        <label for="ccq2-a">Because changing a district name requires updating many duplicate rows,
+                            risking errors.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq2" id="ccq2-b" value="wrong">
+                        <label for="ccq2-b">Because it stops you from using Primary Keys entirely.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq2" id="ccq2-c" value="wrong">
+                        <label for="ccq2-c">Because flat files cannot store Text or Number data types.</label>
+                    </div>
+                </div>
+                <button onclick="checkCCQ('ccq2', 'ccq2-a', 'ccq2-feedback')">Submit Answer</button>
+                <div id="ccq2-feedback" class="feedback"></div>
             </div>
 
-            <div class="question-container">
-                <div class="question-text">Q3 (4 marks):</div>
-                <p style="margin-bottom: 1rem;">
-                    The Medellín 2050 city database currently stores all citizen data, district data, and energy billing
-                    data in one table. <strong>State the type of database this describes (1 mark), explain two
-                        disadvantages
-                        of this approach (2 × 1 mark), and name the alternative type of database (1 mark).</strong>
-                </p>
-                <textarea id="q3-answer" placeholder="Write your answer..." style="min-height: 120px;"></textarea>
-                <button onclick="checkQ3()" style="margin-top: 0.75rem;">Check Answer</button>
-                <div id="q3-feedback" class="feedback"></div>
+            <!-- CCQ 3 (Based on Q1) -->
+            <div class="concept-check">
+                <h4>Question 3: Energy Credit Formatting</h4>
+                <p>The <code>EnergyCredits</code> field stores values such as 850, 1200, and 340. Would it be correct to
+                    use the <strong>Currency</strong> data type here?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq3" id="ccq3-a" value="wrong">
+                        <label for="ccq3-a">Yes, because it is a numerical value that acts like money.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq3" id="ccq3-b" value="correct">
+                        <label for="ccq3-b">No, because energy credits are units, and Currency would incorrectly add a
+                            money symbol ($/£).</label>
+                    </div>
+                </div>
+                <button onclick="checkCCQ('ccq3', 'ccq3-b', 'ccq3-feedback')">Submit Answer</button>
+                <div id="ccq3-feedback" class="feedback"></div>
             </div>
 
-            <div class="question-container">
-                <div class="question-text">Q4 (2 marks):</div>
-                <p style="margin-bottom: 1rem;">
-                    A developer stores the IsVerified field for citizens as Short Text, entering the values "yes" and
-                    "no".
-                    <strong>Explain why Boolean/Logical is a more appropriate data type for this field.</strong>
+            <!-- CCQ 4 (Based on Q4) -->
+            <div class="concept-check">
+                <h4>Question 4: Boolean Logic</h4>
+                <p>A developer stores <code>IsVerified</code> as "Short Text", typing "yes" and "no". Explain why
+                    <strong>Boolean/Logical</strong> is superior.
                 </p>
-                <textarea id="q4-answer" placeholder="Write your answer..." style="min-height: 80px;"></textarea>
-                <button onclick="checkQ4()" style="margin-top: 0.75rem;">Check Answer</button>
-                <div id="q4-feedback" class="feedback"></div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq4" id="ccq4-a" value="wrong">
+                        <label for="ccq4-a">Boolean takes up more storage space, making the database faster.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq4" id="ccq4-b" value="correct">
+                        <label for="ccq4-b">Boolean only allows two states, eliminating the risk of invalid entries like
+                            "YES", "y", or "true".</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq4" id="ccq4-c" value="wrong">
+                        <label for="ccq4-c">Boolean allows you to calculate the average verification rate
+                            easily.</label>
+                    </div>
+                </div>
+                <button onclick="checkCCQ('ccq4', 'ccq4-b', 'ccq4-feedback')">Submit Answer</button>
+                <div id="ccq4-feedback" class="feedback"></div>
             </div>
 
-            <div class="question-container">
-                <div class="question-text">Q5 (3 marks):</div>
-                <p style="margin-bottom: 1rem;">
-                    A field called VehicleCode contains values such as MV-A001 and MV-D002.
-                </p>
-                <p style="margin-bottom: 1rem;">
-                    (a) <strong>State the appropriate data type. (1 mark)</strong><br>
-                    (b) <strong>A student suggests using AutoNumber as the primary key instead of VehicleCode.
-                        Give two reasons why VehicleCode is the better choice. (2 marks)</strong>
-                </p>
-                <textarea id="q5-answer" placeholder="Write your answer..." style="min-height: 120px;"></textarea>
-                <button onclick="checkQ5()" style="margin-top: 0.75rem;">Check Answer</button>
-                <div id="q5-feedback" class="feedback"></div>
+            <!-- CCQ 5 (Based on Q5a) -->
+            <div class="concept-check">
+                <h4>Question 5: Dealing with Hyphens</h4>
+                <p>The field <code>VehicleCode</code> contains values like <strong>MV-A001</strong>. What is the ONLY
+                    appropriate data type?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq5" id="ccq5-a" value="wrong">
+                        <label for="ccq5-a">Integer</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq5" id="ccq5-b" value="correct">
+                        <label for="ccq5-b">Short Text / Alphanumeric</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq5" id="ccq5-c" value="wrong">
+                        <label for="ccq5-c">Decimal</label>
+                    </div>
+                </div>
+                <button onclick="checkCCQ('ccq5', 'ccq5-b', 'ccq5-feedback')">Submit Answer</button>
+                <div id="ccq5-feedback" class="feedback"></div>
             </div>
+
+            <!-- CCQ 6 (Based on Q5b) -->
+            <div class="concept-check">
+                <h4>Question 6: Choosing the Key</h4>
+                <p>A student suggests using an arbitrary <em>AutoNumber</em> (1, 2, 3...) as the primary key instead of
+                    <code>VehicleCode</code> (MV-A001). Why is <code>VehicleCode</code> the better choice?
+                </p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq6" id="ccq6-a" value="correct">
+                        <label for="ccq6-a">It is a "natural key" that is self-describing and links directly to
+                            real-world vehicle identification.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq6" id="ccq6-b" value="wrong">
+                        <label for="ccq6-b">AutoNumbers can contain duplicate values, which breaks Primary Key
+                            rules.</label>
+                    </div>
+                </div>
+                <button onclick="checkCCQ('ccq6', 'ccq6-a', 'ccq6-feedback')">Submit Answer</button>
+                <div id="ccq6-feedback" class="feedback"></div>
+            </div>
+
+            <!-- CCQ 7 (Based on Q2) -->
+            <div class="concept-check">
+                <h4>Question 7: Key Integrity</h4>
+                <p>What would happen if a database administrator tries to leave a Primary Key field completely blank
+                    (Null) for a new record?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq7" id="ccq7-a" value="wrong">
+                        <label for="ccq7-a">The database assigns a temporary key until one is provided.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq7" id="ccq7-b" value="wrong">
+                        <label for="ccq7-b">The record is saved, but cannot be searched.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq7" id="ccq7-c" value="correct">
+                        <label for="ccq7-c">The database will reject the record entirely. Primary Keys must NEVER be
+                            null.</label>
+                    </div>
+                </div>
+                <button onclick="checkCCQ('ccq7', 'ccq7-c', 'ccq7-feedback')">Submit Answer</button>
+                <div id="ccq7-feedback" class="feedback"></div>
+            </div>
+
+            <!-- CCQ 8 (General Application) -->
+            <div class="concept-check">
+                <h4>Question 8: The Golden Rule</h4>
+                <p>What is the fundamental "contract" of setting a Data Type for a field?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq8" id="ccq8-a" value="correct">
+                        <label for="ccq8-a">It is a structural rule enforced by the system to ensure data integrity and
+                            prevent calculation errors.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq8" id="ccq8-b" value="wrong">
+                        <label for="ccq8-b">It is just a cosmetic choice to make the table look neat and
+                            organized.</label>
+                    </div>
+                </div>
+                <button onclick="checkCCQ('ccq8', 'ccq8-a', 'ccq8-feedback')">Submit Answer</button>
+                <div id="ccq8-feedback" class="feedback"></div>
+            </div>
+
         </section>
 
         <!-- VOCABULARY SECTION -->
         <section class="section" id="vocab">
-            <h2>📚 Interactive Vocabulary Module</h2>
-
-            <div class="search-box">
-                <input type="text" id="vocabSearch" placeholder="Search vocabulary terms..."
-                    onkeyup="filterVocab(this.value)">
+            <h2>📖 Digital Glossary</h2>
+            <div class="vocab-search">
+                <input type="text" id="vocab-search-input" placeholder="🔍 Search vocabulary terms..."
+                    onkeyup="filterVocab()">
             </div>
 
-            <div id="vocabContainer"></div>
+            <div id="vocab-list">
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Flat-File Database</div>
+                    <div class="vocab-definition">A database structure that stores all data in a single, large table.
+                        Prone to data redundancy and update anomalies.</div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Relational Database</div>
+                    <div class="vocab-definition">A database structure that uses multiple tables linked by key fields to
+                        eliminate redundancy and improve data integrity.</div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Primary Key</div>
+                    <div class="vocab-definition">A field (or combination of fields) that uniquely identifies each
+                        record in a table. It cannot be null and cannot contain duplicate values.</div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Data Redundancy</div>
+                    <div class="vocab-definition">The unnecessary repetition of data in a database, which wastes space
+                        and increases the chance of errors when updating.</div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Text / Alphanumeric (Data Type)</div>
+                    <div class="vocab-definition">Stores letters, numbers, and symbols. Used for data that will not be
+                        part of mathematical calculations (e.g., Phone numbers, IDs).</div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Integer (Data Type)</div>
+                    <div class="vocab-definition">Stores whole numbers only. No decimal places.</div>
+                </div>
+                <div class="vocab-item" onclick="toggleVocab(this)">
+                    <div class="vocab-term">Boolean / Logical (Data Type)</div>
+                    <div class="vocab-definition">Stores data that can only have one of two possible states (e.g.,
+                        Yes/No, True/False, On/Off).</div>
+                </div>
+            </div>
         </section>
 
-        <!-- WRAP-UP ACTIVITY -->
-        <section class="section" id="wrapup">
-            <h2>🎉 Wrap-Up & Closure Activity (5-10 min)</h2>
+        <!-- WRAP-UP SECTION -->
+        <section class="section" id="wrap-up">
+            <h2>🚀 Session De-Brief</h2>
 
-            <h3>A. Knowledge Consolidation: 3-2-1 Reflection</h3>
-            <p style="margin-bottom: 1.5rem;">
-                <strong>Think back over this session and complete:</strong>
-            </p>
-            <div class="reflection-area">
-                <div class="reflection-prompt">✍️ 3 Things I Learned Today:</div>
-                <textarea id="reflection-3" placeholder="1. \n2. \n3. " style="min-height: 100px;"></textarea>
+            <div class="highlight-box">
+                <h4>1. Knowledge Consolidation: One-Sentence Summary</h4>
+                <p>Distill today's entire session on database architecture into one sentence.</p>
+                <textarea id="wrap-summary" rows="2"
+                    placeholder="e.g., 'Data types act as a strict contract to prevent...'"></textarea>
+                <button onclick="saveWrapUp()">Save Summary</button>
+                <span id="save-conf"
+                    style="display:none; color: var(--secondary-color); margin-left:10px;">Saved!</span>
             </div>
 
-            <div class="reflection-area">
-                <div class="reflection-prompt">✍️ 2 Interesting Facts About Data Types:</div>
-                <textarea id="reflection-2" placeholder="1. \n2. " style="min-height: 80px;"></textarea>
+            <h4>2. Mastery Check: How confident are you?</h4>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button onclick="setConfidence('green')" style="background-color: #27ae60;">🟢 Got it all</button>
+                <button onclick="setConfidence('yellow')" style="background-color: #f1c40f; color:#000;">🟡 Need
+                    review</button>
+                <button onclick="setConfidence('red')" style="background-color: #e74c3c;">🔴 Need help</button>
             </div>
 
-            <div class="reflection-area">
-                <div class="reflection-prompt">❓ 1 Question I Still Have:</div>
-                <textarea id="reflection-1" placeholder="Type your question..." style="min-height: 60px;"></textarea>
-            </div>
+            <h4>3. Reflection</h4>
+            <select id="reflection-prompt">
+                <option value="">-- Choose a reflection prompt --</option>
+                <option value="challenging">What was the most challenging concept for you today?</option>
+                <option value="real-world">How could a bad data type affect an app you use daily?</option>
+                <option value="questions">What question do you still have?</option>
+            </select>
+            <textarea id="reflection-answer" rows="3" placeholder="Write your reflection here..."
+                style="margin-top: 10px;"></textarea>
 
-            <h3 style="margin-top: 2rem;">B. Objective Confirmation: How Confident Are You?</h3>
-            <p style="margin-bottom: 1.5rem;">Rate yourself on each learning objective:</p>
-
-            <div class="progress-tracking">
-                <div class="progress-item">
-                    <span>Define and classify the eight main data types</span>
-                    <div style="flex: 1; text-align: right;">
-                        <button onclick="rateObjective(this, 'obj1')" style="padding: 0.5rem 1rem; margin: 0;">🔴
-                            Struggling</button>
-                        <button onclick="rateObjective(this, 'obj1')" style="padding: 0.5rem 1rem; margin: 0;">🟡
-                            Getting There</button>
-                        <button onclick="rateObjective(this, 'obj1')" style="padding: 0.5rem 1rem; margin: 0;">🟢
-                            Confident</button>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <span>Explain why correct data types are critical</span>
-                    <div style="flex: 1; text-align: right;">
-                        <button onclick="rateObjective(this, 'obj2')" style="padding: 0.5rem 1rem; margin: 0;">🔴
-                            Struggling</button>
-                        <button onclick="rateObjective(this, 'obj2')" style="padding: 0.5rem 1rem; margin: 0;">🟡
-                            Getting There</button>
-                        <button onclick="rateObjective(this, 'obj2')" style="padding: 0.5rem 1rem; margin: 0;">🟢
-                            Confident</button>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <span>Set and understand primary keys</span>
-                    <div style="flex: 1; text-align: right;">
-                        <button onclick="rateObjective(this, 'obj3')" style="padding: 0.5rem 1rem; margin: 0;">🔴
-                            Struggling</button>
-                        <button onclick="rateObjective(this, 'obj3')" style="padding: 0.5rem 1rem; margin: 0;">🟡
-                            Getting There</button>
-                        <button onclick="rateObjective(this, 'obj3')" style="padding: 0.5rem 1rem; margin: 0;">🟢
-                            Confident</button>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <span>Design a database table schema independently</span>
-                    <div style="flex: 1; text-align: right;">
-                        <button onclick="rateObjective(this, 'obj4')" style="padding: 0.5rem 1rem; margin: 0;">🔴
-                            Struggling</button>
-                        <button onclick="rateObjective(this, 'obj4')" style="padding: 0.5rem 1rem; margin: 0;">🟡
-                            Getting There</button>
-                        <button onclick="rateObjective(this, 'obj4')" style="padding: 0.5rem 1rem; margin: 0;">🟢
-                            Confident</button>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <span>Distinguish flat-file vs. relational databases</span>
-                    <div style="flex: 1; text-align: right;">
-                        <button onclick="rateObjective(this, 'obj5')" style="padding: 0.5rem 1rem; margin: 0;">🔴
-                            Struggling</button>
-                        <button onclick="rateObjective(this, 'obj5')" style="padding: 0.5rem 1rem; margin: 0;">🟡
-                            Getting There</button>
-                        <button onclick="rateObjective(this, 'obj5')" style="padding: 0.5rem 1rem; margin: 0;">🟢
-                            Confident</button>
-                    </div>
-                </div>
-            </div>
-
-            <h3 style="margin-top: 2rem;">C. Bridge to Next Lesson</h3>
-            <div class="card"
-                style="background-color: rgba(255, 107, 107, 0.1); border-left: 4px solid var(--accent-color);">
-                <p style="margin-bottom: 1rem;">
-                    <strong>🔮 Next Session Preview:</strong> You've built the city's structure.
-                    But what stops a rogue operator from entering a citizen born in the year 1492,
-                    or an energy credit balance of −99,000?
-                </p>
-                <p>
-                    <strong>Next session, we install the city's security protocols — Validation Rules.</strong>
-                    We will add presence checks, range checks, and format checks directly into the schema,
-                    so the database defends itself.
-                </p>
-            </div>
-
-            <h3 style="margin-top: 2rem;">D. Celebration & Achievement</h3>
-            <div
-                style="background-color: rgba(46, 204, 113, 0.1); padding: 2rem; border-radius: 8px; text-align: center; margin: 1.5rem 0;">
-                <p style="font-size: 1.3rem; color: #2ecc71; margin-bottom: 1rem;">
-                    🎖️ <strong>Session 1 Complete!</strong>
-                </p>
-                <p style="margin-bottom: 1rem;">
-                    You've designed and built a relational database from scratch. You understand data types,
-                    primary keys, and the difference between flat-file and relational structures.
-                </p>
-                <p style="color: var(--secondary-color); font-weight: 600;">
-                    <strong>The city of Medellín 2050 is one step closer to running smoothly because of your work
-                        today.</strong>
-                </p>
-            </div>
-
-            <h3 style="margin-top: 2rem;">E. Optional Homework</h3>
-            <div class="reflection-area">
-                <div class="reflection-prompt">📝 Write a short paragraph (50–80 words):</div>
-                <p style="margin-bottom: 1rem;">
-                    Explain what would happen to the Metro Authority's <strong>Capacity</strong> field
-                    if someone entered the text value "many". Predict the downstream effects on queries and reports.
-                </p>
-                <textarea id="homework" placeholder="Type your answer..." style="min-height: 100px;"></textarea>
-                <button onclick="saveHomework()" style="margin-top: 1rem;">Save Homework Response</button>
-                <div id="homeworkFeedback" class="feedback"></div>
+            <div class="concept-check"
+                style="border-left: 4px solid var(--secondary-color); background-color: rgba(52, 152, 219, 0.05);">
+                <h4>🔭 Preview: What Session 2 Will Build On</h4>
+                <p>"You've built the city's structure. But what stops a rogue operator from entering a citizen born in
+                    the year 1492, or an energy credit balance of −99,000? Next session, we install the city's security
+                    protocols — <strong>Validation Rules</strong>."</p>
+                <p><em>Great job today, Architect! Your foundation is strong.</em></p>
             </div>
         </section>
     </main>
 
+    <!-- INTERACTIVITY SCRIPTS -->
     <script>
-        // VOCABULARY DATA
-        const vocabData = [
-            { term: "AutoNumber", definition: "A data type that automatically generates unique sequential numbers (1, 2, 3...). Cannot be edited manually. Used as surrogate keys.", example: "Auto-generated ID fields" },
-            { term: "Data Type", definition: "A specification for the kind of data a field can store (Text, Number, Date, Currency, etc.). Determines what values are allowed and what operations can be performed.", example: "Age as Number allows mathematical operations; Age as Text does not." },
-            { term: "Date/Time", definition: "A data type for storing dates and times in a format that allows chronological sorting and date calculations.", example: "CommissionDate: 25/03/2050" },
-            { term: "Flat-File Database", definition: "A database that stores all data in a single table. Leads to data redundancy and update anomalies.", example: "All citizen, district, and energy data in one table" },
-            { term: "Primary Key", definition: "A field (or combination of fields) that uniquely identifies each record in a table. Must be unique, non-null, and stable.", example: "CitizenID in the CITIZENS table" },
-            { term: "Relational Database", definition: "A database using multiple tables linked by keys to eliminate redundancy and improve data integrity.", example: "CITIZENS, DISTRICTS, and METRO_VEHICLES tables linked by keys" },
-            { term: "Short Text", definition: "A data type for storing text values up to 255 characters. Used for names, codes, addresses, etc.", example: "CitizenID: C-00101, Name: María García" },
-            { term: "Yes/No (Boolean)", definition: "A data type that stores only two values: True/False (displayed as Yes/No or checkboxes). Prevents invalid entries.", example: "IsElectric: Yes/No, IsVerified: Yes/No" },
-            { term: "Currency", definition: "A data type specifically for monetary values. Automatically formats with currency symbol and two decimal places.", example: "MaintenanceCost: $12,500.00" },
-            { term: "Number (Integer)", definition: "A data type for whole numbers. Allows arithmetic operations (sum, average, comparison).", example: "Age: 28, Capacity: 240" }
-        ];
-
-        function initializeVocabulary() {
-            const container = document.getElementById('vocabContainer');
-            container.innerHTML = vocabData.map((item, index) => `
-                <div class="vocab-item" data-term="${item.term.toLowerCase()}">
-                    <div class="vocab-term">${index + 1}. ${item.term}</div>
-                    <div class="vocab-definition"><strong>Definition:</strong> ${item.definition}</div>
-                    <div class="vocab-example"><strong>Example:</strong> ${item.example}</div>
-                </div>
-            `).join('');
+        // Progress Bar
+        window.onscroll = function () { updateProgress() };
+        function updateProgress() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
         }
 
-        function filterVocab(searchTerm) {
-            const items = document.querySelectorAll('.vocab-item');
+        // Theme Toggle
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        // Dyslexia Toggle
+        function toggleDyslexiaMode() {
+            document.body.classList.toggle('dyslexia-mode');
+            const isDyslexic = document.body.classList.contains('dyslexia-mode');
+            localStorage.setItem('dyslexia', isDyslexic ? 'true' : 'false');
+        }
+
+        // Scroll to Section
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Local Storage Utilities
+        function saveToLocalStorage(key, value) {
+            localStorage.setItem(key, value);
+        }
+
+        // On Load: Retrieve Preferences & Data
+        window.onload = function () {
+            if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
+            if (localStorage.getItem('dyslexia') === 'true') document.body.classList.add('dyslexia-mode');
+
+            // Retrieve saved text
+            if (localStorage.getItem('stretch-answer')) document.getElementById('stretch-answer').value = localStorage.getItem('stretch-answer');
+            if (localStorage.getItem('wrap-summary')) document.getElementById('wrap-summary').value = localStorage.getItem('wrap-summary');
+            if (localStorage.getItem('reflection-answer')) document.getElementById('reflection-answer').value = localStorage.getItem('reflection-answer');
+
+            // Retrieve checkboxes
+            for (let i = 1; i <= 4; i++) {
+                if (localStorage.getItem('obj-' + i) === 'true') {
+                    document.getElementById('obj-' + i).checked = true;
+                }
+            }
+        }
+
+        // Save Objectives Progress
+        function saveProgress() {
+            for (let i = 1; i <= 4; i++) {
+                localStorage.setItem('obj-' + i, document.getElementById('obj-' + i).checked);
+            }
+        }
+
+        // Hook Activity Check
+        function checkHook() {
+            const selected = document.querySelector('input[name="hook-guess"]:checked');
+            const feedback = document.getElementById('hook-feedback');
+            if (!selected) {
+                alert("Please select an option!");
+                return;
+            }
+            feedback.classList.remove("correct", "incorrect", "show");
+
+            if (selected.value === "correct") {
+                feedback.innerHTML = "✅ Correct! The text 'thirty-two' was fed into an algorithm expecting an Integer to calculate discounts. It crashed the math! Data types are crucial.";
+                feedback.classList.add("correct", "show");
+            } else {
+                feedback.innerHTML = "❌ Not quite. That data format is valid (Integer for Age, Date format for Journey). Look for the entry where text is placed where math needs to happen!";
+                feedback.classList.add("incorrect", "show");
+            }
+            saveToLocalStorage('hook-guess', selected.id);
+        }
+
+        // Mission Check Checkboxes
+        function checkMission() {
+            const c1 = document.getElementById('m-chk1').checked;
+            const c2 = document.getElementById('m-chk2').checked;
+            const c3 = document.getElementById('m-chk3').checked;
+            const c4 = document.getElementById('m-chk4').checked;
+            const feedback = document.getElementById('mission-success');
+
+            if (c1 && c2 && c3 && c4) {
+                feedback.style.display = "block";
+            } else {
+                feedback.style.display = "none";
+            }
+        }
+
+        // Generic CCQ Check
+        function checkCCQ(name, correctId, feedbackId) {
+            const selected = document.querySelector(`input[name="${name}"]:checked`);
+            const feedback = document.getElementById(feedbackId);
+            if (!selected) return alert("Select an answer first!");
+
+            feedback.classList.remove("correct", "incorrect", "show");
+            if (selected.id === correctId) {
+                feedback.innerHTML = "✅ Correct!";
+                feedback.classList.add("correct", "show");
+            } else {
+                feedback.innerHTML = "❌ Incorrect. Try again!";
+                feedback.classList.add("incorrect", "show");
+            }
+        }
+
+        // Difficulty Tabs
+        function switchDifficulty(level) {
+            document.querySelectorAll('.difficulty-tabs button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.difficulty-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById('content-' + level).classList.add('active');
+        }
+
+        // Vocabulary Search & Toggle
+        function filterVocab() {
+            let input = document.getElementById('vocab-search-input').value.toUpperCase();
+            let items = document.querySelectorAll('.vocab-item');
+
             items.forEach(item => {
-                if (item.getAttribute('data-term').includes(searchTerm.toLowerCase())) {
-                    item.style.display = 'block';
+                let text = item.querySelector('.vocab-term').innerText.toUpperCase();
+                if (text.indexOf(input) > -1) {
+                    item.classList.remove('hidden');
                 } else {
-                    item.style.display = 'none';
+                    item.classList.add('hidden');
                 }
             });
         }
 
-        // DIFFICULTY SWITCHING
-        function switchDifficulty(level) {
-            document.querySelectorAll('.difficulty-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(level + '-content').classList.add('active');
-
-            document.querySelectorAll('.difficulty-tabs button').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        function toggleVocab(element) {
+            const def = element.querySelector('.vocab-definition');
+            def.classList.toggle('show');
         }
 
-        // EXPANDABLE SECTIONS
-        function toggleExpandable(element) {
-            element.classList.toggle('active');
+        // Wrap-Up Actions
+        function saveWrapUp() {
+            saveToLocalStorage('wrap-summary', document.getElementById('wrap-summary').value);
+            saveToLocalStorage('reflection-answer', document.getElementById('reflection-answer').value);
+            document.getElementById('save-conf').style.display = 'inline';
+            setTimeout(() => { document.getElementById('save-conf').style.display = 'none'; }, 2000);
         }
 
-        // HOOK SCENARIO
-        function selectHookAnswer(btn, answer) {
-            document.querySelectorAll('#hookOptions .answer-option').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-        }
-
-        function saveHookResponse() {
-            const selected = document.querySelector('#hookOptions .answer-option.selected');
-            if (selected) {
-                sessionStorage.setItem('hookResponse', selected.textContent);
-                showFeedback('hookFeedback', '✓ Your answer has been saved. Refer back to this at the end!', 'info');
-            } else {
-                showFeedback('hookFeedback', 'Please select an answer first.', 'incorrect');
-            }
-        }
-
-        // CONCEPT CHECKING QUESTIONS
-        function checkCCQ(ccqNum) {
-            if (ccqNum === 'ccq1') {
-                const selected = document.querySelector('#ccq1-options .answer-option.selected');
-                if (!selected) {
-                    showFeedback('ccq1-feedback', 'Please select an answer.', 'incorrect');
-                    return;
-                }
-                if (selected.textContent.includes('Flat-file')) {
-                    showFeedback('ccq1-feedback', '✓ Correct! A flat-file database stores all data in one table, leading to data redundancy and update anomalies.', 'correct');
-                } else {
-                    showFeedback('ccq1-feedback', '✗ Try again. Think about what happens when all data is in one table.', 'incorrect');
-                }
-            } else if (ccqNum === 'ccq2') {
-                showFeedback('ccq2-feedback', '✓ Great! VehicleCode is more meaningful (self-describing) than AutoNumber, and it directly links to real-world vehicle identification. This demonstrates understanding of natural keys.', 'info');
-            } else if (ccqNum === 'ccq3') {
-                const selected = document.querySelector('#ccq3-options .answer-option.selected');
-                if (!selected) {
-                    showFeedback('ccq3-feedback', 'Please select an answer.', 'incorrect');
-                    return;
-                }
-                if (selected.textContent.includes('rejected') && selected.textContent.includes('not numeric')) {
-                    showFeedback('ccq3-feedback', '✓ Correct! Access rejects "thirty-two" because the Age field is Number type and only accepts numeric values. Data types enforce your business rules.', 'correct');
-                } else {
-                    showFeedback('ccq3-feedback', '✗ Try again. Remember: data types are enforced. Access will reject invalid data.', 'incorrect');
-                }
-            }
-        }
-
-        // THEORY QUESTIONS
-        function checkQ1() {
-            showFeedback('q1-feedback',
-                '✓ Correct Answer: Data type is Number (or Integer). Currency is unsuitable because energy credits are not monetary values—currency formatting with $ symbol and decimals is inappropriate for credit units.',
-                'correct');
-        }
-
-        function checkQ2() {
-            showFeedback('q2-feedback',
-                '✓ Correct Answer: Any 3 of: (1) Must be unique—no duplicates. (2) Must not be null/empty. (3) Must uniquely identify each record. (4) Should be stable—not change.',
-                'correct');
-        }
-
-        function checkQ3() {
-            showFeedback('q3-feedback',
-                '✓ Correct Answer: Type: Flat-file database. Disadvantages: (1) Data redundancy—district info repeated for every citizen. (2) Update anomaly—changing district name requires updating many rows, risking inconsistency. Alternative: Relational database.',
-                'correct');
-        }
-
-        function checkQ4() {
-            showFeedback('q4-feedback',
-                '✓ Correct Answer: Boolean only allows two states, eliminating risk of inconsistent entries like "YES", "yes", "y". Displayed as checkboxes, which is clearer for data entry.',
-                'correct');
-        }
-
-        function checkQ5() {
-            showFeedback('q5-feedback',
-                '✓ Correct Answer: (a) Short Text—contains letters and hyphen. (b) Any 2: VehicleCode is meaningful/self-describing; links to real-world ID; AutoNumber is arbitrary; using natural key avoids unnecessary fields.',
-                'correct');
-        }
-
-        // MISSION & STRETCH
-        function saveMissionAnswer() {
-            const stretch = document.getElementById('stretchAnswer').value;
-            if (stretch.trim()) {
-                sessionStorage.setItem('stretchAnswer', stretch);
-                document.getElementById('stretchFeedback').innerHTML =
-                    '<strong>✓ Answer saved!</strong> Great thinking! A Lookup field or validation rule would be better—it prevents typos like "active", "ACTIVE", or "Actve" which cause queries to miss records.';
-                document.getElementById('stretchFeedback').classList.add('info', 'show');
-            }
-        }
-
-        // WRAP-UP
-        function rateObjective(btn, objId) {
-            const parent = btn.parentElement;
-            parent.querySelectorAll('button').forEach(b => b.style.backgroundColor = '');
-            btn.style.backgroundColor = btn.textContent.includes('🟢') ? '#2ecc71' : btn.textContent.includes('🟡') ? '#f39c12' : '#e74c3c';
-            sessionStorage.setItem(objId, btn.textContent);
-        }
-
-        function toggleCheckbox(el) {
-            el.classList.toggle('completed');
-        }
-
-        function saveHomework() {
-            const homework = document.getElementById('homework').value;
-            if (homework.trim()) {
-                sessionStorage.setItem('homework', homework);
-                document.getElementById('homeworkFeedback').innerHTML = '<strong>✓ Homework response saved!</strong> Excellent reflection.';
-                document.getElementById('homeworkFeedback').classList.add('info', 'show');
-            }
-        }
-
-        // HELPER FUNCTIONS
-        function showFeedback(elementId, message, type) {
-            const el = document.getElementById(elementId);
-            el.innerHTML = message;
-            el.classList.remove('correct', 'incorrect', 'info');
-            el.classList.add(type, 'show');
-        }
-
-        function toggleMode() {
-            document.body.classList.toggle('light-mode');
-            sessionStorage.setItem('lightMode', document.body.classList.contains('light-mode'));
-        }
-
-        function toggleDyslexiaMode() {
-            document.body.classList.toggle('dyslexia-mode');
-            sessionStorage.setItem('dyslexiaMode', document.body.classList.contains('dyslexia-mode'));
-        }
-
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // PROGRESS BAR
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('progressBar').style.width = scrolled + '%';
-        });
-
-        // CCQ OPTIONS (Intermediate Level)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize CCQ1 options
-            const ccq1Container = document.getElementById('ccq1-options');
-            if (ccq1Container) {
-                ccq1Container.innerHTML = `
-                    <button class="answer-option" onclick="selectCCQAnswer(this)">
-                        Relational database (flat-file stores all in one table)
-                    </button>
-                    <button class="answer-option" onclick="selectCCQAnswer(this)">
-                        Flat-file database (causes data redundancy and update anomalies)
-                    </button>
-                    <button class="answer-option" onclick="selectCCQAnswer(this)">
-                        This isn't a problem if validation rules are added
-                    </button>
-                `;
-            }
-
-            // Initialize CCQ3 options
-            const ccq3Container = document.getElementById('ccq3-options');
-            if (ccq3Container) {
-                ccq3Container.innerHTML = `
-                    <button class="answer-option" onclick="selectCCQAnswer(this)">
-                        Access stores it anyway and converts it to a number later
-                    </button>
-                    <button class="answer-option" onclick="selectCCQAnswer(this)">
-                        Access rejects it because the field is Number type and "thirty-two" is not numeric
-                    </button>
-                    <button class="answer-option" onclick="selectCCQAnswer(this)">
-                        It depends on the version of Access being used
-                    </button>
-                `;
-            }
-
-            // Basic Quiz
-            const basicQuiz = document.getElementById('basicQuiz');
-            if (basicQuiz) {
-                basicQuiz.innerHTML = `
-                    <p style="margin-bottom: 0.75rem;"><strong>1. Age field (28, 45, 32...)</strong></p>
-                    <select onchange="checkBasicAnswer(this, '1')" style="margin-bottom: 1rem;">
-                        <option>Select answer...</option>
-                        <option>Text</option>
-                        <option>Number (Integer)</option>
-                        <option>Currency</option>
-                        <option>Date/Time</option>
-                    </select>
-                    <div id="basicAnswer1" class="feedback"></div>
-
-                    <p style="margin-bottom: 0.75rem; margin-top: 1rem;"><strong>2. IsVerified field (Yes/No)</strong></p>
-                    <select onchange="checkBasicAnswer(this, '2')" style="margin-bottom: 1rem;">
-                        <option>Select answer...</option>
-                        <option>Text</option>
-                        <option>Number</option>
-                        <option>Yes/No (Boolean)</option>
-                        <option>Date/Time</option>
-                    </select>
-                    <div id="basicAnswer2" class="feedback"></div>
-
-                    <p style="margin-bottom: 0.75rem; margin-top: 1rem;"><strong>3. CommissionDate field (25/03/2050)</strong></p>
-                    <select onchange="checkBasicAnswer(this, '3')" style="margin-bottom: 1rem;">
-                        <option>Select answer...</option>
-                        <option>Text</option>
-                        <option>Number</option>
-                        <option>Currency</option>
-                        <option>Date/Time</option>
-                    </select>
-                    <div id="basicAnswer3" class="feedback"></div>
-                `;
-            }
-
-            initializeVocabulary();
-
-            // Load saved preferences
-            if (sessionStorage.getItem('lightMode') === 'true') {
-                document.body.classList.add('light-mode');
-            }
-            if (sessionStorage.getItem('dyslexiaMode') === 'true') {
-                document.body.classList.add('dyslexia-mode');
-            }
-        });
-
-        function selectCCQAnswer(btn) {
-            btn.parentElement.querySelectorAll('.answer-option').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-        }
-
-        function checkBasicAnswer(select, questionNum) {
-            const correct = {
-                '1': 'Number (Integer)',
-                '2': 'Yes/No (Boolean)',
-                '3': 'Date/Time'
-            };
-
-            const feedback = document.getElementById('basicAnswer' + questionNum);
-            if (select.value === correct[questionNum]) {
-                feedback.innerHTML = '✓ Correct!';
-                feedback.className = 'feedback correct show';
-            } else if (select.value !== 'Select answer...') {
-                feedback.innerHTML = '✗ Try again.';
-                feedback.className = 'feedback incorrect show';
-            }
+        function setConfidence(level) {
+            let msg = level === 'green' ? "Awesome! You are ready to build databases." :
+                level === 'yellow' ? "Good self-awareness! Review the CCQs above." :
+                    "Don't worry! Ask your teacher about the parts that confused you.";
+            alert(msg);
+            saveToLocalStorage('confidence', level);
         }
     </script>
 </body>
