@@ -1,1471 +1,2545 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medellín 2050: Smart City Database</title>
-
-    <!-- Modern Font Import -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            /* CONSISTENT COLOR PALETTE - ICT/Database Colors */
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-
-            /* Modern Dark Mode Base (Slate/Zinc inspired) */
-            --bg-color: #0f172a;
-            --surface-color: #1e293b;
-            --surface-color-hover: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-
-            /* Accessibility & Spacing (DO NOT MODIFY) */
-            --base-spacing: 1rem;
-            --line-height: 1.6;
-            --letter-spacing: 0.2px;
-            --font-size-base: 16px;
-            --font-size-large: 18px;
-            --font-size-xl: 20px;
-            --border-radius: 12px;
-            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* 1. LIGHT MODE OVERRIDES */
-        body.light-mode {
-            --bg-color: #f8fafc;
-            --surface-color: #ffffff;
-            --surface-color-hover: #f1f5f9;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-        }
-
-        /* 2. DYSLEXIA-FRIENDLY MODE FIX */
-        body.dyslexia-mode {
-            --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
-            --font-size-base: 18px;
-            --font-size-large: 20px;
-            --font-size-xl: 22px;
-            --line-height: 2;
-            --letter-spacing: 1px;
-            background-color: #f4f1de !important;
-            color: #2c3e50 !important;
-        }
-
-        body.dyslexia-mode .section,
-        body.dyslexia-mode header,
-        body.dyslexia-mode .exercise,
-        body.dyslexia-mode .concept-check {
-            background-color: #fffcf9 !important;
-            color: #2c3e50 !important;
-            border-left: 6px solid var(--secondary-color) !important;
-        }
-
-        body.dyslexia-mode .section h2 {
-            color: var(--primary-color) !important;
-        }
-
-        body.dyslexia-mode .section h3 {
-            color: var(--secondary-color) !important;
-        }
-
-        /* Universal Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-family, 'Inter', 'Segoe UI', sans-serif);
-            font-size: var(--font-size-base);
-            line-height: var(--line-height);
-            letter-spacing: var(--letter-spacing);
-            color: var(--text-main);
-            background-color: var(--bg-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* HEADER & NAVIGATION (MODERN, GLASSMORPHISM) */
-        header {
-            background-color: rgba(var(--surface-color-rgb), 0.85);
-            background: var(--surface-color);
-            color: var(--text-main);
-            padding: 1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            gap: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        @media (min-width: 900px) {
-            header {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                text-align: left;
-                padding: 1rem 3rem;
-            }
-        }
-
-        header h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: 0;
-            line-height: 1.2;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        @media (min-width: 900px) {
-            header h1 {
-                justify-content: flex-start;
-            }
-        }
-
-        header p {
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-            color: var(--text-muted);
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            header p {
-                display: block;
-            }
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        nav button,
-        nav a {
-            background-color: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            font-family: inherit;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        nav button:hover,
-        nav a:hover {
-            background-color: var(--surface-color-hover);
-            border-color: var(--text-muted);
-            transform: translateY(-1px);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 3px;
-            background-color: transparent;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--secondary-color);
-            width: 0%;
-            transition: width 0.4s ease-out;
-            box-shadow: 0 0 8px var(--secondary-color);
-        }
-
-        /* Main Content */
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        /* Modern Cards for Sections */
-        .section {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 2.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
-            scroll-margin-top: 120px;
-            animation: slideIn 0.5s ease-out forwards;
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section h2 {
-            color: var(--text-main);
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .section h3 {
-            color: var(--text-main);
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .section p {
-            margin-bottom: 1.25rem;
-            color: var(--text-main);
-        }
-
-        .question-text {
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        /* Difficulty Tabs - Modernized */
-        .difficulty-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            background: var(--bg-color);
-            padding: 0.25rem;
-            border-radius: 12px;
-            display: inline-flex;
-        }
-
-        .difficulty-tabs button {
-            padding: 0.5rem 1.25rem;
-            border: none;
-            background-color: transparent;
-            color: var(--text-muted);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-family: inherit;
-            transition: var(--transition);
-            margin-top: 0;
-        }
-
-        .difficulty-tabs button.active {
-            background-color: var(--surface-color);
-            color: var(--text-main);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .difficulty-content {
-            display: none;
-            padding: 1.5rem;
-            background-color: var(--bg-color);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--secondary-color);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .difficulty-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Interactive Exercises */
-        .exercise {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--primary-color);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: var(--border-radius);
-        }
-
-        /* Modern Form Elements */
-        input[type="text"],
-        input[type="number"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            margin: 0.5rem 0;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: var(--surface-color);
-            color: var(--text-main);
-            font-family: inherit;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
-        }
-
-        /* Primary Buttons */
-        button {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            margin-top: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(52, 152, 219, 0.2);
-        }
-
-        button.btn-accent {
-            background-color: var(--accent-color);
-        }
-
-        button.btn-accent:hover {
-            background-color: #c0392b;
-            box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.2);
-        }
-
-        /* Concept Checking Questions */
-        .concept-check {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--accent-color);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: var(--border-radius);
-        }
-
-        .concept-check h4 {
-            color: var(--accent-color);
-            margin-top: 0;
-        }
-
-        /* Modern Radio Button List */
-        .concept-check .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin: 1.25rem 0;
-        }
-
-        .concept-check .option {
-            position: relative;
-        }
-
-        .concept-check input[type="radio"],
-        .exercise input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .concept-check label,
-        .exercise label.radio-label {
-            display: block;
-            padding: 1rem 1.25rem;
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
-        .concept-check label:hover,
-        .exercise label.radio-label:hover {
-            border-color: var(--text-muted);
-            background-color: var(--surface-color-hover);
-        }
-
-        .concept-check input[type="radio"]:checked+label,
-        .exercise input[type="radio"]:checked+label.radio-label {
-            border-color: var(--secondary-color);
-            background-color: rgba(52, 152, 219, 0.05);
-            box-shadow: 0 0 0 1px var(--secondary-color);
-        }
-
-        /* Feedback Boxes */
-        .feedback {
-            margin-top: 1.25rem;
-            padding: 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            display: none;
-            font-size: 0.95rem;
-        }
-
-        .feedback.correct {
-            background-color: rgba(46, 204, 113, 0.1);
-            color: #2ecc71;
-            border: 1px solid rgba(46, 204, 113, 0.2);
-        }
-
-        .feedback.incorrect {
-            background-color: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-            border: 1px solid rgba(231, 76, 60, 0.2);
-        }
-
-        .feedback.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* Modern Tables */
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 1.5rem 0;
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            display: block;
-            overflow-x: auto;
-        }
-
-        th,
-        td {
-            padding: 1rem 1.25rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            white-space: nowrap;
-        }
-
-        th {
-            background-color: var(--bg-color);
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover td {
-            background-color: var(--surface-color-hover);
-        }
-
-        /* Vocabulary Section */
-        .vocab-search input {
-            border-radius: 20px;
-            padding-left: 1.5rem;
-        }
-
-        .vocab-item {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--secondary-color);
-            padding: 1.25rem;
-            margin: 0.75rem 0;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .vocab-item:hover {
-            transform: translateX(4px);
-            border-color: var(--text-muted);
-        }
-
-        .vocab-item.hidden {
-            display: none;
-        }
-
-        .vocab-term {
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        .vocab-definition {
-            display: none;
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .vocab-definition.show {
-            display: block;
-            animation: fadeIn 0.2s ease;
-        }
-
-        /* Highlights & Tags */
-        .highlight-box {
-            background-color: var(--bg-color);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin: 1.5rem 0;
-            border: 1px solid var(--border-color);
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--secondary-color);
-        }
-
-        /* Checkbox lists for objectives */
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-            padding: 0.75rem;
-            background: var(--surface-color);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .checklist-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--secondary-color);
-            cursor: pointer;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            main {
-                padding: 1rem 0.5rem;
-            }
-
-            .section {
-                padding: 1.5rem;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-            }
-
-            .section h2 {
-                font-size: 1.5rem;
-            }
-
-            th,
-            td {
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* PRINT STYLES */
-        @media print {
-
-            header,
-            nav,
-            button {
-                display: none;
-            }
-
-            .section {
-                page-break-inside: avoid;
-                border: 1px solid #ccc;
-                color: black;
-                background: white;
-            }
-
-            body {
-                background: white;
-                color: black;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Don't Be the Mars Orbiter | Database Session 1</title>
+
+  <!-- Modern Font Import -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* ICT/Database Color Palette */
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+
+      /* Modern Dark Mode Base */
+      --bg-color: #0f172a;
+      --surface-color: #1e293b;
+      --surface-color-hover: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+
+      /* Accessibility & Spacing (DO NOT MODIFY) */
+      --base-spacing: 1rem;
+      --line-height: 1.6;
+      --letter-spacing: 0.2px;
+      --font-size-base: 16px;
+      --font-size-large: 18px;
+      --font-size-xl: 20px;
+      --border-radius: 12px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 1. LIGHT MODE OVERRIDES */
+    body.light-mode {
+      --bg-color: #f8fafc;
+      --surface-color: #ffffff;
+      --surface-color-hover: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    /* 2. DYSLEXIA-FRIENDLY MODE */
+    body.dyslexia-mode {
+      --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
+      --font-size-base: 18px;
+      --font-size-large: 20px;
+      --font-size-xl: 22px;
+      --line-height: 2;
+      --letter-spacing: 1px;
+      background-color: #f4f1de !important;
+      color: #2c3e50 !important;
+    }
+
+    body.dyslexia-mode .section,
+    body.dyslexia-mode header,
+    body.dyslexia-mode .exercise,
+    body.dyslexia-mode .concept-check {
+      background-color: #fffcf9 !important;
+      color: #2c3e50 !important;
+      border-left: 6px solid var(--secondary-color) !important;
+    }
+
+    body.dyslexia-mode .section h2 { color: var(--primary-color) !important; }
+    body.dyslexia-mode .section h3 { color: var(--secondary-color) !important; }
+
+    /* Universal Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-size: var(--font-size-base);
+      line-height: var(--line-height);
+      letter-spacing: var(--letter-spacing);
+      color: var(--text-main);
+      background-color: var(--bg-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* HEADER & NAVIGATION */
+    header {
+      background: var(--surface-color);
+      color: var(--text-main);
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    @media (min-width: 900px) {
+      header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        padding: 1rem 3rem;
+      }
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.2;
+      color: var(--secondary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    @media (min-width: 900px) {
+      header h1 { justify-content: flex-start; }
+    }
+
+    header p {
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      header p { display: block; }
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav button, nav a {
+      background-color: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    nav button:hover, nav a:hover {
+      background-color: var(--surface-color-hover);
+      border-color: var(--text-muted);
+      transform: translateY(-1px);
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      width: 100%;
+      height: 3px;
+      background-color: transparent;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--secondary-color);
+      width: 0%;
+      transition: width 0.4s ease-out;
+      box-shadow: 0 0 8px var(--secondary-color);
+    }
+
+    /* Main Content */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* Section Cards */
+    .section {
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 2.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+      transition: var(--transition);
+      scroll-margin-top: 120px;
+      animation: slideIn 0.5s ease-out forwards;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    @keyframes slideIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section h2 {
+      color: var(--text-main);
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section h3 {
+      color: var(--text-main);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .section h4 {
+      color: var(--text-main);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section p {
+      margin-bottom: 1.25rem;
+      color: var(--text-main);
+    }
+
+    .question-text { color: var(--text-main); }
+
+    /* Difficulty Tabs */
+    .difficulty-tabs {
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border-radius: 12px;
+      display: inline-flex;
+    }
+
+    .difficulty-tabs button {
+      padding: 0.5rem 1.25rem;
+      border: none;
+      background-color: transparent;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-family: inherit;
+      transition: var(--transition);
+      margin-top: 0;
+    }
+
+    .difficulty-tabs button.active {
+      background-color: var(--surface-color);
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-content {
+      display: none;
+      padding: 1.5rem;
+      background-color: var(--bg-color);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--secondary-color);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .difficulty-content.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Interactive Exercises */
+    .exercise {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary-color);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: var(--border-radius);
+    }
+
+    /* Form Elements */
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      margin: 0.5rem 0;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--surface-color);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+    }
+
+    /* Primary Buttons */
+    button {
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(52, 152, 219, 0.2);
+    }
+
+    button.btn-accent {
+      background-color: var(--accent-color);
+    }
+
+    button.btn-accent:hover {
+      background-color: #c0392b;
+      box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.2);
+    }
+
+    button.btn-neutral {
+      background-color: var(--surface-color);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    button.btn-neutral:hover {
+      background-color: var(--surface-color-hover);
+      box-shadow: none;
+    }
+
+    /* Concept Checking Questions */
+    .concept-check {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-color);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      border-radius: var(--border-radius);
+    }
+
+    .concept-check h4 {
+      color: var(--accent-color);
+      margin-top: 0;
+    }
+
+    .concept-check .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin: 1.25rem 0;
+    }
+
+    .concept-check .option { position: relative; }
+
+    .concept-check input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      width: auto;
+      padding: 0;
+      margin: 0;
+    }
+
+    .concept-check label {
+      display: block;
+      padding: 1rem 1.25rem;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .concept-check label:hover {
+      border-color: var(--text-muted);
+      background-color: var(--surface-color-hover);
+    }
+
+    .concept-check input[type="radio"]:checked + label {
+      border-color: var(--secondary-color);
+      background-color: rgba(52, 152, 219, 0.05);
+      box-shadow: 0 0 0 1px var(--secondary-color);
+    }
+
+    /* Feedback Boxes */
+    .feedback {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      display: none;
+      font-size: 0.95rem;
+    }
+
+    .feedback.correct {
+      background-color: rgba(39, 174, 96, 0.1);
+      color: #27ae60;
+      border: 1px solid rgba(39, 174, 96, 0.2);
+    }
+
+    .feedback.incorrect {
+      background-color: rgba(231, 76, 60, 0.1);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+
+    .feedback.show { display: block; animation: fadeIn 0.3s ease; }
+
+    /* Modern Tables */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 1.5rem 0;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--bg-color);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background-color: var(--surface-color-hover); }
+
+    /* Vocabulary Section */
+    .vocab-search input {
+      border-radius: 20px;
+      padding-left: 1.5rem;
+    }
+
+    .vocab-item {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1.25rem;
+      margin: 0.75rem 0;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .vocab-item:hover {
+      transform: translateX(4px);
+      border-color: var(--text-muted);
+    }
+
+    .vocab-item.hidden { display: none; }
+
+    .vocab-term {
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .vocab-definition {
+      display: none;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .vocab-definition.show { display: block; animation: fadeIn 0.2s ease; }
+
+    /* Highlight & Tag */
+    .highlight-box {
+      background-color: var(--bg-color);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border-color);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(52, 152, 219, 0.1);
+      color: var(--secondary-color);
+    }
+
+    /* Code blocks */
+    .code-block {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      color: var(--text-main);
+      white-space: pre;
+      line-height: 1.5;
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .checklist li:last-child { border-bottom: none; }
+
+    .checklist input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      accent-color: var(--secondary-color);
+    }
+
+    /* Objective checklist */
+    .obj-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin: 0.5rem 0;
+    }
+
+    .obj-status {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: #94a3b8;
+      cursor: pointer;
+    }
+
+    .obj-status.green { background: #27ae60; }
+    .obj-status.yellow { background: #f39c12; }
+    .obj-status.red { background: #e74c3c; }
+
+    /* Points/score display */
+    .score-display {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /* Step walkthrough */
+    .step-item {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--secondary-color);
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-content { flex: 1; }
+    .step-content p { margin-bottom: 0.5rem; }
+
+    /* Warning box */
+    .warning-box {
+      background-color: rgba(231, 76, 60, 0.08);
+      border: 1px solid rgba(231, 76, 60, 0.25);
+      border-left: 4px solid var(--accent-color);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+      color: var(--text-main);
+    }
+
+    .warning-box strong { color: var(--accent-color); }
+
+    /* Info box */
+    .info-box {
+      background-color: rgba(52, 152, 219, 0.08);
+      border: 1px solid rgba(52, 152, 219, 0.25);
+      border-left: 4px solid var(--secondary-color);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+      color: var(--text-main);
+    }
+
+    /* Gamification */
+    .badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin: 0.25rem;
+    }
+
+    .badge-earned {
+      background: rgba(52, 152, 219, 0.15);
+      color: var(--secondary-color);
+      border: 1px solid rgba(52, 152, 219, 0.3);
+    }
+
+    .badge-locked {
+      background: var(--bg-color);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+    }
+
+    .hidden { display: none !important; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      main { padding: 1rem 0.5rem; }
+      .section { padding: 1.5rem; border-radius: 0; border-left: none; border-right: none; }
+      .section h2 { font-size: 1.5rem; }
+      th, td { padding: 0.75rem; font-size: 0.9rem; }
+    }
+
+    /* Print */
+    @media print {
+      header, nav, .accessibility-controls, button { display: none; }
+      .section { page-break-inside: avoid; border: 1px solid #ccc; }
+    }
+
+    /* Drag and drop */
+    .drag-zone {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      min-height: 60px;
+      padding: 1rem;
+      background-color: var(--bg-color);
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      margin: 0.75rem 0;
+      transition: var(--transition);
+    }
+
+    .drag-zone.drag-over {
+      border-color: var(--secondary-color);
+      background-color: rgba(52, 152, 219, 0.05);
+    }
+
+    .drag-chip {
+      padding: 0.4rem 1rem;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: grab;
+      transition: var(--transition);
+      color: var(--text-main);
+      user-select: none;
+    }
+
+    .drag-chip:hover {
+      border-color: var(--secondary-color);
+      transform: translateY(-1px);
+    }
+
+    .drag-chip:active { cursor: grabbing; }
+
+    /* Reflection textarea */
+    .reflection-area {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      margin: 1rem 0;
+    }
+
+    /* Scale selector */
+    .scale-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin: 0.75rem 0;
+      flex-wrap: wrap;
+    }
+
+    .scale-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 0;
+      font-size: 0.9rem;
+    }
+
+    .scale-btn.selected {
+      background-color: var(--secondary-color);
+      border-color: var(--secondary-color);
+      color: white;
+    }
+
+    /* Concept map */
+    .concept-map {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+
+    .concept-node {
+      padding: 0.75rem 1.25rem;
+      background-color: var(--bg-color);
+      border: 2px solid var(--secondary-color);
+      border-radius: 12px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+    }
+
+    .concept-node:hover {
+      background-color: rgba(52, 152, 219, 0.1);
+      transform: scale(1.03);
+    }
+
+    .concept-node.highlighted {
+      background-color: rgba(52, 152, 219, 0.2);
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 12px rgba(52, 152, 219, 0.3);
+    }
+
+    .concept-node-detail {
+      display: none;
+      padding: 1rem;
+      background-color: rgba(52, 152, 219, 0.05);
+      border: 1px solid rgba(52, 152, 219, 0.2);
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .concept-node-detail.show { display: block; }
+
+    /* Certificate */
+    .certificate {
+      border: 2px solid var(--secondary-color);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      background: linear-gradient(135deg, rgba(52,152,219,0.05) 0%, rgba(44,62,80,0.05) 100%);
+    }
+
+    .certificate h3 { color: var(--secondary-color); font-size: 1.5rem; margin-bottom: 0.5rem; }
+  </style>
 </head>
 
-<body class="dark-mode">
+<body>
 
-    <!-- HEADER & NAVIGATION -->
-    <header>
-        <div>
-            <h1>🏙️ Medellín 2050: Smart City</h1>
-            <p>IGCSE ICT (0417) | Session 1: Building the City's DNA</p>
+<header>
+  <div>
+    <h1>Don't Be the Mars Orbiter</h1>
+    <p>Grade 11 — Cambridge IGCSE ICT | Database Session 1 of 11</p>
+  </div>
+  <nav>
+    <button onclick="toggleMode()">Theme</button>
+    <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
+    <button onclick="scrollToSection('concepts')">Concepts</button>
+    <button onclick="scrollToSection('demo')">Demo</button>
+    <button onclick="scrollToSection('mission')">Mission</button>
+    <button onclick="scrollToSection('drill')">Drill</button>
+    <button onclick="scrollToSection('vocab')">Vocab</button>
+  </nav>
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== OPENING ACTIVITY ===================== -->
+  <section class="section" id="opening-activity">
+    <h2>The Hook: A $327 Million Question</h2>
+    <p>
+      23 September 1999. NASA's Mars Climate Orbiter has been travelling for 9 months and 416 million miles.
+      It is 60 seconds from entering Mars orbit. Then it disappears. $327 million — gone.
+    </p>
+    <p>
+      The investigation identified the cause in three sentences: one engineering team was transmitting navigation
+      data in imperial units — pound-force seconds. The software receiving that data expected metric units —
+      newton-seconds. Nobody had checked. The spacecraft received perfectly valid numbers. The numbers just meant
+      the wrong thing. The Orbiter flew 170 kilometres too close to Mars and burned up in the atmosphere.
+    </p>
+    <div class="info-box">
+      <strong>The crucial detail:</strong> The numbers were not wrong. They were stored correctly.
+      They were transmitted correctly. The catastrophic error was in the <em>type</em> — not the value itself.
+    </div>
+
+    <h3>Before we begin: What is your prediction?</h3>
+    <p>A developer imports a CSV file into Microsoft Access. The field <strong>Price</strong> contains values like
+    <code>2.45</code>, but Access imports it as Short Text. The developer does not notice.
+    Which of the following will happen first?</p>
+
+    <div class="concept-check" style="border-left-color: var(--secondary-color);">
+      <h4>Opening Prediction</h4>
+      <div class="options" id="opening-options">
+        <div class="option">
+          <input type="radio" name="opening" id="op-a" value="a">
+          <label for="op-a">A) Nothing — text fields can store numbers just fine for all purposes</label>
         </div>
-        <nav>
-            <button onclick="toggleMode()">🌙 Theme</button>
-            <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
-            <button onclick="scrollToSection('concepts')">Concepts</button>
-            <button onclick="scrollToSection('demo')">Demo</button>
-            <button onclick="scrollToSection('mission')">Mission</button>
-            <button onclick="scrollToSection('drill')">Drill</button>
-            <button onclick="scrollToSection('vocab')">Vocab</button>
-        </nav>
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+        <div class="option">
+          <input type="radio" name="opening" id="op-b" value="b">
+          <label for="op-b">B) Access will show an error message immediately on import</label>
         </div>
-    </header>
+        <div class="option">
+          <input type="radio" name="opening" id="op-c" value="c">
+          <label for="op-c">C) The values look correct on screen, but any calculation or sort will silently produce wrong results</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="opening" id="op-d" value="d">
+          <label for="op-d">D) Access will automatically convert the field to Currency when you run a query</label>
+        </div>
+      </div>
+      <button onclick="checkOpening()">Lock In My Prediction</button>
+      <div class="feedback" id="opening-feedback"></div>
+    </div>
 
-    <main>
-        <!-- OPENING ACTIVITY (MANDATORY & INTERACTIVE) -->
-        <section class="section" id="opening-activity">
-            <h2>⚡ The Hook: 400,000 Commuters Stranded</h2>
-            <div class="highlight-box">
-                <p><strong>Year: 2050. Location: Medellín.</strong></p>
-                <p>The city's new AI-powered Metro system just crashed at rush hour, stranding 400,000 commuters. The
-                    city's lead engineer calls you in a panic. The culprit? The citizen database. Three lines went
-                    offline because the AI couldn't process the stored data.</p>
-                <p>The city is asking: <em>who built this broken schema?</em> More importantly — can you fix it?</p>
-            </div>
+    <div class="highlight-box" id="type-board">
+      <strong>Write this on the board — it stays there all session:</strong>
+      <div class="code-block">'18.80'  (Text)      ≠   18.80  (Currency)
+'15/03/2040' (Text) ≠   15/03/2040  (Date/Time)
+'Yes' (Text)        ≠   Yes  (Boolean)
 
-            <div class="exercise">
-                <p class="question-text">Look at these three snippets of data recovered from the crashed database logs.
-                    Which one do you think caused the critical math failure in the AI's ticket pricing algorithm?</p>
+VALUE ≠ TYPE</div>
+    </div>
+  </section>
 
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="hook-guess" id="hook-1" value="wrong">
-                        <label class="radio-label" for="hook-1">Age: 32</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="hook-guess" id="hook-2" value="correct">
-                        <label class="radio-label" for="hook-2">Age: "thirty-two"</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="hook-guess" id="hook-3" value="wrong">
-                        <label class="radio-label" for="hook-3">Journey Date: 14/03/2050</label>
-                    </div>
-                </div>
-                <button onclick="checkHook()">Analyze Log</button>
-                <div id="hook-feedback" class="feedback"></div>
-            </div>
-            <p><em>Today, you become the Architect of the City's DNA. Every field you design either keeps Medellín
-                    running — or shuts it down.</em></p>
-        </section>
+  <!-- ===================== LEARNING OBJECTIVES ===================== -->
+  <section class="section" id="learning-objectives">
+    <h2>Learning Objectives</h2>
 
-        <!-- LEARNING OBJECTIVES -->
-        <section class="section" id="learning-objectives">
-            <h2>🎯 Mission Objectives</h2>
-            <p>To restore the database, you must master the building blocks of data structures. By the end of this
-                session, you will be able to:</p>
+    <h3>Cognitive Objectives</h3>
+    <p>By the end of this class I will be able to:</p>
+    <div id="cog-objectives">
+      <div class="obj-item">
+        <div class="obj-status" id="obj-1" title="Click to cycle: grey = not started, green = confident, yellow = needs review, red = need help" onclick="cycleStatus('obj-1')"></div>
+        <span>Import a CSV file into MS Access and correctly navigate each step of the Import Wizard</span>
+      </div>
+      <div class="obj-item">
+        <div class="obj-status" id="obj-2" onclick="cycleStatus('obj-2')"></div>
+        <span>Identify and apply all six data types used in Cambridge Paper 2 database tasks (Short Text, Number Integer, Number Decimal, Currency, Date/Time, Yes/No)</span>
+      </div>
+      <div class="obj-item">
+        <div class="obj-status" id="obj-3" onclick="cycleStatus('obj-3')"></div>
+        <span>Explain what a primary key is and apply the three-step test to identify the correct field in an exam CSV</span>
+      </div>
+      <div class="obj-item">
+        <div class="obj-status" id="obj-4" onclick="cycleStatus('obj-4')"></div>
+        <span>Create a one-to-many relationship with referential integrity enforced, producing the correct 1 and infinity symbols in the Relationships window</span>
+      </div>
+      <div class="obj-item">
+        <div class="obj-status" id="obj-5" onclick="cycleStatus('obj-5')"></div>
+        <span>Complete the post-import audit checklist in Design View for every imported table</span>
+      </div>
+    </div>
 
-            <div class="highlight-box">
-                <div class="checklist-item">
-                    <input type="checkbox" id="obj-1" onchange="saveProgress()">
-                    <label for="obj-1"><strong>Cognitive:</strong> Identify and select appropriate data types for a
-                        given dataset in MS Access.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="obj-2" onchange="saveProgress()">
-                    <label for="obj-2"><strong>Cognitive:</strong> Explain the difference between flat-file and
-                        relational databases.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="obj-3" onchange="saveProgress()">
-                    <label for="obj-3"><strong>Cognitive:</strong> Define and implement a Primary Key with its mandatory
-                        properties.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="obj-4" onchange="saveProgress()">
-                    <label for="obj-4"><strong>Social-Emotional:</strong> Demonstrate attention to detail, recognizing
-                        that tiny structural errors have massive real-world impacts.</label>
-                </div>
-            </div>
-            <p><small><em>Prior Knowledge required: Basic understanding of what a table is (rows and
-                        columns).</em></small></p>
-        </section>
+    <h3>Social-Emotional Objectives</h3>
+    <p>I will develop the ability to:</p>
+    <ul style="list-style: disc; padding-left: 1.5rem; line-height: 2;">
+      <li>Approach technical errors methodically rather than with frustration — the error message is information, not failure</li>
+      <li>Check and verify rather than assume — the wizard guesses, you decide</li>
+      <li>Support peers during the independent mission by asking clarifying questions before giving answers</li>
+    </ul>
 
-        <!-- CONCEPT EXPLORATION -->
-        <section class="section" id="concepts">
-            <h2>📚 The Architect's Cheat Sheet</h2>
-            <p>Before we touch the live servers, you need to understand the two core philosophies of data architecture.
-            </p>
+    <h3>Connection to Prior Knowledge</h3>
+    <div class="highlight-box">
+      This session builds on your understanding of spreadsheet data types from earlier units. The key difference: in a spreadsheet, wrong types produce calculation errors you can see. In a database, wrong types produce silently wrong query results — much more dangerous.
+    </div>
 
-            <div class="difficulty-tabs">
-                <button class="active" onclick="switchDifficulty('basic')">Basic: Architectures</button>
-                <button onclick="switchDifficulty('intermediate')">Intermediate: Data Types</button>
-                <button onclick="switchDifficulty('advanced')">Advanced: The Primary Key</button>
-            </div>
+    <h3>Success Criteria</h3>
+    <p>Click each item to mark your confidence. Green = confident, Yellow = needs review, Red = need help.</p>
+    <div class="highlight-box">
+      <div id="success-criteria">
+        <div class="obj-item">
+          <div class="obj-status" id="sc-1" onclick="cycleStatus('sc-1')"></div>
+          <span>I can import a CSV and navigate all four wizard steps without prompting</span>
+        </div>
+        <div class="obj-item">
+          <div class="obj-status" id="sc-2" onclick="cycleStatus('sc-2')"></div>
+          <span>I can identify which of the six data types to use for any field given an exam-style description</span>
+        </div>
+        <div class="obj-item">
+          <div class="obj-status" id="sc-3" onclick="cycleStatus('sc-3')"></div>
+          <span>I can explain the difference between 'Yes' (Text) and Yes (Boolean) to someone who has never studied databases</span>
+        </div>
+        <div class="obj-item">
+          <div class="obj-status" id="sc-4" onclick="cycleStatus('sc-4')"></div>
+          <span>My Relationships window shows a line with 1 on the parent side and the infinity symbol on the child side</span>
+        </div>
+        <div class="obj-item">
+          <div class="obj-status" id="sc-5" onclick="cycleStatus('sc-5')"></div>
+          <span>I can describe what will happen if I try to add a record with a foreign key value that does not exist in the parent table</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            <!-- Basic Concept -->
-            <div id="content-basic" class="difficulty-content active">
-                <h3>Flat-File vs. Relational Database</h3>
-                <table>
-                    <tr>
-                        <th>Architecture</th>
-                        <th>Flat-File Database</th>
-                        <th>Relational Database</th>
-                    </tr>
-                    <tr>
-                        <td><strong>Structure</strong></td>
-                        <td>One single table containing all data.</td>
-                        <td>Multiple linked tables.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Data Redundancy</strong></td>
-                        <td>High — data is repeated across rows.</td>
-                        <td>Low — data stored once, referenced via keys.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Example</strong></td>
-                        <td>A single spreadsheet of all citizens + their districts + energy bills in one row.</td>
-                        <td>Separate <code>CITIZENS</code>, <code>DISTRICTS</code>, and <code>ENERGY_BILLS</code>
-                            tables, linked by ID.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Risk</strong></td>
-                        <td>Update anomaly — change one address, miss 50 duplicate rows.</td>
-                        <td>Requires careful key design.</td>
-                    </tr>
-                </table>
-                <p><strong>🎯 Exam-Precision Definition:</strong> A flat-file database stores all data in a single
-                    table, leading to data redundancy. A relational database uses multiple tables linked by key fields
-                    to eliminate redundancy and improve data integrity.</p>
-            </div>
+  <!-- ===================== CONCEPT EXPLORATION ===================== -->
+  <section class="section" id="concepts">
+    <h2>Concept Exploration</h2>
 
-            <!-- Intermediate Concept -->
-            <div id="content-intermediate" class="difficulty-content">
-                <h3>The Data Type Arsenal (0417 Taxonomy)</h3>
-                <p>Data types are contracts between the city and the database engine. Break the contract, and the system
-                    crashes.</p>
-                <table>
-                    <tr>
-                        <th>Data Type</th>
-                        <th>What It Stores</th>
-                        <th>Medellín 2050 Example</th>
-                        <th>Key Rule</th>
-                    </tr>
-                    <tr>
-                        <td><strong>Text (Alphanumeric)</strong></td>
-                        <td>Letters, numbers, symbols — but NOT for calculation.</td>
-                        <td><code>CitizenID</code>, <code>Surname</code></td>
-                        <td>Use when you will NEVER calculate with the value.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Integer (Numeric)</strong></td>
-                        <td>Whole numbers only.</td>
-                        <td><code>EnergyCredits</code>, <code>FloorNumber</code></td>
-                        <td>No decimal places.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Decimal (Numeric)</strong></td>
-                        <td>Numbers with decimal places.</td>
-                        <td><code>TemperatureSensor</code></td>
-                        <td>Specify decimal places.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Currency</strong></td>
-                        <td>Monetary values.</td>
-                        <td><code>FineAmount</code></td>
-                        <td>Prevents rounding errors, auto-adds symbol.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Date/Time</strong></td>
-                        <td>Dates and/or times.</td>
-                        <td><code>DateOfBirth</code></td>
-                        <td>Must set display format (e.g., dd/mm/yyyy).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Boolean / Logical</strong></td>
-                        <td>Two-state only: Yes/No, True/False.</td>
-                        <td><code>IsVerified</code></td>
-                        <td>Eliminates invalid entries like "maybe".</td>
-                    </tr>
-                </table>
-                <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
-                    <strong>⚠️ Common Error:</strong> Using <em>Integer</em> for a field like <code>CitizenID</code>
-                    (e.g. C-00451). This fails because the hyphen makes it non-numeric. IDs with letters or symbols are
-                    always <strong>Text</strong>.
-                </div>
-            </div>
+    <!-- 2A Data Types -->
+    <h3>2A — The Six Data Types the Exam Always Uses</h3>
+    <p>From analysis of every Cambridge Paper 2 past paper, only these six data types appear in the database task. You need to know all six — and the difference between Store and Display for each.</p>
 
-            <!-- Advanced Concept -->
-            <div id="content-advanced" class="difficulty-content">
-                <h3>The Primary Key: The City's Fingerprint</h3>
-                <p><strong>🎯 Exam-Precision Definition:</strong> A primary key is a field (or combination of fields)
-                    that uniquely identifies each record in a table. It cannot be null and cannot contain duplicate
-                    values.</p>
-                <p><strong>The Analogy:</strong> Every citizen of Medellín 2050 has a chip implanted at birth with a
-                    unique 7-character ID. No two chips are identical. Even twins. That chip ID is the primary key.</p>
-                <ul>
-                    <li>✅ <strong>Unique:</strong> No duplicates allowed.</li>
-                    <li>✅ <strong>Never empty:</strong> No nulls allowed.</li>
-                    <li>✅ <strong>Stable:</strong> It should never need to change.</li>
-                    <li>✅ <strong>Minimal:</strong> As short as possible while remaining unique.</li>
-                </ul>
-            </div>
-        </section>
+    <div class="difficulty-tabs" id="dt-tabs">
+      <button class="active" onclick="switchTab('dt', 'basic', this)">Basic</button>
+      <button onclick="switchTab('dt', 'intermediate', this)">Intermediate</button>
+      <button onclick="switchTab('dt', 'advanced', this)">Advanced</button>
+    </div>
 
-        <!-- APPLIED EXAMPLES / DEMO -->
-        <section class="section" id="demo">
-            <h2>🛠️ The Live Build: CITIZENS Table</h2>
-            <p>Your Lead Engineer is restoring the <code>CITIZENS</code> table in MS Access. First, download the
-                recovered dataset.</p>
+    <div class="difficulty-content active" id="dt-basic">
+      <p>The six data types are like different units of measurement. Using the wrong one is like writing a speed in kilometres but the car's computer expects miles per hour — the number looks fine, the outcome is catastrophic.</p>
+      <table>
+        <thead>
+          <tr><th>Access Data Type</th><th>What it stores</th><th>Example fields</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Short Text</strong></td><td>Any sequence of characters — letters, numbers, symbols</td><td>ProductCode, Surname, Category</td></tr>
+          <tr><td><strong>Number (Integer)</strong></td><td>Whole numbers only — no decimal places</td><td>StockLevel, Packets, ReleaseYear</td></tr>
+          <tr><td><strong>Number (Decimal)</strong></td><td>Numbers with decimal places</td><td>GlobalSales, Percentage</td></tr>
+          <tr><td><strong>Currency</strong></td><td>Money — fixed precision, displays with currency symbol</td><td>Price, Salary, Budget</td></tr>
+          <tr><td><strong>Date/Time</strong></td><td>Dates and times with correct sorting and calculation</td><td>DateAppointed, ExpiryYear, RequestDate</td></tr>
+          <tr><td><strong>Yes/No</strong></td><td>Boolean — only two possible values: Yes or No</td><td>IsActive, IsPaid, IsResolved</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-            <button
-                onclick="window.open('https://docs.google.com/spreadsheets/d/1kdIxBR5eP3OwUH5Srg13fSAUOY-Bw6ZgTfHkkyC6IWU/edit?usp=sharing', '_blank')"
-                style="margin-bottom: 1.5rem;">
-                📥 Download Citizens Dataset (CSV)
-            </button>
+    <div class="difficulty-content" id="dt-intermediate">
+      <p>The exam always specifies both Store and Display separately. You must set both the data type AND the format property in Design View.</p>
+      <div class="warning-box">
+        <strong>Critical exam pattern:</strong> When you see "Store: Number | Display: Integer (0 decimal places)" — that means set the data type to Number AND set the Field Size to Integer (or Long Integer) in the field properties below.
+      </div>
+      <table>
+        <thead>
+          <tr><th>Access Data Type</th><th>Store</th><th>Exam Display Instruction</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Short Text</td><td>Text characters</td><td><em>Just says "Text"</em></td></tr>
+          <tr><td>Number — Integer</td><td>Whole numbers only</td><td>Integer / 0 decimal places</td></tr>
+          <tr><td>Number — Decimal</td><td>Decimal numbers</td><td>Decimal / 2 decimal places</td></tr>
+          <tr><td>Currency</td><td>Money to fixed precision</td><td>Currency symbol, 2 decimal places</td></tr>
+          <tr><td>Date/Time</td><td>Dates</td><td>dd/mm/yyyy or dd-MMM-yy (e.g. 12-Oct-24)</td></tr>
+          <tr><td>Yes/No</td><td>Boolean</td><td>Yes/No</td></tr>
+        </tbody>
+      </table>
+      <p>Example exam instruction: <em>"Store: Currency | Display: currency symbol with 2 decimal places"</em> — set Data Type = Currency, then check that Decimal Places = 2 in the field property panel.</p>
+    </div>
 
-            <div class="highlight-box">
-                <h4>Dataset Preview (First 3 Records)</h4>
-                <table>
-                    <tr>
-                        <th>CitizenID</th>
-                        <th>Surname</th>
-                        <th>FirstName</th>
-                        <th>DateOfBirth</th>
-                        <th>EnergyCredits</th>
-                        <th>IsVerified</th>
-                    </tr>
-                    <tr>
-                        <td>C-00101</td>
-                        <td>Restrepo</td>
-                        <td>Valentina</td>
-                        <td>14/03/2001</td>
-                        <td>850</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>C-00102</td>
-                        <td>García</td>
-                        <td>Mateo</td>
-                        <td>22/07/1998</td>
-                        <td>1200</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>C-00103</td>
-                        <td>Ospina</td>
-                        <td>Isabella</td>
-                        <td>05/11/2003</td>
-                        <td>340</td>
-                        <td>No</td>
-                    </tr>
-                </table>
-            </div>
+    <div class="difficulty-content" id="dt-advanced">
+      <p>The Mars Orbiter scenario applies directly to every import. The danger is not wrong values — it is correct values with wrong types. Three cases to memorise:</p>
+      <div class="code-block">'18.80' as Short Text — looks identical to 18.80 (Currency) in Datasheet View.
+  But: SUM([Price]) returns 0 or an error. SORT([Price]) sorts alphabetically (2.45 before 18.80).
+  The wrongness is invisible until the query runs.
 
-            <h3>MS Access Implementation Steps</h3>
-            <ol>
-                <li><strong>Create new database:</strong> Open Microsoft Access, select Blank Desktop Database, and name
-                    it <code>Medellin2050_SmartCity.accdb</code>.</li>
-                <li><strong>Design View:</strong> Right-click on 'Table1', choose <strong>Design View</strong>, and save
-                    the table as <code>CITIZENS</code>. Define the field structure exactly as follows:
-                    <ul>
-                        <li><code>CitizenID</code> -> <strong>Short Text</strong> (Contains a hyphen).</li>
-                        <li><code>DateOfBirth</code> -> <strong>Date/Time</strong> (Use Field Properties to set format
-                            to Short Date: dd/mm/yyyy).</li>
-                        <li><code>EnergyCredits</code> -> <strong>Number</strong> (Set Field Size to Integer in
-                            properties - no fractions of credit).</li>
-                        <li><code>FineAmount</code> -> <strong>Currency</strong> (Handles the monetary symbol
-                            automatically).</li>
-                        <li><code>IsVerified</code> -> <strong>Yes/No</strong> (Boolean logic).</li>
-                    </ul>
-                </li>
-                <li><strong>Primary Key:</strong> Select the <code>CitizenID</code> row and click the 🔑 <strong>Primary
-                        Key</strong> button in the top ribbon. This is the city's fingerprint!</li>
-                <li><strong>The Deliberate Error:</strong> Temporarily change <code>EnergyCredits</code> to <em>Short
-                        Text</em>. Switch to Datasheet View, save, and type "plenty" in the field. When you switch back
-                    to <em>Number</em> in Design View, Access warns of data loss. <strong>The type is the law. Design
-                        schema BEFORE importing data.</strong></li>
-                <li><strong>Import the CSV:</strong> Go to the <strong>External Data</strong> tab &gt; <strong>New Data
-                        Source</strong> &gt; <strong>From File</strong> &gt; <strong>Text File</strong>. Select your
-                    downloaded CSV, choose to <em>Append a copy of the records to the table <code>CITIZENS</code></em>,
-                    and finish the wizard.</li>
-            </ol>
-        </section>
+'15/03/2040' as Short Text — looks identical to 15/03/2040 (Date/Time) in Datasheet View.
+  But: You cannot filter dates with &gt; or &lt; operators.
+  DateDiff() returns an error.
 
-        <!-- INTERACTIVE ACTIVITIES / MISSION -->
-        <section class="section" id="mission">
-            <h2>🎯 Student Mission: The Transport Registry</h2>
-            <p>The city's Metro Authority needs its own table. Your job is to design and build it from scratch in MS
-                Access using the dataset provided below. The autonomous trains won't run without it.</p>
+'Yes' as Short Text — looks identical to Yes (Boolean) in Datasheet View.
+  But: A criterion of = Yes (Boolean) returns no results.
+  The text string "Yes" and the Boolean Yes are different types entirely.</div>
+      <div class="info-box">
+        <strong>Why this matters for the mark scheme:</strong> The examiner cannot see your Datasheet View values. They open your database in Design View. If IsActive is Short Text storing "Yes"/"No", you receive 0 marks for that field's data type — even though the values look identical on screen to Yes/No Boolean.
+      </div>
+    </div>
 
-            <button
-                onclick="window.open('https://docs.google.com/spreadsheets/d/1OdXT1xkgeG38l-b7aoKIMNIvpMBpcoynSqF1c3wjXuM/edit?usp=sharing', '_blank')"
-                class="btn-accent" style="margin-bottom: 1.5rem;">
-                📥 Download Metro Vehicles (CSV)
-            </button>
+    <!-- 2B Primary Keys -->
+    <h3>2B — Primary Keys: The One Rule</h3>
 
-            <div class="highlight-box">
-                <h4>METRO_VEHICLES Table Preview</h4>
-                <table>
-                    <tr>
-                        <th>VehicleCode</th>
-                        <th>LineCode</th>
-                        <th>Capacity</th>
-                        <th>IsElectric</th>
-                        <th>CommissionDate</th>
-                        <th>MaintenanceCost</th>
-                        <th>Status</th>
-                    </tr>
-                    <tr>
-                        <td>MV-A001</td>
-                        <td>Line-A</td>
-                        <td>320</td>
-                        <td>Yes</td>
-                        <td>01/03/2040</td>
-                        <td>1500.00</td>
-                        <td>Active</td>
-                    </tr>
-                    <tr>
-                        <td>MV-B002</td>
-                        <td>Line-B</td>
-                        <td>280</td>
-                        <td>No</td>
-                        <td>15/06/2041</td>
-                        <td>5000.00</td>
-                        <td>Maintenance</td>
-                    </tr>
-                </table>
-            </div>
+    <div class="difficulty-tabs" id="pk-tabs">
+      <button class="active" onclick="switchTab('pk', 'basic', this)">Basic</button>
+      <button onclick="switchTab('pk', 'intermediate', this)">Intermediate</button>
+      <button onclick="switchTab('pk', 'advanced', this)">Advanced</button>
+    </div>
 
-            <h3>Pre-Flight Checklist</h3>
-            <p>Before using the External Data tool to import the CSV, verify you have built the correct architecture in
-                MS Access Design View:</p>
+    <div class="difficulty-content active" id="pk-basic">
+      <div class="info-box">
+        <strong>Exam-Precision Definition:</strong> A primary key is a field whose value uniquely identifies each record in a table. No two records can share the same primary key value, and it cannot be left empty.
+      </div>
+      <p>Think of it as a national identity number — every person has one, no two people share one, and it cannot be blank.</p>
+    </div>
 
-            <div class="exercise" id="mission-checks">
-                <div class="checklist-item">
-                    <input type="checkbox" id="m-chk1" onchange="checkMission()">
-                    <label for="m-chk1"><code>VehicleCode</code> is set as <strong>Short Text</strong> and the 🔑
-                        <strong>Primary Key</strong> is assigned.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m-chk2" onchange="checkMission()">
-                    <label for="m-chk2"><code>Capacity</code> is set to <strong>Number</strong> (with Field Size:
-                        Integer).</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m-chk3" onchange="checkMission()">
-                    <label for="m-chk3"><code>IsElectric</code> is set to <strong>Yes/No</strong>.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m-chk4" onchange="checkMission()">
-                    <label for="m-chk4"><code>MaintenanceCost</code> is set to <strong>Currency</strong>.</label>
-                </div>
-                <div id="mission-success" class="feedback correct" style="display:none;">
-                    ✅ Great job architect! Your schema is ready. You can now safely use the External Data tab to append
-                    your CSV records to the METRO_VEHICLES table.
-                </div>
-            </div>
+    <div class="difficulty-content" id="pk-intermediate">
+      <p>How to identify the primary key when the exam says "examine the file and identify the most appropriate field" — apply this test in order:</p>
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content"><p>Is there a field with Code, ID, or Ref in the name? Almost certainly the primary key.</p></div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content"><p>Does every record have a unique value in that field? Scan the CSV — confirm no duplicates.</p></div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-content"><p>Could it ever be blank? If yes, it cannot be the primary key.</p></div>
+      </div>
+      <p style="margin-top:1rem;"><strong>Past paper primary keys:</strong> ProductCode, GameCode, SeedID, AgeCode, GenCode.</p>
+    </div>
 
-            <div class="highlight-box" style="border-left: 4px solid var(--primary-color);">
-                <h4>🔴 Stretch Challenge</h4>
-                <p>The Metro Authority realizes <code>Status</code> only ever has three possible values: <em>Active,
-                        Maintenance, Decommissioned</em>. Write below why leaving it as "Short Text" is dangerous.</p>
-                <textarea id="stretch-answer" rows="3"
-                    placeholder="Type your architectural reasoning here..."></textarea>
-                <button
-                    onclick="saveToLocalStorage('stretch-answer', document.getElementById('stretch-answer').value); alert('Saved to local storage!');">Save
-                    Notes</button>
-            </div>
-        </section>
+    <div class="difficulty-content" id="pk-advanced">
+      <div class="warning-box">
+        <strong>The AutoNumber Trap — loses marks every time:</strong> When Access imports a CSV, it may offer to create an AutoNumber primary key. Always choose "Let me choose my own primary key" and select the correct field. An AutoNumber PK on an imported table is almost always wrong — it has no relationship to the actual data, so it cannot be used to join tables or referenced in reports.
+      </div>
+      <p>Why does the exam use codes like "SD-001" rather than simple integers? A code field communicates meaning: SD tells you it is a Seed record, 001 gives sequence. An AutoNumber integer communicates nothing. The examiner wants you to understand that primary keys are chosen for semantic reasons, not just uniqueness.</p>
+    </div>
 
-        <!-- PRACTICE EXERCISES & CCQs -->
-        <section class="section" id="drill">
-            <h2>📝 Theory Drill: Defending the Database</h2>
-            <p>To pass your Architect Certification (and Paper 1), you must prove your understanding of the schema
-                rules.</p>
+    <!-- 2C Relationships -->
+    <h3>2C — Relationships: The Only Pattern the Exam Uses</h3>
 
-            <!-- CCQ 1 (Based on Q3) -->
-            <div class="concept-check">
-                <h4>Question 1: The Architecture Choice</h4>
-                <p>The Medellín 2050 database currently stores all citizen data, district data, and energy billing data
-                    in ONE massive table. What type of database does this describe?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq1" id="ccq1-a" value="wrong">
-                        <label for="ccq1-a">A Relational Database</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq1" id="ccq1-b" value="correct">
-                        <label for="ccq1-b">A Flat-file Database</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq1" id="ccq1-c" value="wrong">
-                        <label for="ccq1-c">A Boolean Database</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq1', 'ccq1-b', 'ccq1-feedback')">Submit Answer</button>
-                <div id="ccq1-feedback" class="feedback"></div>
-            </div>
+    <div class="difficulty-tabs" id="rel-tabs">
+      <button class="active" onclick="switchTab('rel', 'basic', this)">Basic</button>
+      <button onclick="switchTab('rel', 'intermediate', this)">Intermediate</button>
+      <button onclick="switchTab('rel', 'advanced', this)">Advanced</button>
+    </div>
 
-            <!-- CCQ 2 (Based on Q3 extension) -->
-            <div class="concept-check">
-                <h4>Question 2: The Danger of Flat-Files</h4>
-                <p>Why is the "update anomaly" a major risk in the flat-file database described above?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq2" id="ccq2-a" value="correct">
-                        <label for="ccq2-a">Because changing a district name requires updating many duplicate rows,
-                            risking errors.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2" id="ccq2-b" value="wrong">
-                        <label for="ccq2-b">Because it stops you from using Primary Keys entirely.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2" id="ccq2-c" value="wrong">
-                        <label for="ccq2-c">Because flat files cannot store Text or Number data types.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq2', 'ccq2-a', 'ccq2-feedback')">Submit Answer</button>
-                <div id="ccq2-feedback" class="feedback"></div>
-            </div>
+    <div class="difficulty-content active" id="rel-basic">
+      <p>Every Paper 2 past paper uses the same relationship structure: one parent table, one child table, linked by a shared field.</p>
+      <div class="code-block">TABLE A (one side)              TABLE B (many side)
+Primary Key: FieldX    →    Foreign Key: FieldX
+          1                              ∞</div>
+      <p>Example: One department can have many officials. DEPARTMENTS is the "one" side; OFFICIALS is the "many" side.</p>
+    </div>
 
-            <!-- CCQ 3 (Based on Q1) -->
-            <div class="concept-check">
-                <h4>Question 3: Energy Credit Formatting</h4>
-                <p>The <code>EnergyCredits</code> field stores values such as 850, 1200, and 340. Would it be correct to
-                    use the <strong>Currency</strong> data type here?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq3" id="ccq3-a" value="wrong">
-                        <label for="ccq3-a">Yes, because it is a numerical value that acts like money.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3" id="ccq3-b" value="correct">
-                        <label for="ccq3-b">No, because energy credits are units, and Currency would incorrectly add a
-                            money symbol ($/£).</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq3', 'ccq3-b', 'ccq3-feedback')">Submit Answer</button>
-                <div id="ccq3-feedback" class="feedback"></div>
-            </div>
+    <div class="difficulty-content" id="rel-intermediate">
+      <p>Three things the mark scheme checks — all three must be visible in your screenshot:</p>
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content"><p>The relationship line exists between the correct fields (1 mark)</p></div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content"><p>The 1 and infinity symbols are visible — this confirms referential integrity was enforced</p></div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-content"><p>Only one screenshot is needed — the Relationships window showing both symbols</p></div>
+      </div>
+      <p><strong>Real examples from past papers:</strong> SupplierCode in suppliers → SupplierCode in stores; SeedID in seeds → Seed in orders; GenCode in genre → GenCode in games.</p>
+    </div>
 
-            <!-- CCQ 4 (Based on Q4) -->
-            <div class="concept-check">
-                <h4>Question 4: Boolean Logic</h4>
-                <p>A developer stores <code>IsVerified</code> as "Short Text", typing "yes" and "no". Explain why
-                    <strong>Boolean/Logical</strong> is superior.
-                </p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq4" id="ccq4-a" value="wrong">
-                        <label for="ccq4-a">Boolean takes up more storage space, making the database faster.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq4" id="ccq4-b" value="correct">
-                        <label for="ccq4-b">Boolean only allows two states, eliminating the risk of invalid entries like
-                            "YES", "y", or "true".</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq4" id="ccq4-c" value="wrong">
-                        <label for="ccq4-c">Boolean allows you to calculate the average verification rate
-                            easily.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq4', 'ccq4-b', 'ccq4-feedback')">Submit Answer</button>
-                <div id="ccq4-feedback" class="feedback"></div>
-            </div>
+    <div class="difficulty-content" id="rel-advanced">
+      <div class="warning-box">
+        <strong>The Field Name Trap:</strong> In the Seeds paper, the primary key field is SeedID but the foreign key in orders is called Seed — different names, same data, valid join. Access will NOT draw the line automatically — you must drag manually from SeedID in the seeds table and drop it onto Seed in the orders table.
+      </div>
+      <p>Referential integrity settings for the exam:</p>
+      <ul style="list-style: disc; padding-left: 1.5rem; line-height: 2;">
+        <li>Enforce Referential Integrity — always tick this</li>
+        <li>Cascade Update Related Fields — tick this</li>
+        <li>Cascade Delete Related Records — never tick this in an exam context</li>
+      </ul>
+    </div>
 
-            <!-- CCQ 5 (Based on Q5a) -->
-            <div class="concept-check">
-                <h4>Question 5: Dealing with Hyphens</h4>
-                <p>The field <code>VehicleCode</code> contains values like <strong>MV-A001</strong>. What is the ONLY
-                    appropriate data type?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq5" id="ccq5-a" value="wrong">
-                        <label for="ccq5-a">Integer</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq5" id="ccq5-b" value="correct">
-                        <label for="ccq5-b">Short Text / Alphanumeric</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq5" id="ccq5-c" value="wrong">
-                        <label for="ccq5-c">Decimal</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq5', 'ccq5-b', 'ccq5-feedback')">Submit Answer</button>
-                <div id="ccq5-feedback" class="feedback"></div>
-            </div>
+    <!-- 2D Post-Import Audit -->
+    <h3>2D — The Post-Import Audit Checklist</h3>
+    <p>This is the step 90% of students skip — and lose marks on. After every import, immediately open the table in Design View and check every item below.</p>
 
-            <!-- CCQ 6 (Based on Q5b) -->
-            <div class="concept-check">
-                <h4>Question 6: Choosing the Key</h4>
-                <p>A student suggests using an arbitrary <em>AutoNumber</em> (1, 2, 3...) as the primary key instead of
-                    <code>VehicleCode</code> (MV-A001). Why is <code>VehicleCode</code> the better choice?
-                </p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq6" id="ccq6-a" value="correct">
-                        <label for="ccq6-a">It is a "natural key" that is self-describing and links directly to
-                            real-world vehicle identification.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq6" id="ccq6-b" value="wrong">
-                        <label for="ccq6-b">AutoNumbers can contain duplicate values, which breaks Primary Key
-                            rules.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq6', 'ccq6-a', 'ccq6-feedback')">Submit Answer</button>
-                <div id="ccq6-feedback" class="feedback"></div>
-            </div>
+    <div class="exercise">
+      <h4>Interactive Audit Checklist</h4>
+      <p>Work through these items mentally after each import. Tick each one when you are confident it has been verified.</p>
+      <ul class="checklist" id="audit-checklist">
+        <li><input type="checkbox" id="aud-1" onchange="saveChecklist()"><label for="aud-1">Field names exactly match the specification (case counts — DeptCode is not deptcode)</label></li>
+        <li><input type="checkbox" id="aud-2" onchange="saveChecklist()"><label for="aud-2">Short Text fields: Size reduced from 255 to something sensible (e.g. Size: 6 for a code like OF-001)</label></li>
+        <li><input type="checkbox" id="aud-3" onchange="saveChecklist()"><label for="aud-3">Number fields: correct subtype — Integer vs Decimal vs Long Integer</label></li>
+        <li><input type="checkbox" id="aud-4" onchange="saveChecklist()"><label for="aud-4">Currency fields: Format = Currency, Decimal Places = 2</label></li>
+        <li><input type="checkbox" id="aud-5" onchange="saveChecklist()"><label for="aud-5">Date/Time fields: Format = dd/mm/yyyy (or as specified in the question)</label></li>
+        <li><input type="checkbox" id="aud-6" onchange="saveChecklist()"><label for="aud-6">Yes/No fields: Data Type = Yes/No (NOT Short Text storing "Yes"/"No")</label></li>
+        <li><input type="checkbox" id="aud-7" onchange="saveChecklist()"><label for="aud-7">Primary Key: key symbol on the correct field</label></li>
+        <li><input type="checkbox" id="aud-8" onchange="saveChecklist()"><label for="aud-8">No AutoNumber field was created accidentally</label></li>
+      </ul>
+      <p id="checklist-progress" style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;"></p>
+    </div>
 
-            <!-- CCQ 7 (Based on Q2) -->
-            <div class="concept-check">
-                <h4>Question 7: Key Integrity</h4>
-                <p>What would happen if a database administrator tries to leave a Primary Key field completely blank
-                    (Null) for a new record?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq7" id="ccq7-a" value="wrong">
-                        <label for="ccq7-a">The database assigns a temporary key until one is provided.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq7" id="ccq7-b" value="wrong">
-                        <label for="ccq7-b">The record is saved, but cannot be searched.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq7" id="ccq7-c" value="correct">
-                        <label for="ccq7-c">The database will reject the record entirely. Primary Keys must NEVER be
-                            null.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq7', 'ccq7-c', 'ccq7-feedback')">Submit Answer</button>
-                <div id="ccq7-feedback" class="feedback"></div>
-            </div>
+    <!-- 2E New Records -->
+    <h3>2E — Adding a New Record: The Referential Integrity Test</h3>
 
-            <!-- CCQ 8 (General Application) -->
-            <div class="concept-check">
-                <h4>Question 8: The Golden Rule</h4>
-                <p>What is the fundamental "contract" of setting a Data Type for a field?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq8" id="ccq8-a" value="correct">
-                        <label for="ccq8-a">It is a structural rule enforced by the system to ensure data integrity and
-                            prevent calculation errors.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq8" id="ccq8-b" value="wrong">
-                        <label for="ccq8-b">It is just a cosmetic choice to make the table look neat and
-                            organized.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq8', 'ccq8-a', 'ccq8-feedback')">Submit Answer</button>
-                <div id="ccq8-feedback" class="feedback"></div>
-            </div>
+    <div class="difficulty-tabs" id="rec-tabs">
+      <button class="active" onclick="switchTab('rec', 'basic', this)">Basic</button>
+      <button onclick="switchTab('rec', 'intermediate', this)">Intermediate</button>
+      <button onclick="switchTab('rec', 'advanced', this)">Advanced</button>
+    </div>
 
-        </section>
+    <div class="difficulty-content active" id="rec-basic">
+      <p>In every Paper 2 paper, Step 4 asks you to add a new record to one of your tables. This is worth 1–2 marks.</p>
+      <p>Before entering the record, ask: <strong>Does every foreign key value in the new record already exist in the parent table?</strong></p>
+    </div>
 
-        <!-- VOCABULARY SECTION -->
-        <section class="section" id="vocab">
-            <h2>📖 Digital Glossary</h2>
-            <div class="vocab-search">
-                <input type="text" id="vocab-search-input" placeholder="🔍 Search vocabulary terms..."
-                    onkeyup="filterVocab()">
-            </div>
+    <div class="difficulty-content" id="rec-intermediate">
+      <p>The exam uses two variants of Step 4:</p>
+      <div class="step-item">
+        <div class="step-number">A</div>
+        <div class="step-content"><p><strong>Straightforward:</strong> The foreign key value in the new record already exists in the parent table. Enter the record directly.</p></div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">B</div>
+        <div class="step-content"><p><strong>The trap:</strong> The foreign key value does not exist in the parent table yet. You must add it to the parent table first, then add the child record. Attempting to add the child record first causes a referential integrity error — Access will reject it.</p></div>
+      </div>
+    </div>
 
-            <div id="vocab-list">
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Flat-File Database</div>
-                    <div class="vocab-definition">A database structure that stores all data in a single, large table.
-                        Prone to data redundancy and update anomalies.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Relational Database</div>
-                    <div class="vocab-definition">A database structure that uses multiple tables linked by key fields to
-                        eliminate redundancy and improve data integrity.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Primary Key</div>
-                    <div class="vocab-definition">A field (or combination of fields) that uniquely identifies each
-                        record in a table. It cannot be null and cannot contain duplicate values.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Data Redundancy</div>
-                    <div class="vocab-definition">The unnecessary repetition of data in a database, which wastes space
-                        and increases the chance of errors when updating.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Text / Alphanumeric (Data Type)</div>
-                    <div class="vocab-definition">Stores letters, numbers, and symbols. Used for data that will not be
-                        part of mathematical calculations (e.g., Phone numbers, IDs).</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Integer (Data Type)</div>
-                    <div class="vocab-definition">Stores whole numbers only. No decimal places.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Boolean / Logical (Data Type)</div>
-                    <div class="vocab-definition">Stores data that can only have one of two possible states (e.g.,
-                        Yes/No, True/False, On/Off).</div>
-                </div>
-            </div>
-        </section>
+    <div class="difficulty-content" id="rec-advanced">
+      <div class="info-box">
+        <strong>The error message is not failure — it is the database working correctly.</strong> When Access rejects a record with a referential integrity error, it is protecting the database from orphan records — child records that reference a parent that does not exist. This is exactly the kind of silent error that crashes spacecraft. The error message is informative. Read it, identify which foreign key is the problem, fix the parent table, then re-enter the record.
+      </div>
+    </div>
 
-        <!-- WRAP-UP SECTION -->
-        <section class="section" id="wrap-up">
-            <h2>🚀 Session De-Brief</h2>
+  </section>
 
-            <div class="highlight-box">
-                <h4>1. Knowledge Consolidation: One-Sentence Summary</h4>
-                <p>Distill today's entire session on database architecture into one sentence.</p>
-                <textarea id="wrap-summary" rows="2"
-                    placeholder="e.g., 'Data types act as a strict contract to prevent...'"></textarea>
-                <button onclick="saveWrapUp()">Save Summary</button>
-                <span id="save-conf"
-                    style="display:none; color: var(--secondary-color); margin-left:10px;">Saved!</span>
-            </div>
+  <!-- ===================== APPLIED EXAMPLES / DEMO ===================== -->
+  <section class="section" id="demo">
+    <h2>Guided Demonstration: The Live Build</h2>
+    <p>Follow along as we build CITY_DB.accdb — the Medellín 2050 Smart City database. This demonstrates Steps 1–4 of the exact exam pattern.</p>
 
-            <h4>2. Mastery Check: How confident are you?</h4>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button onclick="setConfidence('green')" style="background-color: #27ae60;">🟢 Got it all</button>
-                <button onclick="setConfidence('yellow')" style="background-color: #f1c40f; color:#000;">🟡 Need
-                    review</button>
-                <button onclick="setConfidence('red')" style="background-color: #e74c3c;">🔴 Need help</button>
-            </div>
+    <h3>Setup: Create the Database</h3>
+    <div class="step-item">
+      <div class="step-number">1</div>
+      <div class="step-content"><p>Open MS Access → Blank Database</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">2</div>
+      <div class="step-content"><p>Save as: <strong>CITY_DB.accdb</strong> in your working folder</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">3</div>
+      <div class="step-content"><p>Close the default blank table (Table1) without saving</p></div>
+    </div>
 
-            <h4>3. Reflection</h4>
-            <select id="reflection-prompt">
-                <option value="">-- Choose a reflection prompt --</option>
-                <option value="challenging">What was the most challenging concept for you today?</option>
-                <option value="real-world">How could a bad data type affect an app you use daily?</option>
-                <option value="questions">What question do you still have?</option>
-            </select>
-            <textarea id="reflection-answer" rows="3" placeholder="Write your reflection here..."
-                style="margin-top: 10px;"></textarea>
+    <h3>Step 1 — Import CITY_OFFICIALS.csv</h3>
+    <p>The teacher has pre-created this file. Here is its content:</p>
+    <div class="code-block">OfficialID,Surname,FirstName,DeptCode,DateAppointed,Salary,IsActive,ServiceGrade
+OF-001,Vargas,Elena,D-01,15/03/2040,4500000,Yes,Senior
+OF-002,Muñoz,Ricardo,D-02,08/07/2038,3800000,Yes,Mid
+OF-003,Castillo,Sofía,D-01,22/11/2042,3200000,No,Junior
+OF-004,Herrera,Tomás,D-03,01/01/2035,6100000,Yes,Director
+OF-005,Jiménez,Camila,D-02,30/06/2044,2900000,Yes,Junior</div>
 
-            <div class="concept-check"
-                style="border-left: 4px solid var(--secondary-color); background-color: rgba(52, 152, 219, 0.05);">
-                <h4>🔭 Preview: What Session 2 Will Build On</h4>
-                <p>"You've built the city's structure. But what stops a rogue operator from entering a citizen born in
-                    the year 1492, or an energy credit balance of −99,000? Next session, we install the city's security
-                    protocols — <strong>Validation Rules</strong>."</p>
-                <p><em>Great job today, Architect! Your foundation is strong.</em></p>
-            </div>
-        </section>
-    </main>
+    <h4>Import Walkthrough — every click narrated:</h4>
+    <div class="step-item">
+      <div class="step-number">1</div>
+      <div class="step-content"><p>External Data tab → New Data Source → From File → Text File</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">2</div>
+      <div class="step-content"><p>Browse to CITY_OFFICIALS.csv → select <em>"Import the source data into a new table"</em> → OK</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">3</div>
+      <div class="step-content"><p><strong>Wizard Step 1:</strong> Delimited → Next</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">4</div>
+      <div class="step-content"><p><strong>Wizard Step 2:</strong> Delimiter = Comma | First Row Contains Field Names → Next</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <p><strong>Wizard Step 3 — field-by-field audit:</strong></p>
+        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 0.5rem; line-height: 2;">
+          <li>Click OfficialID column → Data Type: Text</li>
+          <li>Click DateAppointed → Data Type: Date/Time | Date Order: DMY — say this aloud</li>
+          <li>Click Salary → Data Type: Long Integer (we will fix to Currency after)</li>
+          <li>Click IsActive → Data Type: Text — <strong>this is the Orbiter moment — we will fix this</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">6</div>
+      <div class="step-content"><p><strong>Wizard Step 4:</strong> Choose my own primary key → select OfficialID → Next</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">7</div>
+      <div class="step-content"><p>Table name: CITY_OFFICIALS → Finish</p></div>
+    </div>
 
-    <!-- INTERACTIVITY SCRIPTS -->
-    <script>
-        // Progress Bar
-        window.onscroll = function () { updateProgress() };
-        function updateProgress() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        }
+    <div class="warning-box">
+      <strong>Immediately open in Design View — the audit.</strong> Point to IsActive. It says Short Text. The stored values are "Yes" and "No" as text strings. This is the Mars Orbiter. Try to filter IsActive = Yes as a Boolean and Access won't find anything — because 'Yes' the text string and Yes the Boolean are different types. One is a word. The other is a switch.
+    </div>
 
-        // Theme Toggle
-        function toggleMode() {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
+    <h4>Design View Corrections for CITY_OFFICIALS:</h4>
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Change To</th><th>How</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>OfficialID</td><td>Short Text, Size: 6</td><td>Change Size from 255</td></tr>
+        <tr><td>Surname</td><td>Short Text, Size: 30</td><td>Change Size</td></tr>
+        <tr><td>FirstName</td><td>Short Text, Size: 25</td><td>Change Size</td></tr>
+        <tr><td>DeptCode</td><td>Short Text, Size: 4</td><td>Change Size</td></tr>
+        <tr><td>DateAppointed</td><td>Date/Time, Format: dd/mm/yyyy</td><td>Set Format property</td></tr>
+        <tr><td>Salary</td><td>Currency, Decimal Places: 2</td><td>Change data type</td></tr>
+        <tr><td>IsActive</td><td>Yes/No</td><td>Change data type — confirm conversion dialog</td></tr>
+        <tr><td>ServiceGrade</td><td>Short Text, Size: 10</td><td>Change Size</td></tr>
+      </tbody>
+    </table>
 
-        // Dyslexia Toggle
-        function toggleDyslexiaMode() {
-            document.body.classList.toggle('dyslexia-mode');
-            const isDyslexic = document.body.classList.contains('dyslexia-mode');
-            localStorage.setItem('dyslexia', isDyslexic ? 'true' : 'false');
-        }
+    <div class="exercise">
+      <h4>Evidence Screenshot Checkpoint 1</h4>
+      <p>Take a screenshot of Design View showing: all field names, all data types, and the key symbol on OfficialID. Paste it into your Evidence Document.</p>
+      <p><strong>Checklist before taking the screenshot:</strong></p>
+      <ul style="list-style: disc; padding-left: 1.5rem; line-height: 2;">
+        <li>IsActive shows <em>Yes/No</em> — not Short Text</li>
+        <li>Salary shows <em>Currency</em></li>
+        <li>DateAppointed shows <em>Date/Time</em></li>
+        <li>Key symbol appears next to OfficialID</li>
+        <li>No AutoNumber field visible</li>
+      </ul>
+    </div>
 
-        // Scroll to Section
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
+    <h3>Step 2 — Import CITY_DEPARTMENTS.csv</h3>
+    <p>Repeat the import process. Students lead; teacher confirms.</p>
+    <div class="code-block">DeptCode,DeptName,HeadOfficialID,Budget,ZoneType,IsOperational
+D-01,Urban Planning,OF-001,85000000,North,Yes
+D-02,Digital Services,OF-010,120000000,Central,Yes
+D-03,Public Safety,OF-004,200000000,South,Yes
+D-04,Environment,OF-006,65000000,East,No</div>
 
-        // Local Storage Utilities
-        function saveToLocalStorage(key, value) {
-            localStorage.setItem(key, value);
-        }
+    <h4>Post-import Design View settings:</h4>
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Data Type</th><th>Properties</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DeptCode</td><td>Short Text</td><td>Size: 4; Primary Key</td></tr>
+        <tr><td>DeptName</td><td>Short Text</td><td>Size: 40</td></tr>
+        <tr><td>HeadOfficialID</td><td>Short Text</td><td>Size: 6</td></tr>
+        <tr><td>Budget</td><td>Currency</td><td>Decimal Places: 2</td></tr>
+        <tr><td>ZoneType</td><td>Short Text</td><td>Size: 10</td></tr>
+        <tr><td>IsOperational</td><td>Yes/No</td><td>Fix from Short Text</td></tr>
+      </tbody>
+    </table>
 
-        // On Load: Retrieve Preferences & Data
-        window.onload = function () {
-            if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
-            if (localStorage.getItem('dyslexia') === 'true') document.body.classList.add('dyslexia-mode');
+    <h3>Step 3 — Create the Relationship</h3>
+    <div class="step-item">
+      <div class="step-number">1</div>
+      <div class="step-content"><p>Database Tools tab → Relationships</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">2</div>
+      <div class="step-content"><p>Add both tables to the window</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">3</div>
+      <div class="step-content"><p>Drag CITY_DEPARTMENTS.DeptCode → drop onto CITY_OFFICIALS.DeptCode</p></div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <p>Edit Relationships dialog settings:</p>
+        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 0.5rem; line-height: 2;">
+          <li>Enforce Referential Integrity — tick</li>
+          <li>Cascade Update Related Fields — tick</li>
+          <li>Cascade Delete — do NOT tick</li>
+          <li>Relationship type shown: One-To-Many — confirm it says this</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">5</div>
+      <div class="step-content"><p>Click Create. The line appears with 1 on the DEPARTMENTS side and ∞ on the OFFICIALS side.</p></div>
+    </div>
 
-            // Retrieve saved text
-            if (localStorage.getItem('stretch-answer')) document.getElementById('stretch-answer').value = localStorage.getItem('stretch-answer');
-            if (localStorage.getItem('wrap-summary')) document.getElementById('wrap-summary').value = localStorage.getItem('wrap-summary');
-            if (localStorage.getItem('reflection-answer')) document.getElementById('reflection-answer').value = localStorage.getItem('reflection-answer');
+    <div class="info-box">
+      The 1 sits on DEPARTMENTS — one department. The ∞ sits on OFFICIALS — many officials can belong to that one department. This is the symbol the examiner looks for in your screenshot. Without these symbols, the relationship mark is not awarded.
+    </div>
 
-            // Retrieve checkboxes
-            for (let i = 1; i <= 4; i++) {
-                if (localStorage.getItem('obj-' + i) === 'true') {
-                    document.getElementById('obj-' + i).checked = true;
-                }
-            }
-        }
+    <h3>Step 4 — Add a New Record</h3>
+    <p>A new official has joined the Digital Services department. Add this record to CITY_OFFICIALS:</p>
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>OfficialID</td><td>OF-011</td></tr>
+        <tr><td>Surname</td><td>Bermúdez</td></tr>
+        <tr><td>FirstName</td><td>Lucía</td></tr>
+        <tr><td>DeptCode</td><td>D-02</td></tr>
+        <tr><td>DateAppointed</td><td>01/03/2055</td></tr>
+        <tr><td>Salary</td><td>3100000</td></tr>
+        <tr><td>IsActive</td><td>Yes</td></tr>
+        <tr><td>ServiceGrade</td><td>Junior</td></tr>
+      </tbody>
+    </table>
 
-        // Save Objectives Progress
-        function saveProgress() {
-            for (let i = 1; i <= 4; i++) {
-                localStorage.setItem('obj-' + i, document.getElementById('obj-' + i).checked);
-            }
-        }
+    <div class="concept-check">
+      <h4>Check Before You Enter</h4>
+      <p class="question-text">Does D-02 exist in the CITY_DEPARTMENTS table?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ref-check" id="rc-yes" value="yes">
+          <label for="rc-yes">Yes — D-02 (Digital Services) was imported in Step 2. Safe to enter the record.</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ref-check" id="rc-no" value="no">
+          <label for="rc-no">No — D-02 does not exist, so I must add it to CITY_DEPARTMENTS first.</label>
+        </div>
+      </div>
+      <button onclick="checkRefCheck()">Check Answer</button>
+      <div class="feedback" id="ref-feedback"></div>
+    </div>
 
-        // Hook Activity Check
-        function checkHook() {
-            const selected = document.querySelector('input[name="hook-guess"]:checked');
-            const feedback = document.getElementById('hook-feedback');
-            if (!selected) {
-                alert("Please select an option!");
-                return;
-            }
-            feedback.classList.remove("correct", "incorrect", "show");
+    <div class="exercise">
+      <h4>Stretch: What happens with D-05?</h4>
+      <p>What would happen if you typed D-05 instead of D-02 in the DeptCode field?</p>
+      <button onclick="toggleSolution('d05-sol')">Show Answer</button>
+      <div id="d05-sol" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        Access would display a referential integrity error and refuse to save the record. D-05 does not exist in CITY_DEPARTMENTS, so adding a record in CITY_OFFICIALS with DeptCode = D-05 would create an orphan record — an official belonging to a department that does not exist. The database is protecting its own integrity. The error message is not a failure; it is correct behaviour.
+      </div>
+    </div>
+  </section>
 
-            if (selected.value === "correct") {
-                feedback.innerHTML = "✅ Correct! The text 'thirty-two' was fed into an algorithm expecting an Integer to calculate discounts. It crashed the math! Data types are crucial.";
-                feedback.classList.add("correct", "show");
-            } else {
-                feedback.innerHTML = "❌ Not quite. That data format is valid (Integer for Age, Date format for Journey). Look for the entry where text is placed where math needs to happen!";
-                feedback.classList.add("incorrect", "show");
-            }
-            saveToLocalStorage('hook-guess', selected.id);
-        }
+  <!-- ===================== INTERACTIVE ACTIVITIES / MISSION ===================== -->
+  <section class="section" id="mission">
+    <h2>Student Mission: The Seed Supplier System</h2>
+    <p>
+      This mission uses the same pattern as the Cambridge February/March 2025 Paper 2 exam (Task 3, Steps 14–16).
+      The field names, data types, and instructions are structured exactly as they appear in real Cambridge questions.
+    </p>
+    <div class="info-box">
+      <strong>Points available:</strong> 8 marks across 4 steps. Your score is tracked automatically.
+    </div>
 
-        // Mission Check Checkboxes
-        function checkMission() {
-            const c1 = document.getElementById('m-chk1').checked;
-            const c2 = document.getElementById('m-chk2').checked;
-            const c3 = document.getElementById('m-chk3').checked;
-            const c4 = document.getElementById('m-chk4').checked;
-            const feedback = document.getElementById('mission-success');
+    <!-- Score display -->
+    <div class="score-display" id="mission-score">Mission Score: 0 / 8</div>
 
-            if (c1 && c2 && c3 && c4) {
-                feedback.style.display = "block";
-            } else {
-                feedback.style.display = "none";
-            }
-        }
+    <!-- CSV data display -->
+    <h3>Given Files</h3>
+    <h4>SEEDS.csv</h4>
+    <div class="code-block">SeedID,Store,Variety,Type,Price,PacketContents,Supplier,StockLevel,ExpiryYear
+SD-001,A,Beefsteak,Tomato,2.45,20,GrowRight,150,2026
+SD-002,B,Butterhead,Lettuce,1.80,50,SeedCo,200,2025
+SD-003,A,Cayenne,Pepper,2.10,30,GrowRight,80,2026
+SD-004,C,Runner,Bean,1.50,25,NaturalGrow,300,2027
+SD-005,B,Broad,Bean,1.65,40,SeedCo,120,2026</div>
 
-        // Generic CCQ Check
-        function checkCCQ(name, correctId, feedbackId) {
-            const selected = document.querySelector(`input[name="${name}"]:checked`);
-            const feedback = document.getElementById(feedbackId);
-            if (!selected) return alert("Select an answer first!");
+    <h4>ORDERS.csv</h4>
+    <div class="code-block">Reference,DatePlaced,DateCompleted,Issuer,Seed,Packets,Paid
+ON-001,05/01/2025,12/01/2025,Bloom Garden Centre,SD-001,10,Yes
+ON-002,08/01/2025,,City Parks Dept,SD-004,25,No
+ON-003,12/01/2025,18/01/2025,Bloom Garden Centre,SD-002,15,Yes
+ON-004,15/01/2025,,University Labs,SD-009,8,No</div>
 
-            feedback.classList.remove("correct", "incorrect", "show");
-            if (selected.id === correctId) {
-                feedback.innerHTML = "✅ Correct!";
-                feedback.classList.add("correct", "show");
-            } else {
-                feedback.innerHTML = "❌ Incorrect. Try again!";
-                feedback.classList.add("incorrect", "show");
-            }
-        }
+    <div class="warning-box">
+      <strong>Note on blank DateCompleted values:</strong> ON-002 and ON-004 have no DateCompleted value. This is not an error — these orders are incomplete. A null date is valid data. Do not enter today's date or any placeholder value.
+    </div>
 
-        // Difficulty Tabs
-        function switchDifficulty(level) {
-            document.querySelectorAll('.difficulty-tabs button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.difficulty-content').forEach(content => content.classList.remove('active'));
+    <!-- Mission Step 1 -->
+    <div class="exercise">
+      <h4>Mission Step 1 (3 marks): Import SEEDS.csv</h4>
+      <p>Examine the file SEEDS.csv and identify the most appropriate field to set as a primary key. Then import the table with the field types below.</p>
+      <table>
+        <thead>
+          <tr><th>Field Name</th><th>Data Type</th><th>Store</th><th>Display</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SeedID</td><td>Text</td><td></td><td></td></tr>
+          <tr><td>Store</td><td>Text</td><td></td><td></td></tr>
+          <tr><td>Variety</td><td>Text</td><td></td><td></td></tr>
+          <tr><td>Type</td><td>Text</td><td></td><td></td></tr>
+          <tr><td>Price</td><td>Number/Currency</td><td>Currency</td><td>Currency symbol, 2 decimal places</td></tr>
+          <tr><td>PacketContents</td><td>Number</td><td>Integer</td><td>Integer (0 decimal places)</td></tr>
+          <tr><td>Supplier</td><td>Text</td><td></td><td></td></tr>
+          <tr><td>StockLevel</td><td>Number</td><td>Integer</td><td>Integer (0 decimal places)</td></tr>
+          <tr><td>ExpiryYear</td><td>Number</td><td>Integer</td><td>Integer (0 decimal places)</td></tr>
+        </tbody>
+      </table>
 
-            event.target.classList.add('active');
-            document.getElementById('content-' + level).classList.add('active');
-        }
+      <p class="question-text"><strong>Which field should be set as the primary key?</strong></p>
+      <div class="options" id="pk-options">
+        <div class="option">
+          <input type="radio" name="pk-choice" id="pk-store" value="store">
+          <label for="pk-store">Store</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="pk-choice" id="pk-seedid" value="seedid">
+          <label for="pk-seedid">SeedID</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="pk-choice" id="pk-supplier" value="supplier">
+          <label for="pk-supplier">Supplier</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="pk-choice" id="pk-variety" value="variety">
+          <label for="pk-variety">Variety</label>
+        </div>
+      </div>
+      <button onclick="checkMission1()">Submit Step 1 Answer</button>
+      <div class="feedback" id="m1-feedback"></div>
+    </div>
 
-        // Vocabulary Search & Toggle
-        function filterVocab() {
-            let input = document.getElementById('vocab-search-input').value.toUpperCase();
-            let items = document.querySelectorAll('.vocab-item');
+    <!-- CCQ after Step 1 -->
+    <div class="concept-check">
+      <h4>Concept Check — after Step 1</h4>
+      <p class="question-text">A student imports SEEDS.csv and leaves Price as Short Text. They run a query to find all seeds where Price is greater than 2.00. The query returns no results. Why?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ccq1" id="ccq1-a" value="a">
+          <label for="ccq1-a">A) The query syntax is incorrect and needs to be rewritten</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq1" id="ccq1-b" value="b">
+          <label for="ccq1-b">B) Short Text fields cannot be compared with the &gt; operator meaningfully — "2.45" the string is compared character by character, not numerically</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq1" id="ccq1-c" value="c">
+          <label for="ccq1-c">C) The query needs a different date format</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq1" id="ccq1-d" value="d">
+          <label for="ccq1-d">D) Access automatically converts text to numbers in queries</label>
+        </div>
+      </div>
+      <button onclick="checkCCQ('ccq1', 'b', 'ccq1-fb', 'Correct. Short Text fields are compared lexicographically — character by character from left to right. So "2.45" as text is not greater than "2.00" as text in the same way that 2.45 is greater than 2.00 as a number. The comparison is meaningless for numerical purposes. This is the Mars Orbiter effect.', 'Not quite. The issue is not the query syntax — it is the data type. A &gt; operator on a Short Text field does a lexicographic comparison, not a numerical one.')">Check Answer</button>
+      <div class="feedback" id="ccq1-fb"></div>
+    </div>
 
-            items.forEach(item => {
-                let text = item.querySelector('.vocab-term').innerText.toUpperCase();
-                if (text.indexOf(input) > -1) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-        }
+    <!-- Mission Step 2 -->
+    <div class="exercise">
+      <h4>Mission Step 2 (3 marks): Import ORDERS.csv</h4>
+      <p>Import ORDERS.csv with Reference as the primary key and the following field types.</p>
+      <table>
+        <thead>
+          <tr><th>Field Name</th><th>Data Type</th><th>Store</th><th>Display</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Reference</td><td>Text</td><td></td><td>Primary Key</td></tr>
+          <tr><td>DatePlaced</td><td>Date/Time</td><td>Date</td><td>dd/mm/yyyy</td></tr>
+          <tr><td>DateCompleted</td><td>Date/Time</td><td>Date</td><td>dd/mm/yyyy</td></tr>
+          <tr><td>Issuer</td><td>Text</td><td></td><td></td></tr>
+          <tr><td>Seed</td><td>Text</td><td></td><td></td></tr>
+          <tr><td>Packets</td><td>Number</td><td>Integer</td><td>Integer</td></tr>
+          <tr><td>Paid</td><td>Boolean/Logical</td><td></td><td>Yes/No</td></tr>
+        </tbody>
+      </table>
 
-        function toggleVocab(element) {
-            const def = element.querySelector('.vocab-definition');
-            def.classList.toggle('show');
-        }
+      <p class="question-text"><strong>What data type must Paid be set to?</strong></p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="paid-type" id="pt-text" value="text">
+          <label for="pt-text">Short Text (it stores the word "Yes" or "No")</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="paid-type" id="pt-yesno" value="yesno">
+          <label for="pt-yesno">Yes/No (Boolean — the import wizard will set it as Text, which must be corrected in Design View)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="paid-type" id="pt-num" value="number">
+          <label for="pt-num">Number (Yes = 1, No = 0)</label>
+        </div>
+      </div>
+      <button onclick="checkMission2()">Submit Step 2 Answer</button>
+      <div class="feedback" id="m2-feedback"></div>
+    </div>
 
-        // Wrap-Up Actions
-        function saveWrapUp() {
-            saveToLocalStorage('wrap-summary', document.getElementById('wrap-summary').value);
-            saveToLocalStorage('reflection-answer', document.getElementById('reflection-answer').value);
-            document.getElementById('save-conf').style.display = 'inline';
-            setTimeout(() => { document.getElementById('save-conf').style.display = 'none'; }, 2000);
-        }
+    <!-- CCQ after Step 2 -->
+    <div class="concept-check">
+      <h4>Concept Check — after Step 2</h4>
+      <p class="question-text">The ORDERS table has records ON-002 and ON-004 with a blank DateCompleted field. Is this correct, and what does it mean?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ccq2" id="ccq2-a" value="a">
+          <label for="ccq2-a">A) It is an error — blank dates should be filled with the import date</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq2" id="ccq2-b" value="b">
+          <label for="ccq2-b">B) It is correct — a null Date/Time field means the order has not been completed yet. Null is valid data, not missing data.</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq2" id="ccq2-c" value="c">
+          <label for="ccq2-c">C) Access cannot store blank Date/Time fields and will convert them to 01/01/1900</label>
+        </div>
+      </div>
+      <button onclick="checkCCQ('ccq2', 'b', 'ccq2-fb', 'Correct. A null (empty) Date/Time field is valid — it means the value is unknown or inapplicable. Orders that have not been completed do not yet have a completion date. Never substitute a placeholder date. A null is not the same as zero or an error.', 'Incorrect. A null (empty) Date/Time field is perfectly valid and meaningful — it means the order is still pending. Access stores null dates correctly. Never fill blank date fields with a placeholder.')">Check Answer</button>
+      <div class="feedback" id="ccq2-fb"></div>
+    </div>
 
-        function setConfidence(level) {
-            let msg = level === 'green' ? "Awesome! You are ready to build databases." :
-                level === 'yellow' ? "Good self-awareness! Review the CCQs above." :
-                    "Don't worry! Ask your teacher about the parts that confused you.";
-            alert(msg);
-            saveToLocalStorage('confidence', level);
-        }
-    </script>
+    <!-- Mission Step 3 -->
+    <div class="exercise">
+      <h4>Mission Step 3 (1 mark): Create the Relationship</h4>
+      <p>Create a one-to-many relationship between the SeedID field in the seeds table and the Seed field in the orders table.</p>
+      <p class="question-text"><strong>Which table sits on the "one" side of this relationship?</strong></p>
+      <div class="options" id="rel-options">
+        <div class="option">
+          <input type="radio" name="rel-choice" id="rel-seeds" value="seeds">
+          <label for="rel-seeds">SEEDS — one seed product can appear in many orders</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="rel-choice" id="rel-orders" value="orders">
+          <label for="rel-orders">ORDERS — one order can contain many seeds</label>
+        </div>
+      </div>
+      <button onclick="checkMission3()">Submit Step 3 Answer</button>
+      <div class="feedback" id="m3-feedback"></div>
+    </div>
+
+    <!-- CCQ after Step 3 -->
+    <div class="concept-check">
+      <h4>Concept Check — Relationship Field Names</h4>
+      <p class="question-text">The primary key in SEEDS is called SeedID, but the foreign key in ORDERS is called Seed. Would Access automatically draw the relationship line between these two fields? Why or why not?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ccq3" id="ccq3-a" value="a">
+          <label for="ccq3-a">A) Yes — Access detects matching data values and draws the line automatically</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq3" id="ccq3-b" value="b">
+          <label for="ccq3-b">B) No — Access only draws automatic relationship lines when two fields share exactly the same name. Different names require a manual drag.</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq3" id="ccq3-c" value="c">
+          <label for="ccq3-c">C) Yes — Access uses the data type to match fields automatically</label>
+        </div>
+      </div>
+      <button onclick="checkCCQ('ccq3', 'b', 'ccq3-fb', 'Correct. Access only draws automatic relationship lines based on field name matching. SeedID and Seed are different names — even though they contain the same values and serve the same purpose, Access will not draw the line. You must manually drag SeedID from the SEEDS table and drop it onto the Seed field in the ORDERS table in the Relationships window.', 'Incorrect. Access draws automatic lines based on field names, not data values or data types. Since SeedID and Seed have different names, you must drag the line manually.')">Check Answer</button>
+      <div class="feedback" id="ccq3-fb"></div>
+    </div>
+
+    <!-- Mission Step 4 -->
+    <div class="exercise">
+      <h4>Mission Step 4 (1 mark): Amend a Record</h4>
+      <p>In the orders table, locate the record with Reference ON-004. Amend the details as follows:</p>
+      <ul style="list-style: disc; padding-left: 1.5rem; line-height: 2;">
+        <li>Packets: 12 (was 8)</li>
+        <li>Paid: Yes (was No)</li>
+      </ul>
+      <p class="question-text"><strong>Before amending ON-004, what must you verify about the Seed field value (SD-009)?</strong></p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="m4-check" id="m4-a" value="a">
+          <label for="m4-a">A) Nothing — the Packets and Paid fields are not foreign keys so no check is needed</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="m4-check" id="m4-b" value="b">
+          <label for="m4-b">B) That SD-009 exists in the SEEDS table as a valid SeedID — otherwise the record is an orphan</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="m4-check" id="m4-c" value="c">
+          <label for="m4-c">C) That the Paid field is set to No before changing it to Yes</label>
+        </div>
+      </div>
+      <button onclick="checkMission4()">Submit Step 4 Answer</button>
+      <div class="feedback" id="m4-feedback"></div>
+    </div>
+
+    <!-- CCQ after Step 4 -->
+    <div class="concept-check">
+      <h4>Concept Check — Referential Integrity Error</h4>
+      <p class="question-text">A student tries to add a new order record with Seed = SD-099, but Access rejects it with a referential integrity error. Is this correct behaviour? What should the student do?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ccq4" id="ccq4-a" value="a">
+          <label for="ccq4-a">A) This is a bug in Access — the student should disable referential integrity and add the record anyway</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq4" id="ccq4-b" value="b">
+          <label for="ccq4-b">B) This is correct behaviour — SD-099 does not exist in SEEDS. The student must add SD-099 to the SEEDS table first, then add the order record.</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq4" id="ccq4-c" value="c">
+          <label for="ccq4-c">C) The student should use a different primary key for the orders table</label>
+        </div>
+      </div>
+      <button onclick="checkCCQ('ccq4', 'b', 'ccq4-fb', 'Correct. The referential integrity error is the database protecting itself from orphan records. The student must add SD-099 as a valid record in the SEEDS table first, then add the order. The error message is information, not failure.', 'Incorrect. Disabling referential integrity would allow corrupt data to enter the database. The correct response is to add the missing parent record first.')">Check Answer</button>
+      <div class="feedback" id="ccq4-fb"></div>
+    </div>
+
+    <!-- Stretch Challenge -->
+    <div class="exercise">
+      <h4>Stretch Challenge</h4>
+      <p>The orders table has a field called Seed and the seeds table has a field called SeedID — different names. Explain why Access does NOT automatically draw the relationship line between these two fields, and describe exactly how you create the relationship manually.</p>
+      <textarea id="stretch-answer" placeholder="Write your answer here..." rows="5" onchange="localStorage.setItem('stretch-answer', this.value)"></textarea>
+      <button onclick="toggleSolution('stretch-sol')">Show Model Answer</button>
+      <div id="stretch-sol" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Model Answer:</strong> Access only draws relationship lines automatically when two fields share the same name. Since Seed and SeedID are different names, the relationship must be created manually by opening the Relationships window (Database Tools tab), adding both tables, then dragging SeedID from the seeds table and dropping it onto the Seed field in the orders table. Access then shows the Edit Relationships dialog where you enforce referential integrity and confirm the one-to-many relationship type.
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <h3>Mission Badges</h3>
+    <div id="badges-container">
+      <span class="badge badge-locked" id="badge-first">First Mark</span>
+      <span class="badge badge-locked" id="badge-halfway">Halfway There</span>
+      <span class="badge badge-locked" id="badge-orbiter">Orbiter Survivor</span>
+      <span class="badge badge-locked" id="badge-complete">Mission Complete</span>
+    </div>
+  </section>
+
+  <!-- ===================== PRACTICE EXERCISES & DRILL ===================== -->
+  <section class="section" id="drill">
+    <h2>Theory Drill — Paper 1 Style Questions</h2>
+    <p>These questions mirror the style and mark scheme of Cambridge Paper 1. Work through them independently, then check your answers.</p>
+
+    <div class="exercise">
+      <h4>Q1 (2 marks)</h4>
+      <p class="question-text">State what is meant by a primary key in a database table and give one reason why it is necessary.</p>
+      <textarea id="q1-answer" placeholder="Write your answer here..." rows="4" onchange="localStorage.setItem('q1-answer', this.value)"></textarea>
+      <button onclick="toggleSolution('q1-mark')">Show Mark Scheme</button>
+      <div id="q1-mark" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        A primary key is a field whose value uniquely identifies each record in the table — no two records can have the same primary key value (1 mark).<br>
+        It is necessary to ensure that every record can be precisely located and referenced — for example when linking tables through a relationship (1 mark).
+      </div>
+    </div>
+
+    <!-- CCQ between Q1 and Q2 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">Would it be correct to say that any field with unique values in a table is automatically a valid primary key?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ccq5" id="ccq5-yes" value="yes">
+          <label for="ccq5-yes">Yes — uniqueness is the only requirement for a primary key</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq5" id="ccq5-no" value="no">
+          <label for="ccq5-no">No — a primary key must be unique AND cannot be left empty (null). A field with unique values that could occasionally be blank does not qualify.</label>
+        </div>
+      </div>
+      <button onclick="checkCCQ('ccq5', 'no', 'ccq5-fb', 'Correct. Two conditions must hold: (1) all values are unique, and (2) the field can never be null/empty. The exam sometimes includes a field with unique values that could theoretically be left blank — that field cannot be the primary key.', 'Incomplete. Uniqueness is necessary but not sufficient. The field must also be guaranteed to never be empty. A field that could occasionally have no value fails the second condition.')">Check Answer</button>
+      <div class="feedback" id="ccq5-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <h4>Q2 (3 marks)</h4>
+      <p class="question-text">A developer imports a CSV file into Access. The field IsPaid contains the values "Yes" and "No" but is imported as a Short Text field.</p>
+      <p><strong>(a)</strong> Describe one problem this will cause when the field is used as a query criterion. (1 mark)</p>
+      <textarea id="q2a-answer" placeholder="Write your answer for part (a)..." rows="3" onchange="localStorage.setItem('q2a-answer', this.value)"></textarea>
+      <p style="margin-top:1rem;"><strong>(b)</strong> State the correct data type for this field. (1 mark)</p>
+      <textarea id="q2b-answer" placeholder="Write your answer for part (b)..." rows="2" onchange="localStorage.setItem('q2b-answer', this.value)"></textarea>
+      <p style="margin-top:1rem;"><strong>(c)</strong> Explain why the value looks correct on screen even though the data type is wrong. (1 mark)</p>
+      <textarea id="q2c-answer" placeholder="Write your answer for part (c)..." rows="3" onchange="localStorage.setItem('q2c-answer', this.value)"></textarea>
+      <button onclick="toggleSolution('q2-mark')">Show Mark Scheme</button>
+      <div id="q2-mark" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        (a) A criterion of = Yes (Boolean) will return no results because the stored value is the text string "Yes", not the Boolean value Yes — the types do not match (1 mark).<br>
+        (b) Yes/No (Boolean/Logical) (1 mark).<br>
+        (c) The text string "Yes" and the Boolean Yes display identically in Datasheet View — the difference is invisible until the field is used in a calculation or filter (1 mark).
+      </div>
+    </div>
+
+    <!-- CCQ between Q2 and Q3 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">After correcting IsPaid to Yes/No data type in Design View, Access shows a conversion confirmation dialog. What does this dialog mean, and should you click Yes?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ccq6" id="ccq6-a" value="a">
+          <label for="ccq6-a">A) Click No — the conversion will destroy data</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq6" id="ccq6-b" value="b">
+          <label for="ccq6-b">B) Click Yes — Access will reinterpret every stored value and convert the text strings "Yes"/"No" to Boolean Yes/No. The dialog is a warning, not an error.</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq6" id="ccq6-c" value="c">
+          <label for="ccq6-c">C) Cancel and re-import the CSV from the beginning</label>
+        </div>
+      </div>
+      <button onclick="checkCCQ('ccq6', 'b', 'ccq6-fb', 'Correct. The dialog appears because Access is about to reinterpret every stored value. Click Yes — it will convert "Yes" text to Boolean Yes correctly for standard values. The dialog is informational. However, Access cannot always do this automatically — which is precisely why you audit in Design View before the database goes into use.', 'Incorrect. The conversion dialog is routine. Access will correctly convert standard "Yes"/"No" text strings to Boolean values. You should click Yes.')">Check Answer</button>
+      <div class="feedback" id="ccq6-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <h4>Q3 (2 marks)</h4>
+      <p class="question-text">A SEEDS table and an ORDERS table are linked by a one-to-many relationship. State which table is on the "one" side and which is on the "many" side, and justify your answer.</p>
+      <textarea id="q3-answer" placeholder="Write your answer here..." rows="4" onchange="localStorage.setItem('q3-answer', this.value)"></textarea>
+      <button onclick="toggleSolution('q3-mark')">Show Mark Scheme</button>
+      <div id="q3-mark" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        SEEDS is on the one side — one seed product can appear in many orders (1 mark).<br>
+        ORDERS is on the many side — many order records can reference the same seed product (1 mark).
+      </div>
+    </div>
+
+    <!-- CCQ between Q3 and Q4 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">In the Relationships window, where does the "1" symbol appear, and what does it represent?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ccq7" id="ccq7-a" value="a">
+          <label for="ccq7-a">A) On the child table — it represents the foreign key</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq7" id="ccq7-b" value="b">
+          <label for="ccq7-b">B) On the parent table (the table with the primary key) — it represents that each record in this table can be matched by many records in the other table</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq7" id="ccq7-c" value="c">
+          <label for="ccq7-c">C) On whichever table was added to the Relationships window first</label>
+        </div>
+      </div>
+      <button onclick="checkCCQ('ccq7', 'b', 'ccq7-fb', 'Correct. The "1" symbol appears on the parent table — the table holding the primary key. For SEEDS and ORDERS, the "1" sits on the SEEDS side because one seed record can correspond to many order records. The examiner looks for both symbols in your screenshot.', 'Incorrect. The "1" appears on the parent table — the one holding the primary key — not the child table, and not based on order of addition.')">Check Answer</button>
+      <div class="feedback" id="ccq7-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <h4>Q4 (2 marks)</h4>
+      <p class="question-text">Explain what referential integrity means in the context of a one-to-many relationship between a seeds table and an orders table.</p>
+      <textarea id="q4-answer" placeholder="Write your answer here..." rows="4" onchange="localStorage.setItem('q4-answer', this.value)"></textarea>
+      <button onclick="toggleSolution('q4-mark')">Show Mark Scheme</button>
+      <div id="q4-mark" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        Referential integrity means that every value in the foreign key field (Seed in orders) must match an existing primary key value (SeedID in seeds) (1 mark).<br>
+        It prevents orphan records — order records that reference a seed product that does not exist in the seeds table (1 mark).
+      </div>
+    </div>
+
+    <!-- Final CCQ -->
+    <div class="concept-check">
+      <h4>Concept Check — Summary</h4>
+      <p class="question-text">How many marks are typically available for Steps 1–4 of a Cambridge Paper 2 database task?</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="ccq8" id="ccq8-a" value="a">
+          <label for="ccq8-a">A) 3 marks total</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq8" id="ccq8-b" value="b">
+          <label for="ccq8-b">B) 8 marks total (Step 1: 3, Step 2: 3, Step 3: 1, Step 4: 1)</label>
+        </div>
+        <div class="option">
+          <input type="radio" name="ccq8" id="ccq8-c" value="c">
+          <label for="ccq8-c">C) 12 marks total, including bonus marks for field size reductions</label>
+        </div>
+      </div>
+      <button onclick="checkCCQ('ccq8', 'b', 'ccq8-fb', 'Correct. Steps 1–4 of the database task are worth 8 marks: 3 for the first table import (field names, data types, primary key), 3 for the second table import, 1 for the relationship, and 1 for adding/amending the record. These are the marks covered in this session.', 'Incorrect. The standard allocation is 8 marks: 3 + 3 + 1 + 1. There are no bonus marks for field size reductions, though they are required to receive the data type marks.')">Check Answer</button>
+      <div class="feedback" id="ccq8-fb"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SYNTHESIS AND SELF-ASSESSMENT ===================== -->
+  <section class="section" id="synthesis">
+    <h2>Synthesis and Self-Assessment</h2>
+
+    <h3>Concept Map</h3>
+    <p>Click each node to see how the concepts connect. Understanding the links between concepts is what the exam tests.</p>
+    <div class="concept-map" id="concept-map">
+      <div class="concept-node" onclick="showConcept('csv-import')">CSV Import</div>
+      <div class="concept-node" onclick="showConcept('data-types')">Data Types</div>
+      <div class="concept-node" onclick="showConcept('primary-key')">Primary Key</div>
+      <div class="concept-node" onclick="showConcept('relationship')">Relationship</div>
+      <div class="concept-node" onclick="showConcept('ref-integrity')">Referential Integrity</div>
+      <div class="concept-node" onclick="showConcept('design-view')">Design View Audit</div>
+    </div>
+    <div class="concept-node-detail" id="csv-import-detail">
+      <strong>CSV Import</strong> is the entry point for every Paper 2 database task. The Import Wizard makes guesses — especially about Boolean fields (imported as Text) and Currency fields (imported as Long Integer). This is why the Design View Audit always follows immediately.
+    </div>
+    <div class="concept-node-detail" id="data-types-detail">
+      <strong>Data Types</strong> are the units of measurement of your database. Wrong type = valid value with wrong meaning. Short Text, Number (Integer), Number (Decimal), Currency, Date/Time, Yes/No — six types, all of which appear in the exam. The key distinction: a value can look correct on screen but behave incorrectly in queries and calculations.
+    </div>
+    <div class="concept-node-detail" id="primary-key-detail">
+      <strong>Primary Key</strong>: unique, not null, typically has Code/ID/Ref in the name. Never AutoNumber for an imported table. The key symbol must appear in your Design View screenshot for the mark.
+    </div>
+    <div class="concept-node-detail" id="relationship-detail">
+      <strong>Relationship</strong>: parent table (primary key, "one" side) linked to child table (foreign key, "many" side). The line in the Relationships window must show both the 1 and the infinity symbol. One screenshot of this window is sufficient evidence.
+    </div>
+    <div class="concept-node-detail" id="ref-integrity-detail">
+      <strong>Referential Integrity</strong>: every foreign key value in the child table must match an existing primary key value in the parent table. Prevents orphan records. When enforced, Access rejects records with invalid foreign keys — this is correct behaviour, not an error.
+    </div>
+    <div class="concept-node-detail" id="design-view-detail">
+      <strong>Design View Audit</strong>: the step students skip and lose marks on. After every import, open Design View and check all 8 items on the checklist. The wizard guesses. You decide. Import is Step 1. Design View audit is Step 2. Always.
+    </div>
+
+    <h3>Adaptive Review Quiz</h3>
+    <p id="review-intro">Test your understanding with 5 randomly selected questions from across the session.</p>
+    <div id="review-quiz-container"></div>
+    <button onclick="generateReviewQuiz()" id="start-review-btn">Start Review Quiz</button>
+    <div id="review-result" class="hidden">
+      <div class="score-display" id="review-score-display"></div>
+    </div>
+
+    <h3>Teach-Back Reflection</h3>
+    <p>Imagine you are explaining today's session to a student who was absent. Write a short paragraph (3–5 sentences) covering the three most important things they would need to know before opening Access.</p>
+    <textarea id="teachback-input" placeholder="Write your teach-back explanation here..." rows="6" onchange="localStorage.setItem('teachback', this.value)"></textarea>
+    <button onclick="saveTeachback()" class="btn-neutral">Save Reflection</button>
+    <div id="teachback-saved" class="feedback correct" style="display:none;">Reflection saved.</div>
+  </section>
+
+  <!-- ===================== WRAP-UP ===================== -->
+  <section class="section" id="wrap-up">
+    <h2>Wrap-Up and Closure</h2>
+
+    <!-- A. Knowledge Consolidation -->
+    <h3>A — 3-2-1 Reflection</h3>
+    <p>Complete this before you close your laptop. Your responses are saved locally.</p>
+
+    <div class="reflection-area">
+      <h4>3 things I learned today:</h4>
+      <textarea id="reflect-3" placeholder="1. " rows="4" onchange="localStorage.setItem('reflect-3', this.value)"></textarea>
+    </div>
+    <div class="reflection-area">
+      <h4>2 interesting or surprising things:</h4>
+      <textarea id="reflect-2" placeholder="1. " rows="3" onchange="localStorage.setItem('reflect-2', this.value)"></textarea>
+    </div>
+    <div class="reflection-area">
+      <h4>1 question I still have:</h4>
+      <textarea id="reflect-1" placeholder="My remaining question is..." rows="2" onchange="localStorage.setItem('reflect-1', this.value)"></textarea>
+    </div>
+
+    <!-- B. Objective Confirmation -->
+    <h3>B — Objective Confirmation</h3>
+    <p>Revisit the objectives from the start of the lesson. Click each indicator to update your confidence level.</p>
+    <div id="wrap-objectives">
+      <div class="obj-item">
+        <div class="obj-status" id="wobj-1" onclick="cycleStatus('wobj-1')"></div>
+        <span>I can import a CSV and navigate all four wizard steps</span>
+      </div>
+      <div class="obj-item">
+        <div class="obj-status" id="wobj-2" onclick="cycleStatus('wobj-2')"></div>
+        <span>I know all six data types and when to use each</span>
+      </div>
+      <div class="obj-item">
+        <div class="obj-status" id="wobj-3" onclick="cycleStatus('wobj-3')"></div>
+        <span>I can identify the primary key in an exam CSV</span>
+      </div>
+      <div class="obj-item">
+        <div class="obj-status" id="wobj-4" onclick="cycleStatus('wobj-4')"></div>
+        <span>I can create a one-to-many relationship with 1 and infinity symbols visible</span>
+      </div>
+      <div class="obj-item">
+        <div class="obj-status" id="wobj-5" onclick="cycleStatus('wobj-5')"></div>
+        <span>I complete the Design View audit after every import</span>
+      </div>
+    </div>
+
+    <!-- C. Reflection Prompts -->
+    <h3>C — Reflection Prompts</h3>
+    <p>Choose at least one prompt to answer:</p>
+
+    <div class="reflection-area">
+      <h4>What was the most challenging concept for you today?</h4>
+      <textarea id="rp-1" placeholder="Write here..." rows="3" onchange="localStorage.setItem('rp-1', this.value)"></textarea>
+    </div>
+
+    <h4>How confident do you feel applying this knowledge right now?</h4>
+    <div class="scale-selector" id="confidence-scale">
+      <button class="scale-btn" onclick="selectScale(1)">1 — Not confident</button>
+      <button class="scale-btn" onclick="selectScale(2)">2</button>
+      <button class="scale-btn" onclick="selectScale(3)">3 — Somewhat confident</button>
+      <button class="scale-btn" onclick="selectScale(4)">4</button>
+      <button class="scale-btn" onclick="selectScale(5)">5 — Very confident</button>
+    </div>
+    <div id="confidence-response" class="info-box hidden" style="margin-top:1rem;"></div>
+
+    <div class="reflection-area">
+      <h4>What question do you still have?</h4>
+      <textarea id="rp-2" placeholder="Write here..." rows="3" onchange="localStorage.setItem('rp-2', this.value)"></textarea>
+    </div>
+
+    <!-- D. Bridge to Next Lesson -->
+    <h3>D — Bridge to Session 2</h3>
+    <div class="info-box">
+      <strong>Your tables are built, typed, and linked. Session 2 is where they become useful.</strong>
+      We build the two reports the exam always asks for. Report 1 is the simpler one — a wildcard filter, a double sort, a total at the bottom. But Report 2 is where 48% of the database marks live — it has a calculated field, OR criteria, an average below a specific column, landscape orientation, and your candidate details in exactly the right place.
+    </div>
+
+    <div class="exercise">
+      <h4>Homework</h4>
+      <p>Open your CITY_DB.accdb. In the CITY_OFFICIALS table, add three more officials with DeptCode values that already exist in CITY_DEPARTMENTS. Then try to add one with DeptCode = D-99 — screenshot the error message. Bring the screenshot to Session 2.</p>
+    </div>
+
+    <!-- E. Celebration Element -->
+    <h3>E — Session Achievement</h3>
+    <div class="certificate" id="completion-cert">
+      <h3>Session 1 Complete</h3>
+      <p id="cert-message" style="color: var(--text-muted); margin: 0.75rem 0;">Complete the reflection above to unlock your personalised message.</p>
+      <div id="cert-badges" style="margin-top: 1rem;"></div>
+      <button onclick="generateCertificate()" style="margin-top: 1rem;">Generate Achievement Summary</button>
+    </div>
+  </section>
+
+  <!-- ===================== VOCABULARY ===================== -->
+  <section class="section" id="vocab">
+    <h2>Vocabulary Reference</h2>
+    <p>Click any term to reveal its definition. Use the search box to filter.</p>
+
+    <div class="vocab-search">
+      <input type="text" id="vocab-search-input" placeholder="Search terms..." oninput="filterVocab()" />
+    </div>
+
+    <div id="vocab-list">
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Short Text</div>
+        <div class="vocab-definition">An Access data type that stores up to 255 characters of text — letters, numbers, symbols, or any combination. Used for codes, names, and any field that does not need arithmetic. The exam instruction will simply say "Text".</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Number (Integer)</div>
+        <div class="vocab-definition">An Access data type that stores whole numbers only — no decimal places. Set the Field Size to Integer or Long Integer in the field properties. Exam instruction: "Integer" or "0 decimal places". Used for fields like StockLevel, Packets, ReleaseYear.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Currency</div>
+        <div class="vocab-definition">An Access data type that stores monetary values with fixed decimal precision. Always displays with a currency symbol and 2 decimal places when the Format property is set to Currency. Exam instruction: "currency symbol, 2 decimal places". The import wizard often guesses this field as Long Integer — correct it in Design View.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Date/Time</div>
+        <div class="vocab-definition">An Access data type that stores dates and times in a way that supports correct sorting, filtering, and calculations. The Format property controls display (e.g. dd/mm/yyyy or dd-MMM-yy). Exam instruction will specify the exact display format. The import wizard will set DateOrder — always verify it is DMY for UK-format dates.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Yes/No (Boolean)</div>
+        <div class="vocab-definition">An Access data type that stores exactly two values: Yes or No (internally stored as -1 and 0). The import wizard almost always sets Boolean-looking fields as Short Text. This must be corrected in Design View. A Short Text field storing "Yes"/"No" and a Yes/No Boolean field look identical in Datasheet View but behave entirely differently in queries.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Primary Key</div>
+        <div class="vocab-definition">A field whose value uniquely identifies each record in a table. No two records can share the same primary key value, and it cannot be left empty (null). Identified in the exam by looking for a field with Code, ID, or Ref in the name, verifying uniqueness, and confirming it cannot be blank. Never use an AutoNumber field as a primary key for an imported table.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Foreign Key</div>
+        <div class="vocab-definition">A field in a child table that references the primary key of a parent table. The foreign key and primary key fields contain matching values that link records across tables. In the exam, the foreign key field may have a different name from the primary key field it references — in that case the relationship line must be drawn manually.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">One-to-Many Relationship</div>
+        <div class="vocab-definition">A relationship type where one record in the parent table can correspond to many records in the child table. In the Relationships window, the "1" symbol appears on the parent (primary key) side and the infinity symbol appears on the child (foreign key) side. Every Paper 2 past paper uses this relationship type.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Referential Integrity</div>
+        <div class="vocab-definition">A database rule that ensures every foreign key value in the child table matches an existing primary key value in the parent table. When enforced, Access prevents adding child records with invalid foreign key values and displays an error if you attempt to do so. This error is correct behaviour — the database is protecting itself from orphan records.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Orphan Record</div>
+        <div class="vocab-definition">A child record whose foreign key value does not match any primary key value in the parent table. For example, an order record referencing SeedID = SD-099 when SD-099 does not exist in the seeds table. Referential integrity prevents orphan records from being created.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Design View</div>
+        <div class="vocab-definition">The Access view that shows the structure of a table — field names, data types, and properties — rather than the data itself. Every post-import audit must be performed in Design View. The import wizard's guesses are visible here and can be corrected before the database is used.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Datasheet View</div>
+        <div class="vocab-definition">The Access view that shows the actual data stored in a table in rows and columns. This view does not show data types — a Short Text "Yes" and a Boolean Yes look identical here. This is why wrong data types are silent errors: they are invisible in Datasheet View but cause failures in queries and calculations.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Import Wizard</div>
+        <div class="vocab-definition">The step-by-step dialog in Access that guides you through importing a CSV file as a new table. The wizard makes guesses about data types based on the first few rows of data. These guesses are often wrong — especially for Boolean fields (guessed as Text) and Currency fields (guessed as Long Integer). The Design View audit corrects the wizard's mistakes.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">AutoNumber</div>
+        <div class="vocab-definition">An Access data type that automatically assigns a unique sequential integer to each new record. The import wizard may offer to create an AutoNumber primary key — always decline this for imported tables and choose your own primary key instead. An AutoNumber field has no relationship to the actual data and is almost always wrong as a primary key in an exam context.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Field Size Property</div>
+        <div class="vocab-definition">A property of Short Text and Number fields in Design View. For Short Text, it sets the maximum number of characters (default 255, should be reduced to match the actual data). For Number, it determines the subtype: Integer (whole numbers, –32,768 to 32,767), Long Integer (larger whole numbers), Single/Double (decimal). Always reduce Short Text sizes from 255 to something sensible after import.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Null</div>
+        <div class="vocab-definition">The absence of a value in a field — different from zero, from an empty string, or from the word "blank". A Date/Time field can validly be null if no date has been recorded yet (for example, an order that has not been completed has no DateCompleted). A null is not an error.</div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ======================================================
+  // PROGRESS BAR
+  // ======================================================
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  }
+  window.addEventListener('scroll', updateProgress);
+
+  // ======================================================
+  // THEME TOGGLE
+  // ======================================================
+  function toggleMode() {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+  }
+
+  function toggleDyslexiaMode() {
+    document.body.classList.toggle('dyslexia-mode');
+    localStorage.setItem('dyslexia', document.body.classList.contains('dyslexia-mode') ? 'on' : 'off');
+  }
+
+  // ======================================================
+  // SCROLL TO SECTION
+  // ======================================================
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ======================================================
+  // DIFFICULTY TABS
+  // ======================================================
+  function switchTab(prefix, level, btn) {
+    // Hide all content for this prefix
+    document.querySelectorAll('[id^="' + prefix + '-"]').forEach(el => {
+      if (el.classList.contains('difficulty-content')) el.classList.remove('active');
+    });
+    // Remove active from buttons in the same tab group
+    btn.closest('.difficulty-tabs').querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    // Activate selected
+    const target = document.getElementById(prefix + '-' + level);
+    if (target) target.classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ======================================================
+  // OBJECTIVE STATUS CYCLE
+  // ======================================================
+  const statusCycle = ['', 'green', 'yellow', 'red'];
+  function cycleStatus(id) {
+    const el = document.getElementById(id);
+    const current = el.dataset.state || '0';
+    const next = (parseInt(current) + 1) % 4;
+    el.dataset.state = next;
+    el.className = 'obj-status' + (statusCycle[next] ? ' ' + statusCycle[next] : '');
+    // Save to localStorage
+    const saved = JSON.parse(localStorage.getItem('obj-states') || '{}');
+    saved[id] = next;
+    localStorage.setItem('obj-states', JSON.stringify(saved));
+  }
+
+  // ======================================================
+  // OPENING ACTIVITY
+  // ======================================================
+  function checkOpening() {
+    const selected = document.querySelector('input[name="opening"]:checked');
+    const fb = document.getElementById('opening-feedback');
+    if (!selected) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer first.'; return; }
+    if (selected.value === 'c') {
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct. The values look identical on screen — this is the entire danger. A Short Text "18.80" displays the same as Currency 18.80 in Datasheet View. The difference only becomes visible — and catastrophic — when you try to calculate, sort, or filter. This is exactly what happened to the Mars Climate Orbiter: the numbers looked right, but the types were wrong.';
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'Not quite. Access will not show an error on import — the data imports successfully regardless of data type. And Access will not convert automatically. The danger is option C: the values look correct on screen, but any calculation or sort silently produces wrong results. The wrongness is invisible until it matters.';
+    }
+    localStorage.setItem('opening-answer', selected.value);
+  }
+
+  // ======================================================
+  // CHECKLIST PROGRESS
+  // ======================================================
+  function saveChecklist() {
+    const checkboxes = document.querySelectorAll('#audit-checklist input[type="checkbox"]');
+    let checked = 0;
+    const state = {};
+    checkboxes.forEach(cb => {
+      if (cb.checked) checked++;
+      state[cb.id] = cb.checked;
+    });
+    localStorage.setItem('audit-checklist', JSON.stringify(state));
+    document.getElementById('checklist-progress').textContent = checked + ' of ' + checkboxes.length + ' items verified.';
+  }
+
+  // ======================================================
+  // REFERENCE CHECK (DEMO)
+  // ======================================================
+  function checkRefCheck() {
+    const selected = document.querySelector('input[name="ref-check"]:checked');
+    const fb = document.getElementById('ref-feedback');
+    if (!selected) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (selected.value === 'yes') {
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct. D-02 (Digital Services) was imported as a record in CITY_DEPARTMENTS in Step 2. It exists as a valid primary key value. The new record in CITY_OFFICIALS can safely reference it.';
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'D-02 does exist — it was imported as the Digital Services department. No pre-population needed. The check is still the right habit to develop.';
+    }
+  }
+
+  // ======================================================
+  // TOGGLE SOLUTION
+  // ======================================================
+  function toggleSolution(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('hidden');
+  }
+
+  // ======================================================
+  // GENERIC CCQ CHECKER
+  // ======================================================
+  function checkCCQ(name, correct, fbId, correctMsg, incorrectMsg) {
+    const selected = document.querySelector('input[name="' + name + '"]:checked');
+    const fb = document.getElementById(fbId);
+    if (!selected) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (selected.value === correct) {
+      fb.className = 'feedback correct show';
+      fb.textContent = correctMsg;
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = incorrectMsg;
+    }
+  }
+
+  // ======================================================
+  // MISSION SCORING
+  // ======================================================
+  let missionScore = 0;
+  const missionScored = {};
+
+  function updateMissionScore() {
+    document.getElementById('mission-score').textContent = 'Mission Score: ' + missionScore + ' / 8';
+    localStorage.setItem('mission-score', missionScore);
+    // Update badges
+    if (missionScore >= 1 && !document.getElementById('badge-first').classList.contains('badge-earned')) {
+      document.getElementById('badge-first').className = 'badge badge-earned';
+    }
+    if (missionScore >= 4 && !document.getElementById('badge-halfway').classList.contains('badge-earned')) {
+      document.getElementById('badge-halfway').className = 'badge badge-earned';
+    }
+    if (missionScore >= 6 && !document.getElementById('badge-orbiter').classList.contains('badge-earned')) {
+      document.getElementById('badge-orbiter').className = 'badge badge-earned';
+    }
+    if (missionScore >= 8) {
+      document.getElementById('badge-complete').className = 'badge badge-earned';
+    }
+  }
+
+  function checkMission1() {
+    const selected = document.querySelector('input[name="pk-choice"]:checked');
+    const fb = document.getElementById('m1-feedback');
+    if (!selected) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (selected.value === 'seedid') {
+      if (!missionScored['m1']) { missionScore += 3; missionScored['m1'] = true; updateMissionScore(); }
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct — 3 marks. SeedID is the primary key: it has "ID" in the name, every record has a unique value (SD-001 through SD-010), and it cannot be blank. Store and Supplier could potentially repeat; Variety definitely repeats (e.g. Bean appears three times). SeedID is the only valid choice.';
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'Incorrect. Apply the three-step test: look for Code/ID/Ref in the name (SeedID has it), confirm uniqueness, confirm it cannot be blank. Store repeats (A, B, C repeat throughout the file). Supplier repeats (GrowRight appears four times). Variety repeats. Only SeedID is unique for every record.';
+    }
+  }
+
+  function checkMission2() {
+    const selected = document.querySelector('input[name="paid-type"]:checked');
+    const fb = document.getElementById('m2-feedback');
+    if (!selected) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (selected.value === 'yesno') {
+      if (!missionScored['m2']) { missionScore += 3; missionScored['m2'] = true; updateMissionScore(); }
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct — 3 marks. Paid must be Yes/No (Boolean). The import wizard will set it as Short Text — this must be corrected in Design View. The mark scheme awards the field data type mark only if Design View shows Yes/No, not Short Text.';
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'Incorrect. Paid stores a Boolean value (paid or not paid — only two possible states). The correct data type is Yes/No. Number would waste storage and lose the semantic meaning. Short Text storing "Yes"/"No" is the Mars Orbiter trap.';
+    }
+  }
+
+  function checkMission3() {
+    const selected = document.querySelector('input[name="rel-choice"]:checked');
+    const fb = document.getElementById('m3-feedback');
+    if (!selected) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (selected.value === 'seeds') {
+      if (!missionScored['m3']) { missionScore += 1; missionScored['m3'] = true; updateMissionScore(); }
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct — 1 mark. SEEDS is the parent table (one side) because one seed product can appear in many orders. ORDERS is the child table (many side). The "1" symbol appears on the SEEDS side and the infinity symbol on the ORDERS side in the Relationships window.';
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'Incorrect. Think about it logically: one seed (e.g. SD-001 Beefsteak Tomato) can appear in many different orders. One order refers to one seed product. So one seed → many orders. SEEDS is the "one" side.';
+    }
+  }
+
+  function checkMission4() {
+    const selected = document.querySelector('input[name="m4-check"]:checked');
+    const fb = document.getElementById('m4-feedback');
+    if (!selected) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (selected.value === 'b') {
+      if (!missionScored['m4']) { missionScore += 1; missionScored['m4'] = true; updateMissionScore(); }
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct — 1 mark. Before amending any record, verify that all foreign key values reference valid parent records. SD-009 must exist in the SEEDS table. If it does not, you would need to add it there first. In this case SD-009 (Jalapeño Pepper) is present in SEEDS.csv — you can safely amend the record.';
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'The most important pre-check is referential integrity — does SD-009 exist in the SEEDS table? The Packets and Paid fields are not foreign keys, so they can be amended freely. But if a foreign key value were being changed, that check would be critical.';
+    }
+  }
+
+  // ======================================================
+  // CONCEPT MAP
+  // ======================================================
+  function showConcept(id) {
+    // Hide all detail panels
+    document.querySelectorAll('.concept-node-detail').forEach(d => d.classList.remove('show'));
+    // Remove highlight from all nodes
+    document.querySelectorAll('.concept-node').forEach(n => n.classList.remove('highlighted'));
+    // Show target
+    const detail = document.getElementById(id + '-detail');
+    if (detail) {
+      detail.classList.add('show');
+      // Highlight the clicked node
+      event.target.classList.add('highlighted');
+    }
+  }
+
+  // ======================================================
+  // ADAPTIVE REVIEW QUIZ
+  // ======================================================
+  const reviewQuestions = [
+    {
+      q: 'Which data type should a field containing values like "OF-001", "OF-002" be set to?',
+      options: ['Number (Integer)', 'Short Text', 'Yes/No', 'Currency'],
+      correct: 1,
+      explanation: 'Fields containing codes — alphanumeric identifiers — are Short Text, even though they may contain digits. You cannot do arithmetic on them, so Number would be wrong.'
+    },
+    {
+      q: 'The exam says "Store: Currency | Display: currency symbol with 2 decimal places." What must you do in Design View?',
+      options: ['Set Data Type to Number and add a currency symbol manually', 'Set Data Type to Currency and verify Decimal Places = 2 in the property panel', 'Set Data Type to Short Text and format with a currency symbol', 'Nothing — the import wizard handles Currency automatically'],
+      correct: 1,
+      explanation: 'Set the data type to Currency AND check the Format and Decimal Places properties below. The wizard will almost certainly import a money field as Long Integer — you must correct both the type and the format properties.'
+    },
+    {
+      q: 'A student creates a relationship between two tables. The Relationships window shows a line but no 1 or infinity symbols. What does this mean?',
+      options: ['The relationship is correct — symbols are optional', 'Referential integrity was not enforced — the student must double-click the line, tick Enforce Referential Integrity, and click OK', 'The tables need to be imported again', 'The relationship is invalid and must be deleted'],
+      correct: 1,
+      explanation: 'Without the symbols, referential integrity was not enforced. The examiner specifically looks for both the 1 and the infinity symbol. Double-click the relationship line, tick Enforce Referential Integrity, and click OK to correct this.'
+    },
+    {
+      q: 'Which of the following fields would NEVER be a valid primary key?',
+      options: ['SeedID (unique code for each seed product)', 'Store (values A, B, C — each letter appears multiple times in the CSV)', 'Reference (unique order reference like ON-001)', 'DeptCode (unique code for each department)'],
+      correct: 1,
+      explanation: 'Store repeats — A, B, C each appear multiple times. A primary key must have a unique value for every record. Fields that repeat cannot uniquely identify records and therefore cannot be primary keys.'
+    },
+    {
+      q: 'Why does the exam always specify both "Store" and "Display" for data types?',
+      options: ['Store and Display are always the same thing', 'Store determines the data type (how Access holds the value internally); Display determines the format property (how it appears to the user). Both must be set.', 'Display is optional — only Store matters for the mark scheme', 'Store refers to the CSV file; Display refers to the Access table'],
+      correct: 1,
+      explanation: 'Setting the data type (Store) and the format property (Display) are two separate actions in Design View. The examiner checks both. A Currency field without Format = Currency does not earn the full mark.'
+    },
+    {
+      q: 'In the ORDERS table, DateCompleted is blank for several records. What is the correct interpretation?',
+      options: ['This is a data entry error — all date fields must have a value', 'These orders have not been completed yet. A null date is valid — do not fill it with a placeholder.', 'The import failed and the file must be re-imported', 'Access converted the dates to null automatically due to a format error'],
+      correct: 1,
+      explanation: 'Null in a Date/Time field means no date has been recorded. For orders that are still pending, DateCompleted is legitimately empty. This is not an error. Never enter today\'s date or any placeholder — it would misrepresent the data.'
+    },
+    {
+      q: 'What is an orphan record?',
+      options: ['A record with no primary key', 'A child record whose foreign key value does not match any primary key in the parent table', 'A record that was deleted by mistake', 'A record created by AutoNumber'],
+      correct: 1,
+      explanation: 'An orphan record is a child record referencing a parent that does not exist. For example, an order for SeedID = SD-099 when SD-099 is not in the SEEDS table. Referential integrity prevents orphan records from being created.'
+    },
+    {
+      q: 'When should you perform the Design View audit?',
+      options: ['Before importing the CSV', 'Immediately after every import, before doing anything else with the table', 'Only if you notice something looks wrong in Datasheet View', 'At the end of the entire database build'],
+      correct: 1,
+      explanation: 'The audit must happen immediately after every import. "Import is Step 1. Design View audit is Step 2." If you create queries or reports before auditing, wrong data types will produce wrong results in those objects too.'
+    }
+  ];
+
+  let reviewAnswers = {};
+  let reviewGenerated = false;
+
+  function generateReviewQuiz() {
+    if (reviewGenerated) return;
+    reviewGenerated = true;
+    document.getElementById('start-review-btn').style.display = 'none';
+
+    // Select 5 random questions
+    const shuffled = [...reviewQuestions].sort(() => Math.random() - 0.5).slice(0, 5);
+    const container = document.getElementById('review-quiz-container');
+    container.innerHTML = '';
+
+    shuffled.forEach((q, i) => {
+      const block = document.createElement('div');
+      block.className = 'exercise';
+      block.style.marginBottom = '1.5rem';
+
+      let optionsHtml = q.options.map((opt, j) => `
+        <div class="option">
+          <input type="radio" name="rq-${i}" id="rq-${i}-${j}" value="${j}">
+          <label for="rq-${i}-${j}">${opt}</label>
+        </div>
+      `).join('');
+
+      block.innerHTML = `
+        <h4>Question ${i + 1}</h4>
+        <p class="question-text">${q.q}</p>
+        <div class="options concept-check" style="padding:0; border:none; background:transparent; margin-bottom:0.5rem;">${optionsHtml}</div>
+        <button onclick="checkReviewQ(${i}, ${q.correct}, '${q.explanation.replace(/'/g, "\\'")}', this)">Check</button>
+        <div class="feedback" id="rq-fb-${i}"></div>
+      `;
+
+      container.appendChild(block);
+    });
+
+    // Store shuffled questions for scoring
+    window._reviewQuestions = shuffled;
+  }
+
+  function checkReviewQ(i, correct, explanation, btn) {
+    const selected = document.querySelector(`input[name="rq-${i}"]:checked`);
+    const fb = document.getElementById(`rq-fb-${i}`);
+    if (!selected) { fb.className = 'feedback incorrect show'; fb.textContent = 'Select an answer first.'; return; }
+
+    if (!reviewAnswers.hasOwnProperty(i)) {
+      reviewAnswers[i] = parseInt(selected.value) === correct;
+    }
+
+    if (parseInt(selected.value) === correct) {
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct. ' + explanation;
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'Incorrect. ' + explanation;
+    }
+
+    btn.style.display = 'none';
+
+    // Check if all answered
+    if (Object.keys(reviewAnswers).length === (window._reviewQuestions || []).length) {
+      const score = Object.values(reviewAnswers).filter(Boolean).length;
+      const total = Object.keys(reviewAnswers).length;
+      document.getElementById('review-result').classList.remove('hidden');
+      document.getElementById('review-score-display').textContent = 'Review Score: ' + score + ' / ' + total;
+      localStorage.setItem('review-score', score + '/' + total);
+    }
+  }
+
+  // ======================================================
+  // TEACH-BACK
+  // ======================================================
+  function saveTeachback() {
+    const val = document.getElementById('teachback-input').value;
+    localStorage.setItem('teachback', val);
+    const saved = document.getElementById('teachback-saved');
+    saved.style.display = 'block';
+    setTimeout(() => { saved.style.display = 'none'; }, 2000);
+  }
+
+  // ======================================================
+  // CONFIDENCE SCALE
+  // ======================================================
+  function selectScale(n) {
+    document.querySelectorAll('.scale-btn').forEach((b, i) => {
+      b.classList.toggle('selected', i + 1 === n);
+    });
+    localStorage.setItem('confidence', n);
+    const responses = {
+      1: 'No problem. Session 2 will build on exactly these foundations. If you are unsure about a specific step, note your remaining question above and bring it to the next class.',
+      2: 'Some uncertainty is normal after one session. Review the concept map and try the Theory Drill questions again. Focus on the Post-Import Audit Checklist — internalising those eight checks is the foundation.',
+      3: 'Good progress. Make sure you can complete the Design View audit without the checklist in front of you. The exam will not prompt you to check IsActive.',
+      4: 'Solid confidence. Try the Stretch Challenge if you have not already — explaining the field name trap in your own words is the highest-level understanding this session tests.',
+      5: 'Excellent. Your homework is to demonstrate the referential integrity error to yourself — type D-99, screenshot the error, and be ready to explain to someone else why the error is the database working correctly, not failing.'
+    };
+    const box = document.getElementById('confidence-response');
+    box.classList.remove('hidden');
+    box.textContent = responses[n] || '';
+  }
+
+  // ======================================================
+  // CERTIFICATE
+  // ======================================================
+  function generateCertificate() {
+    const score = localStorage.getItem('mission-score') || 0;
+    const reviewScore = localStorage.getItem('review-score') || 'not attempted';
+    const reflect = document.getElementById('reflect-1').value;
+    const msg = document.getElementById('cert-message');
+
+    let message = 'Session 1 complete. Mission score: ' + score + '/8. Review quiz: ' + reviewScore + '.';
+    if (parseInt(score) >= 8) {
+      message += ' Full marks on the mission — you have demonstrated the core skills for Steps 1–4 of the Paper 2 database task.';
+    } else if (parseInt(score) >= 5) {
+      message += ' Good progress. Focus on the question types that gave you difficulty before Session 2.';
+    } else {
+      message += ' Keep practising the mission steps. The import and Design View audit are the foundations — return to Section 2D before Session 2.';
+    }
+
+    if (reflect) {
+      message += ' Your question: "' + reflect.substring(0, 80) + (reflect.length > 80 ? '...' : '') + '"';
+    }
+
+    msg.textContent = message;
+    msg.style.color = 'var(--text-main)';
+
+    const badgesEl = document.getElementById('cert-badges');
+    const earnedBadges = [];
+    document.querySelectorAll('.badge-earned').forEach(b => earnedBadges.push(b.textContent));
+    if (earnedBadges.length > 0) {
+      badgesEl.innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:0.5rem;">Badges earned:</p>' +
+        earnedBadges.map(b => '<span class="badge badge-earned" style="margin:0.25rem;">' + b + '</span>').join('');
+    }
+  }
+
+  // ======================================================
+  // VOCABULARY
+  // ======================================================
+  function toggleVocab(el) {
+    const def = el.querySelector('.vocab-definition');
+    def.classList.toggle('show');
+  }
+
+  function filterVocab() {
+    const query = document.getElementById('vocab-search-input').value.toLowerCase();
+    document.querySelectorAll('.vocab-item').forEach(item => {
+      const term = item.querySelector('.vocab-term').textContent.toLowerCase();
+      const def = item.querySelector('.vocab-definition').textContent.toLowerCase();
+      item.classList.toggle('hidden', !term.includes(query) && !def.includes(query));
+    });
+  }
+
+  // ======================================================
+  // RESTORE SAVED STATE
+  // ======================================================
+  window.addEventListener('DOMContentLoaded', function() {
+    // Theme
+    if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
+    if (localStorage.getItem('dyslexia') === 'on') document.body.classList.add('dyslexia-mode');
+
+    // Objective states
+    const saved = JSON.parse(localStorage.getItem('obj-states') || '{}');
+    Object.keys(saved).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        const n = saved[id];
+        el.dataset.state = n;
+        el.className = 'obj-status' + (statusCycle[n] ? ' ' + statusCycle[n] : '');
+      }
+    });
+
+    // Checklist
+    const cl = JSON.parse(localStorage.getItem('audit-checklist') || '{}');
+    Object.keys(cl).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.checked = cl[id];
+    });
+    saveChecklist();
+
+    // Textareas
+    ['q1-answer','q2a-answer','q2b-answer','q2c-answer','q3-answer','q4-answer',
+     'stretch-answer','teachback-input','reflect-3','reflect-2','reflect-1',
+     'rp-1','rp-2'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && localStorage.getItem(id)) el.value = localStorage.getItem(id);
+    });
+
+    // Mission score
+    missionScore = parseInt(localStorage.getItem('mission-score') || '0');
+    updateMissionScore();
+
+    // Confidence
+    const conf = localStorage.getItem('confidence');
+    if (conf) selectScale(parseInt(conf));
+  });
+</script>
+
 </body>
-
 </html>

@@ -1,1419 +1,1998 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medellín 2050: Smart City Database - Session 2</title>
-
-    <!-- Modern Font Import -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            /* CONSISTENT COLOR PALETTE - ICT/Database Colors */
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-
-            /* Modern Dark Mode Base (Slate/Zinc inspired) */
-            --bg-color: #0f172a;
-            --surface-color: #1e293b;
-            --surface-color-hover: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-
-            /* Accessibility & Spacing (DO NOT MODIFY) */
-            --base-spacing: 1rem;
-            --line-height: 1.6;
-            --letter-spacing: 0.2px;
-            --font-size-base: 16px;
-            --font-size-large: 18px;
-            --font-size-xl: 20px;
-            --border-radius: 12px;
-            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* 1. LIGHT MODE OVERRIDES */
-        body.light-mode {
-            --bg-color: #f8fafc;
-            --surface-color: #ffffff;
-            --surface-color-hover: #f1f5f9;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-        }
-
-        /* 2. DYSLEXIA-FRIENDLY MODE FIX */
-        body.dyslexia-mode {
-            --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
-            --font-size-base: 18px;
-            --font-size-large: 20px;
-            --font-size-xl: 22px;
-            --line-height: 2;
-            --letter-spacing: 1px;
-            background-color: #f4f1de !important;
-            color: #2c3e50 !important;
-        }
-
-        body.dyslexia-mode .section,
-        body.dyslexia-mode header,
-        body.dyslexia-mode .exercise,
-        body.dyslexia-mode .concept-check {
-            background-color: #fffcf9 !important;
-            color: #2c3e50 !important;
-            border-left: 6px solid var(--secondary-color) !important;
-        }
-
-        body.dyslexia-mode .section h2 {
-            color: var(--primary-color) !important;
-        }
-
-        body.dyslexia-mode .section h3 {
-            color: var(--secondary-color) !important;
-        }
-
-        /* Universal Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-family, 'Inter', 'Segoe UI', sans-serif);
-            font-size: var(--font-size-base);
-            line-height: var(--line-height);
-            letter-spacing: var(--letter-spacing);
-            color: var(--text-main);
-            background-color: var(--bg-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* HEADER & NAVIGATION (MODERN, GLASSMORPHISM) */
-        header {
-            background-color: rgba(var(--surface-color-rgb), 0.85);
-            background: var(--surface-color);
-            color: var(--text-main);
-            padding: 1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            gap: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        @media (min-width: 900px) {
-            header {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                text-align: left;
-                padding: 1rem 3rem;
-            }
-        }
-
-        header h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: 0;
-            line-height: 1.2;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        @media (min-width: 900px) {
-            header h1 {
-                justify-content: flex-start;
-            }
-        }
-
-        header p {
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-            color: var(--text-muted);
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            header p {
-                display: block;
-            }
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        nav button,
-        nav a {
-            background-color: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            font-family: inherit;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        nav button:hover,
-        nav a:hover {
-            background-color: var(--surface-color-hover);
-            border-color: var(--text-muted);
-            transform: translateY(-1px);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 3px;
-            background-color: transparent;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--secondary-color);
-            width: 0%;
-            transition: width 0.4s ease-out;
-            box-shadow: 0 0 8px var(--secondary-color);
-        }
-
-        /* Main Content */
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        /* Modern Cards for Sections */
-        .section {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 2.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
-            scroll-margin-top: 120px;
-            animation: slideIn 0.5s ease-out forwards;
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section h2 {
-            color: var(--text-main);
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .section h3 {
-            color: var(--text-main);
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .section p {
-            margin-bottom: 1.25rem;
-            color: var(--text-main);
-        }
-
-        .question-text {
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        /* Difficulty Tabs - Modernized */
-        .difficulty-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            background: var(--bg-color);
-            padding: 0.25rem;
-            border-radius: 12px;
-            display: inline-flex;
-        }
-
-        .difficulty-tabs button {
-            padding: 0.5rem 1.25rem;
-            border: none;
-            background-color: transparent;
-            color: var(--text-muted);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-family: inherit;
-            transition: var(--transition);
-            margin-top: 0;
-        }
-
-        .difficulty-tabs button.active {
-            background-color: var(--surface-color);
-            color: var(--text-main);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .difficulty-content {
-            display: none;
-            padding: 1.5rem;
-            background-color: var(--bg-color);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--secondary-color);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .difficulty-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Interactive Exercises */
-        .exercise {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--primary-color);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: var(--border-radius);
-        }
-
-        /* Modern Form Elements */
-        input[type="text"],
-        input[type="number"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            margin: 0.5rem 0;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: var(--surface-color);
-            color: var(--text-main);
-            font-family: inherit;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
-        }
-
-        /* Primary Buttons */
-        button {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            margin-top: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(52, 152, 219, 0.2);
-        }
-
-        button.btn-accent {
-            background-color: var(--accent-color);
-        }
-
-        button.btn-accent:hover {
-            background-color: #c0392b;
-            box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.2);
-        }
-
-        /* Concept Checking Questions */
-        .concept-check {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--accent-color);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: var(--border-radius);
-        }
-
-        .concept-check h4 {
-            color: var(--accent-color);
-            margin-top: 0;
-        }
-
-        /* Modern Radio Button List */
-        .concept-check .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin: 1.25rem 0;
-        }
-
-        .concept-check .option {
-            position: relative;
-        }
-
-        .concept-check input[type="radio"],
-        .exercise input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .concept-check label,
-        .exercise label.radio-label {
-            display: block;
-            padding: 1rem 1.25rem;
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
-        .concept-check label:hover,
-        .exercise label.radio-label:hover {
-            border-color: var(--text-muted);
-            background-color: var(--surface-color-hover);
-        }
-
-        .concept-check input[type="radio"]:checked+label,
-        .exercise input[type="radio"]:checked+label.radio-label {
-            border-color: var(--secondary-color);
-            background-color: rgba(52, 152, 219, 0.05);
-            box-shadow: 0 0 0 1px var(--secondary-color);
-        }
-
-        /* Feedback Boxes */
-        .feedback {
-            margin-top: 1.25rem;
-            padding: 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            display: none;
-            font-size: 0.95rem;
-        }
-
-        .feedback.correct {
-            background-color: rgba(46, 204, 113, 0.1);
-            color: #2ecc71;
-            border: 1px solid rgba(46, 204, 113, 0.2);
-        }
-
-        .feedback.incorrect {
-            background-color: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-            border: 1px solid rgba(231, 76, 60, 0.2);
-        }
-
-        .feedback.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* Modern Tables */
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 1.5rem 0;
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            display: block;
-            overflow-x: auto;
-        }
-
-        th,
-        td {
-            padding: 1rem 1.25rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            white-space: normal;
-            /* adjusted for longer text */
-        }
-
-        th {
-            background-color: var(--bg-color);
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover td {
-            background-color: var(--surface-color-hover);
-        }
-
-        /* Vocabulary Section */
-        .vocab-search input {
-            border-radius: 20px;
-            padding-left: 1.5rem;
-        }
-
-        .vocab-item {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--secondary-color);
-            padding: 1.25rem;
-            margin: 0.75rem 0;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .vocab-item:hover {
-            transform: translateX(4px);
-            border-color: var(--text-muted);
-        }
-
-        .vocab-item.hidden {
-            display: none;
-        }
-
-        .vocab-term {
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        .vocab-definition {
-            display: none;
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .vocab-definition.show {
-            display: block;
-            animation: fadeIn 0.2s ease;
-        }
-
-        /* Highlights & Tags */
-        .highlight-box {
-            background-color: var(--bg-color);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin: 1.5rem 0;
-            border: 1px solid var(--border-color);
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--secondary-color);
-        }
-
-        /* Checkbox lists for objectives */
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-            padding: 0.75rem;
-            background: var(--surface-color);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .checklist-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--secondary-color);
-            cursor: pointer;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            main {
-                padding: 1rem 0.5rem;
-            }
-
-            .section {
-                padding: 1.5rem;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-            }
-
-            .section h2 {
-                font-size: 1.5rem;
-            }
-
-            th,
-            td {
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* PRINT STYLES */
-        @media print {
-
-            header,
-            nav,
-            button {
-                display: none;
-            }
-
-            .section {
-                page-break-inside: avoid;
-                border: 1px solid #ccc;
-                color: black;
-                background: white;
-            }
-
-            body {
-                background: white;
-                color: black;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Making Data Speak | Database Reports — Session 2</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --bg-color: #0f172a;
+      --surface-color: #1e293b;
+      --surface-color-hover: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --base-spacing: 1rem;
+      --line-height: 1.6;
+      --letter-spacing: 0.2px;
+      --font-size-base: 16px;
+      --font-size-large: 18px;
+      --font-size-xl: 20px;
+      --border-radius: 12px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.light-mode {
+      --bg-color: #f8fafc;
+      --surface-color: #ffffff;
+      --surface-color-hover: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    body.dyslexia-mode {
+      --font-family: 'Open Dyslexic','Lexie Readable','Comic Sans MS',sans-serif;
+      --font-size-base: 18px;
+      --font-size-large: 20px;
+      --font-size-xl: 22px;
+      --line-height: 2;
+      --letter-spacing: 1px;
+      background-color: #f4f1de !important;
+      color: #2c3e50 !important;
+    }
+
+    body.dyslexia-mode .section,
+    body.dyslexia-mode header,
+    body.dyslexia-mode .exercise,
+    body.dyslexia-mode .concept-check {
+      background-color: #fffcf9 !important;
+      color: #2c3e50 !important;
+      border-left: 6px solid var(--secondary-color) !important;
+    }
+
+    body.dyslexia-mode .section h2 { color: var(--primary-color) !important; }
+    body.dyslexia-mode .section h3 { color: var(--secondary-color) !important; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter','Segoe UI',sans-serif;
+      font-size: var(--font-size-base);
+      line-height: var(--line-height);
+      letter-spacing: var(--letter-spacing);
+      color: var(--text-main);
+      background-color: var(--bg-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--surface-color);
+      color: var(--text-main);
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    @media (min-width: 900px) {
+      header { flex-direction: row; justify-content: space-between; align-items: center; text-align: left; padding: 1rem 3rem; }
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.2;
+      color: var(--secondary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    @media (min-width: 900px) { header h1 { justify-content: flex-start; } }
+
+    header p { font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-muted); display: none; }
+    @media (min-width: 768px) { header p { display: block; } }
+
+    nav { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+
+    nav button, nav a {
+      background-color: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: 'Inter',sans-serif;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    nav button:hover, nav a:hover {
+      background-color: var(--surface-color-hover);
+      border-color: var(--text-muted);
+      transform: translateY(-1px);
+    }
+
+    .progress-container { width: 100%; height: 3px; background-color: transparent; position: absolute; bottom: 0; left: 0; }
+    .progress-bar { height: 100%; background: var(--secondary-color); width: 0%; transition: width 0.4s ease-out; box-shadow: 0 0 8px var(--secondary-color); }
+
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+
+    .section {
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 2.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+      transition: var(--transition);
+      scroll-margin-top: 120px;
+      animation: slideIn 0.5s ease-out forwards;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
+
+    .section h2 {
+      color: var(--text-main);
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section h3 { color: var(--text-main); font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
+    .section h4 { color: var(--text-main); font-size: 1.1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    .section p { margin-bottom: 1.25rem; color: var(--text-main); }
+    .question-text { color: var(--text-main); }
+
+    .difficulty-tabs {
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--bg-color);
+      padding: 0.25rem;
+      border-radius: 12px;
+      display: inline-flex;
+      flex-wrap: wrap;
+    }
+
+    .difficulty-tabs button {
+      padding: 0.5rem 1.25rem;
+      border: none;
+      background-color: transparent;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-family: inherit;
+      transition: var(--transition);
+      margin-top: 0;
+    }
+
+    .difficulty-tabs button.active {
+      background-color: var(--surface-color);
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .difficulty-content {
+      display: none;
+      padding: 1.5rem;
+      background-color: var(--bg-color);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--secondary-color);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .difficulty-content.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .exercise {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary-color);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: var(--border-radius);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      margin: 0.5rem 0;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--surface-color);
+      color: var(--text-main);
+      font-family: 'Inter',sans-serif;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(52,152,219,0.15);
+    }
+
+    button {
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: 'Inter',sans-serif;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    button:hover { background-color: #2980b9; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(52,152,219,0.2); }
+
+    button.btn-accent { background-color: var(--accent-color); }
+    button.btn-accent:hover { background-color: #c0392b; box-shadow: 0 4px 6px -1px rgba(231,76,60,0.2); }
+
+    button.btn-neutral {
+      background-color: var(--surface-color);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    button.btn-neutral:hover { background-color: var(--surface-color-hover); box-shadow: none; }
+
+    .concept-check {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-color);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      border-radius: var(--border-radius);
+    }
+
+    .concept-check h4 { color: var(--accent-color); margin-top: 0; }
+
+    .concept-check .options { display: flex; flex-direction: column; gap: 0.5rem; margin: 1.25rem 0; }
+    .concept-check .option { position: relative; }
+
+    .concept-check input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      width: auto;
+      padding: 0;
+      margin: 0;
+    }
+
+    .concept-check label {
+      display: block;
+      padding: 1rem 1.25rem;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .concept-check label:hover { border-color: var(--text-muted); background-color: var(--surface-color-hover); }
+
+    .concept-check input[type="radio"]:checked + label {
+      border-color: var(--secondary-color);
+      background-color: rgba(52,152,219,0.05);
+      box-shadow: 0 0 0 1px var(--secondary-color);
+    }
+
+    .feedback {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      display: none;
+      font-size: 0.95rem;
+    }
+
+    .feedback.correct { background-color: rgba(39,174,96,0.1); color: #27ae60; border: 1px solid rgba(39,174,96,0.2); }
+    .feedback.incorrect { background-color: rgba(231,76,60,0.1); color: #e74c3c; border: 1px solid rgba(231,76,60,0.2); }
+    .feedback.show { display: block; animation: fadeIn 0.3s ease; }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 1.5rem 0;
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+    }
+
+    th, td { padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+    th { background-color: var(--bg-color); color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background-color: var(--surface-color-hover); }
+
+    .vocab-search input { border-radius: 20px; padding-left: 1.5rem; }
+
+    .vocab-item {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1.25rem;
+      margin: 0.75rem 0;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .vocab-item:hover { transform: translateX(4px); border-color: var(--text-muted); }
+    .vocab-item.hidden { display: none !important; }
+    .vocab-term { color: var(--text-main); font-weight: 600; font-size: 1.05rem; }
+
+    .vocab-definition {
+      display: none;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .vocab-definition.show { display: block; animation: fadeIn 0.2s ease; }
+
+    .highlight-box {
+      background-color: var(--bg-color);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border-color);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(52,152,219,0.1);
+      color: var(--secondary-color);
+    }
+
+    .code-block {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-family: 'Courier New',monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      color: var(--text-main);
+      white-space: pre;
+      line-height: 1.6;
+    }
+
+    .checklist { list-style: none; padding: 0; margin: 1rem 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; accent-color: var(--secondary-color); }
+
+    .obj-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; margin: 0.5rem 0; }
+    .obj-status { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; background: #94a3b8; cursor: pointer; }
+    .obj-status.green { background: #27ae60; }
+    .obj-status.yellow { background: #f39c12; }
+    .obj-status.red { background: #e74c3c; }
+
+    .score-display { font-size: 1.5rem; font-weight: 700; color: var(--secondary-color); text-align: center; padding: 1rem; }
+
+    .step-item { display: flex; gap: 1rem; margin: 1rem 0; align-items: flex-start; }
+    .step-number { width: 32px; height: 32px; border-radius: 50%; background-color: var(--secondary-color); color: white; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-content { flex: 1; }
+    .step-content p { margin-bottom: 0.5rem; }
+
+    .warning-box { background-color: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.25); border-left: 4px solid var(--accent-color); border-radius: var(--border-radius); padding: 1.25rem; margin: 1.25rem 0; color: var(--text-main); }
+    .warning-box strong { color: var(--accent-color); }
+
+    .info-box { background-color: rgba(52,152,219,0.08); border: 1px solid rgba(52,152,219,0.25); border-left: 4px solid var(--secondary-color); border-radius: var(--border-radius); padding: 1.25rem; margin: 1.25rem 0; color: var(--text-main); }
+
+    .success-box { background-color: rgba(39,174,96,0.08); border: 1px solid rgba(39,174,96,0.25); border-left: 4px solid #27ae60; border-radius: var(--border-radius); padding: 1.25rem; margin: 1.25rem 0; color: var(--text-main); }
+
+    .badge { display: inline-block; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin: 0.25rem; }
+    .badge-earned { background: rgba(52,152,219,0.15); color: var(--secondary-color); border: 1px solid rgba(52,152,219,0.3); }
+    .badge-locked { background: var(--bg-color); color: var(--text-muted); border: 1px solid var(--border-color); }
+
+    .hidden { display: none !important; }
+
+    /* Pipeline diagram */
+    .pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+
+    .pipeline-box {
+      background: var(--surface-color);
+      border: 2px solid var(--secondary-color);
+      border-radius: 10px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      text-align: center;
+      width: 100%;
+      max-width: 340px;
+      transition: var(--transition);
+      cursor: default;
+    }
+
+    .pipeline-box:hover { background: rgba(52,152,219,0.1); }
+    .pipeline-box small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem; }
+
+    .pipeline-arrow {
+      font-size: 1.5rem;
+      color: var(--secondary-color);
+      line-height: 1.2;
+      margin: 0.25rem 0;
+    }
+
+    /* QBE Grid visual */
+    .qbe-grid {
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .qbe-row {
+      display: grid;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .qbe-row:last-child { border-bottom: none; }
+
+    .qbe-cell {
+      padding: 0.5rem 0.75rem;
+      border-right: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .qbe-cell:last-child { border-right: none; }
+    .qbe-header { background: var(--surface-color); color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .qbe-sort { color: var(--secondary-color); font-weight: 600; }
+    .qbe-criteria { color: #f39c12; font-weight: 600; }
+    .qbe-highlight { background: rgba(52,152,219,0.08); }
+
+    /* Drag columns demo */
+    .drag-demo {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      padding: 1rem;
+      background: var(--bg-color);
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .drag-col {
+      padding: 0.5rem 1rem;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: grab;
+      user-select: none;
+      transition: var(--transition);
+    }
+
+    .drag-col:active { cursor: grabbing; }
+    .drag-col.sorted-desc { border-color: var(--accent-color); color: var(--accent-color); }
+    .drag-col.sorted-asc { border-color: #27ae60; color: #27ae60; }
+
+    /* Scale selector */
+    .scale-selector { display: flex; gap: 0.5rem; margin: 0.75rem 0; flex-wrap: wrap; }
+    .scale-btn { padding: 0.5rem 1rem; border-radius: 8px; background-color: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 600; margin-top: 0; font-size: 0.9rem; }
+    .scale-btn.selected { background-color: var(--secondary-color); border-color: var(--secondary-color); color: white; }
+
+    .reflection-area { background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.25rem; margin: 1rem 0; }
+
+    .concept-map { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0; }
+    .concept-node { padding: 0.75rem 1.25rem; background-color: var(--bg-color); border: 2px solid var(--secondary-color); border-radius: 12px; font-weight: 600; text-align: center; cursor: pointer; transition: var(--transition); font-size: 0.9rem; }
+    .concept-node:hover { background-color: rgba(52,152,219,0.1); transform: scale(1.03); }
+    .concept-node.highlighted { background-color: rgba(52,152,219,0.2); box-shadow: 0 0 12px rgba(52,152,219,0.3); }
+    .concept-node-detail { display: none; padding: 1rem; background-color: rgba(52,152,219,0.05); border: 1px solid rgba(52,152,219,0.2); border-radius: 8px; margin-top: 1rem; font-size: 0.95rem; animation: fadeIn 0.3s ease; }
+    .concept-node-detail.show { display: block; }
+
+    .certificate { border: 2px solid var(--secondary-color); border-radius: var(--border-radius); padding: 2rem; text-align: center; margin: 1.5rem 0; background: linear-gradient(135deg, rgba(52,152,219,0.05) 0%, rgba(44,62,80,0.05) 100%); }
+    .certificate h3 { color: var(--secondary-color); font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+    @media (max-width: 768px) {
+      main { padding: 1rem 0.5rem; }
+      .section { padding: 1.5rem; border-radius: 0; border-left: none; border-right: none; }
+      .section h2 { font-size: 1.5rem; }
+      th, td { padding: 0.75rem; font-size: 0.9rem; }
+    }
+
+    @media print {
+      header, nav, button { display: none; }
+      .section { page-break-inside: avoid; border: 1px solid #ccc; }
+    }
+  </style>
 </head>
 
-<body class="dark-mode">
+<body>
 
-    <!-- HEADER & NAVIGATION -->
-    <header>
-        <div>
-            <h1>🏙️ Medellín 2050: Smart City</h1>
-            <p>IGCSE ICT (0417) | Session 2: Securing the City's Gates</p>
+<header>
+  <div>
+    <h1>Making Data Speak</h1>
+    <p>Grade 11 — Cambridge IGCSE ICT | Database Session 2 of 11</p>
+  </div>
+  <nav>
+    <button onclick="toggleMode()">Theme</button>
+    <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
+    <button onclick="scrollToSection('concepts')">Concepts</button>
+    <button onclick="scrollToSection('demo')">Demo</button>
+    <button onclick="scrollToSection('mission')">Mission</button>
+    <button onclick="scrollToSection('drill')">Drill</button>
+    <button onclick="scrollToSection('vocab')">Vocab</button>
+  </nav>
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== OPENING ACTIVITY ===================== -->
+  <section class="section" id="opening-activity">
+    <h2>The Hook: Table vs Report</h2>
+
+    <p>
+      The city's procurement director receives your database. She opens it. She sees 10 rows of raw data in a
+      table — fields everywhere, no order, no totals, no titles. She closes it and calls IT support.
+    </p>
+    <p>
+      That is a zero. Not because your data was wrong. Because you presented it as a table instead of a report.
+    </p>
+
+    <div class="info-box">
+      <strong>The one-sentence distinction:</strong> A table is where data lives. A report is what the examiner marks. From this session forward, every piece of work submitted from a database is a formatted, printed report — with a title, a sort, a total at the bottom, and your candidate details in the right place.
+    </div>
+
+    <h3>Opening Challenge: Spot the Difference</h3>
+    <p>A student submits two pieces of evidence for the same database task. Only one will receive the formatting marks. Which output is a correctly produced exam report?</p>
+
+    <div class="concept-check" style="border-left-color: var(--secondary-color);">
+      <h4>Opening Prediction</h4>
+      <p class="question-text">Output A: A screenshot of a query result in Datasheet View — all correct records, correct sort, correct fields, but no title, no total formula, no candidate details.<br><br>Output B: A printed report with a title in larger font, a =Sum formula below the correct column, candidate details in the footer, and portrait orientation — all records and sorts matching Output A.</p>
+      <div class="options">
+        <div class="option">
+          <input type="radio" name="opening" id="op-a" value="a">
+          <label for="op-a">A) Output A — the data is correct and the examiner can see the sort order</label>
         </div>
-        <nav>
-            <button onclick="toggleMode()">🌙 Theme</button>
-            <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
-            <button onclick="scrollToSection('concepts')">Concepts</button>
-            <button onclick="scrollToSection('demo')">Demo</button>
-            <button onclick="scrollToSection('mission')">Mission</button>
-            <button onclick="scrollToSection('drill')">Drill</button>
-            <button onclick="scrollToSection('vocab')">Vocab</button>
-        </nav>
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+        <div class="option">
+          <input type="radio" name="opening" id="op-b" value="b">
+          <label for="op-b">B) Output B — the formatted report earns the formatting marks that Output A cannot</label>
         </div>
-    </header>
+        <div class="option">
+          <input type="radio" name="opening" id="op-c" value="c">
+          <label for="op-c">C) Both receive the same marks — the content is identical</label>
+        </div>
+      </div>
+      <button onclick="checkOpening()">Lock In My Prediction</button>
+      <div class="feedback" id="opening-feedback"></div>
+    </div>
 
-    <main>
-        <!-- OPENING ACTIVITY (MANDATORY & INTERACTIVE) -->
-        <section class="section" id="opening-activity">
-            <h2>⚡ The Hook: 2 AM Disaster</h2>
-            <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
-                <p><strong>Disaster.</strong> A data entry operator at the Smart City Control Centre was processing new
-                    citizen registrations at 2 AM. Exhausted, they entered:</p>
-                <ul>
-                    <li>A date of birth of <code>99/99/9999</code></li>
-                    <li>An energy credit balance of <code>-450000</code></li>
-                    <li>Left the <code>CitizenID</code> field completely blank for three records.</li>
-                </ul>
-                <p>The AI welfare system flagged those citizens for 'non-existence' and cut their energy supply.</p>
-            </div>
+    <div class="highlight-box">
+      <strong>Today's target:</strong> You will build a complete Report 1 in under 12 minutes — which is exactly how long the exam time budget gives you. By the end of this session that target is achievable.
+    </div>
 
-            <div class="exercise">
-                <p class="question-text">We need "gates" (Validation Rules) to stop bad data before it is saved. Which
-                    of these disasters could have been prevented by a <strong>Range Check</strong>?</p>
+    <p id="prev-q" style="color:var(--text-muted); font-size:0.9rem;"></p>
+  </section>
 
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="hook-guess2" id="hook2-1" value="wrong1">
-                        <label class="radio-label" for="hook2-1">The blank CitizenID.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="hook-guess2" id="hook2-2" value="correct">
-                        <label class="radio-label" for="hook2-2">The -450000 energy credits.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="hook-guess2" id="hook2-3" value="wrong2">
-                        <label class="radio-label" for="hook2-3">Both of them.</label>
-                    </div>
-                </div>
-                <button onclick="checkHook2()">Run Diagnosis</button>
-                <div id="hook2-feedback" class="feedback"></div>
-            </div>
-            <p><em>Today, you become the city's Security Architect. You don't just build the database. You make it
-                    impossible to break.</em></p>
-        </section>
+  <!-- ===================== LEARNING OBJECTIVES ===================== -->
+  <section class="section" id="learning-objectives">
+    <h2>Learning Objectives</h2>
 
-        <!-- LEARNING OBJECTIVES -->
-        <section class="section" id="learning-objectives">
-            <h2>🎯 Mission Objectives</h2>
-            <p>To harden the database against human error, you will learn to implement Validation Rules. By the end of
-                this session, you will be able to:</p>
+    <h3>Cognitive Objectives</h3>
+    <p>By the end of this class I will be able to:</p>
+    <div>
+      <div class="obj-item"><div class="obj-status" id="obj-1" onclick="cycleStatus('obj-1')"></div><span>Explain the query-to-report pipeline and state why a query must be built before the report</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-2" onclick="cycleStatus('obj-2')"></div><span>Write the correct wildcard criterion for any "includes the word" or "begins with" exam instruction</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-3" onclick="cycleStatus('obj-3')"></div><span>Set a double sort correctly in the QBE grid, understanding that the leftmost sorted field is always the primary sort</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-4" onclick="cycleStatus('obj-4')"></div><span>Place the correct aggregate formula (=Count, =Sum, =Avg) in the Report Footer with a correctly worded label to its left</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-5" onclick="cycleStatus('obj-5')"></div><span>Complete the full Report Formatting Checklist before printing or exporting</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-6" onclick="cycleStatus('obj-6')"></div><span>Export a report as PDF and take the evidence screenshot showing the formula in Design View</span></div>
+    </div>
 
-            <div class="highlight-box">
-                <div class="checklist-item">
-                    <input type="checkbox" id="s2-obj-1" onchange="saveProgressS2()">
-                    <label for="s2-obj-1"><strong>Cognitive:</strong> Identify and describe the 6 official types of
-                        database validation.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="s2-obj-2" onchange="saveProgressS2()">
-                    <label for="s2-obj-2"><strong>Cognitive:</strong> Apply Validation Rules, Texts, and Input Masks
-                        correctly in MS Access.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="s2-obj-3" onchange="saveProgressS2()">
-                    <label for="s2-obj-3"><strong>Cognitive:</strong> Explain the crucial difference between validation
-                        and verification.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="s2-obj-4" onchange="saveProgressS2()">
-                    <label for="s2-obj-4"><strong>Social-Emotional:</strong> Understand that validation is not about
-                        distrusting users, but building a system robust enough to survive human error.</label>
-                </div>
-            </div>
-            <p><small><em>Prior Knowledge Required: Understanding of basic Data Types and Primary Keys (Session
-                        1).</em></small></p>
-        </section>
+    <h3>Social-Emotional Objectives</h3>
+    <p>I will develop the ability to:</p>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Read exam instructions character by character — not paraphrasing, not assuming</li>
+      <li>Build systematic habits (delete Page Footer first, then add candidate details) rather than trusting memory</li>
+      <li>Work within time constraints — 12 minutes per report requires a confident sequence, not improvisation</li>
+    </ul>
 
-        <!-- CONCEPT EXPLORATION -->
-        <section class="section" id="concepts">
-            <h2>📚 The Security Architect's Cheat Sheet</h2>
-            <p>A database without validation is like a city with no ID checkpoints — anyone and anything gets in. The
-                purpose of validation is to enforce data integrity <em>at the point of entry</em>.</p>
+    <h3>Connection to Prior Knowledge</h3>
+    <div class="highlight-box">
+      Session 1 gave you the data: correctly typed tables, a valid relationship, imported records. Session 2 makes that data useful: we extract precisely what is needed (query), then present it in the format the examiner marks (report). Without Session 1's foundation, no report can be built. Without today's report skills, no marks can be earned from it.
+    </div>
 
-            <div class="difficulty-tabs">
-                <button class="active" onclick="switchDifficulty('basic')">Basic: The 6 Rule Types</button>
-                <button onclick="switchDifficulty('intermediate')">Intermediate: Access Mechanisms</button>
-                <button onclick="switchDifficulty('advanced')">Advanced: The "Accuracy" Trap</button>
-            </div>
+    <h3>Success Criteria</h3>
+    <p>Click each indicator to track your confidence as the session progresses.</p>
+    <div class="highlight-box">
+      <div class="obj-item"><div class="obj-status" id="sc-1" onclick="cycleStatus('sc-1')"></div><span>I know the four stages of the query-to-report pipeline in order</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-2" onclick="cycleStatus('sc-2')"></div><span>I can write Like "*bean*" without looking it up</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-3" onclick="cycleStatus('sc-3')"></div><span>I know that leftmost sorted field = primary sort in QBE grid</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-4" onclick="cycleStatus('sc-4')"></div><span>I can place =Sum([FieldName]) in the Report Footer with a label to its left</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-5" onclick="cycleStatus('sc-5')"></div><span>I know the difference between =Count(*) and =Sum([FieldName])</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-6" onclick="cycleStatus('sc-6')"></div><span>My PDF export screenshot shows the .pdf extension visible in the folder</span></div>
+    </div>
+  </section>
 
-            <!-- Basic Concept -->
-            <div id="content-basic" class="difficulty-content active">
-                <h3>The Six Validation Types (0417 Taxonomy)</h3>
-                <p>The syllabus explicitly names all six of these. You must know the name, definition, an example, and
-                    one limitation.</p>
-                <table>
-                    <tr>
-                        <th>Validation Type</th>
-                        <th>Formal Definition</th>
-                        <th>Medellín 2050 Example</th>
-                    </tr>
-                    <tr>
-                        <td><strong>Presence Check</strong></td>
-                        <td>Ensures a field is not left empty (null).</td>
-                        <td><code>CitizenID</code> must not be blank.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Range Check</strong></td>
-                        <td>Ensures a numeric or date value falls within an acceptable minimum and maximum.</td>
-                        <td><code>EnergyCredits</code> must be between 0 and 9999.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Length Check</strong></td>
-                        <td>Ensures the number of characters in a field is within specified limits.</td>
-                        <td><code>CitizenID</code> must be exactly 7 characters (e.g., C-00101).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Format Check</strong></td>
-                        <td>Ensures data matches a specific pattern of characters.</td>
-                        <td><code>CitizenID</code> must match pattern L-NNNNN (Letter, hyphen, 5 digits).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Type Check</strong></td>
-                        <td>Ensures the data entered is of the correct data type.</td>
-                        <td><code>EnergyCredits</code> must be a number (rejects text like "plenty").</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Lookup Check</strong></td>
-                        <td>Ensures a value entered matches an item in a predefined list.</td>
-                        <td><code>Sector</code> must be one of: El Poblado, Laureles, Envigado, Belén, Centro.</td>
-                    </tr>
-                </table>
-            </div>
+  <!-- ===================== CONCEPT EXPLORATION ===================== -->
+  <section class="section" id="concepts">
+    <h2>Concept Exploration</h2>
 
-            <!-- Intermediate Concept -->
-            <div id="content-intermediate" class="difficulty-content">
-                <h3>Validation in MS Access: Three Mechanisms</h3>
-                <p>There are distinct tools in Access to enforce validation. Do not confuse them.</p>
-                <table>
-                    <tr>
-                        <th>Mechanism</th>
-                        <th>Where Set</th>
-                        <th>What It Does</th>
-                        <th>Example</th>
-                    </tr>
-                    <tr>
-                        <td><strong>Data Type</strong></td>
-                        <td>Field Data Type column</td>
-                        <td>Rejects data of the wrong type entirely. (This acts as your Type Check).</td>
-                        <td>Setting EnergyCredits as Number rejects text.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Validation Rule & Text</strong></td>
-                        <td>Field Properties</td>
-                        <td>Custom logical expression data must satisfy. Text is the error message shown to the user.
-                        </td>
-                        <td>Rule: <code>>=0 And <=9999</code><br>Text: "Credits must be between 0 and 9999"</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Input Mask</strong></td>
-                        <td>Field Properties</td>
-                        <td>Forces a specific character-by-character entry pattern (Combines Format & Length checks).
-                        </td>
-                        <td><code>L\-00000</code> enforces C-00101 format.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Lookup Wizard</strong></td>
-                        <td>Data Type dropdown</td>
-                        <td>Creates a dropdown list of permitted values.</td>
-                        <td>Sector dropdown with 5 city zones.</td>
-                    </tr>
-                </table>
-            </div>
+    <!-- 2A Pipeline -->
+    <h3>2A — The Query-to-Report Pipeline</h3>
 
-            <!-- Advanced Concept -->
-            <div id="content-advanced" class="difficulty-content">
-                <h3>The Core Philosophy & The "Accuracy" Trap</h3>
-                <p><strong>🎯 Exam-Precision Statement:</strong> "Validation is an automatic check carried out by the
-                    computer to ensure that data entered is reasonable, complete, and within acceptable boundaries.
-                    <strong>It cannot verify that data is accurate or true.</strong>"</p>
+    <div class="difficulty-tabs" id="pipe-tabs">
+      <button class="active" onclick="switchTab('pipe','basic',this)">Basic</button>
+      <button onclick="switchTab('pipe','intermediate',this)">Intermediate</button>
+      <button onclick="switchTab('pipe','advanced',this)">Advanced</button>
+    </div>
 
-                <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
-                    <h4>⚠️ The Classic Paper 1 Trap</h4>
-                    <p>A range check on <code>DateOfBirth</code> between 01/01/2010 and 04/03/2026 would successfully
-                        reject <em>99/99/9999</em>.<br>
-                        But it would <strong>accept</strong> <em>15/05/2025</em> even if the real citizen was actually
-                        born in 1985. <br><br>
-                        <strong>Validation cannot detect lies, only nonsense.</strong> Checking truth is called
-                        <em>Verification</em> (a manual check).
-                    </p>
-                </div>
-            </div>
-        </section>
+    <div class="difficulty-content active" id="pipe-basic">
+      <p>The report is never built directly from a table. Every Paper 2 report follows this exact four-stage pipeline:</p>
+      <div class="pipeline">
+        <div class="pipeline-box">TABLE(s)<small>Where data lives — never submitted directly</small></div>
+        <div class="pipeline-arrow">↓</div>
+        <div class="pipeline-box">QUERY<small>Criteria + sort + calculated fields</small></div>
+        <div class="pipeline-arrow">↓</div>
+        <div class="pipeline-box">REPORT<small>Formatting + totals + headers/footers</small></div>
+        <div class="pipeline-arrow">↓</div>
+        <div class="pipeline-box">PRINTOUT / PDF<small>What the examiner marks</small></div>
+      </div>
+    </div>
 
-        <!-- APPLIED EXAMPLES / DEMO -->
-        <section class="section" id="demo">
-            <h2>🛠️ The Live Build: Hardening the CITIZENS Table</h2>
-            <p>Open <code>Medellin2050_SmartCity.accdb</code> and switch to <strong>Design View</strong> for the
-                CITIZENS table.</p>
+    <div class="difficulty-content" id="pipe-intermediate">
+      <div class="warning-box">
+        <strong>The most common exam mistake:</strong> Students add criteria directly in the Report Wizard and skip building the underlying query. This works for very simple single-field criteria — but fails immediately for wildcard patterns (Like "*bean*"), OR criteria across two rows, and calculated fields. Always build the query first, every time, without exception.
+      </div>
+      <p>The query and the report each have a separate job:</p>
+      <table>
+        <thead><tr><th>Stage</th><th>Job</th><th>Where you work</th></tr></thead>
+        <tbody>
+          <tr><td>Query</td><td>Select correct records, apply criteria, set sort order</td><td>Query Design View (QBE grid)</td></tr>
+          <tr><td>Report</td><td>Format the output, add title, add totals, add candidate details</td><td>Report Design View / Wizard</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-            <h3>MS Access Expression Syntax Guide</h3>
-            <p>You need to know the exact syntax for writing rule expressions:</p>
-            <ul>
-                <li><strong>Range (numeric):</strong> <code>>=0 And <=9999</code></li>
-                <li><strong>Range (dates):</strong> <code>>=#01/01/2020# And <=#31/12/2060#</code> (Note the # hashes
-                    around dates)</li>
-                <li><strong>Presence:</strong> <code>Is Not Null</code> (or set 'Required' to Yes)</li>
-                <li><strong>Text list:</strong> <code>"Active" Or "Maintenance" Or "Decommissioned"</code></li>
-            </ul>
+    <div class="difficulty-content" id="pipe-advanced">
+      <p>There are two orderings to keep mentally separate at all times:</p>
+      <div class="info-box">
+        <strong>QBE column order</strong> — controls sort priority. The leftmost sorted field in the QBE grid is the primary sort. This is independent of which column is displayed first in the report.<br><br>
+        <strong>Report column order</strong> — the left-to-right sequence of fields in the report output. Controlled by the order you add fields in the Report Wizard, or by dragging controls in Design View. The exam question always says <em>"in this order"</em> — this order applies to the report, not the QBE grid.
+      </div>
+      <p>These are two separate orderings serving two different purposes. Conflating them is the source of almost every sort-order error in the exam.</p>
+    </div>
 
-            <div class="highlight-box">
-                <h4>Step-by-Step Blueprint</h4>
-                <ol>
-                    <li><strong>CitizenID:</strong> Set <em>Required</em> to Yes. Set <em>Input Mask</em> to
-                        <code>L\-00000;0;_</code>. <br><small>(L = one letter, \- = literal hyphen, 00000 = five digits.
-                            This handles Presence, Format, and Length!)</small></li>
-                    <li><strong>EnergyCredits:</strong> Set <em>Validation Rule</em> to <code>>=0 And <=9999</code>. Set
-                        <em>Validation Text</em> to: "Energy Credits must be a value between 0 and 9999."</li>
-                    <li><strong>DateOfBirth:</strong> Set <em>Validation Rule</em> to
-                        <code>>=#01/01/1950# And <=Date()</code>. <br><small>(Date() is Access's function for today's
-                            date).</small></li>
-                    <li><strong>FineAmount:</strong> Set <em>Default Value</em> to <code>0</code>. Set <em>Validation
-                            Rule</em> to <code>>=0</code>.</li>
-                    <li><strong>Sector:</strong> Change Data Type to <strong>Lookup Wizard</strong>. Type the 5 zones
-                        (El Poblado, Laureles, Envigado, Belén, Centro). Most importantly, set <em>Limit To List</em> to
-                        <strong>Yes</strong> in Field Properties.</li>
-                </ol>
-            </div>
+    <!-- 2B Wildcards -->
+    <h3>2B — Wildcard Criteria: The Exact Exam Syntax</h3>
 
-            <p><strong>Test your gates:</strong> Switch to Datasheet view. Try to enter a negative FineAmount. Try to
-                enter "Sabaneta" as a sector. The database should actively fight back!</p>
-        </section>
+    <div class="difficulty-tabs" id="wc-tabs">
+      <button class="active" onclick="switchTab('wc','basic',this)">Basic</button>
+      <button onclick="switchTab('wc','intermediate',this)">Intermediate</button>
+      <button onclick="switchTab('wc','advanced',this)">Advanced</button>
+    </div>
 
-        <!-- INTERACTIVE ACTIVITIES / MISSION -->
-        <section class="section" id="mission">
-            <h2>🎯 Student Mission: The Sensor Network</h2>
-            <p>The city's 200 environmental sensors report air quality and temperature every hour. A new table
-                <code>ENV_SENSORS</code> must be created with strict validation — the data feeds directly into the
-                city's AI climate control. Bad data = wrong decisions = unhealthy citizens.</p>
+    <div class="difficulty-content active" id="wc-basic">
+      <p>An asterisk (*) in an Access criterion means "any sequence of characters". Three positions — three meanings:</p>
+      <table>
+        <thead><tr><th>Criterion</th><th>Matches</th><th>Does NOT match</th></tr></thead>
+        <tbody>
+          <tr><td><code>Like "*bean*"</code></td><td>Runner Bean, French Bean, Beansprout</td><td>Tomato, Lettuce</td></tr>
+          <tr><td><code>Like "bean*"</code></td><td>Beansprout, Bean</td><td>Runner Bean (doesn't START with bean)</td></tr>
+          <tr><td><code>Like "*bean"</code></td><td>Runner Bean, Soy Bean</td><td>Beansprout (doesn't END with bean)</td></tr>
+        </tbody>
+      </table>
+      <p>The exam almost always uses <code>Like "*word*"</code> — contains the word anywhere. Memorise this pattern.</p>
+    </div>
 
-            <button
-                onclick="window.open('https://docs.google.com/spreadsheets/d/1DjHmdyaHY_geAlVAZ7U9j1YrVxfuy5IdD4Rvu9ljE_Q/edit?usp=sharing', '_blank')"
-                class="btn-accent" style="margin-bottom: 1.5rem;">
-                📥 Download Environmental Sensors (CSV)
-            </button>
+    <div class="difficulty-content" id="wc-intermediate">
+      <p>Exact exam phrasings and the criterion to type:</p>
+      <table>
+        <thead><tr><th>Exam wording</th><th>Criterion to type</th></tr></thead>
+        <tbody>
+          <tr><td>"includes the word bean"</td><td><code>Like "*bean*"</code></td></tr>
+          <tr><td>"Type includes the word bean"</td><td><code>Like "*bean*"</code> (in the Type row)</td></tr>
+          <tr><td>"begins with the text Cyrus"</td><td><code>Like "Cyrus*"</code></td></tr>
+          <tr><td>"contains Tomas"</td><td><code>Like "*Tomas*"</code></td></tr>
+          <tr><td>"ServiceGrade includes the word Senior"</td><td><code>Like "*Senior*"</code></td></tr>
+        </tbody>
+      </table>
+      <div class="info-box">
+        <strong>Case sensitivity:</strong> Access wildcards are NOT case-sensitive. Like "*bean*" matches "Bean", "BEAN", "bean" — all correct. You do not need to type the criterion in lowercase.
+      </div>
+    </div>
 
-            <div class="highlight-box">
-                <h4>Validation Specification to Build</h4>
-                <table>
-                    <tr>
-                        <th>Field Name</th>
-                        <th>Required Validation</th>
-                        <th>Type of Check</th>
-                    </tr>
-                    <tr>
-                        <td>SensorID (Primary Key)</td>
-                        <td>Cannot be blank; format <strong>LL-000</strong> (2 letters, hyphen, 3 digits)</td>
-                        <td>Presence + Format</td>
-                    </tr>
-                    <tr>
-                        <td>SectorCode</td>
-                        <td>Must be: El Poblado, Laureles, Envigado, Belén, or Centro</td>
-                        <td>Lookup</td>
-                    </tr>
-                    <tr>
-                        <td>Temperature</td>
-                        <td>Must be between -10 and 50</td>
-                        <td>Range</td>
-                    </tr>
-                    <tr>
-                        <td>PollutionIndex</td>
-                        <td>Must be between 0 and 100</td>
-                        <td>Range</td>
-                    </tr>
-                    <tr>
-                        <td>LastReading</td>
-                        <td>Must not be in the future; must be after 01/01/2030</td>
-                        <td>Range</td>
-                    </tr>
-                </table>
-            </div>
+    <div class="difficulty-content" id="wc-advanced">
+      <div class="warning-box">
+        <strong>The no-asterisk trap:</strong> Like "bean" (no asterisks) matches ONLY records where the entire field value is exactly the word "bean" — no more, no fewer characters. Since the Type field contains values like "Runner Bean", not just "bean", Like "bean" returns zero records. Every wildcard criterion in the exam uses at least one asterisk.
+      </div>
+      <p>Why this matters for the mark scheme: criteria are awarded a mark when the correct records appear in the report output. If your wildcard is wrong, the wrong records appear, and zero criteria marks are awarded — even if everything else (sort, totals, formatting) is perfect.</p>
+    </div>
 
-            <h3>Security Architect Checklist</h3>
-            <p>Check these off as you implement them in Access Design View:</p>
+    <!-- CCQ: wildcards -->
+    <div class="concept-check">
+      <h4>Concept Check — Wildcards</h4>
+      <p class="question-text">The exam instruction says: "selects the records where the ServiceGrade includes the word Senior". What criterion should be entered in the ServiceGrade column of the QBE grid?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-wc" id="cwc-a" value="a"><label for="cwc-a">A) = "Senior"</label></div>
+        <div class="option"><input type="radio" name="ccq-wc" id="cwc-b" value="b"><label for="cwc-b">B) Like "Senior*"</label></div>
+        <div class="option"><input type="radio" name="ccq-wc" id="cwc-c" value="c"><label for="cwc-c">C) Like "*Senior*"</label></div>
+        <div class="option"><input type="radio" name="ccq-wc" id="cwc-d" value="d"><label for="cwc-d">D) Contains "Senior"</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-wc','c','ccq-wc-fb','Correct. The exam says "includes" — which means the word Senior can appear anywhere in the field value. Like "*Senior*" matches Senior, Senior Staff, Deputy Senior, and any other value containing the word. Like "Senior*" would miss "Deputy Senior"; = "Senior" would only match exact values.','Not quite. "Includes" maps to Like "*Senior*" — the word can appear anywhere in the value. Like "Senior*" matches only values that begin with Senior, and = "Senior" matches only exact values.')">Check Answer</button>
+      <div class="feedback" id="ccq-wc-fb"></div>
+    </div>
 
-            <div class="exercise" id="mission-checks2">
-                <div class="checklist-item">
-                    <input type="checkbox" id="m2-chk1" onchange="checkMission2()">
-                    <label for="m2-chk1"><code>SensorID</code> has Input Mask <code>LL\-000;0;_</code> and Required =
-                        Yes.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m2-chk2" onchange="checkMission2()">
-                    <label for="m2-chk2"><code>SectorCode</code> is a Lookup with Limit To List = Yes.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m2-chk3" onchange="checkMission2()">
-                    <label for="m2-chk3"><code>Temperature</code> validation rule is exactly
-                        <code>>=-10 And <=50</code>.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m2-chk4" onchange="checkMission2()">
-                    <label for="m2-chk4"><code>LastReading</code> rule uses hashes:
-                        <code>>=#01/01/2030# And <=Date()</code>.</label>
-                </div>
-                <div id="mission-success2" class="feedback correct" style="display:none;">
-                    ✅ Excellent! You have successfully secured the environmental sensor grid.
-                </div>
-            </div>
+    <!-- 2C Double Sort -->
+    <h3>2C — Double Sort: The Mark-Scheme Rule</h3>
 
-            <div class="highlight-box" style="border-left: 4px solid var(--secondary-color);">
-                <h4>🔴 Stretch Challenge: Data Governance</h4>
-                <p>Sensor SN-009 is being decommissioned. The city engineer argues: "We should just delete the record."
-                    The data governance officer argues: "We should update IsActive to No and keep the record."</p>
-                <p>Write an argument supporting the data governance officer.</p>
-                <textarea id="stretch-answer2" rows="3"
-                    placeholder="Type your data governance reasoning here..."></textarea>
-                <button
-                    onclick="saveToLocalStorage('stretch-answer2', document.getElementById('stretch-answer2').value); alert('Saved!');">Save
-                    Notes</button>
-            </div>
-        </section>
+    <div class="difficulty-tabs" id="sort-tabs">
+      <button class="active" onclick="switchTab('sort','basic',this)">Basic</button>
+      <button onclick="switchTab('sort','intermediate',this)">Intermediate</button>
+      <button onclick="switchTab('sort','advanced',this)">Advanced</button>
+    </div>
 
-        <!-- PRACTICE EXERCISES & CCQs -->
-        <section class="section" id="drill">
-            <h2>📝 Theory Drill: Security Protocols (Paper 1 Style)</h2>
-            <p>To pass your Architect Certification, you must prove your understanding of the validation rules.</p>
+    <div class="difficulty-content active" id="sort-basic">
+      <p>When the exam specifies two sort fields, the primary sort is applied first. Within records that share the same primary sort value, the secondary sort orders those tied records.</p>
+      <div class="info-box">
+        <strong>Example:</strong> "Descending order of SeedID, then ascending order of DatePlaced."<br>
+        — Primary: SeedID descending (SD-010 first, SD-001 last)<br>
+        — Secondary: within any records with the same SeedID, DatePlaced ascending (earliest order first)
+      </div>
+    </div>
 
-            <!-- CCQ 1 -->
-            <div class="concept-check">
-                <h4>Question 1: Defining Presence</h4>
-                <p>What is meant by a "Presence Check" in a database?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq2_1" id="ccq2_1-a" value="wrong">
-                        <label for="ccq2_1-a">It ensures the data entered matches the data on the original paper
-                            form.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_1" id="ccq2_1-b" value="correct">
-                        <label for="ccq2_1-b">It ensures that a field has not been left empty/null.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_1" id="ccq2_1-c" value="wrong">
-                        <label for="ccq2_1-c">It ensures that a field contains the exact right amount of
-                            characters.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq2_1', 'ccq2_1-b', 'ccq2_1-feedback')">Submit Answer</button>
-                <div id="ccq2_1-feedback" class="feedback"></div>
-            </div>
+    <div class="difficulty-content" id="sort-intermediate">
+      <p>The critical rule: <strong>In the Access QBE grid, the leftmost sorted field is the primary sort.</strong></p>
+      <p>For the report shown in the demo (Salary descending primary, Surname ascending secondary), the QBE grid must look like this:</p>
 
-            <!-- CCQ 2 -->
-            <div class="concept-check">
-                <h4>Question 2: Applying Range Checks</h4>
-                <p>The <code>PollutionIndex</code> must be between 0 and 100. Which of the following is the correct MS
-                    Access Validation Rule?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq2_2" id="ccq2_2-a" value="wrong">
-                        <label for="ccq2_2-a">Between 0 To 100</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_2" id="ccq2_2-b" value="wrong">
-                        <label for="ccq2_2-b">>0 And <100< /label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_2" id="ccq2_2-c" value="correct">
-                        <label for="ccq2_2-c">>=0 And <=100< /label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq2_2', 'ccq2_2-c', 'ccq2_2-feedback')">Submit Answer</button>
-                <div id="ccq2_2-feedback" class="feedback"></div>
-            </div>
+      <div class="qbe-grid">
+        <div class="qbe-row" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="qbe-cell qbe-header">Field</div>
+          <div class="qbe-cell qbe-header">Salary</div>
+          <div class="qbe-cell qbe-header">Surname</div>
+          <div class="qbe-cell qbe-header">FirstName</div>
+          <div class="qbe-cell qbe-header">DeptName</div>
+          <div class="qbe-cell qbe-header">ServiceGrade</div>
+        </div>
+        <div class="qbe-row" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="qbe-cell qbe-header">Sort</div>
+          <div class="qbe-cell qbe-sort">Descending</div>
+          <div class="qbe-cell qbe-sort">Ascending</div>
+          <div class="qbe-cell"></div>
+          <div class="qbe-cell"></div>
+          <div class="qbe-cell"></div>
+        </div>
+        <div class="qbe-row" style="grid-template-columns: repeat(6, 1fr);">
+          <div class="qbe-cell qbe-header">Criteria</div>
+          <div class="qbe-cell"></div>
+          <div class="qbe-cell"></div>
+          <div class="qbe-cell"></div>
+          <div class="qbe-cell"></div>
+          <div class="qbe-cell qbe-criteria">Like "*Senior*"</div>
+        </div>
+      </div>
 
-            <!-- CCQ 3 -->
-            <div class="concept-check">
-                <h4>Question 3: The Danger of Free Text</h4>
-                <p>Why is applying a Lookup check to <code>SectorCode</code> better than leaving it as a Short Text
-                    field where users type freely?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq2_3" id="ccq2_3-a" value="correct">
-                        <label for="ccq2_3-a">It prevents invalid sector names and eliminates spelling variations (e.g.
-                            "el poblado" vs "El Poblado").</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_3" id="ccq2_3-b" value="wrong">
-                        <label for="ccq2_3-b">It automatically checks if the sector actually exists on the map.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq2_3', 'ccq2_3-a', 'ccq2_3-feedback')">Submit Answer</button>
-                <div id="ccq2_3-feedback" class="feedback"></div>
-            </div>
+      <p>Salary (primary sort) must appear to the LEFT of Surname (secondary sort) in the QBE grid. Even though in the final report Surname will appear as the first column, in the QBE grid sort priority is determined by horizontal position.</p>
+    </div>
 
-            <!-- CCQ 4 -->
-            <div class="concept-check">
-                <h4>Question 4: Validation vs. Verification</h4>
-                <p>What is the fundamental difference between Validation and Verification?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq2_4" id="ccq2_4-a" value="wrong">
-                        <label for="ccq2_4-a">Validation checks for spelling errors; Verification checks for
-                            numbers.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_4" id="ccq2_4-b" value="correct">
-                        <label for="ccq2_4-b">Validation is an automatic computer check for reasonable/complete data;
-                            Verification is a manual check (like double-entry) to see if data was copied
-                            correctly.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_4" id="ccq2_4-c" value="wrong">
-                        <label for="ccq2_4-c">They are two words for the exact same process in MS Access.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq2_4', 'ccq2_4-b', 'ccq2_4-feedback')">Submit Answer</button>
-                <div id="ccq2_4-feedback" class="feedback"></div>
-            </div>
+    <div class="difficulty-content" id="sort-advanced">
+      <div class="warning-box">
+        <strong>The column-order trap:</strong> If a student adds fields to the QBE grid in the order the report requires (Surname, FirstName, DeptName, ServiceGrade, Salary) and then sets sorts on Salary and Surname, Surname is now to the LEFT of Salary — so Surname becomes the primary sort, not Salary. The report will sort alphabetically by surname instead of by salary. To fix: drag the Salary column left of Surname in the QBE grid. This does not change the report column order — it only changes sort priority.
+      </div>
+      <p>Practice exercise: below are the column headers of a student's QBE grid. Identify the error and describe the fix.</p>
+      <div class="qbe-grid">
+        <div class="qbe-row" style="grid-template-columns: repeat(5,1fr);">
+          <div class="qbe-cell qbe-header">Field</div>
+          <div class="qbe-cell qbe-header">Surname ↑</div>
+          <div class="qbe-cell qbe-header">FirstName</div>
+          <div class="qbe-cell qbe-header">DeptName</div>
+          <div class="qbe-cell qbe-header">Salary ↓</div>
+        </div>
+      </div>
+      <button onclick="toggleSolution('sort-fix')">Show the Fix</button>
+      <div id="sort-fix" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        The error: Surname (ascending) is to the LEFT of Salary (descending). This makes Surname the primary sort. The report will sort alphabetically by surname, ignoring salary as a primary. Fix: drag the Salary column to the LEFT of Surname in the QBE grid. Salary descending becomes the primary sort; Surname ascending becomes the secondary sort. The report column order remains unchanged.
+      </div>
+    </div>
 
-            <!-- CCQ 5 -->
-            <div class="concept-check">
-                <h4>Question 5: Multiple Checks on One Field</h4>
-                <p>A <code>CitizenID</code> stores values like <strong>C-00101</strong>. Which combination of validation
-                    types is happening if we use an Input Mask of <code>L\-00000</code> and Required = Yes?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq2_5" id="ccq2_5-a" value="wrong">
-                        <label for="ccq2_5-a">Range Check and Type Check</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_5" id="ccq2_5-b" value="correct">
-                        <label for="ccq2_5-b">Presence Check, Length Check, and Format Check</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_5" id="ccq2_5-c" value="wrong">
-                        <label for="ccq2_5-c">Lookup Check and Presence Check</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq2_5', 'ccq2_5-b', 'ccq2_5-feedback')">Submit Answer</button>
-                <div id="ccq2_5-feedback" class="feedback"></div>
-            </div>
+    <!-- CCQ: sort order -->
+    <div class="concept-check">
+      <h4>Concept Check — Sort Priority</h4>
+      <p class="question-text">A student wants: primary sort = Salary (descending), secondary sort = Surname (ascending). In the QBE grid, which field must appear further LEFT?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-sort" id="cs-a" value="a"><label for="cs-a">A) Surname — because it is the first column in the report output</label></div>
+        <div class="option"><input type="radio" name="ccq-sort" id="cs-b" value="b"><label for="cs-b">B) Salary — because the leftmost sorted field in the QBE grid is always the primary sort</label></div>
+        <div class="option"><input type="radio" name="ccq-sort" id="cs-c" value="c"><label for="cs-c">C) Either — the sort direction (Ascending/Descending) determines primary, not position</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-sort','b','ccq-sort-fb','Correct. In the QBE grid, Access reads sorts left to right. The leftmost sorted column is always the primary sort, regardless of which direction it is sorted or which column appears first in the report output. Salary must be left of Surname in the QBE grid.','Incorrect. The report column order and the QBE sort priority are completely independent. The QBE grid determines sort priority purely by horizontal position — leftmost sorted field = primary sort.')">Check Answer</button>
+      <div class="feedback" id="ccq-sort-fb"></div>
+    </div>
 
-            <!-- CCQ 6 -->
-            <div class="concept-check">
-                <h4>Question 6: The "Accuracy" Trap</h4>
-                <p>If a <code>PollutionIndex</code> has a validation rule of <code>>=0 And <=100</code>, and a broken
-                    sensor reports a reading of <code>45</code> (when the true pollution level is actually 92)...</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq2_6" id="ccq2_6-a" value="wrong">
-                        <label for="ccq2_6-a">The validation rule will catch the error and reject it.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_6" id="ccq2_6-b" value="correct">
-                        <label for="ccq2_6-b">The validation rule will ACCEPT it. Validation cannot guarantee data is
-                            accurate/true, only that it is within reasonable rules.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq2_6', 'ccq2_6-b', 'ccq2_6-feedback')">Submit Answer</button>
-                <div id="ccq2_6-feedback" class="feedback"></div>
-            </div>
+    <!-- 2D Totals -->
+    <h3>2D — Report Totals: The Three Exam Formulas</h3>
 
-            <!-- CCQ 7 -->
-            <div class="concept-check">
-                <h4>Question 7: Securing Dropdowns</h4>
-                <p>You create a Lookup list for <code>SectorCode</code>. What must you do to ensure users cannot simply
-                    type their own random sector names into the box?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq2_7" id="ccq2_7-a" value="wrong">
-                        <label for="ccq2_7-a">Set the Default Value to blank.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_7" id="ccq2_7-b" value="wrong">
-                        <label for="ccq2_7-b">Create an Input Mask.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq2_7" id="ccq2_7-c" value="correct">
-                        <label for="ccq2_7-c">Set "Limit To List" to Yes in the Field Properties.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq2_7', 'ccq2_7-c', 'ccq2_7-feedback')">Submit Answer</button>
-                <div id="ccq2_7-feedback" class="feedback"></div>
-            </div>
+    <div class="difficulty-tabs" id="tot-tabs">
+      <button class="active" onclick="switchTab('tot','basic',this)">Basic</button>
+      <button onclick="switchTab('tot','intermediate',this)">Intermediate</button>
+      <button onclick="switchTab('tot','advanced',this)">Advanced</button>
+    </div>
 
-        </section>
+    <div class="difficulty-content active" id="tot-basic">
+      <p>Report 1 always asks for exactly one aggregate formula placed at the bottom. Only three formulas appear across all past papers:</p>
+      <table>
+        <thead><tr><th>Formula</th><th>What it calculates</th><th>When to use it</th></tr></thead>
+        <tbody>
+          <tr><td><code>=Count(*)</code></td><td>Total number of records</td><td>"total number of [things]"</td></tr>
+          <tr><td><code>=Sum([FieldName])</code></td><td>Total of all values in that field</td><td>"total value" / "total number of packets ordered"</td></tr>
+          <tr><td><code>=Avg([FieldName])</code></td><td>Average value of that field</td><td>"average price" / "mean salary"</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-        <!-- VOCABULARY SECTION -->
-        <section class="section" id="vocab">
-            <h2>📖 Digital Glossary</h2>
-            <div class="vocab-search">
-                <input type="text" id="vocab-search-input" placeholder="🔍 Search vocabulary terms..."
-                    onkeyup="filterVocab()">
-            </div>
+    <div class="difficulty-content" id="tot-intermediate">
+      <p>Placement rules — always the same, every paper:</p>
+      <div class="step-item"><div class="step-number">1</div><div class="step-content"><p>The formula goes in the <strong>Report Footer</strong> section — not Page Footer, not Detail, not Report Header.</p></div></div>
+      <div class="step-item"><div class="step-number">2</div><div class="step-content"><p>A label goes immediately to the <strong>LEFT</strong> of the formula textbox — not above, not below, not right.</p></div></div>
+      <div class="step-item"><div class="step-number">3</div><div class="step-content"><p>The label text must match the question specification <strong>character by character</strong>. "Total salary cost:" is not the same as "Total Salary Cost" or "Total salary cost" (without the colon).</p></div></div>
+      <div class="step-item"><div class="step-number">4</div><div class="step-content"><p>The formula value must be <strong>formatted correctly</strong> — a count formatted as 40.00 loses the mark. Set Decimal Places to 0 for counts, Currency format for money totals.</p></div></div>
+    </div>
 
-            <div id="vocab-list">
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Validation</div>
-                    <div class="vocab-definition">An automatic check carried out by the computer to ensure that data
-                        entered is reasonable, complete, and within acceptable boundaries.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Verification</div>
-                    <div class="vocab-definition">A manual check to ensure data has been entered correctly and matches
-                        the original source (e.g., double data entry or visual checking).</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Presence Check</div>
-                    <div class="vocab-definition">A rule ensuring that a field is not left empty (null).</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Range Check</div>
-                    <div class="vocab-definition">A rule ensuring a numeric or date value falls within an acceptable
-                        minimum and maximum.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Length Check</div>
-                    <div class="vocab-definition">A rule ensuring the number of characters in a field is within
-                        specified limits.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Format Check</div>
-                    <div class="vocab-definition">A rule ensuring data matches a specific pattern of characters (often
-                        enforced via an Input Mask).</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Lookup Check</div>
-                    <div class="vocab-definition">A rule ensuring a value entered matches an item in a predefined list.
-                    </div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Input Mask</div>
-                    <div class="vocab-definition">A field property in Access that forces a specific
-                        character-by-character entry pattern, combining Format and Length checks.</div>
-                </div>
-            </div>
-        </section>
+    <div class="difficulty-content" id="tot-advanced">
+      <div class="warning-box">
+        <strong>Count(*) vs Sum([Packets]) — the most common formula error:</strong> If 4 orders have 10, 25, 20, and 12 packets respectively:<br>
+        =Count(*) = 4 (there are four records)<br>
+        =Sum([Packets]) = 67 (the total of all packet values)<br><br>
+        The question "calculates the total number of packets ordered" means the total quantity — 67. Use =Sum([Packets]). The question "calculates the total number of orders" means the record count — 4. Use =Count(*). Read the wording carefully every time.
+      </div>
+      <div class="info-box">
+        <strong>The Evidence Screenshot requirement:</strong> After placing the formula, the exam always asks for a screenshot taken in <em>Design View</em> showing the formula text — not the calculated result, the actual formula string. Widen the textbox first. If the textbox is too narrow and shows =Sum([Net... instead of =Sum([NetPrice]), the mark is lost. This is a standalone mark on every single paper.
+      </div>
+    </div>
 
-        <!-- WRAP-UP SECTION -->
-        <section class="section" id="wrap-up">
-            <h2>🚀 Session De-Brief</h2>
+    <!-- CCQ: count vs sum -->
+    <div class="concept-check">
+      <h4>Concept Check — Count vs Sum</h4>
+      <p class="question-text">The exam instruction says: "calculates only the total number of packets ordered and places this below the Packets field." There are 8 records with Packets values: 10, 25, 15, 8, 20, 12, 6, 30. Which formula and result is correct?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-cs" id="ccs-a" value="a"><label for="ccs-a">A) =Count(*) returning 8 — there are 8 records</label></div>
+        <div class="option"><input type="radio" name="ccq-cs" id="ccs-b" value="b"><label for="ccs-b">B) =Sum([Packets]) returning 126 — total quantity of packets across all orders</label></div>
+        <div class="option"><input type="radio" name="ccq-cs" id="ccs-c" value="c"><label for="ccs-c">C) =Avg([Packets]) returning 15.75 — average packets per order</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-cs','b','ccq-cs-fb','Correct. "Total number of packets ordered" means the total quantity — how many packets in total across all orders. =Sum([Packets]) adds up all the values: 10+25+15+8+20+12+6+30 = 126. =Count(*) would return 8, which is the number of orders, not the number of packets.','Incorrect. "Total number of packets" refers to the total quantity, not the count of records. =Sum([Packets]) adds all the Packets values together (126). =Count(*) counts records (8). Read "number of packets" as quantity, not record count.')">Check Answer</button>
+      <div class="feedback" id="ccq-cs-fb"></div>
+    </div>
 
-            <div class="highlight-box">
-                <h4>1. Knowledge Consolidation: One-Sentence Summary</h4>
-                <p>Distill today's entire session on database validation into one sentence.</p>
-                <textarea id="wrap-summary2" rows="2"
-                    placeholder="e.g., 'Validation creates gates that block nonsense data, but... '"></textarea>
-                <button onclick="saveWrapUp2()">Save Summary</button>
-                <span id="save-conf2"
-                    style="display:none; color: var(--secondary-color); margin-left:10px;">Saved!</span>
-            </div>
+    <!-- 2E Formatting Checklist -->
+    <h3>2E — The Report Formatting Checklist</h3>
+    <p>Every mark on the Report 1 mark scheme maps to one of these items. An unticked item is a lost mark.</p>
 
-            <h4>2. Mastery Check: How confident are you with Validation Rules?</h4>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button onclick="setConfidence2('green')" style="background-color: #27ae60;">🟢 Got it all</button>
-                <button onclick="setConfidence2('yellow')" style="background-color: #f1c40f; color:#000;">🟡 Need
-                    review</button>
-                <button onclick="setConfidence2('red')" style="background-color: #e74c3c;">🔴 Need help</button>
-            </div>
+    <div class="exercise">
+      <h4>Interactive Report Checklist</h4>
+      <p>Work through this checklist before every print or export. Tick each item when verified.</p>
+      <ul class="checklist" id="report-checklist">
+        <li><input type="checkbox" id="rc-1" onchange="saveReportChecklist()"><label for="rc-1">Correct records selected — only records matching the criteria appear</label></li>
+        <li><input type="checkbox" id="rc-2" onchange="saveReportChecklist()"><label for="rc-2">Fields in the specified order — left to right exactly as listed in the question</label></li>
+        <li><input type="checkbox" id="rc-3" onchange="saveReportChecklist()"><label for="rc-3">Data and labels fully visible — no truncation, no ### symbols</label></li>
+        <li><input type="checkbox" id="rc-4" onchange="saveReportChecklist()"><label for="rc-4">Correct primary and secondary sorts applied</label></li>
+        <li><input type="checkbox" id="rc-5" onchange="saveReportChecklist()"><label for="rc-5">Report title: larger font than body text; fully visible at top of page</label></li>
+        <li><input type="checkbox" id="rc-6" onchange="saveReportChecklist()"><label for="rc-6">Total formula: correct formula, correct position (below correct column in Report Footer)</label></li>
+        <li><input type="checkbox" id="rc-7" onchange="saveReportChecklist()"><label for="rc-7">Total label: correct text matching question exactly; fully visible; to the LEFT of the formula</label></li>
+        <li><input type="checkbox" id="rc-8" onchange="saveReportChecklist()"><label for="rc-8">Formula value formatted correctly (Integer for counts, Currency for money)</label></li>
+        <li><input type="checkbox" id="rc-9" onchange="saveReportChecklist()"><label for="rc-9">Page orientation correct (Portrait or Landscape as specified)</label></li>
+        <li><input type="checkbox" id="rc-10" onchange="saveReportChecklist()"><label for="rc-10">Fits on a single page — check Print Preview</label></li>
+        <li><input type="checkbox" id="rc-11" onchange="saveReportChecklist()"><label for="rc-11">Candidate name, centre number, and candidate number on the report</label></li>
+        <li><input type="checkbox" id="rc-12" onchange="saveReportChecklist()"><label for="rc-12">Page Footer: deleted all auto-generated dates and page numbers before adding candidate details</label></li>
+      </ul>
+      <p id="checklist-prog" style="color:var(--text-muted); font-size:0.9rem; margin-top:0.5rem;"></p>
+    </div>
 
-            <h4>3. Reflection</h4>
-            <select id="reflection-prompt2">
-                <option value="">-- Choose a reflection prompt --</option>
-                <option value="challenging">What was the most challenging validation rule to write today?</option>
-                <option value="real-world">How could a missing presence check affect an online shopping delivery?
-                </option>
-                <option value="questions">What question do you still have?</option>
-            </select>
-            <textarea id="reflection-answer2" rows="3" placeholder="Write your reflection here..."
-                style="margin-top: 10px;"></textarea>
+    <!-- 2F Evidence Document -->
+    <h3>2F — The Evidence Document Screenshot</h3>
 
-            <div class="concept-check"
-                style="border-left: 4px solid var(--primary-color); background-color: rgba(44, 62, 80, 0.05);">
-                <h4>🔭 Preview: What Session 3 Will Build On</h4>
-                <p>"The city's validation gates are up. But right now, all your data lives in isolated silos — Citizens
-                    here, Metro Vehicles there, Sensors somewhere else. The city can't function when its departments
-                    don't talk to each other. Next session, we connect the tables. We build the city's nervous system:
-                    <strong>Relationships, Foreign Keys, and Referential Integrity.</strong>"</p>
-                <p><em>Excellent work securing the perimeter today, Architect.</em></p>
-            </div>
-        </section>
-    </main>
+    <div class="difficulty-tabs" id="ev-tabs">
+      <button class="active" onclick="switchTab('ev','basic',this)">Basic</button>
+      <button onclick="switchTab('ev','intermediate',this)">Intermediate</button>
+      <button onclick="switchTab('ev','advanced',this)">Advanced</button>
+    </div>
 
-    <!-- INTERACTIVITY SCRIPTS -->
-    <script>
-        // Progress Bar
-        window.onscroll = function () { updateProgress() };
-        function updateProgress() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        }
+    <div class="difficulty-content active" id="ev-basic">
+      <p>After building the report, the exam always asks for a screenshot showing the formula in Design View. This is a dedicated mark — it cannot be replaced by a screenshot of the printed report.</p>
+      <p><strong>What to show:</strong> Open the report in Design View. The Report Footer must be visible, showing the label text and the formula textbox containing the formula string (e.g. <code>=Sum([Salary])</code>).</p>
+    </div>
 
-        // Theme Toggle
-        function toggleMode() {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
+    <div class="difficulty-content" id="ev-intermediate">
+      <p>Step-by-step for the evidence screenshot:</p>
+      <div class="step-item"><div class="step-number">1</div><div class="step-content"><p>Open the report in Design View (right-click → Design View)</p></div></div>
+      <div class="step-item"><div class="step-number">2</div><div class="step-content"><p>Click the formula textbox in the Report Footer section</p></div></div>
+      <div class="step-item"><div class="step-number">3</div><div class="step-content"><p>The formula text (e.g. =Sum([Salary])) must be fully visible — widen the textbox if needed</p></div></div>
+      <div class="step-item"><div class="step-number">4</div><div class="step-content"><p>Take the screenshot showing the Report Footer label, formula textbox, and formula text</p></div></div>
+      <div class="step-item"><div class="step-number">5</div><div class="step-content"><p>Paste into the Evidence Document</p></div></div>
+    </div>
 
-        // Dyslexia Toggle
-        function toggleDyslexiaMode() {
-            document.body.classList.toggle('dyslexia-mode');
-            const isDyslexic = document.body.classList.contains('dyslexia-mode');
-            localStorage.setItem('dyslexia', isDyslexic ? 'true' : 'false');
-        }
+    <div class="difficulty-content" id="ev-advanced">
+      <div class="warning-box">
+        <strong>The truncation trap:</strong> If the textbox is too narrow, the formula shows as =Sum([Net... or =Count(* — the formula is not "fully visible". This loses the dedicated evidence mark. Before taking the screenshot, drag the right edge of the textbox to widen it until the complete formula is visible. Then take the screenshot. This takes 5 seconds and protects 1 mark every paper.
+      </div>
+    </div>
 
-        // Scroll to Section
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
+  </section>
 
-        // Local Storage Utilities
-        function saveToLocalStorage(key, value) {
-            localStorage.setItem(key, value);
-        }
+  <!-- ===================== DEMO ===================== -->
+  <section class="section" id="demo">
+    <h2>Guided Demonstration: The Live Build</h2>
 
-        // On Load: Retrieve Preferences & Data
-        window.onload = function () {
-            if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
-            if (localStorage.getItem('dyslexia') === 'true') document.body.classList.add('dyslexia-mode');
+    <p>Open CITY_DB.accdb. We will build one complete Report 1 — mirroring the FM2025 paper pattern adapted to the Medellín 2050 Smart City database. Target time: under 12 minutes.</p>
 
-            // Retrieve saved text specific to Session 2
-            if (localStorage.getItem('stretch-answer2')) document.getElementById('stretch-answer2').value = localStorage.getItem('stretch-answer2');
-            if (localStorage.getItem('wrap-summary2')) document.getElementById('wrap-summary2').value = localStorage.getItem('wrap-summary2');
-            if (localStorage.getItem('reflection-answer2')) document.getElementById('reflection-answer2').value = localStorage.getItem('reflection-answer2');
-            if (localStorage.getItem('reflection-prompt2')) document.getElementById('reflection-prompt2').value = localStorage.getItem('reflection-prompt2');
+    <div class="highlight-box">
+      <strong>The task (as it would appear in the exam):</strong> Using fields from both tables, produce a tabular report that selects the records where the ServiceGrade includes the word Senior; shows only the fields Surname, FirstName, DeptName, ServiceGrade, Salary, IsActive in this order; does not group the data; sorts the data into descending order of Salary and then ascending order of Surname; portrait orientation; fits on a single page; title City Officials — Senior Staff in larger font; calculates the total salary cost below the Salary field with label Total salary cost:; displays your name, centre number and candidate number on the report.
+    </div>
 
-            // Retrieve checkboxes for Session 2
-            for (let i = 1; i <= 4; i++) {
-                if (localStorage.getItem('s2-obj-' + i) === 'true') {
-                    document.getElementById('s2-obj-' + i).checked = true;
-                }
-            }
-        }
+    <!-- Phase 1 -->
+    <h3>Phase 1 — Build the Underlying Query (0:22 – 0:33)</h3>
 
-        // Save Objectives Progress
-        function saveProgressS2() {
-            for (let i = 1; i <= 4; i++) {
-                localStorage.setItem('s2-obj-' + i, document.getElementById('s2-obj-' + i).checked);
-            }
-        }
+    <div class="step-item"><div class="step-number">1</div><div class="step-content"><p>Create → Query Design</p></div></div>
+    <div class="step-item"><div class="step-number">2</div><div class="step-content"><p>Add tables: CITY_OFFICIALS and CITY_DEPARTMENTS</p></div></div>
+    <div class="step-item"><div class="step-number">3</div><div class="step-content"><p>Verify the join line is present between DeptCode fields (from Session 1 relationship)</p></div></div>
 
-        // Hook Activity Check
-        function checkHook2() {
-            const selected = document.querySelector('input[name="hook-guess2"]:checked');
-            const feedback = document.getElementById('hook2-feedback');
-            if (!selected) {
-                alert("Please select an option!");
-                return;
-            }
-            feedback.classList.remove("correct", "incorrect", "show");
+    <p>Add fields <strong>in the report column order specified by the question</strong> — Surname, FirstName, DeptName, ServiceGrade, Salary, IsActive. Then set the sort and criteria separately.</p>
 
-            if (selected.value === "correct") {
-                feedback.innerHTML = "✅ Correct! A Range Check (e.g. >= 0) stops negative values. (The blank ID requires a Presence Check!).";
-                feedback.classList.add("correct", "show");
-            } else {
-                feedback.innerHTML = "❌ Not quite. A Range Check checks minimums and maximums (like preventing negatives). What kind of check would stop a blank ID?";
-                feedback.classList.add("incorrect", "show");
-            }
-            saveToLocalStorage('hook-guess2', selected.id);
-        }
+    <div class="warning-box">
+      <strong>Then fix the sort priority:</strong> In the QBE grid as built, Surname is to the LEFT of Salary. This makes Surname the primary sort — wrong. Drag the Salary column to the LEFT of Surname in the QBE grid. Now Salary descending is primary, Surname ascending is secondary.
+    </div>
 
-        // Mission Check Checkboxes
-        function checkMission2() {
-            const c1 = document.getElementById('m2-chk1').checked;
-            const c2 = document.getElementById('m2-chk2').checked;
-            const c3 = document.getElementById('m2-chk3').checked;
-            const c4 = document.getElementById('m2-chk4').checked;
-            const feedback = document.getElementById('mission-success2');
+    <p>Full QBE grid after the fix:</p>
+    <div class="qbe-grid">
+      <div class="qbe-row" style="grid-template-columns:120px repeat(6,1fr);">
+        <div class="qbe-cell qbe-header">Row</div>
+        <div class="qbe-cell qbe-header qbe-highlight">Salary ↓</div>
+        <div class="qbe-cell qbe-header">Surname ↑</div>
+        <div class="qbe-cell qbe-header">FirstName</div>
+        <div class="qbe-cell qbe-header">DeptName</div>
+        <div class="qbe-cell qbe-header">ServiceGrade</div>
+        <div class="qbe-cell qbe-header">IsActive</div>
+      </div>
+      <div class="qbe-row" style="grid-template-columns:120px repeat(6,1fr);">
+        <div class="qbe-cell qbe-header">Table</div>
+        <div class="qbe-cell">OFFICIALS</div>
+        <div class="qbe-cell">OFFICIALS</div>
+        <div class="qbe-cell">OFFICIALS</div>
+        <div class="qbe-cell">DEPARTMENTS</div>
+        <div class="qbe-cell">OFFICIALS</div>
+        <div class="qbe-cell">OFFICIALS</div>
+      </div>
+      <div class="qbe-row" style="grid-template-columns:120px repeat(6,1fr);">
+        <div class="qbe-cell qbe-header">Sort</div>
+        <div class="qbe-cell qbe-sort">Descending</div>
+        <div class="qbe-cell qbe-sort">Ascending</div>
+        <div class="qbe-cell"></div>
+        <div class="qbe-cell"></div>
+        <div class="qbe-cell"></div>
+        <div class="qbe-cell"></div>
+      </div>
+      <div class="qbe-row" style="grid-template-columns:120px repeat(6,1fr);">
+        <div class="qbe-cell qbe-header">Criteria</div>
+        <div class="qbe-cell"></div>
+        <div class="qbe-cell"></div>
+        <div class="qbe-cell"></div>
+        <div class="qbe-cell"></div>
+        <div class="qbe-cell qbe-criteria">Like "*Senior*"</div>
+        <div class="qbe-cell"></div>
+      </div>
+    </div>
 
-            if (c1 && c2 && c3 && c4) {
-                feedback.style.display = "block";
-            } else {
-                feedback.style.display = "none";
-            }
-        }
+    <p>Run the query — verify results show only Senior officials, sorted by salary descending. Save as: <strong>Q_Report1_SeniorStaff</strong></p>
 
-        // Generic CCQ Check
-        function checkCCQ(name, correctId, feedbackId) {
-            const selected = document.querySelector(`input[name="${name}"]:checked`);
-            const feedback = document.getElementById(feedbackId);
-            if (!selected) return alert("Select an answer first!");
+    <div class="concept-check">
+      <h4>Check Your Understanding</h4>
+      <p class="question-text">After the fix, Salary is in the first QBE column and Surname is in the second. In the printed report, which column will appear first (leftmost)?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="demo-q1" id="dq1-a" value="a"><label for="dq1-a">A) Salary — because it is leftmost in the QBE grid</label></div>
+        <div class="option"><input type="radio" name="demo-q1" id="dq1-b" value="b"><label for="dq1-b">B) Surname — because the exam specifies the column order: Surname, FirstName, DeptName, ServiceGrade, Salary, IsActive</label></div>
+      </div>
+      <button onclick="checkCCQ('demo-q1','b','dq1-fb','Correct. The QBE grid column order determines sort priority only. The report column order is determined by the order you add fields in the Report Wizard — which must match the order specified in the question. The exam says Surname first; the report shows Surname first. These two orderings are completely independent.','Incorrect. The QBE position of Salary controls sort priority, not report column order. The report column order is set separately in the Report Wizard and must match the question specification exactly.')">Check Answer</button>
+      <div class="feedback" id="dq1-fb"></div>
+    </div>
 
-            feedback.classList.remove("correct", "incorrect", "show");
-            if (selected.id === correctId) {
-                feedback.innerHTML = "✅ Correct!";
-                feedback.classList.add("correct", "show");
-            } else {
-                feedback.innerHTML = "❌ Incorrect. Try again!";
-                feedback.classList.add("incorrect", "show");
-            }
-        }
+    <!-- Phase 2 -->
+    <h3>Phase 2 — Create the Report via Wizard (0:33 – 0:43)</h3>
 
-        // Difficulty Tabs
-        function switchDifficulty(level) {
-            document.querySelectorAll('.difficulty-tabs button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.difficulty-content').forEach(content => content.classList.remove('active'));
+    <div class="step-item"><div class="step-number">1</div><div class="step-content"><p>Create → Report Wizard</p></div></div>
+    <div class="step-item"><div class="step-number">2</div><div class="step-content"><p>Source: Q_Report1_SeniorStaff</p></div></div>
+    <div class="step-item"><div class="step-number">3</div><div class="step-content"><p>Move fields to Selected in order: Surname, FirstName, DeptName, ServiceGrade, Salary, IsActive</p></div></div>
+    <div class="step-item"><div class="step-number">4</div>
+      <div class="step-content">
+        <p>Grouping screen: <strong>"Do not add any groups"</strong> — click Next deliberately. This is the step students group by accident in the exam.</p>
+      </div>
+    </div>
+    <div class="step-item"><div class="step-number">5</div><div class="step-content"><p>Sort screen: leave blank — sorting was handled in the query</p></div></div>
+    <div class="step-item"><div class="step-number">6</div><div class="step-content"><p>Layout: Tabular | Orientation: Portrait</p></div></div>
+    <div class="step-item"><div class="step-number">7</div><div class="step-content"><p>Title: City Officials — Senior Staff</p></div></div>
+    <div class="step-item"><div class="step-number">8</div><div class="step-content"><p>Click Finish</p></div></div>
 
-            event.target.classList.add('active');
-            document.getElementById('content-' + level).classList.add('active');
-        }
+    <!-- Phase 3 -->
+    <h3>Phase 3 — Refine in Design View (0:43 – 0:55)</h3>
 
-        // Vocabulary Search & Toggle
-        function filterVocab() {
-            let input = document.getElementById('vocab-search-input').value.toUpperCase();
-            let items = document.querySelectorAll('.vocab-item');
+    <p>Open the report in Design View. Work through each section in order:</p>
 
-            items.forEach(item => {
-                let text = item.querySelector('.vocab-term').innerText.toUpperCase();
-                if (text.indexOf(input) > -1) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-        }
+    <h4>Report Header</h4>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Click the title label → change font size to 16pt Bold (larger than body = the mark is awarded)</li>
+      <li>Verify title text matches exactly: City Officials — Senior Staff</li>
+    </ul>
 
-        function toggleVocab(element) {
-            const def = element.querySelector('.vocab-definition');
-            def.classList.toggle('show');
-        }
+    <h4>Page Header</h4>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Verify all six column headings are present and readable</li>
+      <li>Drag column edges so no heading is truncated</li>
+    </ul>
 
-        // Wrap-Up Actions
-        function saveWrapUp2() {
-            saveToLocalStorage('wrap-summary2', document.getElementById('wrap-summary2').value);
-            saveToLocalStorage('reflection-answer2', document.getElementById('reflection-answer2').value);
-            saveToLocalStorage('reflection-prompt2', document.getElementById('reflection-prompt2').value);
+    <h4>Detail Section</h4>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Check Salary field: right-click → Properties → Format: Currency, Decimal Places: 2</li>
+      <li>Reduce row height if rows are overlapping</li>
+    </ul>
 
-            document.getElementById('save-conf2').style.display = 'inline';
-            setTimeout(() => { document.getElementById('save-conf2').style.display = 'none'; }, 2000);
-        }
+    <h4>Report Footer</h4>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Delete any auto-generated content</li>
+      <li>Add a Text Box (Insert → Text Box, draw in Report Footer, aligned under the Salary column)</li>
+      <li>In the textbox, type: <code>=Sum([Salary])</code></li>
+      <li>Click the attached label to the left → change text to: <code>Total salary cost:</code></li>
+      <li>Format the Sum textbox: Currency, 2 decimal places</li>
+      <li>Resize the textbox so the full formula is visible — this is the evidence screenshot</li>
+    </ul>
 
-        function setConfidence2(level) {
-            let msg = level === 'green' ? "Awesome! You are mastering data security." :
-                level === 'yellow' ? "Good self-awareness! Review the 6 rule types." :
-                    "Don't worry! Ask your teacher about the parts that confused you.";
-            alert(msg);
-            saveToLocalStorage('confidence2', level);
-        }
-    </script>
+    <h4>Page Footer</h4>
+    <div class="warning-box">
+      <strong>The Page Footer ritual — do this first, every time:</strong> Delete EVERYTHING in the Page Footer — auto-generated page numbers, dates, all of it. Then add a new Text Box and type your candidate details. If you add candidate details before deleting, you may accidentally delete your own text. Delete first.
+    </div>
+    <p>Add to Page Footer: <code>[Your Full Name] &nbsp; Centre: 99999 &nbsp; Candidate: 9999</code></p>
+
+    <h4>Print Preview — Final Check</h4>
+    <ul class="checklist">
+      <li><input type="checkbox" id="pp-1" onchange="savePreviewChecklist()"><label for="pp-1">Fits on one page</label></li>
+      <li><input type="checkbox" id="pp-2" onchange="savePreviewChecklist()"><label for="pp-2">No truncated data — no ### symbols, no cut-off text</label></li>
+      <li><input type="checkbox" id="pp-3" onchange="savePreviewChecklist()"><label for="pp-3">Title is larger than body text</label></li>
+      <li><input type="checkbox" id="pp-4" onchange="savePreviewChecklist()"><label for="pp-4">Sum formula appears below the Salary column</label></li>
+      <li><input type="checkbox" id="pp-5" onchange="savePreviewChecklist()"><label for="pp-5">Candidate details visible in footer</label></li>
+    </ul>
+
+    <p>Save the report as: <strong>RPT1_SeniorStaff</strong></p>
+
+    <!-- Phase 4 -->
+    <h3>Phase 4 — Export as PDF (0:55 – 0:58)</h3>
+
+    <div class="step-item"><div class="step-number">1</div><div class="step-content"><p>With RPT1_SeniorStaff open in the navigation pane or report view</p></div></div>
+    <div class="step-item"><div class="step-number">2</div><div class="step-content"><p>External Data tab → PDF or XPS</p></div></div>
+    <div class="step-item"><div class="step-number">3</div><div class="step-content"><p>Navigate to your working folder</p></div></div>
+    <div class="step-item"><div class="step-number">4</div><div class="step-content"><p>Filename: <strong>SENIOR_STAFF</strong> (exact, uppercase)</p></div></div>
+    <div class="step-item"><div class="step-number">5</div><div class="step-content"><p>File type: PDF (*.pdf)</p></div></div>
+    <div class="step-item"><div class="step-number">6</div><div class="step-content"><p>Click Publish</p></div></div>
+    <div class="step-item"><div class="step-number">7</div>
+      <div class="step-content">
+        <p>Screenshot the folder showing SENIOR_STAFF.pdf with the .pdf extension visible.</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      The extension must be visible in the screenshot. If Windows is hiding extensions, go to View → Show → File name extensions. One mark, one second — do not miss it.
+    </div>
+
+    <div class="exercise">
+      <h4>Evidence Screenshot — Design View Formula</h4>
+      <p>Take a screenshot of Design View showing the Report Footer with <code>=Sum([Salary])</code> fully visible. The label "Total salary cost:" must also be visible to the left of the formula textbox. Paste into your Evidence Document.</p>
+      <p><strong>Before taking the screenshot, verify:</strong></p>
+      <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+        <li>The formula textbox is wide enough — the full formula <code>=Sum([Salary])</code> is not cut off</li>
+        <li>The label text reads exactly "Total salary cost:" — with the colon</li>
+        <li>You are in Design View, not Print Preview or Report View</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== MISSION ===================== -->
+  <section class="section" id="mission">
+    <h2>Student Mission: The Seed Report</h2>
+    <p>This mission replicates Task 3, Steps 18–19 of the FM2025 Paper 2 exam using your SEEDS and ORDERS tables from Session 1. Instructions are in exact Cambridge exam style.</p>
+
+    <div class="score-display" id="mission-score">Mission Score: 0 / 15</div>
+
+    <!-- Mission 1 brief -->
+    <h3>Report Mission 1 (8 marks)</h3>
+    <div class="highlight-box">
+      <p>Using fields from both tables, produce a tabular report that:</p>
+      <ul style="list-style:disc; padding-left:1.5rem; line-height:2; margin-top:0.5rem;">
+        <li>selects the records where the Type includes the word bean</li>
+        <li>shows only the fields Type, Variety, SeedID, DatePlaced, Packets and Issuer in this order, with data and labels displayed in full</li>
+        <li>does not group the data</li>
+        <li>sorts the data into descending order of SeedID and then ascending order of DatePlaced</li>
+        <li>has a page orientation of portrait</li>
+        <li>fits on a single page</li>
+        <li>includes only the title Bean Ordering displayed in a larger font size, fully visible, at the top of the page</li>
+        <li>calculates only the total number of packets ordered and places this below the Packets field at the end of the report</li>
+        <li>has the label Total packets: to the left of this value</li>
+        <li>displays your name, centre number and candidate number on the report</li>
+      </ul>
+      <p style="margin-top:0.75rem;">Save and print your report. Place in your Evidence Document a screenshot showing the database formula used to calculate the total number of packets. Make sure the formula is fully visible.</p>
+    </div>
+
+    <!-- Mission 1 interactive questions -->
+    <div class="exercise">
+      <h4>Mission 1 — Step-by-Step Decisions</h4>
+
+      <p class="question-text"><strong>Q1.</strong> What criterion should be entered in the Type column of the QBE grid?</p>
+      <div class="options" id="m1q1-opts">
+        <div class="option"><input type="radio" name="m1q1" id="m1q1-a" value="a"><label for="m1q1-a">A) = "bean"</label></div>
+        <div class="option"><input type="radio" name="m1q1" id="m1q1-b" value="b"><label for="m1q1-b">B) Like "*bean*"</label></div>
+        <div class="option"><input type="radio" name="m1q1" id="m1q1-c" value="c"><label for="m1q1-c">C) Like "bean*"</label></div>
+        <div class="option"><input type="radio" name="m1q1" id="m1q1-d" value="d"><label for="m1q1-d">D) Contains "bean"</label></div>
+      </div>
+      <button onclick="checkMission('m1q1','b','m1q1-fb',2,'Mission 1 Criteria','Correct — 2 marks. Like "*bean*" selects any record where the Type field contains the word bean anywhere: Runner Bean, Broad Bean, French Bean, Climbing Bean. Like "bean*" would miss all of these since none start with "bean".','Not quite. The instruction says "includes the word bean" — the word can appear anywhere in the Type value. Like "*bean*" is the correct form. Like "bean*" would match only types that begin with the word "bean", which none of the bean types do.')">Submit Q1</button>
+      <div class="feedback" id="m1q1-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <p class="question-text"><strong>Q2.</strong> The report requires: descending order of SeedID, then ascending order of DatePlaced. In the QBE grid, which field must be positioned further to the LEFT?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m1q2" id="m1q2-a" value="a"><label for="m1q2-a">A) DatePlaced — because ascending sorts come before descending</label></div>
+        <div class="option"><input type="radio" name="m1q2" id="m1q2-b" value="b"><label for="m1q2-b">B) SeedID — because it is the primary sort and must be leftmost in the QBE grid</label></div>
+        <div class="option"><input type="radio" name="m1q2" id="m1q2-c" value="c"><label for="m1q2-c">C) The column order in the QBE grid does not affect sort priority</label></div>
+      </div>
+      <button onclick="checkMission('m1q2','b','m1q2-fb',2,'Mission 1 Sort Order','Correct — 2 marks. SeedID is the primary sort and must be to the left of DatePlaced in the QBE grid. The leftmost sorted field is always the primary sort in Access. Sort direction (ascending/descending) has no effect on priority.','Incorrect. QBE column position determines sort priority — leftmost sorted field = primary sort. SeedID descending must be placed to the left of DatePlaced ascending in the QBE grid.')">Submit Q2</button>
+      <div class="feedback" id="m1q2-fb"></div>
+    </div>
+
+    <!-- CCQ between M1 sub-questions -->
+    <div class="concept-check">
+      <h4>Concept Check — Report Column Order</h4>
+      <p class="question-text">The report specifies fields in this order: Type, Variety, SeedID, DatePlaced, Packets, Issuer. After moving SeedID left in the QBE grid for sort priority, which order must fields appear in the Report Wizard's Selected Fields list?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-rco" id="crco-a" value="a"><label for="crco-a">A) SeedID, Type, Variety, DatePlaced, Packets, Issuer — matching the QBE grid order</label></div>
+        <div class="option"><input type="radio" name="ccq-rco" id="crco-b" value="b"><label for="crco-b">B) Type, Variety, SeedID, DatePlaced, Packets, Issuer — matching the order specified in the question</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-rco','b','ccq-rco-fb','Correct. The QBE grid column order and the report column order are two separate things. In the Report Wizard, add fields in exactly the order the question specifies: Type, Variety, SeedID, DatePlaced, Packets, Issuer. The fact that SeedID is leftmost in the QBE grid for sort purposes has no effect on where SeedID appears in the report.','Incorrect. QBE column order controls sort priority. Report Wizard field order controls the displayed column sequence. These are independent. Add fields to the Report Wizard in the exact order the question specifies.')">Check Answer</button>
+      <div class="feedback" id="ccq-rco-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <p class="question-text"><strong>Q3.</strong> The question says "calculates only the total number of packets ordered". There are 8 records with Packets values totalling 126. Which formula should go in the Report Footer below the Packets column?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m1q3" id="m1q3-a" value="a"><label for="m1q3-a">A) =Count(*) — which will display 8</label></div>
+        <div class="option"><input type="radio" name="m1q3" id="m1q3-b" value="b"><label for="m1q3-b">B) =Sum([Packets]) — which will display 126</label></div>
+        <div class="option"><input type="radio" name="m1q3" id="m1q3-c" value="c"><label for="m1q3-c">C) =Avg([Packets]) — which will display 15.75</label></div>
+      </div>
+      <button onclick="checkMission('m1q3','b','m1q3-fb',2,'Mission 1 Formula','Correct — 2 marks. "Total number of packets ordered" = total quantity = =Sum([Packets]) = 126. =Count(*) would return 8, which is the number of orders, not the number of packets. The formula must be formatted as Integer (no decimal places) — 126, not 126.00.','Not quite. "Total number of packets ordered" refers to the total quantity across all orders. =Sum([Packets]) adds all the Packets field values. =Count(*) counts records (orders), not packets. Read the question wording carefully.')">Submit Q3</button>
+      <div class="feedback" id="m1q3-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <p class="question-text"><strong>Q4.</strong> The exam instruction says: "has the label Total packets: to the left of this value". Where exactly must the label textbox be positioned?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m1q4" id="m1q4-a" value="a"><label for="m1q4-a">A) Above the formula textbox in the Report Footer</label></div>
+        <div class="option"><input type="radio" name="m1q4" id="m1q4-b" value="b"><label for="m1q4-b">B) Immediately to the left of the formula textbox in the Report Footer, on the same horizontal line</label></div>
+        <div class="option"><input type="radio" name="m1q4" id="m1q4-c" value="c"><label for="m1q4-c">C) In the Page Footer, below the formula</label></div>
+      </div>
+      <button onclick="checkMission('m1q4','b','m1q4-fb',2,'Mission 1 Label Position','Correct — 2 marks. The label must be to the LEFT of the formula textbox, on the same horizontal line, within the Report Footer. "To the left" is precise — the mark scheme checks position, not just presence. A label above or below the formula does not satisfy "to the left".','Incorrect. The exam specifies "to the left" — this means immediately left of the formula textbox, on the same line, within the Report Footer. Not above, not below, not in a different section.')">Submit Q4</button>
+      <div class="feedback" id="m1q4-fb"></div>
+    </div>
+
+    <!-- Mission 2 -->
+    <h3>Report Mission 2 (7 marks)</h3>
+    <div class="highlight-box">
+      <p>Using fields from both tables, produce a tabular report that:</p>
+      <ul style="list-style:disc; padding-left:1.5rem; line-height:2; margin-top:0.5rem;">
+        <li>selects only those records where Paid is No AND StockLevel is more than 0</li>
+        <li>shows only the fields DatePlaced, DateCompleted, Seed, Price, Packets, Paid, Type, StockLevel, Issuer and Supplier in this order, with data and labels displayed in full</li>
+        <li>does not group the data</li>
+        <li>sorts the data into descending order of Supplier</li>
+        <li>has a page orientation of landscape</li>
+        <li>fits on a single page</li>
+        <li>includes the title Unpaid orders in stock displayed in a larger font size, fully visible, at the top of the page</li>
+        <li>has your name, centre number and candidate number in the <strong>header</strong> of the report</li>
+      </ul>
+      <p style="margin-top:0.75rem;">Save and print your report.</p>
+    </div>
+
+    <!-- CCQ: Mission 2 header vs footer -->
+    <div class="concept-check">
+      <h4>Concept Check — Header vs Footer</h4>
+      <p class="question-text">Report Mission 1 says "displays your name, centre number and candidate number on the report." Report Mission 2 says "has your name, centre number and candidate number in the header of the report." What is the difference, and why does the exact wording matter?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-hf" id="chf-a" value="a"><label for="chf-a">A) There is no difference — the examiner accepts candidate details anywhere on the report</label></div>
+        <div class="option"><input type="radio" name="ccq-hf" id="chf-b" value="b"><label for="chf-b">B) Report Mission 1 allows any location (footer is conventional); Report Mission 2 specifies the Page Header specifically. In Access, this means placing the candidate details text box in the Page Header section, not the Page Footer. The mark scheme checks the section.</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-hf','b','ccq-hf-fb','Correct. Read the wording of every instruction character by character. When the question says "in the header", the candidate details must be in the Page Header section of the report. Placing them in the Page Footer instead will lose the mark, even though the data is identical. The FM2025 paper specifies header for Report 2 specifically because the Report Footer contains a formula — having candidate details in the footer could cause visual confusion.','Incorrect. The exact wording determines where Access section the candidate details must go. "In the header" means the Page Header section. "On the report" in Mission 1 allows any section (footer is conventional). The mark scheme checks the section, not just the presence of the text.')">Check Answer</button>
+      <div class="feedback" id="ccq-hf-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <p class="question-text"><strong>Mission 2 — Q1.</strong> The criteria for Mission 2 require two conditions: Paid = No AND StockLevel &gt; 0. How are these entered in the QBE grid?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m2q1" id="m2q1-a" value="a"><label for="m2q1-a">A) Both conditions on the SAME row of the Criteria row — AND is implied when criteria are on the same row</label></div>
+        <div class="option"><input type="radio" name="m2q1" id="m2q1-b" value="b"><label for="m2q1-b">B) Each condition on a DIFFERENT row (Criteria row vs "or" row) — AND needs two rows</label></div>
+        <div class="option"><input type="radio" name="m2q1" id="m2q1-c" value="c"><label for="m2q1-c">C) Type: No AND &gt;0 in a single criteria cell</label></div>
+      </div>
+      <button onclick="checkMission('m2q1','a','m2q1-fb',2,'Mission 2 AND Criteria','Correct — 2 marks. In the Access QBE grid, criteria on the SAME row are joined by AND. Paid = No in the Paid column Criteria row, and &gt;0 in the StockLevel column Criteria row — both on the same row. Access treats multiple criteria on the same row as AND: both conditions must be true for a record to be selected.','Incorrect. In the QBE grid, criteria on the SAME row are combined with AND. Enter No in the Paid Criteria cell and &gt;0 in the StockLevel Criteria cell — both on the same Criteria row. Different rows would create an OR condition.')">Submit M2-Q1</button>
+      <div class="feedback" id="m2q1-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <p class="question-text"><strong>Mission 2 — Q2.</strong> Report Mission 2 requires landscape orientation and 10 fields. What is the most likely reason the question specifies landscape rather than portrait?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m2q2" id="m2q2-a" value="a"><label for="m2q2-a">A) Landscape is always required when there are more than 6 fields</label></div>
+        <div class="option"><input type="radio" name="m2q2" id="m2q2-b" value="b"><label for="m2q2-b">B) 10 fields are too wide to fit on a portrait page without truncation — landscape gives more horizontal space</label></div>
+        <div class="option"><input type="radio" name="m2q2" id="m2q2-c" value="c"><label for="m2q2-c">C) Landscape is the default Access orientation</label></div>
+      </div>
+      <button onclick="checkMission('m2q2','b','m2q2-fb',1,'Mission 2 Landscape','Correct — 1 mark. Ten fields across a portrait page would either truncate or fail to fit. The exam specifies landscape because the column count requires the wider horizontal space. This is practical reasoning — the examiner sets landscape when the data would not fit portrait. Always check Print Preview fits on one page.','Incorrect. There is no absolute rule about field count and orientation. The reason is practical: 10 fields require more horizontal space than portrait provides. The exam specifies landscape to give enough width. Default Access orientation is portrait.')">Submit M2-Q2</button>
+      <div class="feedback" id="m2q2-fb"></div>
+    </div>
+
+    <!-- Stretch -->
+    <div class="exercise">
+      <h4>Stretch Challenge</h4>
+      <p>Report Mission 2 specifies that candidate details go in the HEADER of the report. In Report Mission 1, they go "on the report" (implying footer or anywhere). Explain the difference in Access between placing candidate details in the Page Header versus the Page Footer, and describe one situation where the examiner might specify header instead of footer.</p>
+      <textarea id="stretch-ans" placeholder="Write your answer here..." rows="5" onchange="localStorage.setItem('s2-stretch', this.value)"></textarea>
+      <button onclick="toggleSolution('stretch-sol')">Show Model Answer</button>
+      <div id="stretch-sol" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Model Answer:</strong> The Page Header appears at the top of every page, above the data columns. The Page Footer appears at the bottom of every page, below the data. The examiner specifies the Page Header when the report has a Report Footer containing formulas — placing candidate details in the Page Footer could cause visual confusion between the candidate's personal details and the formula total row at the bottom. By placing candidate details in the Page Header, they are clearly separated from any summary data at the bottom of the report.
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <h3>Mission Badges</h3>
+    <div id="m2-badges">
+      <span class="badge badge-locked" id="b2-first">First Mark</span>
+      <span class="badge badge-locked" id="b2-halfway">Halfway</span>
+      <span class="badge badge-locked" id="b2-pipeline">Pipeline Pro</span>
+      <span class="badge badge-locked" id="b2-complete">Report Complete</span>
+    </div>
+  </section>
+
+  <!-- ===================== THEORY DRILL ===================== -->
+  <section class="section" id="drill">
+    <h2>Theory Drill — Paper 1 Style Questions</h2>
+
+    <div class="exercise">
+      <h4>Q1 (2 marks)</h4>
+      <p class="question-text">Explain the difference between a query and a report in a database application, and state which one is printed for the examiner.</p>
+      <textarea id="q1a" placeholder="Write your answer here..." rows="4" onchange="localStorage.setItem('s2-q1a', this.value)"></textarea>
+      <button onclick="toggleSolution('q1-mark')">Show Mark Scheme</button>
+      <div id="q1-mark" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        A query extracts and filters records from tables based on specified criteria, returning a raw datasheet of matching records (1 mark). A report takes data from a query or table and presents it in a formatted, printable layout with titles, sorting, totals, and custom headers and footers — this is what is printed for the examiner (1 mark).
+      </div>
+    </div>
+
+    <!-- CCQ between Q1 and Q2 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">A student builds a query with the correct wildcard criterion and sort, then creates a report directly from the table (not from the query). The report shows all records with no criteria applied. What went wrong?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-dr1" id="cdr1-a" value="a"><label for="cdr1-a">A) The wildcard criterion was typed incorrectly in the query</label></div>
+        <div class="option"><input type="radio" name="ccq-dr1" id="cdr1-b" value="b"><label for="cdr1-b">B) The report was based on the table, not on the query — so the criteria in the query were never applied to the report's data source</label></div>
+        <div class="option"><input type="radio" name="ccq-dr1" id="cdr1-c" value="c"><label for="cdr1-c">C) The Report Wizard does not support sorted data</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-dr1','b','ccq-dr1-fb','Correct. The Report Wizard step 2 asks for the data source. If you select the TABLE instead of the QUERY, the report ignores all the criteria and sorts you set in the query. The query and report are linked by the data source selection — not automatically. Always set the source to the query, not the table.','Incorrect. The issue is not the criterion itself — it is that the report was built from the table, bypassing the query entirely. The Report Wizard must be set to use the query as its source in step 2.')">Check Answer</button>
+      <div class="feedback" id="ccq-dr1-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <h4>Q2 (2 marks)</h4>
+      <p class="question-text">A developer uses the criterion Like "*bean*" on the Type field.</p>
+      <p><strong>(a)</strong> State one record the query would return. (1 mark)</p>
+      <textarea id="q2a" placeholder="Write your answer for part (a)..." rows="2" onchange="localStorage.setItem('s2-q2a', this.value)"></textarea>
+      <p style="margin-top:1rem;"><strong>(b)</strong> Explain why Like "bean" would return no results from the same data. (1 mark)</p>
+      <textarea id="q2b" placeholder="Write your answer for part (b)..." rows="3" onchange="localStorage.setItem('s2-q2b', this.value)"></textarea>
+      <button onclick="toggleSolution('q2-mark')">Show Mark Scheme</button>
+      <div id="q2-mark" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        (a) Any valid bean record — e.g. Runner Bean / French Bean / Broad Bean (1 mark).<br>
+        (b) Like "bean" matches only records where the entire field value is exactly the word "bean" — no more, no fewer characters. Since the Type field contains values like "Runner Bean", not just "bean", no records match (1 mark).
+      </div>
+    </div>
+
+    <!-- CCQ between Q2 and Q3 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">The criterion Like "bean*" is entered in the Type field. Which of the following field values would it match?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-dr2" id="cdr2-a" value="a"><label for="cdr2-a">A) Runner Bean</label></div>
+        <div class="option"><input type="radio" name="ccq-dr2" id="cdr2-b" value="b"><label for="cdr2-b">B) Beansprout</label></div>
+        <div class="option"><input type="radio" name="ccq-dr2" id="cdr2-c" value="c"><label for="cdr2-c">C) French bean</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-dr2','b','ccq-dr2-fb','Correct. Like "bean*" matches values that BEGIN with bean. "Beansprout" starts with "bean" so it matches. "Runner Bean" and "French bean" both start with a word other than "bean" — they do not start with "bean". The asterisk is at the end, allowing any characters after "bean" but not before.','Incorrect. Like "bean*" requires the value to START with "bean". Runner Bean starts with "Runner"; French bean starts with "French". Neither matches. Beansprout starts with "bean" — it is the match.')">Check Answer</button>
+      <div class="feedback" id="ccq-dr2-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <h4>Q3 (3 marks)</h4>
+      <p class="question-text">A report requires data sorted in descending order of Salary and then ascending order of Surname.</p>
+      <p><strong>(a)</strong> Identify the primary sort field and the secondary sort field. (1 mark)</p>
+      <textarea id="q3a" placeholder="Write your answer for part (a)..." rows="2" onchange="localStorage.setItem('s2-q3a', this.value)"></textarea>
+      <p style="margin-top:1rem;"><strong>(b)</strong> Explain how Access determines which of two sort fields is primary when both are set in the QBE grid. (1 mark)</p>
+      <textarea id="q3b" placeholder="Write your answer for part (b)..." rows="3" onchange="localStorage.setItem('s2-q3b', this.value)"></textarea>
+      <p style="margin-top:1rem;"><strong>(c)</strong> A student sets both sorts correctly but places Surname to the LEFT of Salary in the QBE grid. Describe the effect on the report output. (1 mark)</p>
+      <textarea id="q3c" placeholder="Write your answer for part (c)..." rows="3" onchange="localStorage.setItem('s2-q3c', this.value)"></textarea>
+      <button onclick="toggleSolution('q3-mark')">Show Mark Scheme</button>
+      <div id="q3-mark" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        (a) Primary: Salary (Descending); Secondary: Surname (Ascending) (1 mark).<br>
+        (b) Access applies sorts left to right across the QBE grid — the leftmost sorted field is treated as the primary sort (1 mark).<br>
+        (c) The sort order would be reversed — Surname would become the primary sort (Ascending) and Salary the secondary sort (Descending), producing a report sorted alphabetically by surname rather than by salary (1 mark).
+      </div>
+    </div>
+
+    <!-- CCQ between Q3 and Q4 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">Would it be correct to say that setting the sort in the Report Wizard is always equivalent to setting it in the query?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-dr3" id="cdr3-a" value="a"><label for="cdr3-a">A) Yes — sorting works identically in the wizard and the query</label></div>
+        <div class="option"><input type="radio" name="ccq-dr3" id="cdr3-b" value="b"><label for="cdr3-b">B) No — for simple single-field sorts it may work, but sorting in the query is more reliable for multi-field sorts, calculated fields, and fields not shown in the report. Building the habit of sorting in the query prevents errors.</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-dr3','b','ccq-dr3-fb','Correct. The Report Wizard sort is limited — it cannot handle cases where the sort field is not displayed in the report, or where the sort interacts with calculated fields. Setting the sort in the query is the reliable approach for all cases. Establish the habit now.','Incorrect. While simple sorts may work in the wizard, query-based sorting is more reliable and more flexible. The habit of sorting in the query prevents failures with complex cases.')">Check Answer</button>
+      <div class="feedback" id="ccq-dr3-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <h4>Q4 (2 marks)</h4>
+      <p class="question-text">A report's Report Footer contains the formula =Sum([Salary]). The question also requires a label Total salary cost: to the left of this value. State two things the student must do to ensure both the formula and the label are awarded full marks.</p>
+      <textarea id="q4a" placeholder="Write your two points here..." rows="4" onchange="localStorage.setItem('s2-q4a', this.value)"></textarea>
+      <button onclick="toggleSolution('q4-mark')">Show Mark Scheme</button>
+      <div id="q4-mark" class="hidden" style="margin-top:1rem; padding:1rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme (any 2 of these):</strong><br>
+        The label text must match the specified text exactly (1 mark); the label textbox must be positioned to the LEFT of the formula textbox, not above or below (1 mark); the formula textbox must be wide enough for the formula to be fully visible in Design View (1 mark); the formula value must be formatted correctly — Currency or Integer as appropriate (1 mark).
+      </div>
+    </div>
+
+    <!-- Final CCQ -->
+    <div class="concept-check">
+      <h4>Concept Check — Report Footer vs Page Footer</h4>
+      <p class="question-text">A student places the =Sum([Salary]) formula in the Page Footer instead of the Report Footer. What will happen?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-dr4" id="cdr4-a" value="a"><label for="cdr4-a">A) Nothing — Page Footer and Report Footer are the same section</label></div>
+        <div class="option"><input type="radio" name="ccq-dr4" id="cdr4-b" value="b"><label for="cdr4-b">B) The formula will appear at the bottom of every page rather than once at the very end of the report, and will be positioned next to the candidate details — losing the total placement mark</label></div>
+        <div class="option"><input type="radio" name="ccq-dr4" id="cdr4-c" value="c"><label for="cdr4-c">C) The formula will not calculate — formulas only work in the Report Header</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-dr4','b','ccq-dr4-fb','Correct. Report Footer appears once, at the very end of the report, after all data rows — this is where the total belongs. Page Footer appears at the bottom of every page. If the report has multiple pages, the formula would repeat on each. The exam mark scheme checks that the total is below the data at the end of the report, which only the Report Footer provides.','Incorrect. Page Footer ≠ Report Footer. The Page Footer appears at the bottom of every page. The Report Footer appears once, at the very end of the report. The total formula must be in the Report Footer.')">Check Answer</button>
+      <div class="feedback" id="ccq-dr4-fb"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SYNTHESIS ===================== -->
+  <section class="section" id="synthesis">
+    <h2>Synthesis and Self-Assessment</h2>
+
+    <h3>Concept Map</h3>
+    <p>Click each node to review how the session's concepts connect.</p>
+    <div class="concept-map">
+      <div class="concept-node" onclick="showConcept('cn-pipeline')">Query-to-Report Pipeline</div>
+      <div class="concept-node" onclick="showConcept('cn-wildcard')">Wildcard Criteria</div>
+      <div class="concept-node" onclick="showConcept('cn-qbe')">QBE Column Order</div>
+      <div class="concept-node" onclick="showConcept('cn-footer')">Report Footer</div>
+      <div class="concept-node" onclick="showConcept('cn-evidence')">Evidence Screenshot</div>
+      <div class="concept-node" onclick="showConcept('cn-pdf')">PDF Export</div>
+    </div>
+
+    <div class="concept-node-detail" id="cn-pipeline-detail">
+      <strong>Query-to-Report Pipeline:</strong> Table(s) → Query (criteria + sort) → Report (formatting + totals) → PDF. Never skip the query stage. The report's data source must be set to the query, not the table. If the source is the table, all criteria and sorts from the query are ignored.
+    </div>
+    <div class="concept-node-detail" id="cn-wildcard-detail">
+      <strong>Wildcard Criteria:</strong> Like "*word*" = contains anywhere. Like "word*" = starts with. Like "*word" = ends with. The exam instruction "includes the word X" always maps to Like "*X*". No asterisks = exact match only. Case insensitive — capitalisation does not affect results.
+    </div>
+    <div class="concept-node-detail" id="cn-qbe-detail">
+      <strong>QBE Column Order:</strong> In the Access QBE grid, the leftmost sorted column is the primary sort — regardless of direction. The column order in the QBE grid is for sort priority only. The report column order is set separately in the Report Wizard. These are two different orderings serving two different purposes.
+    </div>
+    <div class="concept-node-detail" id="cn-footer-detail">
+      <strong>Report Footer:</strong> The section where the aggregate total formula goes — =Count(*), =Sum([Field]), or =Avg([Field]). Appears once, at the very end of the report. The label goes to its LEFT, in the same section. Formatted as Integer (counts) or Currency (money sums). Not to be confused with Page Footer, which repeats on every page.
+    </div>
+    <div class="concept-node-detail" id="cn-evidence-detail">
+      <strong>Evidence Screenshot:</strong> Taken in Design View, showing the Report Footer with the formula text fully visible. Not a screenshot of the printed report — the formula string, not the calculated result. Widen the textbox before screenshotting. This is a standalone mark on every single paper.
+    </div>
+    <div class="concept-node-detail" id="cn-pdf-detail">
+      <strong>PDF Export:</strong> External Data → PDF or XPS → working folder → filename in UPPERCASE → file type PDF. Screenshot the folder showing the filename WITH the .pdf extension visible. If Windows is hiding extensions, go to View → Show → File name extensions. One mark, requires the extension to be visible.
+    </div>
+
+    <h3>Adaptive Review Quiz</h3>
+    <p>Five questions drawn randomly from across the session's content.</p>
+    <div id="review-container"></div>
+    <button onclick="startReview()" id="start-review">Start Review Quiz</button>
+    <div id="review-result" class="hidden">
+      <div class="score-display" id="review-score-text"></div>
+    </div>
+
+    <h3>One-Sentence Summary</h3>
+    <p>Distil today's entire session into one sentence that you could say to explain it to a student who was absent.</p>
+    <textarea id="one-sentence" placeholder="In one sentence, today's session was about..." rows="3" onchange="localStorage.setItem('s2-summary', this.value)"></textarea>
+    <button onclick="saveSummary()" class="btn-neutral">Save</button>
+    <div id="summary-saved" class="feedback correct" style="display:none;">Summary saved.</div>
+  </section>
+
+  <!-- ===================== WRAP-UP ===================== -->
+  <section class="section" id="wrap-up">
+    <h2>Wrap-Up and Closure</h2>
+
+    <h3>A — Exit Ticket</h3>
+    <p>Answer these three questions before leaving. Your answers are saved locally.</p>
+
+    <div class="reflection-area">
+      <h4>1. What is the one thing you must do before building any Access report?</h4>
+      <textarea id="exit-1" placeholder="Write your answer..." rows="2" onchange="localStorage.setItem('s2-exit1', this.value)"></textarea>
+    </div>
+    <div class="reflection-area">
+      <h4>2. A student types Like "senior*" instead of Like "*senior*" as their criterion. What records will be missing from their report?</h4>
+      <textarea id="exit-2" placeholder="Write your answer..." rows="3" onchange="localStorage.setItem('s2-exit2', this.value)"></textarea>
+    </div>
+    <div class="reflection-area">
+      <h4>3. Where does the aggregate formula go, and where does its label go?</h4>
+      <textarea id="exit-3" placeholder="Write your answer..." rows="2" onchange="localStorage.setItem('s2-exit3', this.value)"></textarea>
+    </div>
+
+    <button onclick="toggleSolution('exit-answers')">Show Model Answers</button>
+    <div id="exit-answers" class="hidden" style="margin-top:1rem; padding:1.5rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+      <p><strong>1.</strong> Build the underlying query first — before opening the Report Wizard.</p>
+      <p><strong>2.</strong> Records where ServiceGrade contains the word Senior but does not START with "senior" — for example "Deputy Senior" or "Mid Senior". In this session, "Senior Staff" would not match Like "senior*" if capitalised, though wildcards are case-insensitive, so capitalisation is not the issue — the issue is position. "Senior" starts with Senior, so it would match. "Junior Senior" would not — it doesn't start with Senior.</p>
+      <p><strong>3.</strong> The formula (=Count(*) / =Sum([Field]) / =Avg([Field])) goes in the Report Footer section. The label goes immediately to the LEFT of the formula textbox, in the same Report Footer section.</p>
+    </div>
+
+    <!-- B. Objective Confirmation -->
+    <h3>B — Objective Confirmation</h3>
+    <p>Revisit the six objectives. Click each indicator to update your confidence.</p>
+    <div>
+      <div class="obj-item"><div class="obj-status" id="wobj-1" onclick="cycleStatus('wobj-1')"></div><span>I can explain the query-to-report pipeline</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-2" onclick="cycleStatus('wobj-2')"></div><span>I can write the correct wildcard criterion for any exam instruction</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-3" onclick="cycleStatus('wobj-3')"></div><span>I know that leftmost sorted field = primary sort in QBE grid</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-4" onclick="cycleStatus('wobj-4')"></div><span>I can place the correct formula in the Report Footer with a label to its left</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-5" onclick="cycleStatus('wobj-5')"></div><span>I can complete the full Report Formatting Checklist</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-6" onclick="cycleStatus('wobj-6')"></div><span>I can export a PDF and take the evidence screenshot correctly</span></div>
+    </div>
+
+    <!-- C. Reflection Prompts -->
+    <h3>C — Reflection Prompts</h3>
+    <h4>What was the most challenging part of today's session?</h4>
+    <div class="reflection-area">
+      <textarea id="rp-1" placeholder="Write here..." rows="3" onchange="localStorage.setItem('s2-rp1', this.value)"></textarea>
+    </div>
+
+    <h4>How confident do you feel building a complete Report 1 independently right now?</h4>
+    <div class="scale-selector" id="confidence-scale">
+      <button class="scale-btn" onclick="selectScale(1)">1 — Not confident</button>
+      <button class="scale-btn" onclick="selectScale(2)">2</button>
+      <button class="scale-btn" onclick="selectScale(3)">3 — Somewhat</button>
+      <button class="scale-btn" onclick="selectScale(4)">4</button>
+      <button class="scale-btn" onclick="selectScale(5)">5 — Very confident</button>
+    </div>
+    <div id="conf-response" class="info-box hidden" style="margin-top:1rem;"></div>
+
+    <!-- D. Bridge -->
+    <h3>D — Bridge to Session 3</h3>
+    <div class="info-box">
+      <strong>Report 1 is done. Session 3 is Report 2 — and this is where 48% of the database marks live.</strong>
+      It has everything Report 1 has, plus: a calculated field that doesn't exist in any table (created at run-time using a formula in the query), OR criteria across two rows of the QBE grid, an average placed below a specific column, and landscape orientation. We will also decode exactly how Cambridge words Report 2 questions so you can identify every required element in under 30 seconds.
+    </div>
+
+    <div class="exercise">
+      <h4>Homework</h4>
+      <p>Open RPT1_SeniorStaff in Design View. Change the <code>=Sum([Salary])</code> to <code>=Avg([Salary])</code> and update the label to <code>Average salary:</code>. Screenshot the Report Footer showing the new formula fully visible. Bring the screenshot to Session 3.</p>
+    </div>
+
+    <!-- E. Achievement -->
+    <h3>E — Session Achievement</h3>
+    <div class="certificate" id="cert-box">
+      <h3>Session 2 Complete</h3>
+      <p id="cert-msg" style="color:var(--text-muted); margin:0.75rem 0;">Complete the exit ticket and confidence scale to generate your summary.</p>
+      <div id="cert-badge-area" style="margin-top:1rem;"></div>
+      <button onclick="generateCert()">Generate Achievement Summary</button>
+    </div>
+  </section>
+
+  <!-- ===================== VOCABULARY ===================== -->
+  <section class="section" id="vocab">
+    <h2>Vocabulary Reference</h2>
+    <p>Click any term to reveal its definition. Use the search box to filter.</p>
+
+    <div class="vocab-search">
+      <input type="text" id="vocab-input" placeholder="Search terms..." oninput="filterVocab()" />
+    </div>
+
+    <div id="vocab-list">
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Query</div>
+        <div class="vocab-definition">A database object that extracts records from one or more tables based on specified criteria, sort orders, and field selections. In the exam pipeline, the query is always built before the report. It acts as a filtered, sorted view of the underlying data. Saved with a descriptive name (e.g. Q_Report1_SeniorStaff).</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Report</div>
+        <div class="vocab-definition">A database object that presents data from a query or table in a formatted, printable layout. Includes a title, column headers, data rows, aggregate totals in the footer, and candidate details. The report — not the query, not the table — is what the examiner marks. Always submitted as a printed page or PDF.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">QBE Grid (Query By Example)</div>
+        <div class="vocab-definition">The visual grid in Access Query Design View where fields, sort directions, and criteria are specified. Each column in the QBE grid represents one field. Sort priority is determined by horizontal position — the leftmost sorted column is the primary sort. Criteria on the same row are joined by AND; criteria on different rows are joined by OR.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Wildcard Criterion</div>
+        <div class="vocab-definition">An Access criterion using the asterisk (*) as a placeholder for any sequence of characters. Syntax: Like "pattern". Like "*word*" matches any value containing "word" anywhere. Like "word*" matches values starting with "word". Like "*word" matches values ending with "word". Access wildcards are case-insensitive.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Primary Sort</div>
+        <div class="vocab-definition">The first sort applied to records — the field by which records are ordered first. All records are arranged according to this field first. The secondary sort only applies to groups of records that share the same primary sort value. In the Access QBE grid, the primary sort is the leftmost column with a sort direction set.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Secondary Sort</div>
+        <div class="vocab-definition">The sort applied within groups of records that share the same primary sort value. For example, if the primary sort is Salary descending, records with the same salary value are then ordered by the secondary sort (e.g. Surname ascending). In the QBE grid, the secondary sort field must be to the RIGHT of the primary sort field.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Report Header</div>
+        <div class="vocab-definition">The section at the very top of the report that appears once, before any data rows. Contains the report title. The title must be in a larger font size than the body text — this is a dedicated mark on the exam. Does not repeat on subsequent pages.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Report Footer</div>
+        <div class="vocab-definition">The section at the very end of the report that appears once, after all data rows. This is where aggregate formula totals are placed — =Count(*), =Sum([Field]), =Avg([Field]). The formula label goes to the LEFT of the formula textbox in this section. Not to be confused with Page Footer.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Page Header</div>
+        <div class="vocab-definition">The section that appears at the top of every page of the report, above the data rows. Contains column headings by default. The exam may specify that candidate details go in the Page Header (e.g. Report 2 in FM2025).</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Page Footer</div>
+        <div class="vocab-definition">The section that appears at the bottom of every page. By default, Access auto-generates page numbers and dates here. These must be DELETED before adding candidate details — auto-generated content is not candidate details and will not earn the candidate details mark. Delete everything first, then add the candidate name, centre number, and candidate number.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">=Count(*)</div>
+        <div class="vocab-definition">An Access aggregate formula that counts the total number of records in the report. Returns the number of rows, not the sum of any field value. Used when the exam asks for "total number of [things]" where the things are records. Formatted as Integer (no decimal places) — a result of 8.00 instead of 8 loses the formatting mark.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">=Sum([FieldName])</div>
+        <div class="vocab-definition">An Access aggregate formula that adds up all values in the specified field across all records in the report. Used when the exam asks for "total value" or "total number of packets ordered" (total quantity, not total records). The field name must be enclosed in square brackets. Formatted as Currency for money totals, Integer for quantity totals.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">=Avg([FieldName])</div>
+        <div class="vocab-definition">An Access aggregate formula that calculates the arithmetic mean of all values in the specified field across all records in the report. Used when the exam asks for "average price" or "mean salary". Formatted as Currency for money averages. Appears in Session 3's Report 2 pattern.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Tabular Layout</div>
+        <div class="vocab-definition">A report layout where each record occupies one row, with fields displayed in columns across the page — similar to a spreadsheet or table. The standard layout for all Cambridge Paper 2 reports. Selected in the Report Wizard layout screen. Alternative layouts (Columnar, Justified) are not used in this exam.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Evidence Document Screenshot</div>
+        <div class="vocab-definition">A required screenshot taken in Access Design View showing the formula in the Report Footer textbox. The formula text (e.g. =Sum([Salary])) must be fully visible — not the calculated result. Taken after widening the textbox to ensure no truncation. A standalone mark on every Cambridge Paper 2 database task.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">PDF Export</div>
+        <div class="vocab-definition">The process of saving a report as a PDF file using External Data → PDF or XPS. The filename is specified in the exam question (usually uppercase). The file extension .pdf must be visible in the folder screenshot. If Windows is hiding extensions, enable them via View → Show → File name extensions before taking the screenshot.</div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ======================================================
+  // PROGRESS BAR
+  // ======================================================
+  window.addEventListener('scroll', function() {
+    const prog = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progress-bar').style.width = prog + '%';
+  });
+
+  // ======================================================
+  // THEME
+  // ======================================================
+  function toggleMode() {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('s2-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+  }
+
+  function toggleDyslexiaMode() {
+    document.body.classList.toggle('dyslexia-mode');
+    localStorage.setItem('s2-dyslexia', document.body.classList.contains('dyslexia-mode') ? 'on' : 'off');
+  }
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ======================================================
+  // DIFFICULTY TABS
+  // ======================================================
+  function switchTab(prefix, level, btn) {
+    document.querySelectorAll('[id^="' + prefix + '-"]').forEach(el => {
+      if (el.classList.contains('difficulty-content')) el.classList.remove('active');
+    });
+    btn.closest('.difficulty-tabs').querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    const t = document.getElementById(prefix + '-' + level);
+    if (t) t.classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ======================================================
+  // OBJECTIVE STATUS
+  // ======================================================
+  const sc = ['', 'green', 'yellow', 'red'];
+  function cycleStatus(id) {
+    const el = document.getElementById(id);
+    const n = ((parseInt(el.dataset.state || '0') + 1) % 4);
+    el.dataset.state = n;
+    el.className = 'obj-status' + (sc[n] ? ' ' + sc[n] : '');
+    const s = JSON.parse(localStorage.getItem('s2-obj-states') || '{}');
+    s[id] = n;
+    localStorage.setItem('s2-obj-states', JSON.stringify(s));
+  }
+
+  // ======================================================
+  // OPENING CHECK
+  // ======================================================
+  function checkOpening() {
+    const sel = document.querySelector('input[name="opening"]:checked');
+    const fb = document.getElementById('opening-feedback');
+    if (!sel) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (sel.value === 'b') {
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct. Output A receives zero formatting marks — the examiner cannot award marks for a title that does not exist, a total formula that was never placed, or candidate details that are absent. The data correctness marks (criteria, sort, fields) may transfer to a query datasheet in some marking schemes, but all formatting marks — which represent several points on the paper — require a formatted report. Output B earns all of them.';
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'Not quite. While Output A shows correct data, the formatting marks (title size, formula placement, formula label, candidate details, orientation) are all zero — none of those elements exist in a query datasheet. Output B earns those marks. The examiner marks the report, not the datasheet.';
+    }
+    localStorage.setItem('s2-opening', sel.value);
+  }
+
+  // ======================================================
+  // CHECKLISTS
+  // ======================================================
+  function saveReportChecklist() {
+    const cbs = document.querySelectorAll('#report-checklist input[type="checkbox"]');
+    let checked = 0, state = {};
+    cbs.forEach(cb => { if (cb.checked) checked++; state[cb.id] = cb.checked; });
+    localStorage.setItem('s2-report-cl', JSON.stringify(state));
+    document.getElementById('checklist-prog').textContent = checked + ' of ' + cbs.length + ' items verified.';
+  }
+
+  function savePreviewChecklist() {
+    const cbs = document.querySelectorAll('#pp-1, #pp-2, #pp-3, #pp-4, #pp-5');
+    const state = {};
+    cbs.forEach(cb => { state[cb.id] = cb.checked; });
+    localStorage.setItem('s2-preview-cl', JSON.stringify(state));
+  }
+
+  // ======================================================
+  // GENERIC CCQ
+  // ======================================================
+  function checkCCQ(name, correct, fbId, correctMsg, incorrectMsg) {
+    const sel = document.querySelector('input[name="' + name + '"]:checked');
+    const fb = document.getElementById(fbId);
+    if (!sel) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    fb.className = (sel.value === correct ? 'feedback correct' : 'feedback incorrect') + ' show';
+    fb.textContent = sel.value === correct ? correctMsg : incorrectMsg;
+  }
+
+  // ======================================================
+  // MISSION SCORING
+  // ======================================================
+  let missionScore = 0;
+  const scored = {};
+
+  function updateMissionScore() {
+    document.getElementById('mission-score').textContent = 'Mission Score: ' + missionScore + ' / 15';
+    localStorage.setItem('s2-mission-score', missionScore);
+    if (missionScore >= 1 && !document.getElementById('b2-first').classList.contains('badge-earned'))
+      document.getElementById('b2-first').className = 'badge badge-earned';
+    if (missionScore >= 7 && !document.getElementById('b2-halfway').classList.contains('badge-earned'))
+      document.getElementById('b2-halfway').className = 'badge badge-earned';
+    if (missionScore >= 10 && !document.getElementById('b2-pipeline').classList.contains('badge-earned'))
+      document.getElementById('b2-pipeline').className = 'badge badge-earned';
+    if (missionScore >= 14) document.getElementById('b2-complete').className = 'badge badge-earned';
+  }
+
+  function checkMission(name, correct, fbId, marks, label, correctMsg, incorrectMsg) {
+    const sel = document.querySelector('input[name="' + name + '"]:checked');
+    const fb = document.getElementById(fbId);
+    if (!sel) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (sel.value === correct) {
+      if (!scored[name]) { missionScore += marks; scored[name] = true; updateMissionScore(); }
+      fb.className = 'feedback correct show';
+      fb.textContent = correctMsg;
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = incorrectMsg;
+    }
+  }
+
+  // ======================================================
+  // TOGGLE SOLUTION
+  // ======================================================
+  function toggleSolution(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('hidden');
+  }
+
+  // ======================================================
+  // CONCEPT MAP
+  // ======================================================
+  function showConcept(id) {
+    document.querySelectorAll('.concept-node-detail').forEach(d => d.classList.remove('show'));
+    document.querySelectorAll('.concept-node').forEach(n => n.classList.remove('highlighted'));
+    const d = document.getElementById(id + '-detail');
+    if (d) { d.classList.add('show'); event.target.classList.add('highlighted'); }
+  }
+
+  // ======================================================
+  // ADAPTIVE REVIEW QUIZ
+  // ======================================================
+  const reviewBank = [
+    {
+      q: 'A report is built from the table directly (not a query). Wildcard criteria were set in the query. Which records will appear in the report?',
+      opts: ['Only records matching the wildcard', 'All records — the criteria in the query are ignored because the report source is the table', 'No records — Access requires a query source'],
+      correct: 1,
+      exp: 'The report only applies criteria from its own data source. If the source is the table, all table records appear. To apply query criteria, the report source must be set to the query in the Report Wizard.'
+    },
+    {
+      q: 'What does Like "*senior*" match that Like "senior*" does NOT?',
+      opts: ['Values that are exactly "senior"', 'Values where "senior" appears anywhere — including "Deputy Senior" or "Mid Senior"', 'Values ending with "senior"'],
+      correct: 1,
+      exp: 'Like "senior*" only matches values that START with senior. Like "*senior*" matches senior appearing anywhere — at the start, middle, or end of the value.'
+    },
+    {
+      q: 'In the QBE grid: Salary is in column 3 (Descending), Surname is in column 1 (Ascending). What is the primary sort?',
+      opts: ['Salary — because it is Descending', 'Surname — because it is in the leftmost column', 'Both — they are equal priority'],
+      correct: 1,
+      exp: 'QBE sort priority is purely positional — leftmost sorted column = primary sort. Surname is in column 1, so Surname ascending becomes the primary sort, regardless of direction. To make Salary primary, drag it to the left of Surname.'
+    },
+    {
+      q: 'The formula =Count(*) is in the Report Footer. There are 6 records with Packets values of 15, 25, 10, 30, 20, 12. What value does the formula display?',
+      opts: ['112 — the sum of all Packets values', '6 — the number of records', '18.67 — the average'],
+      correct: 1,
+      exp: '=Count(*) counts records, not values. There are 6 records, so the result is 6. =Sum([Packets]) would return 112. =Avg([Packets]) would return 18.67.'
+    },
+    {
+      q: 'The exam says: "Place the formula below the Packets field at the end of the report." In Access, which section must the formula go in?',
+      opts: ['Page Footer — it appears at the bottom of each page', 'Report Footer — it appears once, at the very end of all data', 'Detail section — it appears on every row'],
+      correct: 1,
+      exp: 'Report Footer appears once, after all data rows, at the very end of the report. Page Footer appears at the bottom of every page — if there are multiple pages, the formula would repeat. "At the end of the report" always means Report Footer.'
+    },
+    {
+      q: 'The evidence screenshot must be taken in which view?',
+      opts: ['Print Preview — to show how it will print', 'Design View — to show the formula text, not the calculated result', 'Report View — to show the formatted data'],
+      correct: 1,
+      exp: 'The evidence screenshot must show the formula STRING (e.g. =Sum([Salary])), not the calculated result. Only Design View shows the formula text. Print Preview and Report View both show the calculated result, not the formula.'
+    },
+    {
+      q: 'A report\'s Page Footer contains auto-generated page numbers and a candidate details text box. Will the candidate details earn the mark?',
+      opts: ['Yes — candidate details are present so the mark is awarded', 'Possibly — but auto-generated content must be deleted first; if auto-content remains, the candidate details mark may still be awarded, but the auto-content is unwanted and may cause marks to be withheld', 'No — the Page Footer should be completely empty'],
+      correct: 1,
+      exp: 'The exam mark scheme awards the mark for candidate details being present and correctly formatted. Auto-generated page numbers and dates are unwanted — best practice is to delete everything in the Page Footer first, then add candidate details. This prevents any risk of auto-content conflicting with candidate details.'
+    },
+    {
+      q: 'Why does the column order in the QBE grid matter independently from the column order in the report?',
+      opts: ['It doesn\'t — the QBE order always determines the report column order', 'The QBE determines sort priority (leftmost sorted = primary); the report column order is set in the Report Wizard and must match the question specification. These are completely independent.', 'The QBE order determines which fields are included in the report'],
+      correct: 1,
+      exp: 'Two separate orderings, two separate purposes. QBE left-to-right position determines sort priority for sorted fields. Report Wizard field selection order determines the displayed column sequence in the report. You may need to rearrange QBE columns for correct sort priority while leaving the Report Wizard field order unchanged.'
+    }
+  ];
+
+  let reviewAnswers = {}, reviewGenerated = false;
+
+  function startReview() {
+    if (reviewGenerated) return;
+    reviewGenerated = true;
+    document.getElementById('start-review').style.display = 'none';
+    const qs = [...reviewBank].sort(() => Math.random() - 0.5).slice(0, 5);
+    const c = document.getElementById('review-container');
+    c.innerHTML = '';
+    qs.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'exercise';
+      div.innerHTML = `<h4>Question ${i + 1}</h4><p class="question-text">${q.q}</p>
+        <div class="options concept-check" style="padding:0;border:none;background:transparent;margin-bottom:0.5rem;">
+          ${q.opts.map((o, j) => `<div class="option"><input type="radio" name="rq${i}" id="rq${i}-${j}" value="${j}"><label for="rq${i}-${j}">${o}</label></div>`).join('')}
+        </div>
+        <button onclick="checkRQ(${i},${q.correct},'${q.exp.replace(/'/g,"\\'")}',this)">Check</button>
+        <div class="feedback" id="rq-fb-${i}"></div>`;
+      c.appendChild(div);
+    });
+    window._rqBank = qs;
+  }
+
+  function checkRQ(i, correct, exp, btn) {
+    const sel = document.querySelector(`input[name="rq${i}"]:checked`);
+    const fb = document.getElementById(`rq-fb-${i}`);
+    if (!sel) { fb.className = 'feedback incorrect show'; fb.textContent = 'Select an answer first.'; return; }
+    if (!reviewAnswers.hasOwnProperty(i)) reviewAnswers[i] = parseInt(sel.value) === correct;
+    fb.className = (parseInt(sel.value) === correct ? 'feedback correct' : 'feedback incorrect') + ' show';
+    fb.textContent = (parseInt(sel.value) === correct ? 'Correct. ' : 'Incorrect. ') + exp;
+    btn.style.display = 'none';
+    const total = (window._rqBank || []).length;
+    if (Object.keys(reviewAnswers).length === total) {
+      const score = Object.values(reviewAnswers).filter(Boolean).length;
+      document.getElementById('review-result').classList.remove('hidden');
+      document.getElementById('review-score-text').textContent = 'Review Score: ' + score + ' / ' + total;
+      localStorage.setItem('s2-review-score', score + '/' + total);
+    }
+  }
+
+  // ======================================================
+  // CONFIDENCE SCALE
+  // ======================================================
+  function selectScale(n) {
+    document.querySelectorAll('.scale-btn').forEach((b, i) => b.classList.toggle('selected', i + 1 === n));
+    localStorage.setItem('s2-confidence', n);
+    const msgs = {
+      1: 'That is completely understandable for a first encounter. Review Phase 1 of the demo — the QBE grid setup. The two-orderings concept (sort priority vs report column order) is the hardest thing in today\'s session. Bring a specific question to Session 3.',
+      2: 'Review the Report Formatting Checklist and run through the Mission 1 criteria and formula questions again. The sequence — query first, then wizard, then Design View fixes — is what needs to become automatic.',
+      3: 'Good progress. The next step is building the habit under time pressure. Redo Mission 1 without looking at the demo steps and aim for under 12 minutes.',
+      4: 'Solid. Make sure you can explain the QBE column order vs report column order distinction to someone else — that explanation is the Session 3 foundation.',
+      5: 'Excellent. Your homework (=Avg formula swap) is the preview for Session 3\'s Report 2 pattern. You are well-prepared.'
+    };
+    const box = document.getElementById('conf-response');
+    box.classList.remove('hidden');
+    box.textContent = msgs[n] || '';
+  }
+
+  // ======================================================
+  // ONE SENTENCE SAVE
+  // ======================================================
+  function saveSummary() {
+    localStorage.setItem('s2-summary', document.getElementById('one-sentence').value);
+    const s = document.getElementById('summary-saved');
+    s.style.display = 'block';
+    setTimeout(() => s.style.display = 'none', 2000);
+  }
+
+  // ======================================================
+  // CERTIFICATE
+  // ======================================================
+  function generateCert() {
+    const score = localStorage.getItem('s2-mission-score') || 0;
+    const rev = localStorage.getItem('s2-review-score') || 'not attempted';
+    let msg = 'Session 2 complete. Mission score: ' + score + '/15. Review quiz: ' + rev + '.';
+    if (parseInt(score) >= 14) msg += ' Full mission marks — you have demonstrated the complete Report 1 skill set.';
+    else if (parseInt(score) >= 9) msg += ' Good progress. Review the questions you found difficult before Session 3.';
+    else msg += ' Return to the concept tabs and checklist before Session 3. The pipeline concept and QBE sort order are the foundations for Report 2.';
+    document.getElementById('cert-msg').textContent = msg;
+    document.getElementById('cert-msg').style.color = 'var(--text-main)';
+    const ba = document.getElementById('cert-badge-area');
+    const earned = [...document.querySelectorAll('.badge-earned')].map(b => b.textContent);
+    if (earned.length > 0) {
+      ba.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:0.5rem;">Badges earned:</p>' +
+        earned.map(b => `<span class="badge badge-earned" style="margin:0.25rem;">${b}</span>`).join('');
+    }
+  }
+
+  // ======================================================
+  // VOCABULARY
+  // ======================================================
+  function toggleVocab(el) { el.querySelector('.vocab-definition').classList.toggle('show'); }
+  function filterVocab() {
+    const q = document.getElementById('vocab-input').value.toLowerCase();
+    document.querySelectorAll('.vocab-item').forEach(item => {
+      const t = item.querySelector('.vocab-term').textContent.toLowerCase();
+      const d = item.querySelector('.vocab-definition').textContent.toLowerCase();
+      item.classList.toggle('hidden', !t.includes(q) && !d.includes(q));
+    });
+  }
+
+  // ======================================================
+  // RESTORE STATE
+  // ======================================================
+  window.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('s2-theme') === 'light') document.body.classList.add('light-mode');
+    if (localStorage.getItem('s2-dyslexia') === 'on') document.body.classList.add('dyslexia-mode');
+
+    const objStates = JSON.parse(localStorage.getItem('s2-obj-states') || '{}');
+    Object.keys(objStates).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { const n = objStates[id]; el.dataset.state = n; el.className = 'obj-status' + (sc[n] ? ' ' + sc[n] : ''); }
+    });
+
+    const rcl = JSON.parse(localStorage.getItem('s2-report-cl') || '{}');
+    Object.keys(rcl).forEach(id => { const el = document.getElementById(id); if (el) el.checked = rcl[id]; });
+    saveReportChecklist();
+
+    const pcl = JSON.parse(localStorage.getItem('s2-preview-cl') || '{}');
+    Object.keys(pcl).forEach(id => { const el = document.getElementById(id); if (el) el.checked = pcl[id]; });
+
+    ['s2-stretch','s2-q1a','s2-q2a','s2-q2b','s2-q3a','s2-q3b','s2-q3c','s2-q4a',
+     's2-exit1','s2-exit2','s2-exit3','s2-rp1','s2-summary'].forEach(key => {
+      const textareaMap = {
+        's2-stretch': 'stretch-ans', 's2-q1a': 'q1a', 's2-q2a': 'q2a', 's2-q2b': 'q2b',
+        's2-q3a': 'q3a', 's2-q3b': 'q3b', 's2-q3c': 'q3c', 's2-q4a': 'q4a',
+        's2-exit1': 'exit-1', 's2-exit2': 'exit-2', 's2-exit3': 'exit-3',
+        's2-rp1': 'rp-1', 's2-summary': 'one-sentence'
+      };
+      const el = document.getElementById(textareaMap[key]);
+      if (el && localStorage.getItem(key)) el.value = localStorage.getItem(key);
+    });
+
+    missionScore = parseInt(localStorage.getItem('s2-mission-score') || '0');
+    updateMissionScore();
+
+    const conf = localStorage.getItem('s2-confidence');
+    if (conf) selectScale(parseInt(conf));
+
+    // Show Session 1 remaining question if saved
+    const prevQ = localStorage.getItem('rp-2');
+    if (prevQ && prevQ.trim()) {
+      const el = document.getElementById('prev-q');
+      if (el) el.textContent = 'Carried forward from Session 1 — your remaining question: "' + prevQ.substring(0,120) + (prevQ.length > 120 ? '...' : '') + '"';
+    }
+  });
+</script>
+
 </body>
-
 </html>

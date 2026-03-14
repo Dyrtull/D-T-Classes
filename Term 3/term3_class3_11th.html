@@ -1,1399 +1,1759 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medellín 2050: Smart City Database - Session 3</title>
-
-    <!-- Modern Font Import -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            /* CONSISTENT COLOR PALETTE - ICT/Database Colors */
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-
-            /* Modern Dark Mode Base (Slate/Zinc inspired) */
-            --bg-color: #0f172a;
-            --surface-color: #1e293b;
-            --surface-color-hover: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-
-            /* Accessibility & Spacing (DO NOT MODIFY) */
-            --base-spacing: 1rem;
-            --line-height: 1.6;
-            --letter-spacing: 0.2px;
-            --font-size-base: 16px;
-            --font-size-large: 18px;
-            --font-size-xl: 20px;
-            --border-radius: 12px;
-            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* 1. LIGHT MODE OVERRIDES */
-        body.light-mode {
-            --bg-color: #f8fafc;
-            --surface-color: #ffffff;
-            --surface-color-hover: #f1f5f9;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-        }
-
-        /* 2. DYSLEXIA-FRIENDLY MODE FIX */
-        body.dyslexia-mode {
-            --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
-            --font-size-base: 18px;
-            --font-size-large: 20px;
-            --font-size-xl: 22px;
-            --line-height: 2;
-            --letter-spacing: 1px;
-            background-color: #f4f1de !important;
-            color: #2c3e50 !important;
-        }
-
-        body.dyslexia-mode .section,
-        body.dyslexia-mode header,
-        body.dyslexia-mode .exercise,
-        body.dyslexia-mode .concept-check {
-            background-color: #fffcf9 !important;
-            color: #2c3e50 !important;
-            border-left: 6px solid var(--secondary-color) !important;
-        }
-
-        body.dyslexia-mode .section h2 {
-            color: var(--primary-color) !important;
-        }
-
-        body.dyslexia-mode .section h3 {
-            color: var(--secondary-color) !important;
-        }
-
-        /* Universal Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-family, 'Inter', 'Segoe UI', sans-serif);
-            font-size: var(--font-size-base);
-            line-height: var(--line-height);
-            letter-spacing: var(--letter-spacing);
-            color: var(--text-main);
-            background-color: var(--bg-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* HEADER & NAVIGATION (MODERN, GLASSMORPHISM) */
-        header {
-            background-color: rgba(var(--surface-color-rgb), 0.85);
-            background: var(--surface-color);
-            color: var(--text-main);
-            padding: 1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            gap: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        @media (min-width: 900px) {
-            header {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                text-align: left;
-                padding: 1rem 3rem;
-            }
-        }
-
-        header h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: 0;
-            line-height: 1.2;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        @media (min-width: 900px) {
-            header h1 {
-                justify-content: flex-start;
-            }
-        }
-
-        header p {
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-            color: var(--text-muted);
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            header p {
-                display: block;
-            }
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        nav button,
-        nav a {
-            background-color: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            font-family: inherit;
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        nav button:hover,
-        nav a:hover {
-            background-color: var(--surface-color-hover);
-            border-color: var(--text-muted);
-            transform: translateY(-1px);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            width: 100%;
-            height: 3px;
-            background-color: transparent;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--secondary-color);
-            width: 0%;
-            transition: width 0.4s ease-out;
-            box-shadow: 0 0 8px var(--secondary-color);
-        }
-
-        /* Main Content */
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        /* Modern Cards for Sections */
-        .section {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 2.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
-            scroll-margin-top: 120px;
-            animation: slideIn 0.5s ease-out forwards;
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        @keyframes slideIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section h2 {
-            color: var(--text-main);
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .section h3 {
-            color: var(--text-main);
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .section h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .section p {
-            margin-bottom: 1.25rem;
-            color: var(--text-main);
-        }
-
-        .question-text {
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        /* Difficulty Tabs - Modernized */
-        .difficulty-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            background: var(--bg-color);
-            padding: 0.25rem;
-            border-radius: 12px;
-            display: inline-flex;
-        }
-
-        .difficulty-tabs button {
-            padding: 0.5rem 1.25rem;
-            border: none;
-            background-color: transparent;
-            color: var(--text-muted);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-family: inherit;
-            transition: var(--transition);
-            margin-top: 0;
-        }
-
-        .difficulty-tabs button.active {
-            background-color: var(--surface-color);
-            color: var(--text-main);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .difficulty-content {
-            display: none;
-            padding: 1.5rem;
-            background-color: var(--bg-color);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--secondary-color);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .difficulty-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Interactive Exercises */
-        .exercise {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--primary-color);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: var(--border-radius);
-        }
-
-        /* Modern Form Elements */
-        input[type="text"],
-        input[type="number"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            margin: 0.5rem 0;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: var(--surface-color);
-            color: var(--text-main);
-            font-family: inherit;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
-        }
-
-        /* Primary Buttons */
-        button {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: inherit;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            margin-top: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(52, 152, 219, 0.2);
-        }
-
-        button.btn-accent {
-            background-color: var(--accent-color);
-        }
-
-        button.btn-accent:hover {
-            background-color: #c0392b;
-            box-shadow: 0 4px 6px -1px rgba(231, 76, 60, 0.2);
-        }
-
-        /* Concept Checking Questions */
-        .concept-check {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--accent-color);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: var(--border-radius);
-        }
-
-        .concept-check h4 {
-            color: var(--accent-color);
-            margin-top: 0;
-        }
-
-        /* Modern Radio Button List */
-        .concept-check .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin: 1.25rem 0;
-        }
-
-        .concept-check .option {
-            position: relative;
-        }
-
-        .concept-check input[type="radio"],
-        .exercise input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .concept-check label,
-        .exercise label.radio-label {
-            display: block;
-            padding: 1rem 1.25rem;
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
-        .concept-check label:hover,
-        .exercise label.radio-label:hover {
-            border-color: var(--text-muted);
-            background-color: var(--surface-color-hover);
-        }
-
-        .concept-check input[type="radio"]:checked+label,
-        .exercise input[type="radio"]:checked+label.radio-label {
-            border-color: var(--secondary-color);
-            background-color: rgba(52, 152, 219, 0.05);
-            box-shadow: 0 0 0 1px var(--secondary-color);
-        }
-
-        /* Feedback Boxes */
-        .feedback {
-            margin-top: 1.25rem;
-            padding: 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            display: none;
-            font-size: 0.95rem;
-        }
-
-        .feedback.correct {
-            background-color: rgba(46, 204, 113, 0.1);
-            color: #2ecc71;
-            border: 1px solid rgba(46, 204, 113, 0.2);
-        }
-
-        .feedback.incorrect {
-            background-color: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-            border: 1px solid rgba(231, 76, 60, 0.2);
-        }
-
-        .feedback.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* Modern Tables */
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 1.5rem 0;
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            display: block;
-            overflow-x: auto;
-        }
-
-        th,
-        td {
-            padding: 1rem 1.25rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            white-space: normal;
-        }
-
-        th {
-            background-color: var(--bg-color);
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover td {
-            background-color: var(--surface-color-hover);
-        }
-
-        /* Vocabulary Section */
-        .vocab-search input {
-            border-radius: 20px;
-            padding-left: 1.5rem;
-        }
-
-        .vocab-item {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--secondary-color);
-            padding: 1.25rem;
-            margin: 0.75rem 0;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .vocab-item:hover {
-            transform: translateX(4px);
-            border-color: var(--text-muted);
-        }
-
-        .vocab-item.hidden {
-            display: none;
-        }
-
-        .vocab-term {
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        .vocab-definition {
-            display: none;
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .vocab-definition.show {
-            display: block;
-            animation: fadeIn 0.2s ease;
-        }
-
-        /* Highlights & Tags */
-        .highlight-box {
-            background-color: var(--bg-color);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin: 1.5rem 0;
-            border: 1px solid var(--border-color);
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--secondary-color);
-        }
-
-        /* Checkbox lists for objectives */
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-            padding: 0.75rem;
-            background: var(--surface-color);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .checklist-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--secondary-color);
-            cursor: pointer;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            main {
-                padding: 1rem 0.5rem;
-            }
-
-            .section {
-                padding: 1.5rem;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-            }
-
-            .section h2 {
-                font-size: 1.5rem;
-            }
-
-            th,
-            td {
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* PRINT STYLES */
-        @media print {
-
-            header,
-            nav,
-            button {
-                display: none;
-            }
-
-            .section {
-                page-break-inside: avoid;
-                border: 1px solid #ccc;
-                color: black;
-                background: white;
-            }
-
-            body {
-                background: white;
-                color: black;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The 48% Report | Calculated Fields, OR Criteria & Report 2 — Session 3</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --bg-color: #0f172a;
+      --surface-color: #1e293b;
+      --surface-color-hover: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --line-height: 1.6;
+      --letter-spacing: 0.2px;
+      --font-size-base: 16px;
+      --border-radius: 12px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.light-mode {
+      --bg-color: #f8fafc; --surface-color: #ffffff; --surface-color-hover: #f1f5f9;
+      --text-main: #0f172a; --text-muted: #64748b; --border-color: #e2e8f0;
+    }
+
+    body.dyslexia-mode {
+      --font-size-base: 18px; --line-height: 2; --letter-spacing: 1px;
+      background-color: #f4f1de !important; color: #2c3e50 !important;
+    }
+    body.dyslexia-mode .section, body.dyslexia-mode header,
+    body.dyslexia-mode .exercise, body.dyslexia-mode .concept-check {
+      background-color: #fffcf9 !important; color: #2c3e50 !important;
+      border-left: 6px solid var(--secondary-color) !important;
+    }
+    body.dyslexia-mode .section h2 { color: var(--primary-color) !important; }
+    body.dyslexia-mode .section h3 { color: var(--secondary-color) !important; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-size: var(--font-size-base);
+      line-height: var(--line-height);
+      letter-spacing: var(--letter-spacing);
+      color: var(--text-main);
+      background-color: var(--bg-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--surface-color);
+      padding: 1rem 1.5rem;
+      position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex; flex-direction: column; text-align: center; gap: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    @media (min-width: 900px) {
+      header { flex-direction: row; justify-content: space-between; align-items: center; text-align: left; padding: 1rem 3rem; }
+    }
+    header h1 { font-size: 1.25rem; font-weight: 700; color: var(--secondary-color); display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    @media (min-width: 900px) { header h1 { justify-content: flex-start; } }
+    header p { font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-muted); display: none; }
+    @media (min-width: 768px) { header p { display: block; } }
+
+    nav { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+    nav button, nav a {
+      background-color: transparent; color: var(--text-main);
+      border: 1px solid var(--border-color); padding: 0.4rem 0.8rem;
+      border-radius: 20px; cursor: pointer; font-size: 0.85rem; font-weight: 500;
+      font-family: 'Inter', sans-serif; transition: var(--transition); text-decoration: none;
+    }
+    nav button:hover, nav a:hover { background-color: var(--surface-color-hover); border-color: var(--text-muted); transform: translateY(-1px); }
+
+    .progress-container { width: 100%; height: 3px; background-color: transparent; position: absolute; bottom: 0; left: 0; }
+    .progress-bar { height: 100%; background: var(--secondary-color); width: 0%; transition: width 0.4s ease-out; box-shadow: 0 0 8px var(--secondary-color); }
+
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+
+    .section {
+      background-color: var(--surface-color); border: 1px solid var(--border-color);
+      border-radius: var(--border-radius); padding: 2.5rem; margin: 2rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); scroll-margin-top: 120px;
+      animation: slideIn 0.5s ease-out forwards; opacity: 0; transform: translateY(10px);
+    }
+    @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
+
+    .section h2 { color: var(--text-main); font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem; }
+    .section h3 { color: var(--text-main); font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
+    .section h4 { color: var(--text-main); font-size: 1.1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    .section p { margin-bottom: 1.25rem; color: var(--text-main); }
+    .question-text { color: var(--text-main); }
+
+    /* TABS */
+    .difficulty-tabs { gap: 0.5rem; margin-bottom: 1.5rem; background: var(--bg-color); padding: 0.25rem; border-radius: 12px; display: inline-flex; flex-wrap: wrap; }
+    .difficulty-tabs button { padding: 0.5rem 1.25rem; border: none; background-color: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; font-weight: 500; font-family: inherit; transition: var(--transition); margin-top: 0; }
+    .difficulty-tabs button.active { background-color: var(--surface-color); color: var(--text-main); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .difficulty-content { display: none; padding: 1.5rem; background-color: var(--bg-color); border-radius: var(--border-radius); border: 1px solid var(--border-color); border-left: 4px solid var(--secondary-color); animation: fadeIn 0.3s ease; }
+    .difficulty-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* CARDS */
+    .exercise { background-color: var(--bg-color); border: 1px solid var(--border-color); border-left: 4px solid var(--primary-color); padding: 1.5rem; margin: 1.5rem 0; border-radius: var(--border-radius); }
+    .concept-check { background-color: var(--bg-color); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-color); padding: 1.5rem; margin: 2rem 0; border-radius: var(--border-radius); }
+    .concept-check h4 { color: var(--accent-color); margin-top: 0; }
+    .warning-box { background-color: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.25); border-left: 4px solid var(--accent-color); border-radius: var(--border-radius); padding: 1.25rem; margin: 1.25rem 0; color: var(--text-main); }
+    .warning-box strong { color: var(--accent-color); }
+    .info-box { background-color: rgba(52,152,219,0.08); border: 1px solid rgba(52,152,219,0.25); border-left: 4px solid var(--secondary-color); border-radius: var(--border-radius); padding: 1.25rem; margin: 1.25rem 0; color: var(--text-main); }
+    .success-box { background-color: rgba(39,174,96,0.08); border: 1px solid rgba(39,174,96,0.25); border-left: 4px solid #27ae60; border-radius: var(--border-radius); padding: 1.25rem; margin: 1.25rem 0; color: var(--text-main); }
+    .highlight-box { background-color: var(--bg-color); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; border: 1px solid var(--border-color); }
+
+    /* FORMS */
+    .concept-check .options { display: flex; flex-direction: column; gap: 0.5rem; margin: 1.25rem 0; }
+    .concept-check .option { position: relative; }
+    .concept-check input[type="radio"] { position: absolute; opacity: 0; cursor: pointer; width: auto; padding: 0; margin: 0; }
+    .concept-check label { display: block; padding: 1rem 1.25rem; background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: var(--transition); font-weight: 500; color: var(--text-main); }
+    .concept-check label:hover { border-color: var(--text-muted); background-color: var(--surface-color-hover); }
+    .concept-check input[type="radio"]:checked + label { border-color: var(--secondary-color); background-color: rgba(52,152,219,0.05); box-shadow: 0 0 0 1px var(--secondary-color); }
+
+    input[type="text"], input[type="number"], select, textarea {
+      width: 100%; padding: 0.875rem 1rem; margin: 0.5rem 0;
+      border: 1px solid var(--border-color); border-radius: 8px;
+      background-color: var(--surface-color); color: var(--text-main);
+      font-family: 'Inter', sans-serif; font-size: 1rem; transition: var(--transition);
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(52,152,219,0.15); }
+
+    /* BUTTONS */
+    button { background-color: var(--secondary-color); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: var(--transition); margin-top: 1rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    button:hover { background-color: #2980b9; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(52,152,219,0.2); }
+    button.btn-accent { background-color: var(--accent-color); }
+    button.btn-accent:hover { background-color: #c0392b; }
+    button.btn-neutral { background-color: var(--surface-color); color: var(--text-main); border: 1px solid var(--border-color); }
+    button.btn-neutral:hover { background-color: var(--surface-color-hover); box-shadow: none; }
+
+    /* FEEDBACK */
+    .feedback { margin-top: 1.25rem; padding: 1rem; border-radius: 8px; font-weight: 500; display: none; font-size: 0.95rem; }
+    .feedback.correct { background-color: rgba(39,174,96,0.1); color: #27ae60; border: 1px solid rgba(39,174,96,0.2); }
+    .feedback.incorrect { background-color: rgba(231,76,60,0.1); color: #e74c3c; border: 1px solid rgba(231,76,60,0.2); }
+    .feedback.show { display: block; animation: fadeIn 0.3s ease; }
+
+    /* TABLES */
+    table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 1.5rem 0; background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); overflow: hidden; }
+    th, td { padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+    th { background-color: var(--bg-color); color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background-color: var(--surface-color-hover); }
+
+    /* CODE */
+    .code-block { background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem 1.25rem; font-family: 'Courier New', monospace; font-size: 0.9rem; overflow-x: auto; margin: 1rem 0; color: var(--text-main); white-space: pre; line-height: 1.6; }
+    code { font-family: 'Courier New', monospace; background: var(--bg-color); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.88em; border: 1px solid var(--border-color); }
+
+    /* STEPS */
+    .step-item { display: flex; gap: 1rem; margin: 1rem 0; align-items: flex-start; }
+    .step-number { width: 32px; height: 32px; border-radius: 50%; background-color: var(--secondary-color); color: white; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-content { flex: 1; }
+    .step-content p { margin-bottom: 0.5rem; }
+
+    /* CHECKLISTS */
+    .checklist { list-style: none; padding: 0; margin: 1rem 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; accent-color: var(--secondary-color); }
+
+    /* OBJECTIVES */
+    .obj-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; margin: 0.5rem 0; }
+    .obj-status { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; background: #94a3b8; cursor: pointer; }
+    .obj-status.green { background: #27ae60; }
+    .obj-status.yellow { background: #f39c12; }
+    .obj-status.red { background: #e74c3c; }
+
+    /* SCORE / BADGES */
+    .score-display { font-size: 1.5rem; font-weight: 700; color: var(--secondary-color); text-align: center; padding: 1rem; }
+    .badge { display: inline-block; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin: 0.25rem; }
+    .badge-earned { background: rgba(52,152,219,0.15); color: var(--secondary-color); border: 1px solid rgba(52,152,219,0.3); }
+    .badge-locked { background: var(--bg-color); color: var(--text-muted); border: 1px solid var(--border-color); }
+
+    /* QBE GRID */
+    .qbe-grid { font-family: 'Courier New', monospace; font-size: 0.85rem; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+    .qbe-row { display: grid; border-bottom: 1px solid var(--border-color); }
+    .qbe-row:last-child { border-bottom: none; }
+    .qbe-cell { padding: 0.5rem 0.75rem; border-right: 1px solid var(--border-color); color: var(--text-main); }
+    .qbe-cell:last-child { border-right: none; }
+    .qbe-header { background: var(--surface-color); color: var(--text-muted); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .qbe-sort { color: var(--secondary-color); font-weight: 600; }
+    .qbe-criteria { color: #f39c12; font-weight: 600; }
+    .qbe-or { color: #e67e22; font-weight: 600; }
+    .qbe-calc { color: #27ae60; font-weight: 600; }
+    .qbe-wrong { color: var(--accent-color); font-weight: 600; }
+    .qbe-highlight { background: rgba(52,152,219,0.08); }
+
+    /* OR-CRITERIA VISUAL */
+    .criteria-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    @media (max-width: 600px) { .criteria-compare { grid-template-columns: 1fr; } }
+    .criteria-panel { border-radius: 10px; overflow: hidden; border: 2px solid var(--border-color); }
+    .criteria-panel.wrong { border-color: var(--accent-color); }
+    .criteria-panel.correct { border-color: #27ae60; }
+    .criteria-label { padding: 0.5rem 1rem; font-weight: 700; font-size: 0.85rem; text-align: center; }
+    .criteria-panel.wrong .criteria-label { background: rgba(231,76,60,0.15); color: var(--accent-color); }
+    .criteria-panel.correct .criteria-label { background: rgba(39,174,96,0.15); color: #27ae60; }
+
+    /* PARSE CARD */
+    .parse-card { display: grid; grid-template-columns: auto 1fr; gap: 0.75rem 1rem; align-items: start; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; margin: 1rem 0; }
+    .parse-num { width: 28px; height: 28px; border-radius: 50%; background: var(--secondary-color); color: white; font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .parse-text { color: var(--text-main); font-size: 0.95rem; }
+    .parse-text strong { color: var(--secondary-color); }
+
+    /* CONCEPT MAP */
+    .concept-map { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin: 1.5rem 0; }
+    .concept-node { padding: 0.75rem 1.25rem; background-color: var(--bg-color); border: 2px solid var(--secondary-color); border-radius: 12px; font-weight: 600; text-align: center; cursor: pointer; transition: var(--transition); font-size: 0.9rem; }
+    .concept-node:hover { background-color: rgba(52,152,219,0.1); transform: scale(1.03); }
+    .concept-node.highlighted { background-color: rgba(52,152,219,0.2); box-shadow: 0 0 12px rgba(52,152,219,0.3); }
+    .concept-node-detail { display: none; padding: 1rem; background-color: rgba(52,152,219,0.05); border: 1px solid rgba(52,152,219,0.2); border-radius: 8px; margin-top: 1rem; font-size: 0.95rem; animation: fadeIn 0.3s ease; }
+    .concept-node-detail.show { display: block; }
+
+    /* REFLECTION */
+    .reflection-area { background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.25rem; margin: 1rem 0; }
+    .scale-selector { display: flex; gap: 0.5rem; margin: 0.75rem 0; flex-wrap: wrap; }
+    .scale-btn { padding: 0.5rem 1rem; border-radius: 8px; background-color: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 600; margin-top: 0; font-size: 0.9rem; }
+    .scale-btn.selected { background-color: var(--secondary-color); border-color: var(--secondary-color); color: white; }
+
+    /* CERTIFICATE */
+    .certificate { border: 2px solid var(--secondary-color); border-radius: var(--border-radius); padding: 2rem; text-align: center; margin: 1.5rem 0; background: linear-gradient(135deg, rgba(52,152,219,0.05) 0%, rgba(44,62,80,0.05) 100%); }
+    .certificate h3 { color: var(--secondary-color); font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+    /* VOCAB */
+    .vocab-search input { border-radius: 20px; padding-left: 1.5rem; }
+    .vocab-item { background-color: var(--bg-color); border: 1px solid var(--border-color); border-left: 4px solid var(--secondary-color); padding: 1.25rem; margin: 0.75rem 0; border-radius: var(--border-radius); cursor: pointer; transition: var(--transition); }
+    .vocab-item:hover { transform: translateX(4px); border-color: var(--text-muted); }
+    .vocab-item.hidden { display: none !important; }
+    .vocab-term { color: var(--text-main); font-weight: 600; font-size: 1.05rem; }
+    .vocab-definition { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); color: var(--text-muted); line-height: 1.5; }
+    .vocab-definition.show { display: block; animation: fadeIn 0.2s ease; }
+
+    /* MARK CALC INTERACTIVE */
+    .mark-bar-wrap { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; height: 24px; margin: 0.5rem 0; }
+    .mark-bar { height: 100%; background: var(--secondary-color); transition: width 0.8s ease; display: flex; align-items: center; padding-left: 0.5rem; font-size: 0.75rem; font-weight: 700; color: white; white-space: nowrap; }
+    .mark-bar.danger { background: var(--accent-color); }
+    .mark-bar.warning { background: #f39c12; }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 768px) {
+      main { padding: 1rem 0.5rem; }
+      .section { padding: 1.5rem; border-radius: 0; border-left: none; border-right: none; }
+      .section h2 { font-size: 1.5rem; }
+      th, td { padding: 0.75rem; font-size: 0.9rem; }
+    }
+    @media print {
+      header, nav, button { display: none; }
+      .section { page-break-inside: avoid; border: 1px solid #ccc; }
+    }
+  </style>
 </head>
 
-<body class="dark-mode">
+<body>
 
-    <!-- HEADER & NAVIGATION -->
-    <header>
-        <div>
-            <h1>🏙️ Medellín 2050: Smart City</h1>
-            <p>IGCSE ICT (0417) | Session 3: Wiring the City's Nervous System</p>
+<header>
+  <div>
+    <h1>The 48% Report</h1>
+    <p>Grade 11 — Cambridge IGCSE ICT | Database Session 3 of 11</p>
+  </div>
+  <nav>
+    <button onclick="toggleMode()">Theme</button>
+    <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
+    <button onclick="scrollToSection('concepts')">Concepts</button>
+    <button onclick="scrollToSection('demo')">Demo</button>
+    <button onclick="scrollToSection('mission')">Mission</button>
+    <button onclick="scrollToSection('drill')">Drill</button>
+    <button onclick="scrollToSection('vocab')">Vocab</button>
+  </nav>
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== OPENING ACTIVITY ===================== -->
+  <section class="section" id="opening-activity">
+    <h2>The Hook: Brutal Arithmetic</h2>
+
+    <p>The database task is worth approximately 28–35 marks depending on the year. Report 2 alone — one single report — accounts for between 12 and 18 of those marks. That is more than half the entire database section, delivered by one task.</p>
+
+    <div class="highlight-box">
+      <strong>Write this on the board — it stays there all session:</strong>
+      <div class="code-block">REPORT 2 = Query (calculated field + OR rows) → Report (Avg/Sum below column + landscape)</div>
+    </div>
+
+    <p>Here is what Report 2 always contains, and what each element costs if you get it wrong:</p>
+
+    <div style="margin: 1.5rem 0;">
+      <p style="margin-bottom: 0.5rem; font-weight: 600;">Calculated field formula — up to 2 marks</p>
+      <div class="mark-bar-wrap"><div class="mark-bar warning" style="width:14%">2 marks</div></div>
+
+      <p style="margin-bottom: 0.5rem; margin-top: 1rem; font-weight: 600;">OR criteria (wildcard on both rows) — up to 4 marks</p>
+      <div class="mark-bar-wrap"><div class="mark-bar danger" style="width:28%">4 marks — zero records if wrong</div></div>
+
+      <p style="margin-bottom: 0.5rem; margin-top: 1rem; font-weight: 600;">Average/Sum formula placed correctly — up to 2 marks</p>
+      <div class="mark-bar-wrap"><div class="mark-bar warning" style="width:14%">2 marks</div></div>
+
+      <p style="margin-bottom: 0.5rem; margin-top: 1rem; font-weight: 600;">Field order, sorts, landscape, candidate details — remaining marks</p>
+      <div class="mark-bar-wrap"><div class="mark-bar" style="width:72%">~10 marks</div></div>
+    </div>
+
+    <div class="info-box">
+      Today we dissect every one of these elements using real past paper questions. By the end of this session, Report 2 will not surprise you — ever.
+    </div>
+
+    <h3>Opening Prediction: The Most Dangerous Mistake</h3>
+    <p>Before we cover the content: which of these errors loses the most marks in a single action?</p>
+
+    <div class="concept-check" style="border-left-color: var(--secondary-color);">
+      <h4>Opening Prediction</h4>
+      <div class="options">
+        <div class="option"><input type="radio" name="opening" id="op-a" value="a"><label for="op-a">A) Forgetting to make the report title larger than body text</label></div>
+        <div class="option"><input type="radio" name="opening" id="op-b" value="b"><label for="op-b">B) Placing OR criteria on the same row in the QBE grid (making it AND instead of OR)</label></div>
+        <div class="option"><input type="radio" name="opening" id="op-c" value="c"><label for="op-c">C) Using the wrong PDF filename — lowercase instead of uppercase</label></div>
+        <div class="option"><input type="radio" name="opening" id="op-d" value="d"><label for="op-d">D) Forgetting to set landscape orientation</label></div>
+      </div>
+      <button onclick="checkOpening()">Lock In My Prediction</button>
+      <div class="feedback" id="opening-feedback"></div>
+    </div>
+
+    <p id="prev-carry" style="color:var(--text-muted); font-size:0.9rem; margin-top:1rem;"></p>
+  </section>
+
+  <!-- ===================== LEARNING OBJECTIVES ===================== -->
+  <section class="section" id="learning-objectives">
+    <h2>Learning Objectives</h2>
+
+    <h3>Cognitive Objectives</h3>
+    <p>By the end of this class I will be able to:</p>
+    <div>
+      <div class="obj-item"><div class="obj-status" id="obj-1" onclick="cycleStatus('obj-1')"></div><span>Write a calculated field using the correct syntax — <code>AliasName: [Field]*[Field]</code> — in the QBE grid Field row</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-2" onclick="cycleStatus('obj-2')"></div><span>Set OR criteria correctly across two QBE rows, repeating the wildcard on both rows when required</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-3" onclick="cycleStatus('obj-3')"></div><span>Place =Avg([Field]) or =Sum([Field]) in the Report Footer, aligned below the correct column, with the correct label to its left</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-4" onclick="cycleStatus('obj-4')"></div><span>Apply the 30-second parse method to decode any Report 2 question before touching Access</span></div>
+      <div class="obj-item"><div class="obj-status" id="obj-5" onclick="cycleStatus('obj-5')"></div><span>Distinguish between Report Footer (grand total, fires once) and Group Footer (subtotal per group, fires per group)</span></div>
+    </div>
+
+    <h3>Social-Emotional Objectives</h3>
+    <p>I will develop the ability to:</p>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Parse before building — resisting the impulse to open Access before reading the full question</li>
+      <li>Demonstrate wrong first — building the incorrect OR criteria deliberately to see the empty results, then fixing them</li>
+      <li>Manage complexity methodically — Report 2 has more moving parts than Report 1, and the only way to handle that is a consistent sequence, not guesswork</li>
+    </ul>
+
+    <h3>Connection to Prior Knowledge</h3>
+    <div class="highlight-box">
+      Sessions 1 and 2 gave you the full pipeline: tables → query → report → PDF. Session 3 adds three new elements to the query stage (calculated field, OR rows, mixed AND/OR) and one new skill to the report stage (aligned aggregate formula). Everything else is the same pipeline you already know.
+    </div>
+
+    <h3>Success Criteria</h3>
+    <div class="highlight-box">
+      <div class="obj-item"><div class="obj-status" id="sc-1" onclick="cycleStatus('sc-1')"></div><span>I can write <code>AnnualBonus: [Salary]*0.1</code> without looking it up</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-2" onclick="cycleStatus('sc-2')"></div><span>I know that AND lives on the same row; OR lives on a different row</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-3" onclick="cycleStatus('sc-3')"></div><span>I repeat the wildcard Like "*Tomas*" on BOTH the Criteria row AND the Or: row</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-4" onclick="cycleStatus('sc-4')"></div><span>I align the aggregate formula textbox below the correct column in Design View</span></div>
+      <div class="obj-item"><div class="obj-status" id="sc-5" onclick="cycleStatus('sc-5')"></div><span>I can parse a Report 2 task in 5 elements before building anything</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== CONCEPT EXPLORATION ===================== -->
+  <section class="section" id="concepts">
+    <h2>Concept Exploration</h2>
+
+    <!-- 2A: Calculated Fields -->
+    <h3>2A — Calculated Fields: The Exact Exam Patterns</h3>
+    <p>A calculated field is a column that does not exist in any table. It is computed from other fields at the moment the query runs. It is never stored — it is always recalculated fresh each time the query executes.</p>
+
+    <div class="difficulty-tabs" id="cf-tabs">
+      <button class="active" onclick="switchTab('cf','basic',this)">Basic</button>
+      <button onclick="switchTab('cf','intermediate',this)">Intermediate</button>
+      <button onclick="switchTab('cf','advanced',this)">Advanced</button>
+    </div>
+
+    <div class="difficulty-content active" id="cf-basic">
+      <p>The syntax is always the same — type this into the Field row of a blank QBE column:</p>
+      <div class="code-block">AliasName: [Field1]*[Field2]</div>
+      <p>The alias is the column heading that will appear in the report. The square brackets contain the exact field names from the table. The operator can be *, /, +, or -.</p>
+      <div class="info-box">
+        <strong>Example:</strong> <code>AnnualBonus: [Salary]*0.1</code><br>
+        This creates a new column called AnnualBonus, showing 10% of each record's Salary value.
+      </div>
+    </div>
+
+    <div class="difficulty-content" id="cf-intermediate">
+      <p>Every calculated field from real Cambridge past papers — the pattern is always one or two arithmetic operations:</p>
+      <table>
+        <thead><tr><th>Paper</th><th>Alias</th><th>Formula</th><th>What it calculates</th></tr></thead>
+        <tbody>
+          <tr><td>FM2021</td><td>OrderValue</td><td><code>[NetPrice]*[ReorderNo]</code></td><td>Value of restocking one product</td></tr>
+          <tr><td>FM2021</td><td>OrderNow</td><td><code>[Available]&lt;=[MinStock]</code></td><td>Boolean: does this need reordering?</td></tr>
+          <tr><td>FM2024</td><td>Sales</td><td><code>[GlobalSales]/354*100</code></td><td>Percentage of total market sales</td></tr>
+          <tr><td>Session 3</td><td>AnnualBonus</td><td><code>[Salary]*0.1</code></td><td>10% of salary</td></tr>
+        </tbody>
+      </table>
+      <div class="warning-box">
+        <strong>Formatting the calculated field:</strong> After typing the formula, right-click the column header in the QBE grid → Properties → set Format and Decimal Places. The question always specifies the format. A calculated field showing 450000.0000 instead of £450,000.00 loses the formatting mark.
+      </div>
+    </div>
+
+    <div class="difficulty-content" id="cf-advanced">
+      <div class="warning-box">
+        <strong>The #Error trap:</strong> If your calculated field shows #Error in the query or report, the field name in square brackets does not exactly match the actual field name in the table — including spaces, hyphens, and capitalisation. <code>[GlobalSales]</code> is not the same as <code>[Global Sales]</code>. Open the table in Design View, check the exact field name character by character, and correct the formula.
+      </div>
+      <p>The calculated field exists only in the query output — it is not stored back into the table. Each time you run the query, Access reads the source fields and computes the value fresh. This means:</p>
+      <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+        <li>If you update Salary in the table, the AnnualBonus value in the query changes automatically on next run</li>
+        <li>You cannot filter the calculated field in the same query where it is created — you must use a second query if you need to filter on it</li>
+        <li>The calculated field does not appear in the table's Design View — it only exists in the query</li>
+      </ul>
+    </div>
+
+    <!-- CCQ: Calculated fields -->
+    <div class="concept-check">
+      <h4>Concept Check — Calculated Fields</h4>
+      <p class="question-text">The exam instruction says: "contains a new field called Sales calculated as GlobalSales divided by 354, then multiplied by 100." What should be typed in the Field row of a blank QBE column?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-cf" id="ccf-a" value="a"><label for="ccf-a">A) Sales = GlobalSales / 354 * 100</label></div>
+        <div class="option"><input type="radio" name="ccq-cf" id="ccf-b" value="b"><label for="ccf-b">B) Sales: [GlobalSales]/354*100</label></div>
+        <div class="option"><input type="radio" name="ccq-cf" id="ccf-c" value="c"><label for="ccf-c">C) [Sales]: GlobalSales/354*100</label></div>
+        <div class="option"><input type="radio" name="ccq-cf" id="ccf-d" value="d"><label for="ccf-d">D) =Sales: [GlobalSales]/354*100</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-cf','b','ccq-cf-fb','Correct. The syntax is always AliasName: followed by the formula with field names in square brackets. No equals sign before the alias; the colon separates alias from formula; field names must be in square brackets; constants (354) are written without brackets.','Not quite. The correct syntax is: AliasName: [FieldName]/constant*constant. No = sign. No brackets around the alias name. The alias is to the left of the colon; the formula is to the right.')">Check Answer</button>
+      <div class="feedback" id="ccq-cf-fb"></div>
+    </div>
+
+    <!-- 2B: OR Criteria -->
+    <h3>2B — OR Criteria: The Row That Costs Four Marks</h3>
+    <p>This is the single most common error in all Paper 2 database tasks. The rule, stated once and memorised:</p>
+    <div class="highlight-box" style="font-size:1.1rem; text-align:center;">
+      <strong>AND lives on the same row. &nbsp; OR lives on a different row.</strong>
+    </div>
+
+    <div class="difficulty-tabs" id="or-tabs">
+      <button class="active" onclick="switchTab('or','basic',this)">Basic</button>
+      <button onclick="switchTab('or','intermediate',this)">Intermediate</button>
+      <button onclick="switchTab('or','advanced',this)">Advanced</button>
+    </div>
+
+    <div class="difficulty-content active" id="or-basic">
+      <p>For the exam instruction: <em>"selects records where AgeCode is C3 or C7"</em></p>
+      <div class="criteria-compare">
+        <div class="criteria-panel wrong">
+          <div class="criteria-label">Wrong — AND (zero records)</div>
+          <div class="qbe-grid">
+            <div class="qbe-row" style="grid-template-columns:90px 1fr;">
+              <div class="qbe-cell qbe-header">Row</div>
+              <div class="qbe-cell qbe-header">AgeCode</div>
+            </div>
+            <div class="qbe-row" style="grid-template-columns:90px 1fr;">
+              <div class="qbe-cell qbe-header">Criteria</div>
+              <div class="qbe-cell qbe-wrong">"C3" AND "C7"</div>
+            </div>
+            <div class="qbe-row" style="grid-template-columns:90px 1fr;">
+              <div class="qbe-cell qbe-header">Or:</div>
+              <div class="qbe-cell"></div>
+            </div>
+          </div>
+          <p style="padding:0.75rem; font-size:0.85rem; color:var(--accent-color);">No record can be simultaneously C3 AND C7. Zero results.</p>
         </div>
-        <nav>
-            <button onclick="toggleMode()">🌙 Theme</button>
-            <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
-            <button onclick="scrollToSection('concepts')">Concepts</button>
-            <button onclick="scrollToSection('demo')">Demo</button>
-            <button onclick="scrollToSection('mission')">Mission</button>
-            <button onclick="scrollToSection('drill')">Drill</button>
-            <button onclick="scrollToSection('vocab')">Vocab</button>
-        </nav>
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+        <div class="criteria-panel correct">
+          <div class="criteria-label">Correct — OR (all C3 and C7)</div>
+          <div class="qbe-grid">
+            <div class="qbe-row" style="grid-template-columns:90px 1fr;">
+              <div class="qbe-cell qbe-header">Row</div>
+              <div class="qbe-cell qbe-header">AgeCode</div>
+            </div>
+            <div class="qbe-row" style="grid-template-columns:90px 1fr;">
+              <div class="qbe-cell qbe-header">Criteria</div>
+              <div class="qbe-cell qbe-criteria">"C3"</div>
+            </div>
+            <div class="qbe-row" style="grid-template-columns:90px 1fr;">
+              <div class="qbe-cell qbe-header">Or:</div>
+              <div class="qbe-cell qbe-or">"C7"</div>
+            </div>
+          </div>
+          <p style="padding:0.75rem; font-size:0.85rem; color:#27ae60;">Records where AgeCode = C3, plus records where AgeCode = C7.</p>
         </div>
-    </header>
+      </div>
+    </div>
 
-    <main>
-        <!-- OPENING ACTIVITY (MANDATORY & INTERACTIVE) -->
-        <section class="section" id="opening-activity">
-            <h2>⚡ The Hook: The Ghost Bills</h2>
-            <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
-                <p><strong>2050. The city's Finance Minister calls an emergency meeting.</strong></p>
-                <p>47,000 energy bills have been issued to citizens — but when the AI cross-references the citizen
-                    registry, it finds that 312 of those bills are linked to <code>CitizenID</code>s that no longer
-                    exist. The citizens were deleted from the registry after a data migration, but their bills stayed
-                    behind — orphaned records floating in the system, attached to nobody.</p>
-                <p>The city can't collect the fines. The courts can't prosecute. The data is legally worthless.</p>
+    <div class="difficulty-content" id="or-intermediate">
+      <p><strong>Mixed AND/OR — the hardest pattern (FM2024):</strong></p>
+      <p>Instruction: <em>"GameTitle includes the text Tomas AND AgeCode is C3 or C7"</em></p>
+      <div class="qbe-grid">
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Row</div>
+          <div class="qbe-cell qbe-header">GameTitle</div>
+          <div class="qbe-cell qbe-header">AgeCode</div>
+        </div>
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Criteria</div>
+          <div class="qbe-cell qbe-criteria">Like "*Tomas*"</div>
+          <div class="qbe-cell qbe-criteria">"C3"</div>
+        </div>
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Or:</div>
+          <div class="qbe-cell qbe-or">Like "*Tomas*"</div>
+          <div class="qbe-cell qbe-or">"C7"</div>
+        </div>
+      </div>
+      <div class="warning-box">
+        <strong>The wildcard-repetition rule:</strong> Like "*Tomas*" must appear on BOTH the Criteria row AND the Or: row. Each row in the QBE grid is a completely independent condition set. If the wildcard is only on the Criteria row, the Or: row becomes "AgeCode = C7" with no title restriction — returning ALL C7 games, not just Tomas games.
+      </div>
+    </div>
+
+    <div class="difficulty-content" id="or-advanced">
+      <p><strong>Session 3 demo task — three-condition mixed AND/OR:</strong></p>
+      <p>Instruction: <em>"DeptName includes the text Services AND IsActive is Yes OR ServiceGrade is Director"</em></p>
+      <div class="qbe-grid">
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Row</div>
+          <div class="qbe-cell qbe-header">DeptName</div>
+          <div class="qbe-cell qbe-header">IsActive</div>
+          <div class="qbe-cell qbe-header">ServiceGrade</div>
+        </div>
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Criteria</div>
+          <div class="qbe-cell qbe-criteria">Like "*Services*"</div>
+          <div class="qbe-cell qbe-criteria">Yes</div>
+          <div class="qbe-cell"></div>
+        </div>
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Or:</div>
+          <div class="qbe-cell"></div>
+          <div class="qbe-cell"></div>
+          <div class="qbe-cell qbe-or">"Director"</div>
+        </div>
+      </div>
+      <p style="margin-top:0.75rem;">Row 1: DeptName contains "Services" AND IsActive is Yes → both on same row = AND. Row 2: ServiceGrade is "Director" → alone on a separate row = OR. Result: anyone in a Services department who is active, PLUS all Directors regardless of department.</p>
+    </div>
+
+    <!-- Interactive OR demo -->
+    <div class="exercise">
+      <h4>Build the OR Grid</h4>
+      <p>The exam instruction says: <em>"selects records where GameTitle includes the text Tomas AND AgeCode is C3 or C7"</em>. Select the correct cell contents for each position in the QBE grid.</p>
+
+      <div style="overflow-x:auto;">
+        <div class="qbe-grid" style="min-width:420px;">
+          <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+            <div class="qbe-cell qbe-header">Row</div>
+            <div class="qbe-cell qbe-header">GameTitle</div>
+            <div class="qbe-cell qbe-header">AgeCode</div>
+          </div>
+          <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+            <div class="qbe-cell qbe-header">Criteria</div>
+            <div class="qbe-cell" style="padding:0.25rem;">
+              <select id="grid-c1" style="font-size:0.8rem; padding:0.4rem; margin:0;">
+                <option value="">— select —</option>
+                <option value="a">Like "*Tomas*"</option>
+                <option value="b">"Tomas"</option>
+                <option value="c">Like "Tomas*"</option>
+              </select>
             </div>
-
-            <div class="exercise">
-                <p class="question-text">The two tables — CITIZENS and ENERGY_BILLS — were never formally linked. What
-                    specific database term describes the law we need to install: "If a citizen doesn't exist, their
-                    bills cannot exist either"?</p>
-
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="hook-guess3" id="hook3-1" value="wrong1">
-                        <label class="radio-label" for="hook3-1">Flat-file Integration</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="hook-guess3" id="hook3-2" value="wrong2">
-                        <label class="radio-label" for="hook3-2">Primary Lookup Checking</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="hook-guess3" id="hook3-3" value="correct">
-                        <label class="radio-label" for="hook3-3">Referential Integrity</label>
-                    </div>
-                </div>
-                <button onclick="checkHook3()">Verify Term</button>
-                <div id="hook3-feedback" class="feedback"></div>
+            <div class="qbe-cell" style="padding:0.25rem;">
+              <select id="grid-c2" style="font-size:0.8rem; padding:0.4rem; margin:0;">
+                <option value="">— select —</option>
+                <option value="a">"C3" AND "C7"</option>
+                <option value="b">"C3"</option>
+                <option value="c">"C3" OR "C7"</option>
+              </select>
             </div>
-            <p><em>Today, we build the bridges between those islands. And we install the city's immune system.</em></p>
-        </section>
-
-        <!-- LEARNING OBJECTIVES -->
-        <section class="section" id="learning-objectives">
-            <h2>🎯 Mission Objectives</h2>
-            <p>To wire the city's nervous system, you must learn to link tables together properly. By the end of this
-                session, you will be able to:</p>
-
-            <div class="highlight-box">
-                <div class="checklist-item">
-                    <input type="checkbox" id="s3-obj-1" onchange="saveProgressS3()">
-                    <label for="s3-obj-1"><strong>Cognitive:</strong> Define Primary Key, Foreign Key, and Referential
-                        Integrity.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="s3-obj-2" onchange="saveProgressS3()">
-                    <label for="s3-obj-2"><strong>Cognitive:</strong> Explain the difference between Flat-file and
-                        Relational databases.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="s3-obj-3" onchange="saveProgressS3()">
-                    <label for="s3-obj-3"><strong>Cognitive:</strong> Build One-to-Many relationships between tables in
-                        MS Access.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="s3-obj-4" onchange="saveProgressS3()">
-                    <label for="s3-obj-4"><strong>Social-Emotional:</strong> Appreciate how structural integrity
-                        prevents systemic chaos in large organizations.</label>
-                </div>
+          </div>
+          <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+            <div class="qbe-cell qbe-header">Or:</div>
+            <div class="qbe-cell" style="padding:0.25rem;">
+              <select id="grid-o1" style="font-size:0.8rem; padding:0.4rem; margin:0;">
+                <option value="">— select —</option>
+                <option value="a">Like "*Tomas*"</option>
+                <option value="b">(empty)</option>
+                <option value="c">Like "Tomas*"</option>
+              </select>
             </div>
-            <p><small><em>Prior Knowledge Required: Creating tables, defining data types, and setting Primary Keys
-                        (Session 1 & 2).</em></small></p>
-        </section>
-
-        <!-- CONCEPT EXPLORATION -->
-        <section class="section" id="concepts">
-            <h2>📚 The City Planner's Cheat Sheet</h2>
-            <p>Without relationships, your tables are just isolated spreadsheets that happen to live in the same file.
-                Relationships are what make a database <em>relational</em>.</p>
-
-            <div class="difficulty-tabs">
-                <button class="active" onclick="switchDifficulty('basic')">Basic: Core Vocabulary</button>
-                <button onclick="switchDifficulty('intermediate')">Intermediate: Relationship Types</button>
-                <button onclick="switchDifficulty('advanced')">Advanced: Referential Integrity Options</button>
+            <div class="qbe-cell" style="padding:0.25rem;">
+              <select id="grid-o2" style="font-size:0.8rem; padding:0.4rem; margin:0;">
+                <option value="">— select —</option>
+                <option value="a">"C7"</option>
+                <option value="b">"C3"</option>
+                <option value="c">(empty)</option>
+              </select>
             </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="checkOrGrid()">Check My Grid</button>
+      <div class="feedback" id="or-grid-fb"></div>
+    </div>
 
-            <!-- Basic Concept -->
-            <div id="content-basic" class="difficulty-content active">
-                <h3>The Core Vocabulary (0417 Precision)</h3>
-                <table>
-                    <tr>
-                        <th>Term</th>
-                        <th>Formal IGCSE Definition</th>
-                        <th>Medellín 2050 Analogy</th>
-                    </tr>
-                    <tr>
-                        <td><strong>Primary Key</strong></td>
-                        <td>A field that uniquely identifies each record in its own table; cannot be null or duplicated.
-                        </td>
-                        <td>The citizen's biometric chip ID.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Foreign Key</strong></td>
-                        <td>A field in one table that references the primary key of another table, creating a link
-                            between them.</td>
-                        <td>The <code>CitizenID</code> field inside ENERGY_BILLS — it points back to a real person.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Relationship</strong></td>
-                        <td>A defined link between two tables based on matching key fields.</td>
-                        <td>The bridge connecting the Citizens Registry to the Finance Department.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Referential Integrity</strong></td>
-                        <td>A rule preventing a foreign key value from existing without a matching primary key value in
-                            the related table.</td>
-                        <td>The city law: "You cannot bill a citizen who doesn't exist."</td>
-                    </tr>
-                </table>
-            </div>
+    <!-- CCQ: OR criteria -->
+    <div class="concept-check">
+      <h4>Concept Check — OR Criteria</h4>
+      <p class="question-text">A student places Like "*Tomas*" only on the Criteria row (not the Or: row), and puts "C3" on Criteria, "C7" on Or:. What records will the query return?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-or" id="cor-a" value="a"><label for="cor-a">A) Only Tomas games with AgeCode C3 or C7 — correct result</label></div>
+        <div class="option"><input type="radio" name="ccq-or" id="cor-b" value="b"><label for="cor-b">B) Tomas games with AgeCode C3, PLUS all games with AgeCode C7 regardless of title — too many records</label></div>
+        <div class="option"><input type="radio" name="ccq-or" id="cor-c" value="c"><label for="cor-c">C) Zero records — the criteria are contradictory</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-or','b','ccq-or-fb','Correct. Each row in the QBE grid is an independent condition set. Row 1: GameTitle Like "*Tomas*" AND AgeCode = "C3" — selects Tomas games rated C3. Row 2: AgeCode = "C7" with no title condition — selects ALL C7 games, not just Tomas ones. The missing wildcard on the Or: row is the error. It must be repeated on both rows.','Incorrect. The missing wildcard on the Or: row makes that row independent — it matches any record with AgeCode C7, regardless of title. The result is Tomas-C3 records PLUS all C7 records (including non-Tomas games).')">Check Answer</button>
+      <div class="feedback" id="ccq-or-fb"></div>
+    </div>
 
-            <!-- Intermediate Concept -->
-            <div id="content-intermediate" class="difficulty-content">
-                <h3>Relationship Types: The Three City Structures</h3>
-                <p>The syllabus expects you to recognise all three, even though you mainly build One-to-Many.</p>
-                <table>
-                    <tr>
-                        <th>Type</th>
-                        <th>Description</th>
-                        <th>City Example</th>
-                    </tr>
-                    <tr>
-                        <td><strong>One-to-One</strong></td>
-                        <td>One record in A matches exactly one record in B.</td>
-                        <td>One citizen ↔ one biometric profile.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>One-to-Many</strong></td>
-                        <td>One record in A can be linked to many records in B.</td>
-                        <td>One district ↔ many citizens.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Many-to-Many</strong></td>
-                        <td>Many in A match many in B.</td>
-                        <td>Many citizens ↔ many transport routes. (Requires a junction table).</td>
-                    </tr>
-                </table>
-                <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
-                    <strong>🎯 Exam Trap:</strong> Do not write "two-to-many" or "multiple-to-one." The correct terms
-                    are strictly one-to-one, one-to-many, and many-to-many. Marks are lost for informal descriptions.
-                </div>
-            </div>
+    <!-- 2C: Aggregate formulas -->
+    <h3>2C — Report 2 Aggregate Formulas: Placement and Alignment</h3>
 
-            <!-- Advanced Concept -->
-            <div id="content-advanced" class="difficulty-content">
-                <h3>Referential Integrity: The Two Cascade Options</h3>
-                <p>When you enforce referential integrity in Access, you get two optional cascade rules:</p>
-                <ul>
-                    <li><strong>Cascade Update Related Fields:</strong> If a Primary Key value changes in Table A, all
-                        matching Foreign Key values in Table B update automatically. <em>(Safe: Use when PK values might
-                            legitimately change).</em></li>
-                    <li><strong>Cascade Delete Related Records:</strong> If a record is deleted from Table A, all linked
-                        records in Table B are deleted automatically. <em>(Dangerous: Deleting a district deletes all
-                            citizens in it!).</em></li>
-                </ul>
-                <p>⚠️ <strong>Teaching point:</strong> In most exam scenarios, cascade delete is dangerous. The safer
-                    answer on Paper 1 is: "Referential integrity should prevent deletion of a parent record while child
-                    records still exist."</p>
-            </div>
-        </section>
+    <div class="difficulty-tabs" id="agg-tabs">
+      <button class="active" onclick="switchTab('agg','basic',this)">Basic</button>
+      <button onclick="switchTab('agg','intermediate',this)">Intermediate</button>
+      <button onclick="switchTab('agg','advanced',this)">Advanced</button>
+    </div>
 
-        <!-- APPLIED EXAMPLES / DEMO -->
-        <section class="section" id="demo">
-            <h2>🛠️ The Live Build: Bridging the Islands</h2>
-            <p>We are going to link three tables: <code>DISTRICTS</code>, <code>CITIZENS</code>, and
-                <code>ENERGY_BILLS</code>.</p>
+    <div class="difficulty-content active" id="agg-basic">
+      <p>Report 2 always asks for one aggregate placed at the end of the report, below a specific column. Three rules:</p>
+      <div class="step-item"><div class="step-number">1</div><div class="step-content"><p>The formula goes in the <strong>Report Footer</strong> — fires once, at the very end</p></div></div>
+      <div class="step-item"><div class="step-number">2</div><div class="step-content"><p>The textbox must be <strong>aligned below the correct column</strong> — drag it horizontally in Design View</p></div></div>
+      <div class="step-item"><div class="step-number">3</div><div class="step-content"><p>A label sits <strong>immediately to the left</strong> — text must match the question exactly</p></div></div>
+    </div>
 
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                <button
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1_fhxLGvXQcHWuoUglRP_yZqYVxzLdjoBfLQbXRnWwuM/edit?usp=sharing', '_blank')">
-                    📥 Download DISTRICTS (CSV)
-                </button>
-                <button
-                    onclick="window.open('https://docs.google.com/spreadsheets/d/1vKQPvOnHeLIgWuoCHgdPk22Hk0enEKLg3Gj_APUbfXI/edit?usp=sharing', '_blank')">
-                    📥 Download ENERGY_BILLS (CSV)
-                </button>
-            </div>
+    <div class="difficulty-content" id="agg-intermediate">
+      <p>Real past paper aggregate formulas:</p>
+      <table>
+        <thead><tr><th>Paper</th><th>Formula</th><th>Column it goes below</th><th>Label</th></tr></thead>
+        <tbody>
+          <tr><td>FM2021</td><td><code>=Sum([OrderValue])</code></td><td>OrderValue</td><td>Net value of this order</td></tr>
+          <tr><td>FM2024</td><td><code>=Avg([Price])</code></td><td>Price</td><td>Average game price</td></tr>
+          <tr><td>Session 3</td><td><code>=Avg([Salary])</code></td><td>Salary</td><td>Average salary:</td></tr>
+        </tbody>
+      </table>
+      <div class="info-box">
+        <strong>The alignment mark:</strong> The examiner checks that the aggregate value is positioned below the column it summarises — aligned with that column, not floating in the centre of the footer. In Design View, drag the textbox left or right until it sits directly below the column header in the Page Header section.
+      </div>
+    </div>
 
-            <div class="highlight-box">
-                <h4>Step 1: The DISTRICTS Reference Table</h4>
-                <p>Create a new table called <code>DISTRICTS</code> in Design View. Set <code>DistrictCode</code> as the
-                    Primary Key 🔑 (Short Text). Import the CSV.</p>
+    <div class="difficulty-content" id="agg-advanced">
+      <div class="warning-box">
+        <strong>FM2021 double-formula pattern:</strong> FM2021 required TWO formulas in the Report Footer: =Sum([OrderValue]) labelled "Net value of this order:", and =Sum([OrderValue])*0.2 labelled "VAT on this order:". Access does not allow one Report Footer textbox to reference another in the same section — the VAT formula must repeat the Sum expression and multiply by 0.2. You cannot write =NetValue*0.2 where NetValue is your first textbox.
+      </div>
+      <p>Format rules by formula type:</p>
+      <table>
+        <thead><tr><th>Formula result</th><th>Format</th><th>Decimal Places</th></tr></thead>
+        <tbody>
+          <tr><td>=Avg([Price]) — money average</td><td>Currency</td><td>2</td></tr>
+          <tr><td>=Sum([OrderValue]) — money total</td><td>Currency</td><td>2</td></tr>
+          <tr><td>=Count(*) — record count</td><td>General / Integer</td><td>0</td></tr>
+          <tr><td>=Sum([Packets]) — quantity total</td><td>General / Integer</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-                <h4>Step 2: Modify CITIZENS (Adding the Foreign Key)</h4>
-                <p>Open <code>CITIZENS</code> in Design View. Add a new field called <code>DistrictCode</code> (Short
-                    Text). <em>This is your Foreign Key.</em> It must have the same data type as the Primary Key it
-                    points to.</p>
-                <p>Save the table. Switch to Datasheet View and update each of the 10 citizens with their correct
-                    <code>DistrictCode</code>:</p>
-                <table>
-                    <tr>
-                        <th>CitizenID</th>
-                        <th>DistrictCode to enter</th>
-                    </tr>
-                    <tr>
-                        <td>C-00101 (El Poblado)</td>
-                        <td>D-001</td>
-                    </tr>
-                    <tr>
-                        <td>C-00102 (Laureles)</td>
-                        <td>D-002</td>
-                    </tr>
-                    <tr>
-                        <td>C-00103 (Envigado)</td>
-                        <td>D-003</td>
-                    </tr>
-                    <tr>
-                        <td>C-00104 (El Poblado)</td>
-                        <td>D-001</td>
-                    </tr>
-                    <tr>
-                        <td>C-00105 (Belén)</td>
-                        <td>D-004</td>
-                    </tr>
-                    <tr>
-                        <td>C-00106 (Laureles)</td>
-                        <td>D-002</td>
-                    </tr>
-                    <tr>
-                        <td>C-00107 (Envigado)</td>
-                        <td>D-003</td>
-                    </tr>
-                    <tr>
-                        <td>C-00108 (El Poblado)</td>
-                        <td>D-001</td>
-                    </tr>
-                    <tr>
-                        <td>C-00109 (Belén)</td>
-                        <td>D-004</td>
-                    </tr>
-                    <tr>
-                        <td>C-00110 (Laureles)</td>
-                        <td>D-002</td>
-                    </tr>
-                </table>
+    <!-- CCQ: Avg alignment -->
+    <div class="concept-check">
+      <h4>Concept Check — Formula Alignment</h4>
+      <p class="question-text">A student places =Avg([Price]) in the Report Footer, but positions the textbox in the horizontal centre of the footer — not below the Price column. The formula calculates correctly and shows the right value. Will this lose a mark?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-agg" id="cagg-a" value="a"><label for="cagg-a">A) No — the formula calculates correctly and the value is right, so all marks are awarded</label></div>
+        <div class="option"><input type="radio" name="ccq-agg" id="cagg-b" value="b"><label for="cagg-b">B) Possibly yes — the mark scheme checks position, not just value. The formula must be aligned below the Price column. A floating formula may be marked as incorrectly placed.</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-agg','b','ccq-agg-fb','Correct. The exam mark scheme is specific about placement — "places this below the Price field at the end of the report" means below the Price column, visually aligned. In Design View, drag the formula textbox until it sits directly below the Price column header. The fix takes five seconds and protects a dedicated mark.','Incorrect. The mark scheme awards the placement mark based on the formula being below the correct column, not just present in the footer. A formula floating in the centre of the footer fails the placement condition. Alignment matters.')">Check Answer</button>
+      <div class="feedback" id="ccq-agg-fb"></div>
+    </div>
 
-                <h4>Step 3: The ENERGY_BILLS Table</h4>
-                <p>Create a new table called <code>ENERGY_BILLS</code>. Set <code>BillID</code> as AutoNumber (Primary
-                    Key 🔑). Ensure it has a <code>CitizenID</code> field (Short Text) acting as its Foreign Key. Import
-                    the CSV.</p>
-            </div>
+    <!-- 2D: 30-second parse -->
+    <h3>2D — Decoding a Report 2 Question in 30 Seconds</h3>
+    <p>Before touching Access, scan the question for these five elements in this exact order:</p>
 
-            <h3>Step 4: Build the Relationships in Access</h3>
-            <ol>
-                <li>Go to <strong>Database Tools</strong> → <strong>Relationships</strong>.</li>
-                <li>Add all three tables to the window.</li>
-                <li><strong>Relationship 1 (DISTRICTS → CITIZENS):</strong> Drag <code>DistrictCode</code> from
-                    DISTRICTS onto <code>DistrictCode</code> in CITIZENS. Check <em>Enforce Referential Integrity</em>
-                    and <em>Cascade Update</em>. Click Create. (You should see a 1 to ∞ line).</li>
-                <li><strong>Relationship 2 (CITIZENS → ENERGY_BILLS):</strong> Drag <code>CitizenID</code> from CITIZENS
-                    onto <code>CitizenID</code> in ENERGY_BILLS. Check <em>Enforce Referential Integrity</em> and
-                    <em>Cascade Update</em>. Click Create.</li>
-            </ol>
+    <div class="parse-card">
+      <div class="parse-num">1</div><div class="parse-text"><strong>TABLES</strong> — how many? Which join?</div>
+      <div class="parse-num">2</div><div class="parse-text"><strong>CRITERIA</strong> — wildcard? Boolean? OR? How many rows needed?</div>
+      <div class="parse-num">3</div><div class="parse-text"><strong>CALCULATED FIELD</strong> — what formula? what alias? what format?</div>
+      <div class="parse-num">4</div><div class="parse-text"><strong>AGGREGATE</strong> — Sum or Avg? Which column? What label?</div>
+      <div class="parse-num">5</div><div class="parse-text"><strong>FORMAT</strong> — portrait or landscape? header or footer for candidate details?</div>
+    </div>
 
-            <p><strong>The Breaking Test:</strong> Go to ENERGY_BILLS in Datasheet View. Try to add a new record with
-                CitizenID = C-00999. Access blocks it because C-00999 doesn't exist in the CITIZENS table. You have
-                successfully prevented orphan records!</p>
-        </section>
+    <div class="exercise">
+      <h4>Live Parse: FM2024 Report 2</h4>
+      <p>Apply the 5-element parse to this exam extract. Fill in each element before revealing the answer.</p>
+      <div class="highlight-box" style="font-style:italic;">
+        "Using fields from the games table and classifications table, produce a tabular report that selects records where GameTitle includes the text Tomas AND AgeCode is C3 or C7; contains a new field called Sales calculated as GlobalSales divided by 354 multiplied by 100; sorts ascending ConsoleType then descending GlobalSales; landscape; average price below Price column labelled 'Average game price'; candidate details in footer."
+      </div>
+      <textarea id="parse-input" placeholder="Write your 5-element parse here:
+1. TABLES:
+2. CRITERIA:
+3. CALCULATED FIELD:
+4. AGGREGATE:
+5. FORMAT:" rows="8" onchange="localStorage.setItem('s3-parse', this.value)"></textarea>
+      <button onclick="toggleSolution('parse-sol')">Show Full Parse</button>
+      <div id="parse-sol" class="hidden" style="margin-top:1rem; padding:1.25rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <div class="parse-card">
+          <div class="parse-num">1</div><div class="parse-text"><strong>TABLES:</strong> games + classifications (2-table join on AgeCode)</div>
+          <div class="parse-num">2</div><div class="parse-text"><strong>CRITERIA:</strong> Like "*Tomas*" on BOTH rows; "C3" row 1, "C7" row 2 → 2-row OR pattern</div>
+          <div class="parse-num">3</div><div class="parse-text"><strong>CALCULATED FIELD:</strong> <code>Sales: [GlobalSales]/354*100</code> → format 2 decimal places</div>
+          <div class="parse-num">4</div><div class="parse-text"><strong>AGGREGATE:</strong> <code>=Avg([Price])</code> → Currency → below Price column → label: Average game price</div>
+          <div class="parse-num">5</div><div class="parse-text"><strong>FORMAT:</strong> Landscape; candidate details in Page Footer</div>
+        </div>
+        <p style="margin-top:0.75rem; color:var(--text-muted); font-size:0.9rem;">That is the entire task decoded. Everything else is execution of the pipeline you already know.</p>
+      </div>
+    </div>
 
-        <!-- INTERACTIVE ACTIVITIES / MISSION -->
-        <section class="section" id="mission">
-            <h2>🎯 Student Mission: The Transport Network</h2>
-            <p>The Metro Authority needs its vehicle table (from Session 2) properly linked to a new
-                <code>METRO_LINES</code> reference table. Right now, the LineCode field in METRO_VEHICLES is just free
-                text.</p>
+    <!-- 2E: Report Footer vs Group Footer -->
+    <h3>2E — Report Footer vs Group Footer</h3>
+    <table>
+      <thead><tr><th>Section</th><th>Fires</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Report Footer</strong></td><td>Once, at the very end of the report</td><td>Grand totals for the whole report — Sessions 2 and 3</td></tr>
+        <tr><td><strong>Group Footer</strong></td><td>Once per group, after each group's records</td><td>Subtotals per category — Session 4 onwards</td></tr>
+      </tbody>
+    </table>
+    <div class="info-box">
+      For Report 2 (no grouping), all aggregates go in the Report Footer. The Group Footer is only relevant from Session 4 when we add grouping. Today: Report Footer only.
+    </div>
 
-            <button
-                onclick="window.open('https://docs.google.com/spreadsheets/d/120urV6z__vdl80WR1pUVwGhsb6VdRnJ1mXA6E-yKZDc/edit?usp=sharing', '_blank')"
-                class="btn-accent" style="margin-bottom: 1.5rem;">
-                📥 Download METRO_LINES (CSV)
-            </button>
+  </section>
 
-            <h3>Mission Execution Steps</h3>
-            <p><strong>Step 1:</strong> Create the <code>METRO_LINES</code> Reference Table. Determine the Primary Key
-                and appropriate data types before importing the CSV.</p>
-            <p><strong>Step 2:</strong> Modify <code>METRO_VEHICLES</code>. Ensure the <code>LineCode</code> field
-                exists and its Data Type perfectly matches the Primary Key in METRO_LINES.</p>
-            <p><strong>Step 3:</strong> Build and enforce the relationship in the Relationships window (Cascade Update:
-                Yes, Cascade Delete: No).</p>
+  <!-- ===================== DEMO ===================== -->
+  <section class="section" id="demo">
+    <h2>Guided Demonstration: The Live Build</h2>
+    <p>Open CITY_DB.accdb. We build one complete Report 2 — mirroring exactly the FM2024 past paper pattern. Target: complete the query in under 15 minutes, the report in under 10.</p>
 
-            <div class="exercise" id="mission-checks3">
-                <h4>Pre-Flight Checklist</h4>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m3-chk1" onchange="checkMission3()">
-                    <label for="m3-chk1"><code>METRO_LINES</code> table exists with <code>LineCode</code> as Primary Key
-                        🔑.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m3-chk2" onchange="checkMission3()">
-                    <label for="m3-chk2">The <code>LineCode</code> field in METRO_VEHICLES matches data type of
-                        METRO_LINES.LineCode.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m3-chk3" onchange="checkMission3()">
-                    <label for="m3-chk3">Relationship line is visible in Relationships window with 1 and ∞
-                        symbols.</label>
-                </div>
-                <div class="checklist-item">
-                    <input type="checkbox" id="m3-chk4" onchange="checkMission3()">
-                    <label for="m3-chk4">Referential Integrity is enforced (checkbox ticked).</label>
-                </div>
-                <div id="mission-success3" class="feedback correct" style="display:none;">
-                    ✅ Outstanding! The Metro infrastructure is now relationally sound.
-                </div>
-            </div>
+    <div class="highlight-box">
+      <strong>The task (as it appears in the exam):</strong> Using fields from both tables, produce a tabular report that selects records where DeptName includes the text Services AND IsActive is Yes OR ServiceGrade is Director; contains a new field called AnnualBonus calculated as Salary multiplied by 0.1, formatted as currency with two decimal places; shows only the fields Surname, FirstName, DeptName, ServiceGrade, Salary, AnnualBonus in this order; does not group the data; sorts ascending DeptName then descending Salary; landscape; title City Staff Bonus Report in larger font; average salary below the Salary field, label Average salary:, currency 2dp; candidate details in footer.
+    </div>
 
-            <div class="highlight-box" style="border-left: 4px solid var(--secondary-color);">
-                <h4>🔴 Stretch Challenge: Decommissioning</h4>
-                <p>Line-D is decommissioned. The city engineer wants to delete its record from METRO_LINES. The data
-                    archivist says the vehicles must be dealt with first. Describe, in the correct order, the exact
-                    steps required to delete Line-D's record without violating referential integrity.</p>
-                <textarea id="stretch-answer3" rows="3"
-                    placeholder="Use terms: primary key, foreign key, referential integrity..."></textarea>
-                <button
-                    onclick="saveToLocalStorage('stretch-answer3', document.getElementById('stretch-answer3').value); alert('Saved!');">Save
-                    Solution</button>
-            </div>
-        </section>
+    <!-- Phase 1: Parse -->
+    <h3>Phase 1 — Parse the Task (0:25 – 0:28)</h3>
+    <p>Before touching Access, parse the five elements together:</p>
+    <div class="parse-card">
+      <div class="parse-num">1</div><div class="parse-text"><strong>TABLES:</strong> CITY_OFFICIALS + CITY_DEPARTMENTS (join on DeptCode)</div>
+      <div class="parse-num">2</div><div class="parse-text"><strong>CRITERIA:</strong> Row 1: Like "*Services*" AND Yes; Row 2: "Director" — OR pattern, 2 rows</div>
+      <div class="parse-num">3</div><div class="parse-text"><strong>CALCULATED FIELD:</strong> <code>AnnualBonus: [Salary]*0.1</code> → Currency, 2dp</div>
+      <div class="parse-num">4</div><div class="parse-text"><strong>AGGREGATE:</strong> <code>=Avg([Salary])</code> → Currency → below Salary → label: Average salary:</div>
+      <div class="parse-num">5</div><div class="parse-text"><strong>FORMAT:</strong> Landscape; candidate details in Page Footer</div>
+    </div>
 
-        <!-- PRACTICE EXERCISES & CCQs -->
-        <section class="section" id="drill">
-            <h2>📝 Theory Drill: Structural Logic (Paper 1 Style)</h2>
-            <p>Test your understanding of relational database theory.</p>
+    <!-- Phase 2: Query -->
+    <h3>Phase 2 — Build the Underlying Query (0:28 – 0:42)</h3>
+    <div class="step-item"><div class="step-number">1</div><div class="step-content"><p>Create → Query Design</p></div></div>
+    <div class="step-item"><div class="step-number">2</div><div class="step-content"><p>Add CITY_OFFICIALS and CITY_DEPARTMENTS — verify join line on DeptCode</p></div></div>
+    <div class="step-item"><div class="step-number">3</div><div class="step-content"><p>Add fields in report output order: Surname, FirstName, DeptName, ServiceGrade, Salary — then in the next blank column, type the calculated field</p></div></div>
 
-            <!-- CCQ 1 -->
-            <div class="concept-check">
-                <h4>Question 1: The Key Difference</h4>
-                <p>Which of the following best explains the difference between a Primary Key and a Foreign Key?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq3_1" id="ccq3_1-a" value="wrong">
-                        <label for="ccq3_1-a">A primary key contains numbers, while a foreign key contains
-                            letters.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_1" id="ccq3_1-b" value="correct">
-                        <label for="ccq3_1-b">A primary key uniquely identifies a record in its own table; a foreign key
-                            links to the primary key of another table.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_1" id="ccq3_1-c" value="wrong">
-                        <label for="ccq3_1-c">A primary key is created first, and a foreign key is created automatically
-                            by Access.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq3_1', 'ccq3_1-b', 'ccq3_1-feedback')">Submit Answer</button>
-                <div id="ccq3_1-feedback" class="feedback"></div>
-            </div>
+    <h4>Add the Calculated Field — Column 6</h4>
+    <p>In the Field row of the empty column after Salary, type:</p>
+    <div class="code-block">AnnualBonus: [Salary]*0.1</div>
+    <p>Then right-click the AnnualBonus column header → Properties: Format = Currency, Decimal Places = 2.</p>
 
-            <!-- CCQ 2 -->
-            <div class="concept-check">
-                <h4>Question 2: Solving the Update Anomaly</h4>
-                <p>In a flat-file database, changing a district's mayor requires updating hundreds of rows manually. How
-                    does a relational database solve this specific problem?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq3_2" id="ccq3_2-a" value="correct">
-                        <label for="ccq3_2-a">By storing the mayor's name once in the DISTRICTS table, so updating that
-                            single record automatically applies to all linked citizens.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_2" id="ccq3_2-b" value="wrong">
-                        <label for="ccq3_2-b">By using a validation rule to ensure no one spells the mayor's name
-                            incorrectly.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq3_2', 'ccq3_2-a', 'ccq3_2-feedback')">Submit Answer</button>
-                <div id="ccq3_2-feedback" class="feedback"></div>
-            </div>
+    <h4>Set Sorts</h4>
+    <p>DeptName: Ascending (primary — must be leftmost sorted field). Salary: Descending (secondary). Drag DeptName column left of Salary in the QBE grid to confirm priority.</p>
 
-            <!-- CCQ 3 -->
-            <div class="concept-check">
-                <h4>Question 3: Identifying the Relationship</h4>
-                <p>A single citizen can be issued multiple energy bills over a year, but an individual bill belongs to
-                    only one citizen. What type of relationship is this?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq3_3" id="ccq3_3-a" value="wrong">
-                        <label for="ccq3_3-a">One-to-One</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_3" id="ccq3_3-b" value="correct">
-                        <label for="ccq3_3-b">One-to-Many</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_3" id="ccq3_3-c" value="wrong">
-                        <label for="ccq3_3-c">Many-to-Many</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq3_3', 'ccq3_3-b', 'ccq3_3-feedback')">Submit Answer</button>
-                <div id="ccq3_3-feedback" class="feedback"></div>
-            </div>
+    <h4>Set Criteria — the OR pattern</h4>
+    <div class="warning-box">
+      <strong>Demonstrate the wrong version first:</strong> Put Like "*Services*" AND Yes AND "Director" all on the Criteria row. Run the query. Zero results — nobody simultaneously has DeptName containing Services AND IsActive Yes AND ServiceGrade Director. Show the empty datasheet. Then fix it.
+    </div>
 
-            <!-- CCQ 4 -->
-            <div class="concept-check">
-                <h4>Question 4: Defining the Law</h4>
-                <p>State what is meant by "Referential Integrity".</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq3_4" id="ccq3_4-a" value="wrong">
-                        <label for="ccq3_4-a">A rule that ensures all fields in a table have data entered into
-                            them.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_4" id="ccq3_4-b" value="correct">
-                        <label for="ccq3_4-b">A rule ensuring a foreign key value must always have a matching primary
-                            key value in the related table.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq3_4', 'ccq3_4-b', 'ccq3_4-feedback')">Submit Answer</button>
-                <div id="ccq3_4-feedback" class="feedback"></div>
-            </div>
+    <p>The correct QBE grid after the fix:</p>
+    <div class="qbe-grid">
+      <div class="qbe-row" style="grid-template-columns:90px repeat(6,1fr);">
+        <div class="qbe-cell qbe-header">Row</div>
+        <div class="qbe-cell qbe-header qbe-highlight">DeptName ↑</div>
+        <div class="qbe-cell qbe-header">Salary ↓</div>
+        <div class="qbe-cell qbe-header">Surname</div>
+        <div class="qbe-cell qbe-header">FirstName</div>
+        <div class="qbe-cell qbe-header">ServiceGrade</div>
+        <div class="qbe-cell qbe-header">IsActive</div>
+      </div>
+      <div class="qbe-row" style="grid-template-columns:90px repeat(6,1fr);">
+        <div class="qbe-cell qbe-header">Sort</div>
+        <div class="qbe-cell qbe-sort">Ascending</div>
+        <div class="qbe-cell qbe-sort">Descending</div>
+        <div class="qbe-cell"></div><div class="qbe-cell"></div><div class="qbe-cell"></div><div class="qbe-cell"></div>
+      </div>
+      <div class="qbe-row" style="grid-template-columns:90px repeat(6,1fr);">
+        <div class="qbe-cell qbe-header">Criteria</div>
+        <div class="qbe-cell qbe-criteria">Like "*Services*"</div>
+        <div class="qbe-cell"></div><div class="qbe-cell"></div><div class="qbe-cell"></div>
+        <div class="qbe-cell"></div>
+        <div class="qbe-cell qbe-criteria">Yes</div>
+      </div>
+      <div class="qbe-row" style="grid-template-columns:90px repeat(6,1fr);">
+        <div class="qbe-cell qbe-header">Or:</div>
+        <div class="qbe-cell"></div><div class="qbe-cell"></div><div class="qbe-cell"></div><div class="qbe-cell"></div>
+        <div class="qbe-cell qbe-or">"Director"</div>
+        <div class="qbe-cell"></div>
+      </div>
+    </div>
 
-            <!-- CCQ 5 -->
-            <div class="concept-check">
-                <h4>Question 5: Cascade Rules</h4>
-                <p>Why might a database administrator choose to enable <em>Cascade Update</em> but intentionally leave
-                    <em>Cascade Delete</em> unchecked?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq3_5" id="ccq3_5-a" value="wrong">
-                        <label for="ccq3_5-a">Because Cascade Update is required to make the relationship work, but
-                            Cascade Delete takes up too much memory.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_5" id="ccq3_5-b" value="correct">
-                        <label for="ccq3_5-b">Cascade Delete is dangerous (deleting a district accidentally wipes out
-                            all its citizens). Cascade Update safely keeps keys synchronized if an ID changes.</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq3_5', 'ccq3_5-b', 'ccq3_5-feedback')">Submit Answer</button>
-                <div id="ccq3_5-feedback" class="feedback"></div>
-            </div>
+    <p>Run the query — verify: Digital Services active officials appear, plus all Directors. Save as: <strong>Q_Report2_BonusReport</strong></p>
 
-            <!-- CCQ 6 -->
-            <div class="concept-check">
-                <h4>Question 6: The Deletion Test</h4>
-                <p>If you try to delete Citizen C-00101 from the CITIZENS table while they still have three unpaid bills
-                    in ENERGY_BILLS, what will happen if referential integrity is enforced (without cascade delete)?</p>
-                <div class="options">
-                    <div class="option">
-                        <input type="radio" name="ccq3_6" id="ccq3_6-a" value="correct">
-                        <label for="ccq3_6-a">Access will block the deletion completely to prevent the bills from
-                            becoming orphaned records.</label>
-                    </div>
-                    <div class="option">
-                        <input type="radio" name="ccq3_6" id="ccq3_6-b" value="wrong">
-                        <label for="ccq3_6-b">Access will delete the citizen and automatically change the bills'
-                            CitizenID to "Unknown".</label>
-                    </div>
-                </div>
-                <button onclick="checkCCQ('ccq3_6', 'ccq3_6-a', 'ccq3_6-feedback')">Submit Answer</button>
-                <div id="ccq3_6-feedback" class="feedback"></div>
-            </div>
+    <div class="concept-check">
+      <h4>Check Your Understanding</h4>
+      <p class="question-text">The Or: row has "Director" in the ServiceGrade column but nothing in DeptName or IsActive. What does this mean for the records returned by that row?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="demo-q1" id="dq1-a" value="a"><label for="dq1-a">A) Only Directors from the Services department are selected by the Or: row</label></div>
+        <div class="option"><input type="radio" name="demo-q1" id="dq1-b" value="b"><label for="dq1-b">B) ALL Directors are selected by the Or: row — regardless of department or IsActive status, because those cells are empty on that row</label></div>
+      </div>
+      <button onclick="checkCCQ('demo-q1','b','dq1-fb','Correct. Each row is an independent condition set. An empty cell on a row means "no restriction on this field for this row." The Or: row only checks ServiceGrade = Director — DeptName and IsActive have no conditions on that row. This is intentional: the task says "OR ServiceGrade is Director" with no additional restrictions.','Incorrect. An empty cell on an Or: row means that field has no restriction for that condition set. The Or: row has only one condition: ServiceGrade = Director. All Director records qualify, regardless of department or IsActive value.')">Check Answer</button>
+      <div class="feedback" id="dq1-fb"></div>
+    </div>
 
-        </section>
+    <!-- Phase 3: Wizard -->
+    <h3>Phase 3 — Create Report via Wizard (0:42 – 0:50)</h3>
+    <div class="step-item"><div class="step-number">1</div><div class="step-content"><p>Create → Report Wizard; Source: Q_Report2_BonusReport</p></div></div>
+    <div class="step-item"><div class="step-number">2</div><div class="step-content"><p>Move fields in order: Surname, FirstName, DeptName, ServiceGrade, Salary, AnnualBonus</p></div></div>
+    <div class="step-item"><div class="step-number">3</div><div class="step-content"><p>Grouping screen: no groups — click Next deliberately</p></div></div>
+    <div class="step-item"><div class="step-number">4</div><div class="step-content"><p>Sort screen: leave blank — handled in the query</p></div></div>
+    <div class="step-item"><div class="step-number">5</div>
+      <div class="step-content"><p>Layout: Tabular | Orientation: <strong>Landscape</strong> — pause here. This is on the same screen as layout. Students click Tabular and immediately hit Next, missing landscape.</p></div>
+    </div>
+    <div class="step-item"><div class="step-number">6</div><div class="step-content"><p>Title: City Staff Bonus Report → Finish</p></div></div>
 
-        <!-- VOCABULARY SECTION -->
-        <section class="section" id="vocab">
-            <h2>📖 Digital Glossary</h2>
-            <div class="vocab-search">
-                <input type="text" id="vocab-search-input" placeholder="🔍 Search vocabulary terms..."
-                    onkeyup="filterVocab()">
-            </div>
+    <!-- Phase 4: Design View -->
+    <h3>Phase 4 — Refine in Design View (0:50 – 1:00)</h3>
 
-            <div id="vocab-list">
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Primary Key</div>
-                    <div class="vocab-definition">A field that uniquely identifies each record in its own table; cannot
-                        be null or duplicated.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Foreign Key</div>
-                    <div class="vocab-definition">A field in one table that references the primary key of another table,
-                        creating a link between them.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Relationship</div>
-                    <div class="vocab-definition">A defined link between two tables based on matching key fields.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Referential Integrity</div>
-                    <div class="vocab-definition">A rule that prevents a foreign key value from existing without a
-                        matching primary key value in the related table.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">One-to-Many</div>
-                    <div class="vocab-definition">One record in Table A can be linked to many records in Table B, but
-                        each record in B links to only one record in A.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Orphan Record</div>
-                    <div class="vocab-definition">A record in a child table (like ENERGY_BILLS) whose foreign key points
-                        to a primary key that no longer exists in the parent table.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Cascade Update</div>
-                    <div class="vocab-definition">A referential integrity option: If a Primary Key value changes, all
-                        matching Foreign Key values update automatically.</div>
-                </div>
-                <div class="vocab-item" onclick="toggleVocab(this)">
-                    <div class="vocab-term">Cascade Delete</div>
-                    <div class="vocab-definition">A referential integrity option: If a record is deleted from the parent
-                        table, all linked records in the child table are deleted automatically.</div>
-                </div>
-            </div>
-        </section>
+    <h4>Report Header</h4>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Click title label → font size 18pt Bold (body text is 10–11pt — must be visibly larger)</li>
+      <li>Verify title text matches exactly: City Staff Bonus Report</li>
+    </ul>
 
-        <!-- WRAP-UP SECTION -->
-        <section class="section" id="wrap-up">
-            <h2>🚀 Session De-Brief</h2>
+    <h4>Page Header</h4>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Verify all 6 column headings visible including AnnualBonus — widen if truncated</li>
+    </ul>
 
-            <div class="highlight-box">
-                <h4>1. Knowledge Consolidation: The Architect's Explaination</h4>
-                <p>Explain the concept of Referential Integrity to a friend who has never used a database before.</p>
-                <textarea id="wrap-summary3" rows="2"
-                    placeholder="e.g., 'Imagine a library system where you can't checkout a book if...'"></textarea>
-                <button onclick="saveWrapUp3()">Save Explanation</button>
-                <span id="save-conf3"
-                    style="display:none; color: var(--secondary-color); margin-left:10px;">Saved!</span>
-            </div>
+    <h4>Detail Section</h4>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Salary: Format = Currency, 2dp</li>
+      <li>AnnualBonus: should already be Currency 2dp from query properties — verify</li>
+    </ul>
 
-            <h4>2. Mastery Check: How confident are you with Relationships?</h4>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button onclick="setConfidence3('green')" style="background-color: #27ae60;">🟢 Got it all</button>
-                <button onclick="setConfidence3('yellow')" style="background-color: #f1c40f; color:#000;">🟡 Need
-                    review</button>
-                <button onclick="setConfidence3('red')" style="background-color: #e74c3c;">🔴 Need help</button>
-            </div>
+    <h4>Report Footer — the key section</h4>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+      <li>Delete any auto-generated content</li>
+      <li>Draw a Text Box — align it below the <strong>Salary column</strong> (not AnnualBonus)</li>
+      <li>Type: <code>=Avg([Salary])</code></li>
+      <li>Format: Currency, 2dp</li>
+      <li>Drag textbox horizontally until it sits directly below the Salary column header</li>
+      <li>Click the attached label → change text to: <code>Average salary:</code></li>
+      <li>Widen the textbox until <code>=Avg([Salary])</code> is fully visible — evidence screenshot</li>
+    </ul>
 
-            <h4>3. Reflection</h4>
-            <select id="reflection-prompt3">
-                <option value="">-- Choose a reflection prompt --</option>
-                <option value="challenging">What was the trickiest part of setting up relationships in Access?</option>
-                <option value="real-world">Think of an app you use. Where might a one-to-many relationship exist?
-                </option>
-                <option value="questions">What question do you still have?</option>
-            </select>
-            <textarea id="reflection-answer3" rows="3" placeholder="Write your reflection here..."
-                style="margin-top: 10px;"></textarea>
+    <h4>Page Footer — the ritual</h4>
+    <div class="warning-box">
+      <strong>Delete everything first.</strong> Select all auto-generated content in the Page Footer and delete it. Then add a new Text Box with your candidate details. Never add candidate details before deleting auto-content.
+    </div>
 
-            <div class="concept-check"
-                style="border-left: 4px solid var(--primary-color); background-color: rgba(44, 62, 80, 0.05);">
-                <h4>🔭 Preview: What Session 4 Will Build On</h4>
-                <p>"The city's tables are now linked and protected. But right now, to find all unpaid bills from
-                    citizens in El Poblado, you'd have to manually scroll through hundreds of records. That's a 1990s
-                    filing cabinet. Next session, we teach the database to answer questions instantly:
-                    <strong>Queries</strong>. We will build an on-demand intelligence system for the city's AI."</p>
-                <p><em>Excellent work wiring the nervous system today!</em></p>
-            </div>
-        </section>
-    </main>
+    <h4>Print Preview Checklist</h4>
+    <ul class="checklist">
+      <li><input type="checkbox" id="pp-1" onchange="savePP()"><label for="pp-1">Landscape orientation — wider than tall</label></li>
+      <li><input type="checkbox" id="pp-2" onchange="savePP()"><label for="pp-2">All 6 columns visible with no truncation</label></li>
+      <li><input type="checkbox" id="pp-3" onchange="savePP()"><label for="pp-3">Title font visibly larger than body text</label></li>
+      <li><input type="checkbox" id="pp-4" onchange="savePP()"><label for="pp-4">Avg formula below Salary column — not AnnualBonus</label></li>
+      <li><input type="checkbox" id="pp-5" onchange="savePP()"><label for="pp-5">AnnualBonus values show as currency (e.g. £310,000.00)</label></li>
+      <li><input type="checkbox" id="pp-6" onchange="savePP()"><label for="pp-6">Candidate details in Page Footer</label></li>
+      <li><input type="checkbox" id="pp-7" onchange="savePP()"><label for="pp-7">Fits on a single page width</label></li>
+    </ul>
 
-    <!-- INTERACTIVITY SCRIPTS -->
-    <script>
-        // Progress Bar
-        window.onscroll = function () { updateProgress() };
-        function updateProgress() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        }
+    <p>Save as: <strong>RPT2_StaffBonusReport</strong></p>
+    <p>Take Evidence Screenshot: Report Footer in Design View showing <code>=Avg([Salary])</code> fully visible, label "Average salary:" to the left.</p>
+    <p>Export PDF: External Data → PDF or XPS → filename: <strong>BONUS_REPORT</strong> (uppercase) → screenshot folder showing .pdf extension.</p>
 
-        // Theme Toggle
-        function toggleMode() {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
+  </section>
 
-        // Dyslexia Toggle
-        function toggleDyslexiaMode() {
-            document.body.classList.toggle('dyslexia-mode');
-            const isDyslexic = document.body.classList.contains('dyslexia-mode');
-            localStorage.setItem('dyslexia', isDyslexic ? 'true' : 'false');
-        }
+  <!-- ===================== MISSION ===================== -->
+  <section class="section" id="mission">
+    <h2>Student Mission: The Games Database Reports</h2>
+    <p>This mission replicates Task 3, Steps 16–17 of the FM2024 Paper 2 exam using substitute data. Instructions are in exact Cambridge exam style.</p>
 
-        // Scroll to Section
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
+    <div class="score-display" id="mission-score">Mission Score: 0 / 20</div>
 
-        // Local Storage Utilities
-        function saveToLocalStorage(key, value) {
-            localStorage.setItem(key, value);
-        }
+    <!-- Import setup reminder -->
+    <h3>Given Files — Import First</h3>
+    <div class="highlight-box">
+      <strong>Step 1 (3 marks):</strong> Import GAMES.csv, CLASSIFICATIONS.csv, GENRE.csv as separate tables.
+      <ul style="list-style:disc; padding-left:1.5rem; line-height:2; margin-top:0.5rem;">
+        <li>GAMES: GameCode = primary key; Price = Currency 2dp; GlobalSales = Decimal 2dp; ReleaseYear and Rank = Integer</li>
+        <li>CLASSIFICATIONS: AgeCode = primary key</li>
+        <li>GENRE: GenCode = primary key</li>
+      </ul>
+      <p style="margin-top:0.75rem;"><strong>Step 2 (1 mark):</strong> Relationships — GENRE.GenCode → GAMES.GenCode; CLASSIFICATIONS.AgeCode → GAMES.AgeCode. Both with referential integrity enforced.</p>
+      <p style="margin-top:0.75rem;"><strong>Step 3 (2 marks):</strong> Add to GAMES: GameCode PZ020, GameTitle Dr Tomas, ReleaseYear 2006, GenCode G1, AgeCode C3, GamePublisher Creation Arts, Price 18.80, ConsoleType Cyrus 360, Platform GD7, GlobalSales 4.86, Rank 203.</p>
+    </div>
 
-        // On Load: Retrieve Preferences & Data
-        window.onload = function () {
-            if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
-            if (localStorage.getItem('dyslexia') === 'true') document.body.classList.add('dyslexia-mode');
+    <!-- Mission 1 -->
+    <h3>Report Mission 1 (6 marks)</h3>
+    <div class="highlight-box">
+      <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+        <li>selects the records where ConsoleType begins with the text Cyrus AND ReleaseYear is 2015 or later</li>
+        <li>shows only: GameTitle, Genre, AgeCategory, ReleaseYear, ConsoleType, Rank — in this order</li>
+        <li>does not group the data</li>
+        <li>sorts into ascending order of Rank</li>
+        <li>portrait orientation; fits on a single page</li>
+        <li>title: Latest Cyrus Console Games — larger font, fully visible</li>
+        <li>your name, centre number and candidate number on the report</li>
+      </ul>
+    </div>
 
-            // Retrieve saved text specific to Session 3
-            if (localStorage.getItem('stretch-answer3')) document.getElementById('stretch-answer3').value = localStorage.getItem('stretch-answer3');
-            if (localStorage.getItem('wrap-summary3')) document.getElementById('wrap-summary3').value = localStorage.getItem('wrap-summary3');
-            if (localStorage.getItem('reflection-answer3')) document.getElementById('reflection-answer3').value = localStorage.getItem('reflection-answer3');
-            if (localStorage.getItem('reflection-prompt3')) document.getElementById('reflection-prompt3').value = localStorage.getItem('reflection-prompt3');
+    <div class="exercise">
+      <h4>Mission 1 — Parse First</h4>
 
-            // Retrieve checkboxes for Session 3
-            for (let i = 1; i <= 4; i++) {
-                if (localStorage.getItem('s3-obj-' + i) === 'true') {
-                    document.getElementById('s3-obj-' + i).checked = true;
-                }
-            }
-        }
+      <p class="question-text"><strong>Q1.</strong> The criterion for ConsoleType is "begins with the text Cyrus". Which wildcard is correct?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m1q1" id="m1q1-a" value="a"><label for="m1q1-a">A) Like "*Cyrus*"</label></div>
+        <div class="option"><input type="radio" name="m1q1" id="m1q1-b" value="b"><label for="m1q1-b">B) Like "Cyrus*"</label></div>
+        <div class="option"><input type="radio" name="m1q1" id="m1q1-c" value="c"><label for="m1q1-c">C) = "Cyrus"</label></div>
+      </div>
+      <button onclick="checkMission('m1q1','b','m1q1-fb',2,'Correct — 2 marks. "Begins with" maps to Like "Cyrus*" — the asterisk is at the END, allowing any characters after "Cyrus". Like "*Cyrus*" would also match values where Cyrus appears in the middle or end, but the instruction says "begins with" — so Like "Cyrus*" is the precise and correct choice.','Incorrect. "Begins with the text Cyrus" means the value starts with Cyrus. Like "Cyrus*" matches values starting with Cyrus (Cyrus 360, Cyrus Pro). Like "*Cyrus*" is for "contains". = "Cyrus" only matches the exact value "Cyrus" with nothing else.')">Submit Q1</button>
+      <div class="feedback" id="m1q1-fb"></div>
+    </div>
 
-        // Save Objectives Progress
-        function saveProgressS3() {
-            for (let i = 1; i <= 4; i++) {
-                localStorage.setItem('s3-obj-' + i, document.getElementById('s3-obj-' + i).checked);
-            }
-        }
+    <div class="exercise">
+      <p class="question-text"><strong>Q2.</strong> The criterion is "ReleaseYear is 2015 or later". What goes in the ReleaseYear Criteria cell?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m1q2" id="m1q2-a" value="a"><label for="m1q2-a">A) = 2015</label></div>
+        <div class="option"><input type="radio" name="m1q2" id="m1q2-b" value="b"><label for="m1q2-b">B) &gt;= 2015</label></div>
+        <div class="option"><input type="radio" name="m1q2" id="m1q2-c" value="c"><label for="m1q2-c">C) Like "2015*"</label></div>
+      </div>
+      <button onclick="checkMission('m1q2','b','m1q2-fb',1,'Correct — 1 mark. "2015 or later" means greater than or equal to 2015, written as &gt;=2015 in the criteria cell. = 2015 would return only 2015 games. Like "2015*" would work for text fields but ReleaseYear is a Number (Integer) field — use the comparison operator.','Incorrect. "2015 or later" means &gt;=2015 — the comparison operator for "greater than or equal to". = 2015 selects only records from exactly 2015. Like wildcards are for text fields, not integer fields.')">Submit Q2</button>
+      <div class="feedback" id="m1q2-fb"></div>
+    </div>
 
-        // Hook Activity Check
-        function checkHook3() {
-            const selected = document.querySelector('input[name="hook-guess3"]:checked');
-            const feedback = document.getElementById('hook3-feedback');
-            if (!selected) {
-                alert("Please select an option!");
-                return;
-            }
-            feedback.classList.remove("correct", "incorrect", "show");
+    <!-- CCQ between missions -->
+    <div class="concept-check">
+      <h4>Concept Check — AND criteria</h4>
+      <p class="question-text">Report Mission 1 requires ConsoleType begins with Cyrus AND ReleaseYear &gt;= 2015. How should these two criteria be placed in the QBE grid?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-m1and" id="cma-a" value="a"><label for="cma-a">A) Both criteria on the SAME Criteria row — AND is implied by same-row placement</label></div>
+        <div class="option"><input type="radio" name="ccq-m1and" id="cma-b" value="b"><label for="cma-b">B) Each criterion on a DIFFERENT row (Criteria and Or:) — AND needs separate rows</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-m1and','a','ccq-m1and-fb','Correct. AND criteria go on the SAME row. Like "Cyrus*" in the ConsoleType column and &gt;=2015 in the ReleaseYear column, both on the Criteria row. Access interprets multiple criteria on the same row as AND — both must be true for a record to appear.','Incorrect. AND conditions go on the same row. Different rows create an OR condition. Put Like "Cyrus*" and &gt;=2015 both on the Criteria row.')">Check Answer</button>
+      <div class="feedback" id="ccq-m1and-fb"></div>
+    </div>
 
-            if (selected.value === "correct") {
-                feedback.innerHTML = "✅ Correct! Referential Integrity is the rule that forces child records (bills) to strictly belong to valid parent records (citizens).";
-                feedback.classList.add("correct", "show");
-            } else {
-                feedback.innerHTML = "❌ Not quite. Those sound plausible, but the precise database term deals with maintaining the 'integrity' of data 'references'.";
-                feedback.classList.add("incorrect", "show");
-            }
-            saveToLocalStorage('hook-guess3', selected.id);
-        }
+    <!-- Mission 2 -->
+    <h3>Report Mission 2 (14 marks)</h3>
+    <div class="highlight-box">
+      <ul style="list-style:disc; padding-left:1.5rem; line-height:2;">
+        <li>selects records where GameTitle includes the text Tomas AND AgeCode is C3 or C7</li>
+        <li>contains a new field called Sales: <code>[GlobalSales]/354*100</code>, formatted to 2 decimal places</li>
+        <li>shows only: GameTitle, AgeCategory, GlobalSales, GamePublisher, ConsoleType, Price, Sales — in this order</li>
+        <li>does not group the data</li>
+        <li>sorts ascending ConsoleType, then descending GlobalSales</li>
+        <li>landscape orientation; fits a single page width</li>
+        <li>title: Junior Tomas Games — larger font, fully visible</li>
+        <li>=Avg([Price]) below the Price column, formatted as currency 2dp</li>
+        <li>label Average game price fully visible to the LEFT of the formula</li>
+        <li>candidate details in the footer so it appears in the same position on every page</li>
+      </ul>
+    </div>
 
-        // Mission Check Checkboxes
-        function checkMission3() {
-            const c1 = document.getElementById('m3-chk1').checked;
-            const c2 = document.getElementById('m3-chk2').checked;
-            const c3 = document.getElementById('m3-chk3').checked;
-            const c4 = document.getElementById('m3-chk4').checked;
-            const feedback = document.getElementById('mission-success3');
+    <div class="exercise">
+      <h4>Mission 2 — Parse the Task</h4>
+      <p class="question-text"><strong>Q3.</strong> How many rows does the QBE Criteria section need for Report Mission 2's criteria?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m2q1" id="m2q1-a" value="a"><label for="m2q1-a">A) One row — all criteria go on the Criteria row</label></div>
+        <div class="option"><input type="radio" name="m2q1" id="m2q1-b" value="b"><label for="m2q1-b">B) Two rows — Criteria row: Like "*Tomas*" + "C3"; Or: row: Like "*Tomas*" + "C7"</label></div>
+        <div class="option"><input type="radio" name="m2q1" id="m2q1-c" value="c"><label for="m2q1-c">C) Three rows — one for Tomas, one for C3, one for C7</label></div>
+      </div>
+      <button onclick="checkMission('m2q1','b','m2q1-fb',2,'Correct — 2 marks. Two rows are needed. Row 1 (Criteria): Like "*Tomas*" in GameTitle + "C3" in AgeCode — Tomas games rated C3. Row 2 (Or:): Like "*Tomas*" in GameTitle + "C7" in AgeCode — Tomas games rated C7. The wildcard must be on BOTH rows. Without it on the Or: row, all C7 games would appear regardless of title.','Incorrect. Two rows are needed for the AgeCode OR condition. Criteria row: Like "*Tomas*" and "C3". Or: row: Like "*Tomas*" and "C7". One row would create an impossible AND condition (C3 AND C7). Three rows are unnecessary — the structure has exactly two conditions.')">Submit Q3</button>
+      <div class="feedback" id="m2q1-fb"></div>
+    </div>
 
-            if (c1 && c2 && c3 && c4) {
-                feedback.style.display = "block";
-            } else {
-                feedback.style.display = "none";
-            }
-        }
+    <div class="exercise">
+      <p class="question-text"><strong>Q4.</strong> What must be typed in the Field row of a blank QBE column to create the Sales calculated field?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m2q2" id="m2q2-a" value="a"><label for="m2q2-a">A) =Sales: [GlobalSales]/354*100</label></div>
+        <div class="option"><input type="radio" name="m2q2" id="m2q2-b" value="b"><label for="m2q2-b">B) Sales: [GlobalSales]/354*100</label></div>
+        <div class="option"><input type="radio" name="m2q2" id="m2q2-c" value="c"><label for="m2q2-c">C) Sales = GlobalSales/354*100</label></div>
+        <div class="option"><input type="radio" name="m2q2" id="m2q2-d" value="d"><label for="m2q2-d">D) [Sales]: [GlobalSales]/354*100</label></div>
+      </div>
+      <button onclick="checkMission('m2q2','b','m2q2-fb',2,'Correct — 2 marks. The syntax for a calculated field is always: AliasName: [FieldName]/constant*constant. No = sign before the alias. No brackets around the alias. The alias (Sales) is followed by a colon, then the formula. Field names are in brackets; constants are not.','Incorrect. Calculated field syntax: AliasName: [FieldName]/constant*constant. No = before the alias. No brackets around the alias itself. Option B is the only correctly formatted entry.')">Submit Q4</button>
+      <div class="feedback" id="m2q2-fb"></div>
+    </div>
 
-        // Generic CCQ Check
-        function checkCCQ(name, correctId, feedbackId) {
-            const selected = document.querySelector(`input[name="${name}"]:checked`);
-            const feedback = document.getElementById(feedbackId);
-            if (!selected) return alert("Select an answer first!");
+    <div class="exercise">
+      <p class="question-text"><strong>Q5.</strong> A game has GlobalSales = 12.40. What value should appear in the Sales column for this record?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m2q3" id="m2q3-a" value="a"><label for="m2q3-a">A) 12.40 — the GlobalSales value is unchanged</label></div>
+        <div class="option"><input type="radio" name="m2q3" id="m2q3-b" value="b"><label for="m2q3-b">B) 3.50 — (12.40 ÷ 354) × 100 = 3.50 to 2 decimal places</label></div>
+        <div class="option"><input type="radio" name="m2q3" id="m2q3-c" value="c"><label for="m2q3-c">C) 0.035 — 12.40 ÷ 354 = 0.035</label></div>
+      </div>
+      <button onclick="checkMission('m2q3','b','m2q3-fb',1,'Correct — 1 mark. 12.40 ÷ 354 = 0.035028... × 100 = 3.5028... rounded to 2dp = 3.50. Always work through the arithmetic when the exam gives you a specific value to calculate — it is a guaranteed mark.','Not quite. The formula is [GlobalSales]/354*100. For GlobalSales = 12.40: 12.40 ÷ 354 = 0.035028, then × 100 = 3.50 (2dp).')">Submit Q5</button>
+      <div class="feedback" id="m2q3-fb"></div>
+    </div>
 
-            feedback.classList.remove("correct", "incorrect", "show");
-            if (selected.id === correctId) {
-                feedback.innerHTML = "✅ Correct!";
-                feedback.classList.add("correct", "show");
-            } else {
-                feedback.innerHTML = "❌ Incorrect. Try again!";
-                feedback.classList.add("incorrect", "show");
-            }
-        }
+    <!-- CCQ between mission questions -->
+    <div class="concept-check">
+      <h4>Concept Check — Column Order for Report 2</h4>
+      <p class="question-text">Report Mission 2 specifies fields in this order: GameTitle, AgeCategory, GlobalSales, GamePublisher, ConsoleType, Price, Sales. The Sales field is a calculated field — it does not exist in any table. How does it appear in the Report Wizard's Available Fields list?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-rf" id="crf-a" value="a"><label for="crf-a">A) It does not appear — calculated fields cannot be used in reports</label></div>
+        <div class="option"><input type="radio" name="ccq-rf" id="crf-b" value="b"><label for="crf-b">B) It appears with the alias name "Sales" — because the Report Wizard sources from the query, and the query already contains the calculated field as a named column</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-rf','b','ccq-rf-fb','Correct. The Report Wizard uses the query as its source. The query already contains the Sales column (created as a calculated field). From the Wizard\'s perspective, Sales is just another available column — it does not matter that it was calculated. Select it and position it last in the field list, matching the question\'s specified order.','Incorrect. The query generates the Sales column. When the Report Wizard uses the query as its source, Sales appears in the Available Fields list just like any other field. The Wizard does not distinguish between stored fields and calculated fields.')">Check Answer</button>
+      <div class="feedback" id="ccq-rf-fb"></div>
+    </div>
 
-        // Difficulty Tabs
-        function switchDifficulty(level) {
-            document.querySelectorAll('.difficulty-tabs button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.difficulty-content').forEach(content => content.classList.remove('active'));
+    <div class="exercise">
+      <p class="question-text"><strong>Q6.</strong> The question says "candidate details in the footer so it appears in the same position on every page." Which Access section should the candidate details go in?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m2q4" id="m2q4-a" value="a"><label for="m2q4-a">A) Report Footer — it is at the bottom of the report</label></div>
+        <div class="option"><input type="radio" name="m2q4" id="m2q4-b" value="b"><label for="m2q4-b">B) Page Footer — it repeats at the bottom of every page, giving the same position on every page</label></div>
+      </div>
+      <button onclick="checkMission('m2q4','b','m2q4-fb',2,'Correct — 2 marks. "Same position on every page" = Page Footer. The Page Footer repeats at the bottom of every page. The Report Footer appears only once, at the very end of the report. Read the phrase "every page" as the signal for Page Footer. Also note: the Report Footer already contains the Avg formula — candidate details there would conflict visually.','Incorrect. "Appears in the same position on every page" describes the Page Footer — it repeats at the bottom of every page. The Report Footer appears only once at the end. If the report has multiple pages, candidate details in the Report Footer would only appear on the last page.')">Submit Q6</button>
+      <div class="feedback" id="m2q4-fb"></div>
+    </div>
 
-            event.target.classList.add('active');
-            document.getElementById('content-' + level).classList.add('active');
-        }
+    <div class="exercise">
+      <p class="question-text"><strong>Q7.</strong> After placing =Avg([Price]) in the Report Footer, the textbox is centred horizontally. The Price column is the sixth column from the left. What must you do before taking the evidence screenshot?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="m2q5" id="m2q5-a" value="a"><label for="m2q5-a">A) Nothing — the formula is in the Report Footer and the value is correct</label></div>
+        <div class="option"><input type="radio" name="m2q5" id="m2q5-b" value="b"><label for="m2q5-b">B) Drag the textbox left or right in Design View until it is positioned directly below the Price column; also widen the textbox so =Avg([Price]) is fully visible</label></div>
+      </div>
+      <button onclick="checkMission('m2q5','b','m2q5-fb',2,'Correct — 2 marks. Two actions are needed: (1) align the textbox below the Price column — drag it horizontally in Design View; (2) widen the textbox so the full formula text is visible for the evidence screenshot. Both are required for full marks. A correct value in the wrong position, or a truncated formula in the screenshot, loses dedicated marks.','Not quite. Two things are required: alignment below the Price column (drag horizontally in Design View) and sufficient width for the formula to be fully visible. A centred textbox with the right value still risks losing the placement mark.')">Submit Q7</button>
+      <div class="feedback" id="m2q5-fb"></div>
+    </div>
 
-        // Vocabulary Search & Toggle
-        function filterVocab() {
-            let input = document.getElementById('vocab-search-input').value.toUpperCase();
-            let items = document.querySelectorAll('.vocab-item');
+    <!-- Stretch -->
+    <div class="exercise">
+      <h4>Stretch Challenge</h4>
+      <p>The FM2021 Report 2 required TWO formulas in the Report Footer: the Net value (Sum of OrderValue) AND a VAT calculation (the Net value × 0.2). Describe how you would place both formulas in the Report Footer, and write the exact formula for VAT.</p>
+      <textarea id="stretch-ans" placeholder="Write your answer here..." rows="5" onchange="localStorage.setItem('s3-stretch', this.value)"></textarea>
+      <button onclick="toggleSolution('stretch-sol')">Show Model Answer</button>
+      <div id="stretch-sol" class="hidden" style="margin-top:1rem; padding:1.25rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Model Answer:</strong> Add a first textbox in the Report Footer with <code>=Sum([OrderValue])</code>, label "Net value of this order:" to its left. Add a second textbox below it with <code>=Sum([OrderValue])*0.2</code>, label "VAT on this order:" to its left. The VAT formula cannot reference the first textbox directly — Access does not allow one Report Footer formula to reference another textbox in the same section. The full Sum expression must be repeated and multiplied by 0.2.
+      </div>
+    </div>
 
-            items.forEach(item => {
-                let text = item.querySelector('.vocab-term').innerText.toUpperCase();
-                if (text.indexOf(input) > -1) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-        }
+    <h3>Mission Badges</h3>
+    <div id="s3-badges">
+      <span class="badge badge-locked" id="b3-first">First Mark</span>
+      <span class="badge badge-locked" id="b3-halfway">Halfway</span>
+      <span class="badge badge-locked" id="b3-parser">30-Second Parser</span>
+      <span class="badge badge-locked" id="b3-complete">Report 2 Ready</span>
+    </div>
+  </section>
 
-        function toggleVocab(element) {
-            const def = element.querySelector('.vocab-definition');
-            def.classList.toggle('show');
-        }
+  <!-- ===================== THEORY DRILL ===================== -->
+  <section class="section" id="drill">
+    <h2>Theory Drill — Paper 1 Style Questions</h2>
 
-        // Wrap-Up Actions
-        function saveWrapUp3() {
-            saveToLocalStorage('wrap-summary3', document.getElementById('wrap-summary3').value);
-            saveToLocalStorage('reflection-answer3', document.getElementById('reflection-answer3').value);
-            saveToLocalStorage('reflection-prompt3', document.getElementById('reflection-prompt3').value);
+    <div class="exercise">
+      <h4>Q1 (3 marks)</h4>
+      <p class="question-text">A query uses the criteria shown below on the GameTitle and AgeCode fields:</p>
+      <div class="qbe-grid" style="max-width:400px;">
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Row</div><div class="qbe-cell qbe-header">GameTitle</div><div class="qbe-cell qbe-header">AgeCode</div>
+        </div>
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Criteria</div><div class="qbe-cell qbe-criteria">Like "*Tomas*"</div><div class="qbe-cell qbe-criteria">"C3"</div>
+        </div>
+        <div class="qbe-row" style="grid-template-columns:90px 1fr 1fr;">
+          <div class="qbe-cell qbe-header">Or:</div><div class="qbe-cell qbe-or">Like "*Tomas*"</div><div class="qbe-cell qbe-or">"C7"</div>
+        </div>
+      </div>
+      <p><strong>(a)</strong> State what records this query returns. (1 mark)</p>
+      <textarea id="q1a" placeholder="Write your answer..." rows="2" onchange="localStorage.setItem('s3-q1a', this.value)"></textarea>
+      <p style="margin-top:1rem;"><strong>(b)</strong> Explain why Like "*Tomas*" must be placed on both the Criteria and Or: rows. (1 mark)</p>
+      <textarea id="q1b" placeholder="Write your answer..." rows="3" onchange="localStorage.setItem('s3-q1b', this.value)"></textarea>
+      <p style="margin-top:1rem;"><strong>(c)</strong> A student places "C3" and "C7" on the same Criteria row. Describe the effect. (1 mark)</p>
+      <textarea id="q1c" placeholder="Write your answer..." rows="2" onchange="localStorage.setItem('s3-q1c', this.value)"></textarea>
+      <button onclick="toggleSolution('q1-mark')">Show Mark Scheme</button>
+      <div id="q1-mark" class="hidden" style="margin-top:1rem; padding:1.25rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        (a) All records where GameTitle contains "Tomas" AND AgeCode is either C3 or C7 (1 mark).<br>
+        (b) Each row in the QBE grid is an independent condition set. If Like "*Tomas*" is only on the Criteria row, the Or: row (AgeCode = "C7") applies to ALL records regardless of GameTitle — returning all C7 games, not just Tomas ones (1 mark).<br>
+        (c) No records would be returned — no single record can simultaneously have AgeCode equal to both C3 AND C7; the AND condition on one row is impossible to satisfy (1 mark).
+      </div>
+    </div>
 
-            document.getElementById('save-conf3').style.display = 'inline';
-            setTimeout(() => { document.getElementById('save-conf3').style.display = 'none'; }, 2000);
-        }
+    <!-- CCQ between Q1 and Q2 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">Would it be correct to say that placing two different values in the same Criteria cell (e.g. "C3" OR "C7" in one cell) is a valid way to enter OR criteria?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-d1" id="cd1-a" value="a"><label for="cd1-a">A) Yes — Access interprets text OR text inside a single cell as an OR condition</label></div>
+        <div class="option"><input type="radio" name="ccq-d1" id="cd1-b" value="b"><label for="cd1-b">B) No — OR conditions require separate rows in the QBE grid. Values combined with OR inside a single cell are not supported syntax for standard text field criteria.</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-d1','b','ccq-d1-fb','Correct. Access QBE OR criteria require separate rows — Criteria row for the first condition, Or: row for the second. You cannot combine OR logic inside a single criteria cell for text field comparisons. Each row is an independent complete condition set.','Incorrect. OR conditions in the Access QBE grid require separate rows. The Criteria row holds the first condition; the Or: row holds the second. Attempting to write "C3" OR "C7" in a single cell will not produce the expected OR logic.')">Check Answer</button>
+      <div class="feedback" id="ccq-d1-fb"></div>
+    </div>
 
-        function setConfidence3(level) {
-            let msg = level === 'green' ? "Awesome! You've mastered relational theory." :
-                level === 'yellow' ? "Good self-awareness! Review the CCQs above." :
-                    "Don't worry! Ask your teacher to review PKs and FKs with you.";
-            alert(msg);
-            saveToLocalStorage('confidence3', level);
-        }
-    </script>
+    <div class="exercise">
+      <h4>Q2 (3 marks)</h4>
+      <p class="question-text">A developer creates a calculated field: <code>Sales: [GlobalSales]/354*100</code></p>
+      <p><strong>(a)</strong> State two characteristics of a calculated field. (2 marks)</p>
+      <textarea id="q2a" placeholder="Write two points..." rows="3" onchange="localStorage.setItem('s3-q2a', this.value)"></textarea>
+      <p style="margin-top:1rem;"><strong>(b)</strong> A game has GlobalSales = 12.40. Calculate the value of Sales for this record. (1 mark)</p>
+      <textarea id="q2b" placeholder="Show your working..." rows="2" onchange="localStorage.setItem('s3-q2b', this.value)"></textarea>
+      <button onclick="toggleSolution('q2-mark')">Show Mark Scheme</button>
+      <div id="q2-mark" class="hidden" style="margin-top:1rem; padding:1.25rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        (a) Any 2: It is not stored in the table — it is recalculated each time the query runs (1); it uses existing field values from the table (1); it creates a new column visible only in the query/report output (1).<br>
+        (b) 12.40 ÷ 354 × 100 = 3.50 (to 2dp) (1 mark).
+      </div>
+    </div>
+
+    <!-- CCQ between Q2 and Q3 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">A calculated field shows #Error in every row of the query. What is the most likely cause?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-d2" id="cd2-a" value="a"><label for="cd2-a">A) The formula contains a division by zero for some records</label></div>
+        <div class="option"><input type="radio" name="ccq-d2" id="cd2-b" value="b"><label for="cd2-b">B) The field name in square brackets does not exactly match the actual field name in the table — including capitalisation and spaces</label></div>
+        <div class="option"><input type="radio" name="ccq-d2" id="cd2-c" value="c"><label for="cd2-c">C) The alias name contains a space</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-d2','b','ccq-d2-fb','Correct. #Error on every row almost always means the field name in brackets does not match the actual field name. Open the table in Design View and check the exact name — [GlobalSales] vs [Global Sales], [NetPrice] vs [Net Price]. Even a single space mismatch causes #Error. Division by zero would only affect specific rows with zero values, not all rows.','Incorrect. #Error on every row is the signature of a field name mismatch — the name inside square brackets does not match the table field name exactly. Division by zero would only affect rows where the divisor is zero.')">Check Answer</button>
+      <div class="feedback" id="ccq-d2-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <h4>Q3 (2 marks)</h4>
+      <p class="question-text">Explain why a formula placed in the Report Footer produces a different result from the same formula placed in a Group Footer.</p>
+      <textarea id="q3a" placeholder="Write your answer..." rows="4" onchange="localStorage.setItem('s3-q3a', this.value)"></textarea>
+      <button onclick="toggleSolution('q3-mark')">Show Mark Scheme</button>
+      <div id="q3-mark" class="hidden" style="margin-top:1rem; padding:1.25rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        The Report Footer fires once at the very end of the report — its formula calculates across all records in the entire report (1 mark). A Group Footer fires once per group — its formula calculates only across the records within that specific group (1 mark).
+      </div>
+    </div>
+
+    <!-- CCQ between Q3 and Q4 -->
+    <div class="concept-check">
+      <h4>Concept Check</h4>
+      <p class="question-text">A student switches a report to landscape orientation but some column headers are still showing ### symbols (truncated). What should the student do?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-d3" id="cd3-a" value="a"><label for="cd3-a">A) Nothing — landscape orientation automatically resizes all columns to fit</label></div>
+        <div class="option"><input type="radio" name="ccq-d3" id="cd3-b" value="b"><label for="cd3-b">B) Manually widen the truncated columns in Layout View or Design View — landscape gives more space but does not auto-resize anything</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-d3','b','ccq-d3-fb','Correct. Switching to landscape widens the available page area but does not automatically resize any columns. Columns remain whatever width the Report Wizard set them. You must manually widen truncated columns in Layout View (drag column edges) or Design View (drag textbox edges) until all data and headers are fully visible.','Incorrect. Landscape orientation only changes the page dimensions — it does not resize columns. ### symbols mean the column textbox is too narrow for the content. You must drag column edges wider in Layout View or Design View.')">Check Answer</button>
+      <div class="feedback" id="ccq-d3-fb"></div>
+    </div>
+
+    <div class="exercise">
+      <h4>Q4 (2 marks)</h4>
+      <p class="question-text">A report requires the average price displayed below the Price column, formatted as currency. A student places =Avg([Price]) in the correct section but does not align it below the Price column. State one reason this may lose a mark, and describe the fix.</p>
+      <textarea id="q4a" placeholder="Write your answer..." rows="4" onchange="localStorage.setItem('s3-q4a', this.value)"></textarea>
+      <button onclick="toggleSolution('q4-mark')">Show Mark Scheme</button>
+      <div id="q4-mark" class="hidden" style="margin-top:1rem; padding:1.25rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+        <strong>Mark Scheme:</strong><br>
+        The examiner checks that the aggregate value is positioned below the correct column — a floating formula not aligned with its column may be marked as incorrectly placed (1 mark). Fix: in Design View, drag the formula textbox horizontally until it aligns directly below the Price column header in the Page Header section (1 mark).
+      </div>
+    </div>
+
+    <!-- Final CCQ -->
+    <div class="concept-check">
+      <h4>Concept Check — Report 2 Mark Allocation</h4>
+      <p class="question-text">In FM2024, Report 2 was worth 14 marks. Which single error would cause the greatest mark loss?</p>
+      <div class="options">
+        <div class="option"><input type="radio" name="ccq-d4" id="cd4-a" value="a"><label for="cd4-a">A) Forgetting landscape orientation (1 mark lost)</label></div>
+        <div class="option"><input type="radio" name="ccq-d4" id="cd4-b" value="b"><label for="cd4-b">B) Missing the wildcard on the Or: row — all C7 games appear instead of only Tomas-C7 games (up to 4 marks lost: wrong records = no criteria marks, field order marks at risk, sort marks at risk)</label></div>
+        <div class="option"><input type="radio" name="ccq-d4" id="cd4-c" value="c"><label for="cd4-c">C) Labelling the formula "Avg price" instead of "Average game price" (1 mark lost)</label></div>
+      </div>
+      <button onclick="checkCCQ('ccq-d4','b','ccq-d4-fb','Correct. The wildcard-on-both-rows error is the most costly because it corrupts the entire record selection — wrong records appear. The mark scheme awards criteria marks for selecting the right records. If extra records appear (all C7 games instead of Tomas-C7 games), criteria marks are lost, and potentially sort and field order marks are undermined too. Orientation and label errors each cost 1 mark.','Not quite. The most expensive error is the missing wildcard on the Or: row, because it causes wrong records to appear in the report. Wrong records mean zero criteria marks — potentially 4+ marks. Orientation and label errors are each worth 1 mark.')">Check Answer</button>
+      <div class="feedback" id="ccq-d4-fb"></div>
+    </div>
+  </section>
+
+  <!-- ===================== SYNTHESIS ===================== -->
+  <section class="section" id="synthesis">
+    <h2>Synthesis and Self-Assessment</h2>
+
+    <h3>Concept Map</h3>
+    <p>Click each node to review the session's key concepts and how they connect.</p>
+    <div class="concept-map">
+      <div class="concept-node" onclick="showConcept('cn-calc')">Calculated Field</div>
+      <div class="concept-node" onclick="showConcept('cn-or')">OR Criteria</div>
+      <div class="concept-node" onclick="showConcept('cn-mixed')">Mixed AND/OR</div>
+      <div class="concept-node" onclick="showConcept('cn-avg')">Avg Formula Placement</div>
+      <div class="concept-node" onclick="showConcept('cn-parse')">30-Second Parse</div>
+      <div class="concept-node" onclick="showConcept('cn-rf')">Report Footer</div>
+    </div>
+    <div class="concept-node-detail" id="cn-calc-detail">
+      <strong>Calculated Field:</strong> Typed in the Field row of a blank QBE column. Syntax: <code>AliasName: [Field1]*[Field2]</code>. No = sign. No brackets around the alias. Never stored — recalculated on every query run. Right-click column header → Properties to set format. #Error = field name mismatch.
+    </div>
+    <div class="concept-node-detail" id="cn-or-detail">
+      <strong>OR Criteria:</strong> AND = same row. OR = different row. For "AgeCode is C3 or C7": "C3" on Criteria row, "C7" on Or: row. Never type "C3" AND "C7" on the same row — no record can satisfy both simultaneously. Zero results.
+    </div>
+    <div class="concept-node-detail" id="cn-mixed-detail">
+      <strong>Mixed AND/OR:</strong> "GameTitle includes Tomas AND AgeCode is C3 or C7" → two rows, wildcard on BOTH. Row 1: Like "*Tomas*" + "C3". Row 2: Like "*Tomas*" + "C7". Each row is independent. The wildcard must be repeated because without it, the Or: row returns ALL C7 games regardless of title.
+    </div>
+    <div class="concept-node-detail" id="cn-avg-detail">
+      <strong>Avg Formula Placement:</strong> <code>=Avg([FieldName])</code> goes in the Report Footer, aligned directly below the column it summarises — drag horizontally in Design View. Label to its left, matching the question's exact wording. Widened textbox for evidence screenshot. Format: Currency 2dp for money averages.
+    </div>
+    <div class="concept-node-detail" id="cn-parse-detail">
+      <strong>30-Second Parse:</strong> Before touching Access, identify: (1) Tables and join, (2) Criteria — wildcard? OR? how many rows?, (3) Calculated field — alias and formula, (4) Aggregate — which formula, which column, what label, (5) Format — orientation and candidate details location. Parse first. Build second.
+    </div>
+    <div class="concept-node-detail" id="cn-rf-detail">
+      <strong>Report Footer:</strong> Fires once, at the very end of the report, after all data rows. This is where grand total aggregates go. Not Page Footer (repeats every page) and not Group Footer (fires per group). For all Report 2 tasks in Sessions 1–3: Report Footer only.
+    </div>
+
+    <h3>Adaptive Review Quiz</h3>
+    <div id="review-container"></div>
+    <button onclick="startReview()" id="start-review">Start Review Quiz</button>
+    <div id="review-result" class="hidden">
+      <div class="score-display" id="review-score-text"></div>
+    </div>
+
+    <h3>Homework Check</h3>
+    <p>Before Session 4, write these three things from memory — no Access, no notes:</p>
+    <div class="reflection-area">
+      <h4>1. The wildcard criterion for "any title containing the word sport":</h4>
+      <textarea id="hw-1" placeholder="Write the criterion..." rows="2" onchange="localStorage.setItem('s3-hw1', this.value)"></textarea>
+    </div>
+    <div class="reflection-area">
+      <h4>2. The QBE grid layout for: GameTitle Like "*Tomas*" AND AgeCode is C3 or C7:</h4>
+      <textarea id="hw-2" placeholder="Describe or sketch the two-row layout..." rows="4" onchange="localStorage.setItem('s3-hw2', this.value)"></textarea>
+    </div>
+    <div class="reflection-area">
+      <h4>3. The calculated field syntax for TaxAmount = Price × 0.15:</h4>
+      <textarea id="hw-3" placeholder="Write the formula as it appears in the QBE Field row..." rows="2" onchange="localStorage.setItem('s3-hw3', this.value)"></textarea>
+    </div>
+    <button onclick="checkHomework()" style="margin-top:1rem;">Check My Answers</button>
+    <div class="feedback" id="hw-feedback"></div>
+  </section>
+
+  <!-- ===================== WRAP-UP ===================== -->
+  <section class="section" id="wrap-up">
+    <h2>Wrap-Up and Closure</h2>
+
+    <h3>A — Exit Ticket: Three Essentials</h3>
+    <p>Answer before closing your laptop. Saved locally.</p>
+    <div class="reflection-area">
+      <h4>1. What is the rule for where AND and OR go in the QBE grid?</h4>
+      <textarea id="exit-1" placeholder="Write your answer..." rows="2" onchange="localStorage.setItem('s3-exit1', this.value)"></textarea>
+    </div>
+    <div class="reflection-area">
+      <h4>2. You have the criterion: "GameTitle includes Tomas AND AgeCode is C3 or C7." Write out the QBE Criteria and Or: row contents for both columns.</h4>
+      <textarea id="exit-2" placeholder="Criteria row: GameTitle = ... , AgeCode = ...&#10;Or: row: GameTitle = ... , AgeCode = ..." rows="4" onchange="localStorage.setItem('s3-exit2', this.value)"></textarea>
+    </div>
+    <div class="reflection-area">
+      <h4>3. Write the calculated field formula for a field called NetValue equal to Price multiplied by Quantity.</h4>
+      <textarea id="exit-3" placeholder="Write the formula as it appears in the QBE Field row..." rows="2" onchange="localStorage.setItem('s3-exit3', this.value)"></textarea>
+    </div>
+    <button onclick="toggleSolution('exit-answers')">Show Model Answers</button>
+    <div id="exit-answers" class="hidden" style="margin-top:1rem; padding:1.5rem; background:var(--bg-color); border-radius:8px; border:1px solid var(--border-color);">
+      <p><strong>1.</strong> AND lives on the same row. OR lives on a different row.</p>
+      <p><strong>2.</strong> Criteria row: GameTitle = Like "*Tomas*", AgeCode = "C3". Or: row: GameTitle = Like "*Tomas*", AgeCode = "C7". The wildcard must appear on both rows.</p>
+      <p><strong>3.</strong> <code>NetValue: [Price]*[Quantity]</code> — AliasName: then the formula. No = sign. Both field names in square brackets.</p>
+    </div>
+
+    <!-- B. Objectives -->
+    <h3>B — Objective Confirmation</h3>
+    <p>Click each indicator to update your confidence for today's five objectives.</p>
+    <div>
+      <div class="obj-item"><div class="obj-status" id="wobj-1" onclick="cycleStatus('wobj-1')"></div><span>I can write a calculated field using AliasName: [Field]*constant syntax</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-2" onclick="cycleStatus('wobj-2')"></div><span>I set OR criteria on different rows and repeat the wildcard on both</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-3" onclick="cycleStatus('wobj-3')"></div><span>I can place =Avg([Field]) aligned below the correct column in Report Footer</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-4" onclick="cycleStatus('wobj-4')"></div><span>I apply the 30-second parse before building</span></div>
+      <div class="obj-item"><div class="obj-status" id="wobj-5" onclick="cycleStatus('wobj-5')"></div><span>I know Report Footer fires once at the end; Group Footer fires per group</span></div>
+    </div>
+
+    <!-- C. Reflection -->
+    <h3>C — Reflection Prompts</h3>
+    <div class="reflection-area">
+      <h4>What part of Report 2 still feels uncertain to you?</h4>
+      <textarea id="rp-1" placeholder="Write here..." rows="3" onchange="localStorage.setItem('s3-rp1', this.value)"></textarea>
+    </div>
+    <h4>How confident do you feel building a complete Report 2 independently right now?</h4>
+    <div class="scale-selector">
+      <button class="scale-btn" onclick="selectScale(1)">1 — Not confident</button>
+      <button class="scale-btn" onclick="selectScale(2)">2</button>
+      <button class="scale-btn" onclick="selectScale(3)">3 — Somewhat</button>
+      <button class="scale-btn" onclick="selectScale(4)">4</button>
+      <button class="scale-btn" onclick="selectScale(5)">5 — Very confident</button>
+    </div>
+    <div id="conf-response" class="info-box hidden" style="margin-top:1rem;"></div>
+
+    <!-- D. Bridge -->
+    <h3>D — Bridge to Session 4</h3>
+    <div class="info-box">
+      <strong>Sessions 1, 2, and 3 have given you every database skill the exam tests.</strong>
+      Session 4 is where it becomes real: a full timed mock using an actual past paper database task — new CSV files, new field names, new scenario, exam conditions. You will have exactly the time the exam allocates. After Session 4, you will know your exact mark, your exact weak points, and exactly what to practise before the real exam.
+    </div>
+    <div class="exercise">
+      <h4>Homework — Write from Memory</h4>
+      <p>Without opening Access, write out:</p>
+      <ol style="padding-left:1.5rem; line-height:2;">
+        <li>The wildcard criterion for any title containing the word "sport"</li>
+        <li>The QBE grid layout for: GameTitle Like "*Tomas*" AND AgeCode is C3 or C7 — draw the two rows</li>
+        <li>The calculated field formula for TaxAmount = Price × 0.15</li>
+      </ol>
+      <p>Bring written answers to Session 4 for the 2-minute class check before the mock begins.</p>
+    </div>
+
+    <!-- E. Achievement -->
+    <h3>E — Session Achievement</h3>
+    <div class="certificate" id="cert-box">
+      <h3>Session 3 Complete</h3>
+      <p id="cert-msg" style="color:var(--text-muted); margin:0.75rem 0;">Complete the exit ticket and confidence scale to generate your achievement summary.</p>
+      <div id="cert-badge-area" style="margin-top:1rem;"></div>
+      <button onclick="generateCert()">Generate Achievement Summary</button>
+    </div>
+  </section>
+
+  <!-- ===================== VOCABULARY ===================== -->
+  <section class="section" id="vocab">
+    <h2>Vocabulary Reference</h2>
+    <p>Click any term to reveal its definition. Use the search box to filter.</p>
+    <div class="vocab-search">
+      <input type="text" id="vocab-input" placeholder="Search terms..." oninput="filterVocab()" />
+    </div>
+    <div id="vocab-list">
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Calculated Field</div>
+        <div class="vocab-definition">A field in a query that does not exist in any table — it is computed at run-time from other fields using an arithmetic formula. Syntax: AliasName: [Field1]*[Field2]. Typed in the Field row of a blank QBE column. Never stored back to the table — recalculated fresh each time the query runs. Appears in the query output and report as a normal column.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Alias (Calculated Field)</div>
+        <div class="vocab-definition">The name given to a calculated field — the heading that appears in the query output and report. Placed to the left of the colon in the QBE Field row. For example, in "AnnualBonus: [Salary]*0.1", AnnualBonus is the alias. The alias is given by the exam question — it must be used exactly as specified.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">OR Criteria (QBE)</div>
+        <div class="vocab-definition">In the Access QBE grid, OR conditions are placed on separate rows — the Criteria row for the first condition and the Or: row for the second. Multiple criteria on the same row are joined by AND; criteria on different rows are joined by OR. The critical rule: AND lives on the same row; OR lives on a different row.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Mixed AND/OR Criteria</div>
+        <div class="vocab-definition">A query pattern where some conditions are AND (same row) and others are OR (different rows). For "GameTitle includes Tomas AND AgeCode is C3 or C7": the Criteria row has Like "*Tomas*" + "C3"; the Or: row has Like "*Tomas*" + "C7". The wildcard must be repeated on both rows because each row is an independent condition set — omitting it from the Or: row returns all C7 records regardless of title.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Independent Condition Set</div>
+        <div class="vocab-definition">Each row in the QBE Criteria area is treated as a complete, independent condition. A record is selected if it satisfies ANY row in its entirety. Criteria within the same row are all required simultaneously (AND). Empty cells in a row impose no restriction on that field for that condition. This is why the wildcard must be repeated on every row where the title restriction applies.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">=Avg([FieldName])</div>
+        <div class="vocab-definition">An Access aggregate formula that calculates the arithmetic mean of all values in the specified field across all records in the report. Placed in the Report Footer section, aligned directly below the column it summarises. The label goes to its left. Formatted as Currency (2dp) for money fields. The formula text — not the calculated result — must be fully visible in the Design View evidence screenshot.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Report Footer</div>
+        <div class="vocab-definition">The section at the very end of a report that appears once after all data rows. Used for grand total aggregate formulas — =Count(*), =Sum([Field]), =Avg([Field]). Fires once per report run. Not to be confused with Page Footer (repeats on every page) or Group Footer (fires once per group). For all ungrouped reports in Sessions 2 and 3, all aggregates go in the Report Footer.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Group Footer</div>
+        <div class="vocab-definition">A report section that appears after the records belonging to each group, when grouping is applied. Its formula calculates only across the records in that specific group. For a report grouped by DeptName with =Sum([Salary]) in the Group Footer, each department would show its own salary subtotal. Not covered until Session 4. For ungrouped reports: use Report Footer.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">#Error (Calculated Field)</div>
+        <div class="vocab-definition">An error value displayed in every row of a calculated field when the formula cannot execute. The most common cause is a field name mismatch — the name inside square brackets does not exactly match the actual field name in the table, including capitalisation and spacing. Fix: open the table in Design View, verify the exact field name, and correct the formula. #Error on all rows = name mismatch. #Error on some rows = possible division by zero or null value.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">30-Second Parse Method</div>
+        <div class="vocab-definition">A systematic technique for decoding a Report 2 exam question before touching Access. Five elements in order: (1) Tables and join, (2) Criteria — wildcard, Boolean, OR rows needed, (3) Calculated field — alias and formula, (4) Aggregate — formula, column, label, (5) Format — orientation and candidate details location. Applied before building the query, this method prevents errors caused by building without fully reading the question.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Aggregate Formula (Alignment)</div>
+        <div class="vocab-definition">The requirement to position an aggregate formula textbox directly below the column it summarises, not floating in the centre of the Report Footer. In Design View, drag the textbox left or right until it is horizontally aligned with the column header above. The mark scheme checks position — a correctly calculated formula in the wrong position can still lose the placement mark.</div>
+      </div>
+
+      <div class="vocab-item" onclick="toggleVocab(this)">
+        <div class="vocab-term">Run-Time Calculation</div>
+        <div class="vocab-definition">A calculation performed at the moment the query executes, rather than stored in the table. Calculated fields in the QBE grid are run-time calculations — they use the current values of source fields each time the query runs. If a source field's value changes, the calculated field result changes automatically on the next run. This is why calculated fields cannot be filtered within the same query that creates them — the value does not exist until the query runs.</div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ======================================================
+  // PROGRESS BAR
+  // ======================================================
+  window.addEventListener('scroll', function() {
+    const p = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progress-bar').style.width = p + '%';
+  });
+
+  // ======================================================
+  // THEME
+  // ======================================================
+  function toggleMode() {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('s3-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+  }
+  function toggleDyslexiaMode() {
+    document.body.classList.toggle('dyslexia-mode');
+    localStorage.setItem('s3-dyslexia', document.body.classList.contains('dyslexia-mode') ? 'on' : 'off');
+  }
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ======================================================
+  // TABS
+  // ======================================================
+  function switchTab(prefix, level, btn) {
+    document.querySelectorAll('[id^="' + prefix + '-"]').forEach(el => {
+      if (el.classList.contains('difficulty-content')) el.classList.remove('active');
+    });
+    btn.closest('.difficulty-tabs').querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    const t = document.getElementById(prefix + '-' + level);
+    if (t) t.classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ======================================================
+  // OBJECTIVE STATUS
+  // ======================================================
+  const sc = ['', 'green', 'yellow', 'red'];
+  function cycleStatus(id) {
+    const el = document.getElementById(id);
+    const n = (parseInt(el.dataset.state || '0') + 1) % 4;
+    el.dataset.state = n;
+    el.className = 'obj-status' + (sc[n] ? ' ' + sc[n] : '');
+    const s = JSON.parse(localStorage.getItem('s3-obj-states') || '{}');
+    s[id] = n; localStorage.setItem('s3-obj-states', JSON.stringify(s));
+  }
+
+  // ======================================================
+  // OPENING CHECK
+  // ======================================================
+  function checkOpening() {
+    const sel = document.querySelector('input[name="opening"]:checked');
+    const fb = document.getElementById('opening-feedback');
+    if (!sel) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (sel.value === 'b') {
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct. Placing OR criteria on the same row creates an AND condition — no record can simultaneously satisfy both values, so zero records are returned. With zero records in the report, the criteria marks are lost (up to 4 marks), and the sort and field order marks that depend on correct records appearing are undermined too. This single error is the most expensive mistake in the database task.';
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'Not quite. The most costly single error is the OR-on-same-row mistake — it produces zero records, losing the criteria marks and potentially 4+ marks total. A wrong title loses 1 mark. A wrong PDF filename may lose 1 mark. Wrong orientation loses 1 mark. The OR criteria error is categorically more expensive.';
+    }
+    localStorage.setItem('s3-opening', sel.value);
+  }
+
+  // ======================================================
+  // OR GRID CHECK
+  // ======================================================
+  function checkOrGrid() {
+    const c1 = document.getElementById('grid-c1').value;
+    const c2 = document.getElementById('grid-c2').value;
+    const o1 = document.getElementById('grid-o1').value;
+    const o2 = document.getElementById('grid-o2').value;
+    const fb = document.getElementById('or-grid-fb');
+
+    if (!c1 || !c2 || !o1 || !o2) {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = 'Please complete all four cells before checking.';
+      return;
+    }
+
+    const correct = c1 === 'a' && c2 === 'b' && o1 === 'a' && o2 === 'a';
+    if (correct) {
+      fb.className = 'feedback correct show';
+      fb.textContent = 'Correct. Criteria row: Like "*Tomas*" (GameTitle) + "C3" (AgeCode). Or: row: Like "*Tomas*" + "C7". The wildcard is on both rows — each row is an independent condition set. Without the wildcard on the Or: row, all C7 games would appear regardless of title.';
+    } else {
+      let hint = 'Not quite. ';
+      if (c1 !== 'a') hint += 'The GameTitle Criteria cell needs Like "*Tomas*" — "includes the text Tomas" maps to *Tomas*. ';
+      if (c2 !== 'b') hint += 'The AgeCode Criteria cell needs just "C3" — C3 goes on row 1, C7 on row 2. ';
+      if (o1 !== 'a') hint += 'The GameTitle Or: cell must also have Like "*Tomas*" — repeat the wildcard on every row. ';
+      if (o2 !== 'a') hint += 'The AgeCode Or: cell needs "C7" — C7 is the OR condition on a separate row. ';
+      fb.className = 'feedback incorrect show';
+      fb.textContent = hint;
+    }
+  }
+
+  // ======================================================
+  // GENERIC CCQ
+  // ======================================================
+  function checkCCQ(name, correct, fbId, correctMsg, incorrectMsg) {
+    const sel = document.querySelector('input[name="' + name + '"]:checked');
+    const fb = document.getElementById(fbId);
+    if (!sel) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    fb.className = (sel.value === correct ? 'feedback correct' : 'feedback incorrect') + ' show';
+    fb.textContent = sel.value === correct ? correctMsg : incorrectMsg;
+  }
+
+  // ======================================================
+  // PRINT PREVIEW CHECKLIST
+  // ======================================================
+  function savePP() {
+    const cbs = document.querySelectorAll('#pp-1,#pp-2,#pp-3,#pp-4,#pp-5,#pp-6,#pp-7');
+    const s = {}; cbs.forEach(cb => s[cb.id] = cb.checked);
+    localStorage.setItem('s3-pp', JSON.stringify(s));
+  }
+
+  // ======================================================
+  // MISSION SCORING
+  // ======================================================
+  let missionScore = 0;
+  const scored = {};
+
+  function updateMissionScore() {
+    document.getElementById('mission-score').textContent = 'Mission Score: ' + missionScore + ' / 20';
+    localStorage.setItem('s3-mission-score', missionScore);
+    if (missionScore >= 1 && !document.getElementById('b3-first').classList.contains('badge-earned'))
+      document.getElementById('b3-first').className = 'badge badge-earned';
+    if (missionScore >= 10 && !document.getElementById('b3-halfway').classList.contains('badge-earned'))
+      document.getElementById('b3-halfway').className = 'badge badge-earned';
+    if (missionScore >= 15 && !document.getElementById('b3-parser').classList.contains('badge-earned'))
+      document.getElementById('b3-parser').className = 'badge badge-earned';
+    if (missionScore >= 18) document.getElementById('b3-complete').className = 'badge badge-earned';
+  }
+
+  function checkMission(name, correct, fbId, marks, correctMsg, incorrectMsg) {
+    const sel = document.querySelector('input[name="' + name + '"]:checked');
+    const fb = document.getElementById(fbId);
+    if (!sel) { fb.className = 'feedback incorrect show'; fb.textContent = 'Please select an answer.'; return; }
+    if (sel.value === correct) {
+      if (!scored[name]) { missionScore += marks; scored[name] = true; updateMissionScore(); }
+      fb.className = 'feedback correct show';
+      fb.textContent = correctMsg;
+    } else {
+      fb.className = 'feedback incorrect show';
+      fb.textContent = incorrectMsg;
+    }
+  }
+
+  // ======================================================
+  // TOGGLE SOLUTION
+  // ======================================================
+  function toggleSolution(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('hidden');
+  }
+
+  // ======================================================
+  // CONCEPT MAP
+  // ======================================================
+  function showConcept(id) {
+    document.querySelectorAll('.concept-node-detail').forEach(d => d.classList.remove('show'));
+    document.querySelectorAll('.concept-node').forEach(n => n.classList.remove('highlighted'));
+    const d = document.getElementById(id + '-detail');
+    if (d) { d.classList.add('show'); event.target.classList.add('highlighted'); }
+  }
+
+  // ======================================================
+  // HOMEWORK CHECK
+  // ======================================================
+  function checkHomework() {
+    const h1 = (document.getElementById('hw-1').value || '').toLowerCase().replace(/\s/g,'');
+    const h2 = (document.getElementById('hw-2').value || '').toLowerCase();
+    const h3 = (document.getElementById('hw-3').value || '').toLowerCase().replace(/\s/g,'');
+    const fb = document.getElementById('hw-feedback');
+
+    let score = 0, msgs = [];
+
+    // Q1: Like "*sport*"
+    if (h1.includes('*sport*')) { score++; msgs.push('Q1: Correct — Like "*sport*"'); }
+    else msgs.push('Q1: The answer is Like "*sport*" — contains the word sport anywhere in the value.');
+
+    // Q2: wildcard on both rows + C3 row 1 + C7 row 2
+    const has_wc = h2.includes('*tomas*');
+    const has_c3 = h2.includes('c3');
+    const has_c7 = h2.includes('c7');
+    if (has_wc && has_c3 && has_c7) { score++; msgs.push('Q2: Correct — wildcard on both rows with C3 and C7 on separate rows.'); }
+    else {
+      let m = 'Q2: ';
+      if (!has_wc) m += 'Like "*Tomas*" must appear on BOTH the Criteria and Or: rows. ';
+      if (!has_c3) m += '"C3" should be on the Criteria row. ';
+      if (!has_c7) m += '"C7" should be on the Or: row. ';
+      msgs.push(m);
+    }
+
+    // Q3: TaxAmount: [Price]*0.15
+    if (h3.includes('taxamount:') && h3.includes('[price]') && h3.includes('0.15')) {
+      score++; msgs.push('Q3: Correct — TaxAmount: [Price]*0.15');
+    } else {
+      let m = 'Q3: The answer is TaxAmount: [Price]*0.15. ';
+      if (!h3.includes('taxamount:')) m += 'Start with the alias followed by a colon. ';
+      if (!h3.includes('[price]')) m += 'Field names go in square brackets. ';
+      if (!h3.includes('0.15')) m += 'The constant 0.15 is written without brackets. ';
+      msgs.push(m);
+    }
+
+    fb.className = (score === 3 ? 'feedback correct' : 'feedback incorrect') + ' show';
+    fb.textContent = score + '/3 correct. ' + msgs.join(' | ');
+    localStorage.setItem('s3-hw-score', score);
+  }
+
+  // ======================================================
+  // REVIEW QUIZ
+  // ======================================================
+  const reviewBank = [
+    { q: 'What is typed in the Field row of a blank QBE column to create a calculated field called TaxAmount equal to Price * 0.2?',
+      opts: ['=TaxAmount: [Price]*0.2', 'TaxAmount: [Price]*0.2', '[TaxAmount]: Price*0.2', 'TaxAmount = [Price]*0.2'],
+      correct: 1, exp: 'Syntax: AliasName: [FieldName]*constant. No = sign. No brackets around the alias. Field names in square brackets. Constants without brackets.' },
+    { q: 'A student types "C3" AND "C7" in the same AgeCode Criteria cell. What happens?',
+      opts: ['Records with AgeCode C3 or C7 are returned', 'Zero records are returned — no record can simultaneously be C3 AND C7', 'Records with AgeCode C3 are returned; C7 records are ignored', 'An error message appears'],
+      correct: 1, exp: 'AND on the same row requires both conditions to be true simultaneously. No record has two different AgeCode values at once, so zero records are returned.' },
+    { q: 'In a mixed AND/OR query: "GameTitle includes Tomas AND AgeCode is C3 or C7" — what goes in the GameTitle Or: row?',
+      opts: ['(empty) — only AgeCode needs an Or: row', 'Like "*Tomas*" — the wildcard must be repeated on every row', '"Tomas" — exact match on the Or: row', 'Like "Tomas*"'],
+      correct: 1, exp: 'Each row is an independent condition set. Without the wildcard on the Or: row, that row selects ALL C7 games regardless of title. The wildcard must be on every row where the title restriction applies.' },
+    { q: 'Where in a report should =Avg([Price]) be placed to calculate the average price for the whole report?',
+      opts: ['Page Footer — it appears at the bottom of every page', 'Report Footer — it fires once, at the very end, after all data rows', 'Detail section — it calculates per row', 'Report Header — it appears at the top'],
+      correct: 1, exp: 'Report Footer fires once, at the very end. Page Footer fires on every page. Detail fires per record. For a grand total/average across the whole report, always use Report Footer.' },
+    { q: 'A calculated field shows #Error in every row. What is the most likely cause?',
+      opts: ['The formula uses the wrong arithmetic operator', 'The field name in square brackets does not exactly match the table field name', 'The alias contains a colon', 'The query has no criteria'],
+      correct: 1, exp: '#Error on every row is the signature of a field name mismatch. The name inside [brackets] must match the table field name exactly — capitalisation and spaces included. [GlobalSales] ≠ [Global Sales].' },
+    { q: 'The 30-second parse method identifies five elements. What is element 3?',
+      opts: ['TABLES — how many and which join', 'CRITERIA — wildcard, Boolean, OR rows', 'CALCULATED FIELD — alias, formula, format', 'AGGREGATE — formula, column, label'],
+      correct: 2, exp: 'The five elements in order: 1. Tables, 2. Criteria, 3. Calculated Field, 4. Aggregate, 5. Format. Parsing these five elements before building prevents errors from starting the query before fully reading the question.' },
+    { q: 'A report has =Sum([OrderValue]) in the Report Footer and =Sum([OrderValue])*0.2 elsewhere for VAT. Why must the VAT formula repeat the Sum expression rather than referencing the first textbox?',
+      opts: ['Access does not support decimal multiplication in Report Footer', 'Access does not allow one Report Footer textbox to reference another textbox in the same section', 'The VAT formula must go in the Group Footer instead', 'It is correct to reference the first textbox'],
+      correct: 1, exp: 'Access Report Footer textboxes cannot reference each other by name. The VAT formula must independently recalculate the sum and multiply: =Sum([OrderValue])*0.2. There is no way to write =FirstTextboxName*0.2.' },
+    { q: 'What does "2015 or later" translate to as an Access QBE criteria expression for a Number (Integer) field?',
+      opts: ['Like "2015*"', '>= 2015', '= 2015', 'Between 2015 And 9999'],
+      correct: 1, exp: '>=2015 means greater than or equal to 2015. Like wildcards are for text fields. = 2015 selects only 2015. Between ... And works but >=2015 is cleaner and more standard.' }
+  ];
+
+  let reviewAnswers = {}, reviewGenerated = false;
+  function startReview() {
+    if (reviewGenerated) return;
+    reviewGenerated = true;
+    document.getElementById('start-review').style.display = 'none';
+    const qs = [...reviewBank].sort(() => Math.random() - 0.5).slice(0, 5);
+    const c = document.getElementById('review-container');
+    c.innerHTML = '';
+    qs.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'exercise';
+      div.innerHTML = `<h4>Question ${i+1}</h4><p class="question-text">${q.q}</p>
+        <div class="options concept-check" style="padding:0;border:none;background:transparent;margin-bottom:0.5rem;">
+          ${q.opts.map((o,j) => `<div class="option"><input type="radio" name="rq${i}" id="rq${i}-${j}" value="${j}"><label for="rq${i}-${j}">${o}</label></div>`).join('')}
+        </div>
+        <button onclick="checkRQ(${i},${q.correct},'${q.exp.replace(/'/g,"\\'")}',this)">Check</button>
+        <div class="feedback" id="rq-fb-${i}"></div>`;
+      c.appendChild(div);
+    });
+    window._rqBank = qs;
+  }
+
+  function checkRQ(i, correct, exp, btn) {
+    const sel = document.querySelector(`input[name="rq${i}"]:checked`);
+    const fb = document.getElementById(`rq-fb-${i}`);
+    if (!sel) { fb.className = 'feedback incorrect show'; fb.textContent = 'Select an answer first.'; return; }
+    if (!reviewAnswers.hasOwnProperty(i)) reviewAnswers[i] = parseInt(sel.value) === correct;
+    fb.className = (parseInt(sel.value) === correct ? 'feedback correct' : 'feedback incorrect') + ' show';
+    fb.textContent = (parseInt(sel.value) === correct ? 'Correct. ' : 'Incorrect. ') + exp;
+    btn.style.display = 'none';
+    if (Object.keys(reviewAnswers).length === (window._rqBank || []).length) {
+      const score = Object.values(reviewAnswers).filter(Boolean).length;
+      document.getElementById('review-result').classList.remove('hidden');
+      document.getElementById('review-score-text').textContent = 'Review Score: ' + score + ' / ' + (window._rqBank || []).length;
+      localStorage.setItem('s3-review-score', score + '/' + (window._rqBank || []).length);
+    }
+  }
+
+  // ======================================================
+  // CONFIDENCE SCALE
+  // ======================================================
+  function selectScale(n) {
+    document.querySelectorAll('.scale-btn').forEach((b,i) => b.classList.toggle('selected', i+1 === n));
+    localStorage.setItem('s3-confidence', n);
+    const msgs = {
+      1: 'That is a reasonable response — Report 2 has more elements than any previous task. Focus on the OR criteria rule first: AND same row, OR different row. Everything else is the Session 2 pipeline plus two additions.',
+      2: 'Review the OR grid exercise and the 30-second parse method. The calculated field syntax — AliasName: [Field]*constant — is the other thing to practise until it is automatic.',
+      3: 'Good. The weakest point at this level is usually the wildcard-repetition rule. Write out the two-row OR grid for the Tomas/AgeCode example from memory before Session 4.',
+      4: 'Solid confidence. The stretch challenge (double formula in Report Footer) represents the FM2021 pattern — if you can solve that, you are prepared for any Report 2 variation.',
+      5: 'Excellent. Your homework (three written answers from memory) should take under 3 minutes. Session 4 is a timed mock — you are well-positioned.'
+    };
+    const box = document.getElementById('conf-response');
+    box.classList.remove('hidden');
+    box.textContent = msgs[n] || '';
+  }
+
+  // ======================================================
+  // CERTIFICATE
+  // ======================================================
+  function generateCert() {
+    const ms = parseInt(localStorage.getItem('s3-mission-score') || '0');
+    const rs = localStorage.getItem('s3-review-score') || 'not attempted';
+    let msg = 'Session 3 complete. Mission score: ' + ms + '/20. Review quiz: ' + rs + '.';
+    if (ms >= 18) msg += ' Near-full marks — you have the Report 2 skill set. Session 4 timed mock will confirm it.';
+    else if (ms >= 12) msg += ' Good progress. Review the OR-criteria and calculated-field questions before Session 4.';
+    else msg += ' Return to the OR criteria section and the 30-second parse exercise before Session 4. The mock requires these skills to be automatic.';
+    document.getElementById('cert-msg').textContent = msg;
+    document.getElementById('cert-msg').style.color = 'var(--text-main)';
+    const ba = document.getElementById('cert-badge-area');
+    const earned = [...document.querySelectorAll('.badge-earned')].map(b => b.textContent);
+    if (earned.length > 0) {
+      ba.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:0.5rem;">Badges earned:</p>' +
+        earned.map(b => `<span class="badge badge-earned" style="margin:0.25rem;">${b}</span>`).join('');
+    }
+  }
+
+  // ======================================================
+  // VOCABULARY
+  // ======================================================
+  function toggleVocab(el) { el.querySelector('.vocab-definition').classList.toggle('show'); }
+  function filterVocab() {
+    const q = document.getElementById('vocab-input').value.toLowerCase();
+    document.querySelectorAll('.vocab-item').forEach(item => {
+      const t = item.querySelector('.vocab-term').textContent.toLowerCase();
+      const d = item.querySelector('.vocab-definition').textContent.toLowerCase();
+      item.classList.toggle('hidden', !t.includes(q) && !d.includes(q));
+    });
+  }
+
+  // ======================================================
+  // RESTORE STATE
+  // ======================================================
+  window.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('s3-theme') === 'light') document.body.classList.add('light-mode');
+    if (localStorage.getItem('s3-dyslexia') === 'on') document.body.classList.add('dyslexia-mode');
+
+    const objS = JSON.parse(localStorage.getItem('s3-obj-states') || '{}');
+    Object.keys(objS).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { const n = objS[id]; el.dataset.state = n; el.className = 'obj-status' + (sc[n] ? ' ' + sc[n] : ''); }
+    });
+
+    const ppS = JSON.parse(localStorage.getItem('s3-pp') || '{}');
+    Object.keys(ppS).forEach(id => { const el = document.getElementById(id); if (el) el.checked = ppS[id]; });
+
+    const textMap = {
+      's3-parse':'parse-input','s3-stretch':'stretch-ans',
+      's3-q1a':'q1a','s3-q1b':'q1b','s3-q1c':'q1c',
+      's3-q2a':'q2a','s3-q2b':'q2b','s3-q3a':'q3a','s3-q4a':'q4a',
+      's3-exit1':'exit-1','s3-exit2':'exit-2','s3-exit3':'exit-3',
+      's3-hw1':'hw-1','s3-hw2':'hw-2','s3-hw3':'hw-3','s3-rp1':'rp-1'
+    };
+    Object.keys(textMap).forEach(k => {
+      const el = document.getElementById(textMap[k]);
+      if (el && localStorage.getItem(k)) el.value = localStorage.getItem(k);
+    });
+
+    missionScore = parseInt(localStorage.getItem('s3-mission-score') || '0');
+    updateMissionScore();
+
+    const conf = localStorage.getItem('s3-confidence');
+    if (conf) selectScale(parseInt(conf));
+
+    // Carry forward Session 2 remaining question
+    const prev = localStorage.getItem('s3-rp1') || localStorage.getItem('s2-rp1');
+    if (prev && prev.trim()) {
+      const el = document.getElementById('prev-carry');
+      if (el) el.textContent = 'Carried from last session — your remaining question: "' + prev.substring(0, 120) + (prev.length > 120 ? '...' : '') + '"';
+    }
+  });
+</script>
+
 </body>
-
 </html>
