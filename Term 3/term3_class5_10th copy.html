@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session 5: Mid-Term Mock Exam | Smart Garden</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* CONSISTENT COLOR PALETTE - Science/Biology Theme */
+            --primary-color: #1a5f7a;
+            --secondary-color: #27ae60;
+            --accent-color: #e74c3c;
+
+            /* Modern Dark Mode Base (Slate/Zinc inspired) */
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --surface-color-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+
+            /* Accessibility & Spacing */
+            --base-spacing: 1rem;
+            --line-height: 1.6;
+            --letter-spacing: 0.2px;
+            --font-size-base: 16px;
+            --font-size-large: 18px;
+            --font-size-xl: 20px;
+            --border-radius: 12px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 1. LIGHT MODE OVERRIDES */
+        body.light-mode {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --surface-color-hover: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        /* 2. DYSLEXIA-FRIENDLY MODE FIX */
+        body.dyslexia-mode {
+            --font-family: 'Open Dyslexic', 'Lexie Readable', 'Comic Sans MS', sans-serif;
+            --font-size-base: 18px;
+            --font-size-large: 20px;
+            --font-size-xl: 22px;
+            --line-height: 2;
+            --letter-spacing: 1px;
+            background-color: #f4f1de !important;
+            color: #2c3e50 !important;
+        }
+
+        body.dyslexia-mode .section,
+        body.dyslexia-mode header,
+        body.dyslexia-mode .exercise,
+        body.dyslexia-mode .concept-check {
+            background-color: #fffcf9 !important;
+            color: #2c3e50 !important;
+            border-left: 6px solid var(--secondary-color) !important;
+        }
+
+        body.dyslexia-mode .section h2 {
+            color: var(--primary-color) !important;
+        }
+
+        body.dyslexia-mode .section h3 {
+            color: var(--secondary-color) !important;
+        }
+
+        /* Universal Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-size: var(--font-size-base);
+            line-height: var(--line-height);
+            letter-spacing: var(--letter-spacing);
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* HEADER & NAVIGATION */
+        header {
+            background-color: rgba(var(--surface-color-rgb), 0.85);
+            background: var(--surface-color);
+            color: var(--text-main);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (min-width: 900px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                text-align: left;
+                padding: 1rem 3rem;
+            }
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 900px) {
+            header h1 {
+                justify-content: flex-start;
+            }
+        }
+
+        header p {
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            header p {
+                display: block;
+            }
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        nav button,
+        nav a {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        nav button:hover,
+        nav a:hover {
+            background-color: var(--surface-color-hover);
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 3px;
+            background-color: transparent;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--secondary-color);
+            width: 0%;
+            transition: width 0.4s ease-out;
+            box-shadow: 0 0 8px var(--secondary-color);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Modern Cards */
+        .section {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            scroll-margin-top: 120px;
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: var(--text-main);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section h3 {
+            color: var(--text-main);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section p,
+        .question-text {
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+        }
+
+        /* Difficulty Tabs */
+        .difficulty-tabs {
+            display: inline-flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            background: var(--bg-color);
+            padding: 0.25rem;
+            border-radius: 12px;
+        }
+
+        .difficulty-tabs button {
+            padding: 0.5rem 1.25rem;
+            border: none;
+            background-color: transparent;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .difficulty-tabs button.active {
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .difficulty-content {
+            display: none;
+            padding: 1.5rem;
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--secondary-color);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .difficulty-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Interactive Elements */
+        .exercise {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.15);
+        }
+
+        button.primary-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        button.primary-btn:hover {
+            background-color: #219653;
+            transform: translateY(-1px);
+        }
+
+        /* Concept Checking & Feedback */
+        .concept-check {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        .concept-check h4 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+
+        .concept-check .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1.25rem 0;
+        }
+
+        .concept-check label {
+            display: block;
+            padding: 1rem 1.25rem;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .concept-check input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .concept-check input[type="radio"]:checked+label {
+            border-color: var(--secondary-color);
+            background-color: rgba(39, 174, 96, 0.05);
+            box-shadow: 0 0 0 1px var(--secondary-color);
+        }
+
+        .feedback {
+            margin-top: 1.25rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.correct {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+            border: 1px solid rgba(39, 174, 96, 0.2);
+        }
+
+        .feedback.incorrect {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Tables & Vocab */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .vocab-item {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .vocab-item:hover {
+            transform: translateX(4px);
+        }
+
+        .vocab-definition {
+            display: none;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .vocab-definition.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background-color: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem 0.5rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div>
+            <h1>🌱 Session 5: Mid-Term Mock Exam</h1>
+            <p>10th Grade Electronics | Smart Garden Project | Week 5</p>
+        </div>
+        <nav>
+            <button onclick="toggleMode()">🌙 Theme</button>
+            <button onclick="toggleDyslexiaMode()">Aa Dyslexia</button>
+            <button onclick="scrollToSection('opening-activity')">Hook</button>
+            <button onclick="scrollToSection('concepts')">Review</button>
+            <button onclick="scrollToSection('demo')">7.4V Math</button>
+            <button onclick="scrollToSection('mission')">Mock Exam</button>
+            <button onclick="scrollToSection('drill')">Drill</button>
+            <button onclick="scrollToSection('vocab')">Vocab</button>
+        </nav>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="section" id="opening-activity">
+            <h2>🌿 The Garden Knowledge Check</h2>
+            <div class="highlight-box">
+                <p><strong>Instructor Note:</strong> "Chicas, antes de repartir el examen, quiero que recuerden por qué
+                    estamos haciendo esto. No es para darte una nota. Es para asegurarnos de que cuando llegues a la
+                    Semana 6 y comiences a construir tu jardín permanente, sepas exactamente qué estás haciendo y por
+                    qué."</p>
+                <p>"Every question on this exam comes directly from something you built with your hands. Trust your
+                    folder. Trust your memory."</p>
+            </div>
+
+            <div class="exercise">
+                <h3>Pre-Exam Temperature Check</h3>
+                <p>Before we start, how confident do you feel about these three core pillars? (Be honest!)</p>
+
+                <label style="display:block; margin-top:10px;">1. Resistor Color Codes & Series/Parallel</label>
+                <select id="conf-1">
+                    <option value="high">🟢 Ready to build (High Confidence)</option>
+                    <option value="med">🟡 I need a quick formula check (Medium)</option>
+                    <option value="low">🔴 I'm guessing (Low Confidence)</option>
+                </select>
+
+                <label style="display:block; margin-top:10px;">2. Ohm's Law (V = I × R)</label>
+                <select id="conf-2">
+                    <option value="high">🟢 Master of Calculations</option>
+                    <option value="med">🟡 I get the triangle, but mix up units</option>
+                    <option value="low">🔴 Help!</option>
+                </select>
+
+                <label style="display:block; margin-top:10px;">3. Potential Dividers (Sensors)</label>
+                <select id="conf-3">
+                    <option value="high">🟢 I can calculate Vout easily</option>
+                    <option value="med">🟡 I understand the concept, but the math is hard</option>
+                    <option value="low">🔴 What is a potential divider?</option>
+                </select>
+
+                <button class="primary-btn" onclick="saveOpening()">Lock in Confidence</button>
+                <p id="opening-feedback" class="feedback"></p>
+            </div>
+        </section>
+
+        <section class="section" id="learning-objectives">
+            <h2>🎯 Session Objectives</h2>
+            <div class="highlight-box">
+                <h4>Cognitive Goals</h4>
+                <ul>
+                    <li>✅ <strong>Calculate</strong> V, I, and R using Ohm's Law with the new <strong>7.4V</strong>
+                        power supply standard.</li>
+                    <li>✅ <strong>Analyze</strong> sensor circuits (Potential Dividers) to predict voltage changes when
+                        light levels change.</li>
+                    <li>✅ <strong>Decode</strong> resistor color bands to identify component values.</li>
+                </ul>
+            </div>
+            <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
+                <h4>Success Criteria</h4>
+                <p>By the end of this session, you will identify exactly which topics you need to review before we start
+                    the permanent build in Week 6.</p>
+            </div>
+        </section>
+
+        <section class="section" id="concepts">
+            <h2>📚 Concept Review</h2>
+            <p>Use these tabs to refresh your memory before attempting the Mock Exam questions.</p>
+
+            <div class="difficulty-tabs">
+                <button class="active" onclick="switchTab('tab-basic')">1. The Basics</button>
+                <button onclick="switchTab('tab-inter')">2. Formulas</button>
+                <button onclick="switchTab('tab-adv')">3. Advanced Logic</button>
+            </div>
+
+            <div id="tab-basic" class="difficulty-content active">
+                <h3>Key Quantities</h3>
+                <table>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Symbol</th>
+                        <th>Unit</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td>Voltage</td>
+                        <td>V</td>
+                        <td>Volt (V)</td>
+                        <td>Electrical pressure pushing electrons.</td>
+                    </tr>
+                    <tr>
+                        <td>Current</td>
+                        <td>I</td>
+                        <td>Ampere (A)</td>
+                        <td>The rate of electron flow.</td>
+                    </tr>
+                    <tr>
+                        <td>Resistance</td>
+                        <td>R</td>
+                        <td>Ohm (Ω)</td>
+                        <td>Opposition to current flow.</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="tab-inter" class="difficulty-content">
+                <h3>Circuit Rules</h3>
+                <div class="highlight-box">
+                    <h4>Ohm's Law</h4>
+                    <p><strong>V = I × R</strong></p>
+                    <p>Use the triangle! Cover the one you want to find.</p>
+                </div>
+
+                <h4>Series vs. Parallel</h4>
+                <ul>
+                    <li><strong>Series:</strong> Resistance adds up ($R_T = R1 + R2$). Current is the same everywhere.
+                    </li>
+                    <li><strong>Parallel:</strong> Resistance decreases ($R_T = \frac{R1 \times R2}{R1 + R2}$). Voltage
+                        is the same across branches.</li>
+                </ul>
+            </div>
+
+            <div id="tab-adv" class="difficulty-content">
+                <h3>The Potential Divider</h3>
+                <p>Used for sensors (LDRs, Thermistors). It splits the supply voltage based on the ratio of resistances.
+                </p>
+                <p><strong>Formula:</strong></p>
+                <p>$$V_{out} = V_{in} \times \frac{R_2}{R_1 + R_2}$$</p>
+                <p>Where $R_2$ is usually the resistor you are measuring across (often the bottom one).</p>
+            </div>
+        </section>
+
+        <section class="section" id="demo">
+            <h2>⚡ The 7.4V Adjustment</h2>
+            <div class="highlight-box" style="border-left: 4px solid var(--accent-color);">
+                <h3>⚠️ IMPORTANT EXAM UPDATE</h3>
+                <p>In our physical Smart Garden build, we are switching from 9V batteries to <strong>7.4V Lithium-Ion
+                        packs</strong>. The Mock Exam questions below (C3, D3, E1) have been updated to reflect this
+                    reality.</p>
+            </div>
+
+            <div class="exercise">
+                <h3>Walkthrough: Calculating Current with 7.4V</h3>
+                <p><strong>Scenario:</strong> You have a 100Ω resistor connected to the new 7.4V supply.</p>
+                <p><strong>Step 1:</strong> Identify values. $V = 7.4V$, $R = 100\Omega$.</p>
+                <p><strong>Step 2:</strong> Choose Formula. $I = \frac{V}{R}$.</p>
+                <p><strong>Step 3:</strong> Calculate.</p>
+                <p>$$I = \frac{7.4}{100} = 0.074 A$$</p>
+                <p><strong>Step 4:</strong> Convert to mA. $0.074 \times 1000 = 74 mA$.</p>
+            </div>
+        </section>
+
+        <section class="section" id="mission">
+            <h2>📝 The Mock Exam</h2>
+            <p>Complete the sections below. Immediate feedback is enabled for this practice mode.</p>
+
+            <div class="exercise">
+                <h3>Section C3: Resistor Calculation (Modified)</h3>
+                <p>A resistor protecting an LED carries <strong>0.015 A</strong>. The supply is <strong>7.4V</strong>.
+                    The LED drops <strong>2V</strong>.</p>
+
+                <div class="concept-check" style="margin-top:1rem; border-left:4px solid var(--primary-color);">
+                    <label><strong>(a) What is the voltage across the resistor?</strong> (Supply - LED)</label>
+                    <input type="number" id="ans-c3a" placeholder="Enter Voltage (V)">
+                    <button class="primary-btn" onclick="checkC3a()">Check Voltage</button>
+                    <p id="feed-c3a" class="feedback"></p>
+                </div>
+
+                <div class="concept-check" style="margin-top:1rem; border-left:4px solid var(--primary-color);">
+                    <label><strong>(b) Calculate the resistance value required.</strong> ($R = V_{resistor} /
+                        I$)</label>
+                    <input type="number" id="ans-c3b" placeholder="Enter Resistance (Ω)">
+                    <button class="primary-btn" onclick="checkC3b()">Check Resistance</button>
+                    <p id="feed-c3b" class="feedback"></p>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h3>Section D3: Series Circuit (Modified)</h3>
+                <p>Three resistors (220Ω, 470Ω, 1kΩ) are in series across a <strong>7.4V</strong> battery.</p>
+
+                <div class="concept-check" style="margin-top:1rem; border-left:4px solid var(--primary-color);">
+                    <label><strong>(a) Total Resistance ($R_T$)?</strong></label>
+                    <input type="number" id="ans-d3a" placeholder="Enter Ohms">
+                    <button class="primary-btn" onclick="checkD3a()">Check R_Total</button>
+                    <p id="feed-d3a" class="feedback"></p>
+                </div>
+
+                <div class="concept-check" style="margin-top:1rem; border-left:4px solid var(--primary-color);">
+                    <label><strong>(b) Calculate Current (I).</strong> ($I = 7.4 / R_T$). Enter answer in
+                        <strong>mA</strong> (milliamps).</label>
+                    <input type="number" id="ans-d3b" placeholder="Enter mA">
+                    <button class="primary-btn" onclick="checkD3b()">Check Current</button>
+                    <p id="feed-d3b" class="feedback"></p>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h3>Section E1: Sensor Analysis (Modified)</h3>
+                <p>Potential Divider: Top R1 (LDR), Bottom R2 (10kΩ). Supply <strong>Vin = 7.4V</strong>.</p>
+                <p>Formula: $V_{out} = (\frac{R2}{R1+R2}) \times V_{in}$</p>
+
+                <div class="concept-check" style="margin-top:1rem; border-left:4px solid var(--primary-color);">
+                    <label><strong>(b) Normal Light: LDR = 8kΩ. Calculate Vout.</strong></label>
+                    <input type="number" id="ans-e1b" placeholder="Enter Volts" step="0.01">
+                    <button class="primary-btn" onclick="checkE1b()">Check Vout (Normal)</button>
+                    <p id="feed-e1b" class="feedback"></p>
+                </div>
+
+                <div class="concept-check" style="margin-top:1rem; border-left:4px solid var(--primary-color);">
+                    <label><strong>(c) Cloud passes (Dark): LDR = 40kΩ. Calculate Vout.</strong></label>
+                    <input type="number" id="ans-e1c" placeholder="Enter Volts" step="0.01">
+                    <button class="primary-btn" onclick="checkE1c()">Check Vout (Dark)</button>
+                    <p id="feed-e1c" class="feedback"></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="drill">
+            <h2>🛠️ Drill & Concept Checks</h2>
+
+            <div class="concept-check">
+                <h4>CCQ 1: Power Supply Impact</h4>
+                <p>We changed the supply from 9V to 7.4V. What happens to the current flowing through a fixed resistor?
+                </p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="ccq1a" value="inc">
+                        <label for="ccq1a">The current increases</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="ccq1b" value="dec">
+                        <label for="ccq1b">The current decreases</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq1" id="ccq1c" value="same">
+                        <label for="ccq1c">It stays the same</label>
+                    </div>
+                </div>
+                <button class="primary-btn" onclick="checkCCQ1()">Check Concept</button>
+                <p id="feed-ccq1" class="feedback"></p>
+            </div>
+
+            <div class="concept-check">
+                <h4>CCQ 2: Divider Logic</h4>
+                <p>In the sensor circuit (E1), when the cloud passed, the LDR resistance went UP (8k → 40k). What
+                    happened to Vout?</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="ccq2" id="ccq2a" value="up">
+                        <label for="ccq2a">Vout went UP</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="ccq2" id="ccq2b" value="down">
+                        <label for="ccq2b">Vout went DOWN</label>
+                    </div>
+                </div>
+                <button class="primary-btn" onclick="checkCCQ2()">Check Concept</button>
+                <p id="feed-ccq2" class="feedback"></p>
+            </div>
+        </section>
+
+        <section class="section" id="vocab">
+            <h2>📖 Exam Vocabulary</h2>
+            <div class="vocab-search">
+                <input type="text" id="vocabSearch" onkeyup="filterVocab()" placeholder="Search terms...">
+            </div>
+
+            <div class="vocab-list">
+                <div class="vocab-item" onclick="toggleDef(this)">
+                    <div class="vocab-term">Potential Difference</div>
+                    <div class="vocab-definition">Another name for Voltage. The difference in electrical energy between
+                        two points in a circuit.</div>
+                </div>
+                <div class="vocab-item" onclick="toggleDef(this)">
+                    <div class="vocab-term">Transducer</div>
+                    <div class="vocab-definition">An electronic device that converts energy from one form to another
+                        (e.g., LDR converts light to resistance).</div>
+                </div>
+                <div class="vocab-item" onclick="toggleDef(this)">
+                    <div class="vocab-term">Tolerance</div>
+                    <div class="vocab-definition">The permitted percentage error of a resistor (e.g., Gold band = ±5%).
+                    </div>
+                </div>
+                <div class="vocab-item" onclick="toggleDef(this)">
+                    <div class="vocab-term">Nominal Resistance</div>
+                    <div class="vocab-definition">The stated value of a resistor based on its color code.</div>
+                </div>
+                <div class="vocab-item" onclick="toggleDef(this)">
+                    <div class="vocab-term">Direct Current (DC)</div>
+                    <div class="vocab-definition">Current that flows in one direction only (like from our 7.4V battery).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="wrap-up">
+            <h2>🔁 Post-Exam Reflection</h2>
+
+            <div class="highlight-box">
+                <p><strong>Next Step:</strong> Next week, we stop practising. We start building the <strong>Sensory
+                        Cortex</strong> of your garden permanently.</p>
+            </div>
+
+            <div class="exercise">
+                <h3>Folder Task: Error Analysis</h3>
+                <p>For your homework, look at the questions you got wrong above.</p>
+                <textarea
+                    placeholder="I lost marks on [topic] because... The correct answer was... I now understand it because..."
+                    rows="4"></textarea>
+                <button class="primary-btn" onclick="alert('Reflection Saved to LocalStorage!')">Save
+                    Reflection</button>
+            </div>
+
+            <h3>Self-Assessment Checklist</h3>
+            <div class="concept-check" style="border-left: none;">
+                <label><input type="checkbox"> I can calculate voltage drops in a series circuit.</label>
+                <label><input type="checkbox"> I understand why Vout drops when resistance increases in a top-LDR
+                    divider.</label>
+                <label><input type="checkbox"> I am ready to solder components next week.</label>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 1. Theme Toggles
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        function toggleDyslexiaMode() {
+            document.body.classList.toggle('dyslexia-mode');
+        }
+
+        // 2. Navigation & Scroll
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.onscroll = function () {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        // 3. Tabs
+        function switchTab(tabId) {
+            document.querySelectorAll('.difficulty-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.difficulty-tabs button').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // 4. Vocab Search
+        function filterVocab() {
+            let input = document.getElementById('vocabSearch').value.toUpperCase();
+            let items = document.getElementsByClassName('vocab-item');
+            for (let i = 0; i < items.length; i++) {
+                let term = items[i].getElementsByClassName('vocab-term')[0];
+                if (term.innerHTML.toUpperCase().indexOf(input) > -1) {
+                    items[i].style.display = "";
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+        }
+
+        function toggleDef(element) {
+            let def = element.getElementsByClassName('vocab-definition')[0];
+            def.classList.toggle('show');
+        }
+
+        // 5. Interactive Mock Exam Logic (Recalculated for 7.4V)
+
+        // C3a: Voltage across resistor (7.4V source, 2V LED)
+        // Target: 7.4 - 2 = 5.4V
+        function checkC3a() {
+            let ans = parseFloat(document.getElementById('ans-c3a').value);
+            let feedback = document.getElementById('feed-c3a');
+            if (ans === 5.4) {
+                feedback.innerHTML = "✅ Correct! 7.4V (Supply) - 2V (LED) = 5.4V.";
+                feedback.className = "feedback correct show";
+            } else {
+                feedback.innerHTML = "❌ Incorrect. Remember: Supply (7.4V) - LED Drop (2V).";
+                feedback.className = "feedback incorrect show";
+            }
+        }
+
+        // C3b: Resistance (V=5.4, I=0.015)
+        // Target: 5.4 / 0.015 = 360 Ohms
+        function checkC3b() {
+            let ans = parseFloat(document.getElementById('ans-c3b').value);
+            let feedback = document.getElementById('feed-c3b');
+            // Accept slight range for rounding
+            if (ans >= 359 && ans <= 361) {
+                feedback.innerHTML = "✅ Correct! R = 5.4V ÷ 0.015A = 360Ω.";
+                feedback.className = "feedback correct show";
+            } else {
+                feedback.innerHTML = "❌ Try again. Use V = 5.4V and I = 0.015A.";
+                feedback.className = "feedback incorrect show";
+            }
+        }
+
+        // D3a: Total Resistance (220+470+1000)
+        // Target: 1690
+        function checkD3a() {
+            let ans = parseFloat(document.getElementById('ans-d3a').value);
+            let feedback = document.getElementById('feed-d3a');
+            if (ans === 1690) {
+                feedback.innerHTML = "✅ Correct! Series resistors simply add up.";
+                feedback.className = "feedback correct show";
+            } else {
+                feedback.innerHTML = "❌ Check your addition. 220 + 470 + 1000.";
+                feedback.className = "feedback incorrect show";
+            }
+        }
+
+        // D3b: Current (V=7.4, R=1690) -> mA
+        // Target: 7.4 / 1690 = 0.004378 A -> ~4.4 mA (accept 4.3 - 4.5)
+        function checkD3b() {
+            let ans = parseFloat(document.getElementById('ans-d3b').value);
+            let feedback = document.getElementById('feed-d3b');
+            if (ans >= 4.3 && ans <= 4.5) {
+                feedback.innerHTML = "✅ Correct! 7.4V ÷ 1690Ω = 0.0044A, which is 4.4mA.";
+                feedback.className = "feedback correct show";
+            } else {
+                feedback.innerHTML = "❌ Incorrect. Formula: I = V/R. Did you multiply by 1000 to get mA?";
+                feedback.className = "feedback incorrect show";
+            }
+        }
+
+        // E1b: Vout Normal (R1=8k, R2=10k, Vin=7.4)
+        // Vout = (10 / 18) * 7.4 = 4.111...
+        function checkE1b() {
+            let ans = parseFloat(document.getElementById('ans-e1b').value);
+            let feedback = document.getElementById('feed-e1b');
+            if (ans >= 4.10 && ans <= 4.12) {
+                feedback.innerHTML = "✅ Correct! 4.11V.";
+                feedback.className = "feedback correct show";
+            } else {
+                feedback.innerHTML = "❌ Incorrect. Vout = (10000 / (8000+10000)) × 7.4.";
+                feedback.className = "feedback incorrect show";
+            }
+        }
+
+        // E1c: Vout Dark (R1=40k, R2=10k, Vin=7.4)
+        // Vout = (10 / 50) * 7.4 = 1.48
+        function checkE1c() {
+            let ans = parseFloat(document.getElementById('ans-e1c').value);
+            let feedback = document.getElementById('feed-e1c');
+            if (ans === 1.48) {
+                feedback.innerHTML = "✅ Correct! 1.48V.";
+                feedback.className = "feedback correct show";
+            } else {
+                feedback.innerHTML = "❌ Incorrect. Vout = (10000 / (40000+10000)) × 7.4.";
+                feedback.className = "feedback incorrect show";
+            }
+        }
+
+        // 6. CCQ Logic
+        function checkCCQ1() {
+            let selected = document.querySelector('input[name="ccq1"]:checked');
+            let feedback = document.getElementById('feed-ccq1');
+            if (!selected) return;
+
+            if (selected.value === "dec") {
+                feedback.innerHTML = "✅ Correct! Ohm's Law (I = V/R) says if Voltage drops (9V -> 7.4V), Current must decrease.";
+                feedback.className = "feedback correct show";
+            } else {
+                feedback.innerHTML = "❌ Incorrect. Think of voltage as pressure. Less pressure means less flow.";
+                feedback.className = "feedback incorrect show";
+            }
+        }
+
+        function checkCCQ2() {
+            let selected = document.querySelector('input[name="ccq2"]:checked');
+            let feedback = document.getElementById('feed-ccq2');
+            if (!selected) return;
+
+            if (selected.value === "down") {
+                feedback.innerHTML = "✅ Correct! Since the LDR (top resistor) increased in resistance, it 'hogs' more voltage, leaving less for Vout.";
+                feedback.className = "feedback correct show";
+            } else {
+                feedback.innerHTML = "❌ Incorrect. Look at your calculations for E1b (4.11V) and E1c (1.48V). Did it go up or down?";
+                feedback.className = "feedback incorrect show";
+            }
+        }
+
+        // 7. Save Progress
+        function saveOpening() {
+            localStorage.setItem('conf1', document.getElementById('conf-1').value);
+            localStorage.setItem('conf2', document.getElementById('conf-2').value);
+            localStorage.setItem('conf3', document.getElementById('conf-3').value);
+            document.getElementById('opening-feedback').innerHTML = "✅ Confidence Locked. Good luck!";
+            document.getElementById('opening-feedback').className = "feedback correct show";
+        }
+
+        // Initialize Theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+
+</body>
+
+</html>
