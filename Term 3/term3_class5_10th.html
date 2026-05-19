@@ -595,25 +595,25 @@
         var questions = {};
         var pendingSet = null;
 
-        window.addEventListener(‘load’, function () {
-            fetch(examConfig.appsScriptUrl + ‘?action=questions’)
+        window.addEventListener('load', function () {
+            fetch(examConfig.appsScriptUrl + '?action=questions')
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
                     if (data.success && data.questions) {
                         questions = data.questions;
                         if (data.config) { applyConfig(data.config); }
-                        document.getElementById(‘loadingScreen’).classList.remove(‘active’);
-                        if (data.config && data.config.exam_active === ‘false’) {
-                            document.getElementById(‘examClosedScreen’).style.display = ‘block’;
+                        document.getElementById('loadingScreen').classList.remove('active');
+                        if (data.config && data.config.exam_active === 'false') {
+                            document.getElementById('examClosedScreen').style.display = 'block';
                         } else {
-                            document.getElementById(‘setSelectionScreen’).classList.add(‘active’);
+                            document.getElementById('setSelectionScreen').classList.add('active');
                         }
                     } else {
-                        showLoadError(‘Failed to load exam questions. Please refresh or contact your teacher.’);
+                        showLoadError('Failed to load exam questions. Please refresh or contact your teacher.');
                     }
                 })
                 .catch(function () {
-                    showLoadError(‘Could not connect to the server. Check your internet connection and refresh.’);
+                    showLoadError('Could not connect to the server. Check your internet connection and refresh.');
                 });
         });
 
@@ -625,29 +625,29 @@
             }
             if (config.exam_title) {
                 document.title = config.exam_title;
-                document.getElementById(‘examTitle’).textContent = config.exam_title;
-                document.getElementById(‘examHeaderTitle’).textContent = config.exam_title;
-                document.getElementById(‘closedExamTitle’).textContent = config.exam_title;
+                document.getElementById('examTitle').textContent = config.exam_title;
+                document.getElementById('examHeaderTitle').textContent = config.exam_title;
+                document.getElementById('closedExamTitle').textContent = config.exam_title;
             }
             if (config.exam_subtitle) {
-                document.getElementById(‘examSubtitle’).textContent = config.exam_subtitle;
+                document.getElementById('examSubtitle').textContent = config.exam_subtitle;
             }
             if (config.class_options) {
-                var classes = config.class_options.split(‘,’).map(function (c) { return c.trim(); }).filter(Boolean);
-                var sel = document.getElementById(‘studentClass’);
-                sel.innerHTML = ‘<option value="">-- Select --</option>’;
+                var classes = config.class_options.split(',').map(function (c) { return c.trim(); }).filter(Boolean);
+                var sel = document.getElementById('studentClass');
+                sel.innerHTML = '<option value="">-- Select --</option>';
                 classes.forEach(function (cls) {
-                    sel.innerHTML += ‘<option value="’ + cls + ‘">’ + cls + ‘</option>’;
+                    sel.innerHTML += '<option value="' + cls + '">' + cls + '</option>';
                 });
             }
         }
 
         function showLoadError(msg) {
-            document.getElementById(‘loadingScreen’).innerHTML =
-                ‘<div class="container" style="text-align:center; margin-top:120px;">’ +
-                ‘<h2 style="color:var(--error-color);">Error</h2>’ +
-                ‘<p style="margin-top:10px; color:var(--text-muted);">’ + msg + ‘</p>’ +
-                ‘</div>’;
+            document.getElementById('loadingScreen').innerHTML =
+                '<div class="container" style="text-align:center; margin-top:120px;">' +
+                '<h2 style="color:var(--error-color);">Error</h2>' +
+                '<p style="margin-top:10px; color:var(--text-muted);">' + msg + '</p>' +
+                '</div>';
         }
 
         // --- GLOBAL VARIABLES ---
