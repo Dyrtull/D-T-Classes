@@ -80,6 +80,16 @@
         .spinner.active { display: inline-block; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .spin { display: inline-block; animation: spin 0.8s linear infinite; }
+
+        /* --- Exam Control bar --- */
+        .exam-control-bar { display: flex; align-items: center; gap: 18px; padding: 12px 24px; background: #EFF6FF; border-bottom: 1px solid #BFDBFE; flex-wrap: wrap; }
+        .exam-control-bar strong { color: var(--primary); font-size: 13px; white-space: nowrap; }
+        .exam-control-bar label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+        .toggle-btn { border: none; border-radius: 20px; padding: 6px 16px; font-weight: 700; font-size: 13px; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; }
+        .toggle-btn:hover { opacity: 0.85; }
+        .toggle-btn.open  { background: var(--secondary); color: white; }
+        .toggle-btn.closed { background: var(--error); color: white; }
+        .control-status { font-size: 12px; color: var(--secondary); font-weight: 600; min-width: 80px; }
     </style>
 </head>
 <body>
@@ -106,6 +116,23 @@
     </div>
 
     <div class="stats-bar" id="statsBar"></div>
+
+    <!-- EXAM CONTROL BAR -->
+    <div class="exam-control-bar" id="examControlBar">
+        <strong>Exam Control:</strong>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <label>Status:</label>
+            <button class="toggle-btn" id="toggleActiveBtn" onclick="toggleExamActive()">Loading...</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <label>Duration:</label>
+            <input type="number" id="examDuration" min="1" max="180" step="1" value="60"
+                style="width:60px; padding:4px 8px; border:1px solid var(--border); border-radius:4px; font-size:13px; text-align:center;">
+            <label>min</label>
+            <button class="btn-sm btn-primary" onclick="saveDuration()">Save</button>
+        </div>
+        <span class="control-status" id="controlStatus"></span>
+    </div>
 
     <div class="filters">
         <label>Class:</label>
@@ -148,6 +175,7 @@
 <script>
     var SCRIPT_URL = '';
     var allSubmissions = [];
+    var currentConfig = {};
 
     // ---- Config ----
     function loadSubmissions() {
@@ -176,6 +204,7 @@
                 document.getElementById('dashboard').style.display = 'block';
                 renderStats();
                 applyFilters();
+                loadExamConfig();
             })
             .catch(function(e) {
                 showConfigError('Could not load submissions: ' + e.message);
@@ -362,6 +391,78 @@
             resultEl.textContent = 'Connection error.';
             resultEl.style.color = 'var(--error)';
         });
+    }
+
+    // ---- Exam Control ----
+    function loadExamConfig() {
+        fetch(SCRIPT_URL + '?action=config')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.config) {
+                    currentConfig = data.config;
+                    updateControlUI();
+                }
+            })
+            .catch(function() {
+                document.getElementById('controlStatus').textContent = 'Could not load config.';
+            });
+    }
+
+    function updateControlUI() {
+        var isActive = currentConfig.exam_active !== 'false';
+        var btn = document.getElementById('toggleActiveBtn');
+        if (isActive) {
+            btn.textContent = '🟢 OPEN — click to close';
+            btn.className = 'toggle-btn open';
+        } else {
+            btn.textContent = '🔴 CLOSED — click to open';
+            btn.className = 'toggle-btn closed';
+        }
+        var dur = currentConfig.exam_duration_minutes || '60';
+        document.getElementById('examDuration').value = dur;
+    }
+
+    function toggleExamActive() {
+        var isActive = currentConfig.exam_active !== 'false';
+        postConfigUpdate({exam_active: isActive ? 'false' : 'true'}, function(ok) {
+            if (ok) {
+                currentConfig.exam_active = isActive ? 'false' : 'true';
+                updateControlUI();
+                flashStatus(isActive ? 'Exam closed.' : 'Exam opened!');
+            } else {
+                flashStatus('Save failed.', true);
+            }
+        });
+    }
+
+    function saveDuration() {
+        var val = parseInt(document.getElementById('examDuration').value, 10);
+        if (isNaN(val) || val < 1) { flashStatus('Invalid duration.', true); return; }
+        postConfigUpdate({exam_duration_minutes: String(val)}, function(ok) {
+            if (ok) {
+                currentConfig.exam_duration_minutes = String(val);
+                flashStatus('Duration saved!');
+            } else {
+                flashStatus('Save failed.', true);
+            }
+        });
+    }
+
+    function postConfigUpdate(updates, cb) {
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({action: 'updateConfig', updates: updates})
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) { cb(data.success); })
+        .catch(function() { cb(false); });
+    }
+
+    function flashStatus(msg, isError) {
+        var el = document.getElementById('controlStatus');
+        el.textContent = msg;
+        el.style.color = isError ? 'var(--error)' : 'var(--secondary)';
+        setTimeout(function() { el.textContent = ''; }, 2500);
     }
 
     function esc(str) {

@@ -360,6 +360,18 @@
 
 <body>
 
+    <!-- EXAM CLOSED SCREEN -->
+    <div id="examClosedScreen" style="display:none;">
+        <div class="container" style="text-align:center; margin-top:120px;">
+            <div style="font-size:64px; margin-bottom:20px;">🔒</div>
+            <h2 id="closedExamTitle" style="color: var(--primary-color);">Exam</h2>
+            <p style="color: var(--text-muted); margin-top:14px; font-size:16px; max-width:500px; margin-left:auto; margin-right:auto;">
+                The exam has not been activated by your teacher yet.<br>
+                Please wait and refresh this page when instructed to begin.
+            </p>
+        </div>
+    </div>
+
     <!-- LOADING SCREEN -->
     <div id="loadingScreen" class="active">
         <div class="container" style="text-align:center; margin-top:120px;">
@@ -591,7 +603,11 @@
                         questions = data.questions;
                         if (data.config) { applyConfig(data.config); }
                         document.getElementById(‘loadingScreen’).classList.remove(‘active’);
-                        document.getElementById(‘setSelectionScreen’).classList.add(‘active’);
+                        if (data.config && data.config.exam_active === ‘false’) {
+                            document.getElementById(‘examClosedScreen’).style.display = ‘block’;
+                        } else {
+                            document.getElementById(‘setSelectionScreen’).classList.add(‘active’);
+                        }
                     } else {
                         showLoadError(‘Failed to load exam questions. Please refresh or contact your teacher.’);
                     }
@@ -602,10 +618,16 @@
         });
 
         function applyConfig(config) {
+            // Override timer duration if set
+            if (config.exam_duration_minutes) {
+                var mins = parseInt(config.exam_duration_minutes, 10);
+                if (!isNaN(mins) && mins > 0) { examConfig.durationMinutes = mins; }
+            }
             if (config.exam_title) {
                 document.title = config.exam_title;
                 document.getElementById(‘examTitle’).textContent = config.exam_title;
                 document.getElementById(‘examHeaderTitle’).textContent = config.exam_title;
+                document.getElementById(‘closedExamTitle’).textContent = config.exam_title;
             }
             if (config.exam_subtitle) {
                 document.getElementById(‘examSubtitle’).textContent = config.exam_subtitle;

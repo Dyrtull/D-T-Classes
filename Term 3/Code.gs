@@ -85,9 +85,8 @@ function onOpen() {
 // ============================================================
 function doGet(e) {
   var action = (e.parameter && e.parameter.action) ? e.parameter.action : '';
-  if (action === 'submissions') {
-    return getSubmissionsResponse();
-  }
+  if (action === 'submissions') { return getSubmissionsResponse(); }
+  if (action === 'config')      { return getConfigResponse(); }
   return getQuestionsResponse();
 }
 
@@ -150,6 +149,29 @@ function getQuestionsResponse() {
 
   return ContentService
     .createTextOutput(JSON.stringify({success: true, questions: questions, config: config}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ============================================================
+// GET: CONFIG ONLY  (lightweight - for admin panel)
+// ============================================================
+function getConfigResponse() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var configSheet = ss.getSheetByName(CONFIG_SHEET);
+  if (!configSheet) {
+    return ContentService
+      .createTextOutput(JSON.stringify({config: {}}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  var configRows = configSheet.getDataRange().getValues();
+  var config = {};
+  for (var i = 0; i < configRows.length; i++) {
+    var k = String(configRows[i][0]).trim();
+    var v = String(configRows[i][1]).trim();
+    if (k) { config[k] = v; }
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify({config: config}))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
@@ -248,9 +270,8 @@ function getSubmissionsResponse() {
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    if (data.action === 'override') {
-      return handleOverride(data);
-    }
+    if (data.action === 'override')      { return handleOverride(data); }
+    if (data.action === 'updateConfig')  { return handleUpdateConfig(data); }
     return handleSubmission(data);
   } catch (err) {
     return ContentService
@@ -530,6 +551,36 @@ function handleOverride(data) {
 }
 
 // ============================================================
+// HANDLE CONFIG UPDATE  (from admin.html)
+// ============================================================
+function handleUpdateConfig(data) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(CONFIG_SHEET);
+  if (!sheet) {
+    return ContentService
+      .createTextOutput(JSON.stringify({success: false, error: 'Config sheet not found'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  var rows = sheet.getDataRange().getValues();
+  var updates = data.updates || {};
+
+  for (var i = 0; i < rows.length; i++) {
+    var key = String(rows[i][0]).trim();
+    if (updates.hasOwnProperty(key)) {
+      sheet.getRange(i + 1, 2).setValue(String(updates[key]));
+      delete updates[key];
+    }
+  }
+  // Append any keys that don't exist yet
+  for (var k in updates) {
+    sheet.appendRow([k, String(updates[k])]);
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify({success: true}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ============================================================
 // SHARED RECALCULATION HELPER
 // ============================================================
 function recalcRow(row) {
@@ -703,9 +754,11 @@ function setup() {
 function createConfigSheet(ss) {
   if (!ss) { ss = SpreadsheetApp.getActiveSpreadsheet(); }
   var sheet = ss.insertSheet(CONFIG_SHEET);
-  sheet.appendRow(['exam_title',    'Smart Vertical Garden - Session 5']);
-  sheet.appendRow(['exam_subtitle', 'Select your question set to begin.']);
-  sheet.appendRow(['class_options', '10A,10B,10C']);
+  sheet.appendRow(['exam_title',            'Smart Vertical Garden - Session 5']);
+  sheet.appendRow(['exam_subtitle',         'Select your question set to begin.']);
+  sheet.appendRow(['class_options',         '10A,10B,10C']);
+  sheet.appendRow(['exam_duration_minutes', '60']);
+  sheet.appendRow(['exam_active',           'true']);
   return sheet;
 }
 
