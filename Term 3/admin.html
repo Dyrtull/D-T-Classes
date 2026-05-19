@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Override Admin</title>
+    <style>
+        :root {
+            --primary: #1F4E78;
+            --secondary: #27AE60;
+            --error: #E74C3C;
+            --warning: #F39C12;
+            --ygg: #8E44AD;
+            --bg: #F8FAFC;
+            --surface: #FFFFFF;
+            --border: #E2E8F0;
+            --muted: #64748B;
+            --text: #0F172A;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+
+        /* --- Config screen --- */
+        #configScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .config-card { background: var(--surface); border-radius: 12px; padding: 40px; max-width: 560px; width: 90%; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .config-card h1 { color: var(--primary); margin-bottom: 8px; font-size: 22px; }
+        .config-card p { color: var(--muted); margin-bottom: 24px; font-size: 13px; }
+        .config-card input { width: 100%; padding: 10px 12px; border: 2px solid var(--border); border-radius: 6px; font-size: 13px; margin-bottom: 16px; }
+        .config-card input:focus { outline: none; border-color: var(--primary); }
+
+        /* --- Dashboard --- */
+        #dashboard { display: none; }
+        .top-bar { background: var(--primary); color: white; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .top-bar h1 { font-size: 18px; }
+        .top-bar button { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 13px; }
+
+        .stats-bar { display: flex; gap: 16px; padding: 14px 24px; background: white; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat .val { font-size: 22px; font-weight: bold; color: var(--primary); }
+        .stat .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+
+        .filters { display: flex; gap: 10px; padding: 14px 24px; background: var(--bg); border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+        .filters select, .filters input { padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: white; }
+        .filters label { font-size: 12px; color: var(--muted); margin-right: -6px; }
+
+        .table-wrap { padding: 20px 24px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        thead tr { background: var(--primary); color: white; }
+        th { padding: 11px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #F0F7FF; }
+
+        .grade-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-weight: bold; font-size: 13px; }
+        .btn-sm { padding: 5px 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 600; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--secondary); color: white; }
+        .btn-muted { background: var(--border); color: var(--muted); }
+
+        /* --- Override panel --- */
+        .override-panel { display: none; background: #F8FAFC; border-top: 2px solid var(--primary); }
+        .override-panel.open { display: table-row; }
+        .override-inner { padding: 20px 24px; }
+        .override-inner h4 { color: var(--primary); margin-bottom: 14px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .q-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 16px; }
+        .q-item { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
+        .q-item.ygg { border-color: var(--ygg); }
+        .q-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; }
+        .q-ai { font-size: 13px; margin-bottom: 6px; }
+        .q-ai strong { color: var(--primary); }
+        .q-override { display: flex; align-items: center; gap: 6px; }
+        .q-override input { width: 60px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; text-align: center; }
+        .q-override input:focus { outline: none; border-color: var(--primary); }
+        .q-override span { font-size: 12px; color: var(--muted); }
+        .override-footer { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+        .save-result { font-size: 13px; font-weight: bold; }
+        .legacy-note { font-size: 12px; color: var(--muted); background: #FFF3CD; border-left: 3px solid var(--warning); padding: 10px; border-radius: 4px; }
+
+        .spinner { display: none; }
+        .spinner.active { display: inline-block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spin { display: inline-block; animation: spin 0.8s linear infinite; }
+    </style>
+</head>
+<body>
+
+<!-- CONFIG SCREEN -->
+<div id="configScreen">
+    <div class="config-card">
+        <h1>Grade Override Admin</h1>
+        <p>Smart Vertical Garden — Session 5. Paste your Apps Script URL below, then load submissions.</p>
+        <label style="font-size:12px; color:var(--muted); display:block; margin-bottom:4px;">Apps Script URL</label>
+        <input type="text" id="scriptUrl" placeholder="https://script.google.com/macros/s/..." />
+        <button class="btn-sm btn-primary" style="width:100%; padding:11px; font-size:14px;" onclick="loadSubmissions()">
+            Load Submissions
+        </button>
+        <p id="configError" style="color:var(--error); font-size:12px; margin-top:10px; display:none;"></p>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+    <div class="top-bar">
+        <h1>Grade Override Admin &mdash; Session 5</h1>
+        <button onclick="reloadSubmissions()">&#8635; Reload</button>
+    </div>
+
+    <div class="stats-bar" id="statsBar"></div>
+
+    <div class="filters">
+        <label>Class:</label>
+        <select id="filterClass" onchange="applyFilters()">
+            <option value="">All</option>
+            <option>10A</option><option>10B</option><option>10C</option>
+        </select>
+        <label>Set:</label>
+        <select id="filterSet" onchange="applyFilters()">
+            <option value="">All</option>
+            <option>A</option><option>B</option><option>C</option>
+        </select>
+        <label>Name:</label>
+        <input type="text" id="filterName" placeholder="Search..." oninput="applyFilters()" style="width:160px;">
+    </div>
+
+    <div class="table-wrap">
+        <table id="mainTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Set</th>
+                    <th>MC</th>
+                    <th>Open</th>
+                    <th>Penalty</th>
+                    <th>Total</th>
+                    <th>%</th>
+                    <th>Grade</th>
+                    <th>Override</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+        <p id="noResults" style="text-align:center; color:var(--muted); padding:30px; display:none;">No submissions match the filters.</p>
+    </div>
+</div>
+
+<script>
+    var SCRIPT_URL = '';
+    var allSubmissions = [];
+
+    // ---- Config ----
+    function loadSubmissions() {
+        var url = document.getElementById('scriptUrl').value.trim();
+        if (!url) { showConfigError('Please paste the Apps Script URL.'); return; }
+        SCRIPT_URL = url;
+        localStorage.setItem('adminScriptUrl', url);
+        fetchAndRender();
+    }
+
+    function reloadSubmissions() { fetchAndRender(); }
+
+    function showConfigError(msg) {
+        var el = document.getElementById('configError');
+        el.textContent = msg;
+        el.style.display = 'block';
+    }
+
+    function fetchAndRender() {
+        fetch(SCRIPT_URL + '?action=submissions')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (!data.submissions) throw new Error('No submissions key in response');
+                allSubmissions = data.submissions.reverse(); // newest first
+                document.getElementById('configScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                renderStats();
+                applyFilters();
+            })
+            .catch(function(e) {
+                showConfigError('Could not load submissions: ' + e.message);
+            });
+    }
+
+    // ---- Stats ----
+    function renderStats() {
+        var total = allSubmissions.length;
+        var grades = allSubmissions.map(function(s) { return parseFloat(s.finalGrade); }).filter(function(g) { return !isNaN(g); });
+        var avg = grades.length ? (grades.reduce(function(a,b){return a+b;},0)/grades.length).toFixed(2) : '--';
+        var passing = grades.filter(function(g){return g >= 2.0;}).length;
+
+        document.getElementById('statsBar').innerHTML =
+            stat(total, 'Total Submissions') +
+            stat(avg, 'Avg Grade') +
+            stat(passing + '/' + total, 'Passing (>=2.0)');
+    }
+
+    function stat(val, lbl) {
+        return '<div class="stat"><div class="val">' + val + '</div><div class="lbl">' + lbl + '</div></div>';
+    }
+
+    // ---- Filters ----
+    function applyFilters() {
+        var cls  = document.getElementById('filterClass').value;
+        var set  = document.getElementById('filterSet').value;
+        var name = document.getElementById('filterName').value.toLowerCase();
+
+        var filtered = allSubmissions.filter(function(s) {
+            return (!cls  || s.class === cls) &&
+                   (!set  || s.set   === set) &&
+                   (!name || String(s.name).toLowerCase().indexOf(name) !== -1);
+        });
+
+        document.getElementById('noResults').style.display = filtered.length ? 'none' : 'block';
+        renderTable(filtered);
+    }
+
+    // ---- Table ----
+    function renderTable(rows) {
+        var tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        rows.forEach(function(s, idx) {
+            var id = 'row_' + idx;
+            var dateStr = s.timestamp ? new Date(s.timestamp).toLocaleDateString('en-GB', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'}) : '--';
+            var grade = parseFloat(s.finalGrade);
+            var gradeColor = grade >= 3.5 ? '#27AE60' : grade >= 2.5 ? '#2980B9' : grade >= 2.0 ? '#F39C12' : '#E74C3C';
+
+            var tr = document.createElement('tr');
+            tr.innerHTML =
+                '<td style="font-size:12px; color:var(--muted);">' + dateStr + '</td>' +
+                '<td><strong>' + esc(s.name) + '</strong></td>' +
+                '<td>' + esc(s.class) + '</td>' +
+                '<td><span style="font-weight:bold;">' + esc(s.set) + '</span></td>' +
+                '<td>' + s.mcScore + '/' + s.mcMax + '</td>' +
+                '<td>' + s.openScore + '/' + s.openMax + '</td>' +
+                '<td>' + (s.penalty > 0 ? '<span style="color:var(--error);">-' + s.penalty + '</span>' : '0') + '</td>' +
+                '<td>' + s.scoreAfterPenalty + '/' + s.maxScore + '</td>' +
+                '<td>' + s.percentage + '%</td>' +
+                '<td><span class="grade-pill" style="background:' + gradeColor + '20; color:' + gradeColor + ';">' + s.finalGrade + '</span></td>' +
+                '<td><button class="btn-sm btn-primary" onclick="togglePanel(\'' + id + '\')">Edit</button></td>';
+            tbody.appendChild(tr);
+
+            // Override panel row
+            var panelTr = document.createElement('tr');
+            panelTr.className = 'override-panel';
+            panelTr.id = id;
+            var panelTd = document.createElement('td');
+            panelTd.colSpan = 11;
+            panelTd.innerHTML = buildPanel(s, id);
+            panelTr.appendChild(panelTd);
+            tbody.appendChild(panelTr);
+        });
+    }
+
+    function buildPanel(s, id) {
+        if (!s.hasPerQuestionData) {
+            return '<div class="override-inner"><p class="legacy-note">This submission was recorded before the per-question score system was added. Open the Google Sheet and use <strong>Exam Tools &rarr; Recalculate Grades with Overrides</strong> for legacy rows.</p></div>';
+        }
+
+        var html = '<div class="override-inner">';
+
+        // Open-ended questions
+        html += '<h4>Open-Ended Questions (max 8 pts each)</h4><div class="q-grid">';
+        (s.questionScores || []).forEach(function(q, i) {
+            var effectiveScore = (q.override !== '' && q.override !== null && q.override !== undefined) ? q.override : q.aiScore;
+            html +=
+                '<div class="q-item">' +
+                '<div class="q-label">Question ' + (i+1) + '</div>' +
+                '<div class="q-ai">AI scored: <strong>' + q.aiScore + ' / ' + q.maxScore + '</strong></div>' +
+                '<div class="q-override">' +
+                '<input type="number" id="' + id + '_q' + i + '" min="0" max="' + q.maxScore + '" step="1" value="' + effectiveScore + '" placeholder="' + q.aiScore + '">' +
+                '<span>/ ' + q.maxScore + '</span>' +
+                '</div></div>';
+        });
+        html += '</div>';
+
+        // Yggdrasil
+        if (s.yggScores && s.yggScores.some(function(y){ return y.aiScore > 0 || y.override; })) {
+            html += '<h4 style="color:var(--ygg);">Yggdrasil Boss Questions (max 10 pts each)</h4><div class="q-grid">';
+            s.yggScores.forEach(function(q, i) {
+                var effectiveScore = (q.override !== '' && q.override !== null && q.override !== undefined) ? q.override : q.aiScore;
+                html +=
+                    '<div class="q-item ygg">' +
+                    '<div class="q-label" style="color:var(--ygg);">Boss ' + (i+1) + '</div>' +
+                    '<div class="q-ai">AI scored: <strong>' + q.aiScore + ' / ' + q.maxScore + '</strong></div>' +
+                    '<div class="q-override">' +
+                    '<input type="number" id="' + id + '_y' + i + '" min="0" max="' + q.maxScore + '" step="1" value="' + effectiveScore + '" placeholder="' + q.aiScore + '">' +
+                    '<span>/ ' + q.maxScore + '</span>' +
+                    '</div></div>';
+            });
+            html += '</div>';
+        }
+
+        html +=
+            '<div class="override-footer">' +
+            '<button class="btn-sm btn-success" onclick="saveOverride(\'' + id + '\', \'' + s.timestamp + '\')">Save Overrides</button>' +
+            '<button class="btn-sm btn-muted" onclick="clearOverrides(\'' + id + '\', \'' + s.timestamp + '\')">Clear All Overrides</button>' +
+            '<span class="save-result" id="' + id + '_result"></span>' +
+            '</div></div>';
+
+        return html;
+    }
+
+    function togglePanel(id) {
+        var panel = document.getElementById(id);
+        panel.classList.toggle('open');
+    }
+
+    // ---- Save ----
+    function saveOverride(id, timestamp) {
+        var qScores = [];
+        for (var i = 0; i < 5; i++) {
+            var inp = document.getElementById(id + '_q' + i);
+            qScores.push(inp ? (inp.value !== '' ? parseFloat(inp.value) : null) : null);
+        }
+        var yScores = [];
+        for (var j = 0; j < 3; j++) {
+            var yInp = document.getElementById(id + '_y' + j);
+            yScores.push(yInp ? (yInp.value !== '' ? parseFloat(yInp.value) : null) : null);
+        }
+        postOverride(id, timestamp, qScores, yScores);
+    }
+
+    function clearOverrides(id, timestamp) {
+        // Reset all inputs to empty and send nulls
+        for (var i = 0; i < 5; i++) {
+            var inp = document.getElementById(id + '_q' + i);
+            if (inp) inp.value = '';
+        }
+        for (var j = 0; j < 3; j++) {
+            var yInp = document.getElementById(id + '_y' + j);
+            if (yInp) yInp.value = '';
+        }
+        postOverride(id, timestamp, [null,null,null,null,null], [null,null,null]);
+    }
+
+    function postOverride(id, timestamp, qScores, yScores) {
+        var resultEl = document.getElementById(id + '_result');
+        resultEl.textContent = 'Saving...';
+        resultEl.style.color = 'var(--muted)';
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'override', timestamp: timestamp, questionScores: qScores, yggScores: yScores })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.success) {
+                resultEl.textContent = 'Saved! New grade: ' + data.finalGrade + ' (' + data.percentage + '%)';
+                resultEl.style.color = 'var(--secondary)';
+                // Update grade pill in the main row
+                var pills = document.querySelectorAll('.grade-pill');
+                // Reload to reflect all changes accurately
+                setTimeout(function(){ fetchAndRender(); }, 1500);
+            } else {
+                resultEl.textContent = 'Error: ' + (data.error || 'Unknown error');
+                resultEl.style.color = 'var(--error)';
+            }
+        })
+        .catch(function(e) {
+            resultEl.textContent = 'Connection error.';
+            resultEl.style.color = 'var(--error)';
+        });
+    }
+
+    function esc(str) {
+        return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // Restore URL from previous session
+    window.addEventListener('load', function() {
+        var saved = localStorage.getItem('adminScriptUrl');
+        if (saved) document.getElementById('scriptUrl').value = saved;
+    });
+</script>
+</body>
+</html>

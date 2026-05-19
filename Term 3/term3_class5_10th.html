@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Exam - Smart Vertical Garden — Session 5 Exam">
-    <title>Smart Vertical Garden — Session 5 Exam</title>
+    <meta name="description" content="Exam">
+    <title>Exam</title>
 
     <style>
         :root {
@@ -266,6 +266,12 @@
             width: 90%;
         }
 
+        .modal-content.preview-modal-content {
+            max-width: 680px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
         .modal-buttons {
             display: flex;
             justify-content: flex-end;
@@ -354,26 +360,34 @@
 
 <body>
 
+    <!-- LOADING SCREEN -->
+    <div id="loadingScreen" class="active">
+        <div class="container" style="text-align:center; margin-top:120px;">
+            <h2 style="color: var(--primary-color);">Loading Exam...</h2>
+            <p style="color: var(--text-muted); margin-top:10px;">Fetching questions, please wait.</p>
+            <div style="margin-top:30px; font-size:36px;">⏳</div>
+        </div>
+    </div>
+
     <!-- SET SELECTION SCREEN -->
-    <div id="setSelectionScreen" class="active">
+    <div id="setSelectionScreen">
         <div class="container">
-            <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 10px;">Smart Vertical Garden —
-                Session 5</h1>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Select your exam set.</p>
+            <h1 id="examTitle" style="text-align: center; color: var(--primary-color); margin-bottom: 10px;">Exam</h1>
+            <p id="examSubtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">Select your exam set.</p>
 
             <div class="set-options">
-                <div class="set-option" onclick="selectSet('A')">
-                    <h3>🌱 SET A (Standard)</h3>
+                <div class="set-option" onclick="previewSet('A')">
+                    <h3>SET A (Standard)</h3>
                     <div class="warning"><strong>Maximum Grade: 2.3</strong><br><small>Foundational questions.</small>
                     </div>
                 </div>
-                <div class="set-option" onclick="selectSet('B')">
-                    <h3>🌿 SET B (Intermediate)</h3>
+                <div class="set-option" onclick="previewSet('B')">
+                    <h3>SET B (Intermediate)</h3>
                     <div class="warning"><strong>Maximum Grade: 3.3</strong><br><small>Application &
                             calculation.</small></div>
                 </div>
-                <div class="set-option" onclick="selectSet('C')">
-                    <h3>🌳 SET C (Advanced)</h3>
+                <div class="set-option" onclick="previewSet('C')">
+                    <h3>SET C (Advanced)</h3>
                     <div class="warning"><strong>Maximum Grade: 4.0</strong><br><small>Complex system analysis.</small>
                     </div>
                 </div>
@@ -436,9 +450,7 @@
                     <select id="studentClass" required
                         style="width: 100%; padding: 10px; border: 2px solid var(--border-color); border-radius: 6px;">
                         <option value="">-- Select --</option>
-                        <option value="10A">10A</option>
-                        <option value="10B">10B</option>
-                        <option value="10C">10C</option>
+                        <!-- Populated from Config sheet on load -->
                     </select>
                 </div>
                 <button type="button" class="btn-primary" onclick="startExam()" style="width: 100%;">I Understand —
@@ -452,7 +464,7 @@
         <div class="container">
             <div class="exam-header">
                 <div>
-                    <h1>Session 5 Exam</h1>
+                    <h1 id="examHeaderTitle">Exam</h1>
                     <div class="info">Set <span id="setDisplay"></span> | <span id="studentNameDisplay"></span></div>
                 </div>
                 <div id="timer">60:00</div>
@@ -518,6 +530,7 @@
                     <thead>
                         <tr>
                             <th>Q</th>
+                            <th>Question</th>
                             <th>Feedback & Points</th>
                             <th>Your Answer</th>
                         </tr>
@@ -539,10 +552,23 @@
         </div>
     </div>
 
+    <!-- SET PREVIEW MODAL -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content preview-modal-content">
+            <h2 id="previewSetTitle" style="color: var(--primary-color); margin-bottom: 5px;"></h2>
+            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Preview the questions below before committing to this set.</p>
+            <div id="previewQuestionList"></div>
+            <div class="modal-buttons">
+                <button type="button" onclick="cancelPreview()" style="background: var(--border-color); color: var(--text-main);">Back</button>
+                <button type="button" class="btn-primary" onclick="confirmPreview()">Choose This Set</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- CONFIGURATION ---    
+        // --- CONFIGURATION ---
         const examConfig = {
-            durationMinutes: 50, // Change this to test the timer!
+            durationMinutes: 60,
             // ⚠️ REPLACE THIS WITH YOUR NEW WEB APP URL! ⚠️
             appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwgTjuuT3xMSOFhF4zcVmo8rOO6HjjNn0xI4T9yO4TfwX_j2Rl6LNCSMV9wbdXRr6jT/exec'
         };
@@ -553,50 +579,54 @@
             C: [{ grade: '4.0', min: 90 }, { grade: '3.7', min: 80 }, { grade: '3.3', min: 70 }, { grade: '3.0', min: 60 }, { grade: '2.7', min: 50 }, { grade: '2.3', min: 40 }, { grade: '2.0', min: 30 }, { grade: '1.7', min: 20 }, { grade: '1.3', min: 10 }, { grade: '1.0', min: 0 }]
         };
 
-        // --- NEW QUESTION BANK ---
-        const questions = {
-            A: [ // VERY EASY (Fundamentals)
-                { id: 'A_1', number: 1, section: 'A', type: 'openEnded', points: 8, text: '1. What component acts like a "kink in a hose" to limit the flow of electricity?', rubric: 'Award 8 points for identifying "Resistor".' },
-                { id: 'A_2', number: 2, section: 'A', type: 'openEnded', points: 8, text: '2. The battery pack in your Smart Garden supplies DC power. What does DC stand for?', rubric: 'Award 8 points for identifying "Direct Current".' },
-                { id: 'A_3', number: 3, section: 'A', type: 'openEnded', points: 8, text: '3. What unit of measurement is used to measure electrical pressure (Voltage)?', rubric: 'Award 8 points for identifying "Volts" or "V".' },
-                { id: 'A_4', number: 4, section: 'A', type: 'openEnded', points: 8, text: '4. What happens if you install an LED into your circuit backwards?', rubric: 'Award 8 points for stating it will not turn on or light up, because LEDs only allow current in one direction.' },
-                { id: 'A_5', number: 5, section: 'A', type: 'openEnded', points: 8, text: '5. Write the standard mathematical formula for Ohm\'s Law.', rubric: 'Award 8 points for V = I * R (or V = IR).' },
-                { id: 'A_6', number: 6, section: 'B', type: 'mc', points: 4, text: '6. Which circuit symbol is drawn as a plain rectangle?', options: ['Battery', 'Switch', 'Resistor', 'LED'], correctIndex: 2, shuffled: [0, 1, 2, 3] },
-                { id: 'A_7', number: 7, section: 'B', type: 'mc', points: 4, text: '7. What do the colored bands painted on a fixed resistor tell you?', options: ['Its resistance value and tolerance', 'How much voltage it produces', 'Which way to plug it in', 'If it uses AC or DC power'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'A_8', number: 8, section: 'B', type: 'mc', points: 4, text: '8. To measure voltage, the multimeter probes must be connected:', options: ['In parallel (across the component)', 'In series (breaking the circuit)', 'Only when the power is OFF', 'Directly to the wall socket'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'A_9', number: 9, section: 'B', type: 'mc', points: 4, text: '9. Which component acts as the main power source for the Smart Garden?', options: ['The Resistor', 'The LED', 'The 7.4V Battery Pack', 'The Multimeter'], correctIndex: 2, shuffled: [0, 1, 2, 3] },
-                { id: 'A_10', number: 10, section: 'B', type: 'mc', points: 4, text: '10. What is the function of a switch in a circuit?', options: ['To create electrons', 'To change DC to AC', 'To break or complete the path of electricity', 'To change colors of the LED'], correctIndex: 2, shuffled: [0, 1, 2, 3] }
-            ],
-            B: [ // INTERMEDIATE (Old Set A)
-                { id: 'B_1', number: 1, section: 'A', type: 'openEnded', points: 8, text: '1. Your plant monitoring system is powered by a 7.4V battery pack. Total resistance is 330Ω. Calculate the exact current flowing through the system.', rubric: 'Award 4 points for formula (I=V/R) and values. Award 4 points for answer: 0.022A or 22mA.' },
-                { id: 'B_2', number: 2, section: 'A', type: 'openEnded', points: 8, text: '2. You find a resistor painted Brown, Black, Red, Gold. Calculate its nominal value and state the acceptable minimum and maximum resistance based on tolerance.', rubric: 'Award 4 pts for nominal value (1,000Ω/1kΩ). Award 4 pts for tolerance range: 950Ω to 1,050Ω.' },
-                { id: 'B_3', number: 3, section: 'A', type: 'openEnded', points: 8, text: '3. A student reads 0.00A on a circuit that is switched "ON". Write a checklist of three physical connections they should check.', rubric: 'Award 8 pts for 3 valid physical checks (LED backwards, battery disconnected, switch seated wrong, meter not in series). 4 pts for 1-2.' },
-                { id: 'B_4', number: 4, section: 'A', type: 'openEnded', points: 8, text: '4. Match scenarios to Voltage, Current, or Resistance:\na) Water pump blocked by debris.\nb) Connecting multimeter without breaking circuit.\nc) Removing component completely to test safely.', rubric: 'Award 8 pts total. a) Resistance. b) Voltage. c) Resistance.' },
-                { id: 'B_5', number: 5, section: 'A', type: 'openEnded', points: 8, text: '5. Explain, using the water hose analogy, why adding a second resistor in series makes the LED dimmer.', rubric: 'Award 8 points for explaining a resistor is a kink in the hose, and a second kink further restricts flow (current), leaving less to power LED.' },
-                { id: 'B_6', number: 6, section: 'B', type: 'mc', points: 4, text: '6. The switch is closed, but the LED does not turn on. Most likely cause?', options: ['The LED’s long leg (anode) is connected to 0V.', 'Resistor is backwards.', 'Battery is supplying DC.', 'Switch is bridging the gap.'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'B_7', number: 7, section: 'B', type: 'mc', points: 4, text: '7. To measure voltage across a single resistor in a functioning circuit, you must:', options: ['Connect probes across the resistor while power is ON.', 'Break circuit and insert in series.', 'Turn power OFF and remove resistor.', 'Switch to "A" setting.'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'B_8', number: 8, section: 'B', type: 'mc', points: 4, text: '8. A design calls for 150Ω, but you only have standard E12 values. Which component do you select?', options: ['150Ω', '120Ω', '180Ω', '100Ω'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'B_9', number: 9, section: 'B', type: 'mc', points: 4, text: '9. Why do we strictly use DC power in the garden projects instead of AC?', options: ['DC flows in one direction and is a safe voltage.', 'AC doesn\'t work with resistors.', 'DC reverses direction, safer for plants.', 'AC changes LED colors.'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'B_10', number: 10, section: 'B', type: 'mc', points: 4, text: '10. You want to adjust light sensitivity daily without tools. Which component is correct?', options: ['Potentiometer (Variable Resistor)', 'Fixed Resistor', 'Pre-set Resistor', '470Ω Resistor'], correctIndex: 0, shuffled: [0, 1, 2, 3] }
-            ],
-            C: [ // ADVANCED (Old Set B)
-                { id: 'C_1', number: 1, section: 'A', type: 'openEnded', points: 8, text: '1. You need an LED to drop 2.0V from a 7.4V battery pack. Current must be 20mA (0.020A). Calculate exact resistance needed, then state the E12 resistor to use.', rubric: 'Award 4 pts for voltage drop (5.4V). Award 2 pts for ideal resistance (270Ω). Award 2 pts for noting 270Ω IS an E12 value.' },
-                { id: 'C_2', number: 2, section: 'A', type: 'openEnded', points: 8, text: '2. You measure a Red-Red-Brown-Gold resistor. Meter reads 215Ω. Prove mathematically if it is safe to use.', rubric: 'Award 4 pts for nominal (220Ω ±5%). Award 4 pts for range (209Ω to 231Ω) and concluding 215Ω is safe.' },
-                { id: 'C_3', number: 3, section: 'A', type: 'openEnded', points: 8, text: '3. Draw/describe exact probe placement to measure *current* flowing through the LED. What must be done to physical wires?', rubric: 'Award 4 pts for stating circuit must be broken. Award 4 pts for describing multimeter in SERIES (flow goes into one probe, out the other).' },
-                { id: 'C_4', number: 4, section: 'A', type: 'openEnded', points: 8, text: '4. Match the incorrect color code translation to the mistake made:\na) "Brown-Black-Red" as 102Ω.\nb) "Red-Red-Brown" as 2200Ω.\nc) 470Ω backwards as Brown-Violet-Yellow.', rubric: 'Award 8 pts total. a) Read Band 3 as digit instead of multiplier (3 pts). b) Multiplied by 100 instead of 10 (3 pts). c) Read from tolerance side (2 pts).' },
-                { id: 'C_5', number: 5, section: 'A', type: 'openEnded', points: 8, text: '5. A classmate sets meter to "Ω" and probes a resistor while 7.4V battery is ON. Describe two consequences.', rubric: 'Award 4 pts for stating inaccurate/false reading. Award 4 pts for stating it will likely blow the meter fuse.' },
-                { id: 'C_6', number: 6, section: 'B', type: 'mc', points: 4, text: '6. A circuit requires 315Ω. You use E12 330Ω. How will this affect current?', options: ['Current will decrease slightly.', 'Current will increase slightly.', 'Voltage drops to zero.', 'Tolerance changes to ±10%.'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'C_7', number: 7, section: 'B', type: 'mc', points: 4, text: '7. You measure 7.4V across an OPEN switch, and 0V when CLOSED. This means:', options: ['Normal electrical behavior.', 'Switch is broken.', 'Battery wired backwards.', 'Meter blew a fuse.'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'C_8', number: 8, section: 'B', type: 'mc', points: 4, text: '8. A student\'s LED flashes briefly and dies. Which color code was on the resistor?', options: ['Brown-Black-Black-Gold (10Ω)', 'Yellow-Violet-Brown-Gold (470Ω)', 'Red-Red-Red-Gold (2.2kΩ)', 'Brown-Black-Orange-Gold (10kΩ)'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'C_9', number: 9, section: 'B', type: 'mc', points: 4, text: '9. If multiplier band (Band 3) is Orange, the resistor value is in the:', options: ['Thousands of Ohms (kΩ)', 'Tens of Ohms', 'Hundreds of Ohms', 'Millions of Ohms (MΩ)'], correctIndex: 0, shuffled: [0, 1, 2, 3] },
-                { id: 'C_10', number: 10, section: 'B', type: 'mc', points: 4, text: '10. In a series circuit, if you swap the position of resistor and LED:', options: ['Circuit functions exactly the same.', 'LED burns out.', 'Current flows in reverse.', 'Switch stops controlling LED.'], correctIndex: 0, shuffled: [0, 1, 2, 3] }
-            ],
-            Yggdrasil: [ // BONUS BOSS CHALLENGE (Old Set C Math)
-                { id: 'YGG_1', number: 1, section: 'Y', type: 'openEnded', points: 10, text: 'A student receives a failing grade because their 12mA soil moisture sensor burned out. They powered it with 7.4V using a Brown-Black-Brown-Gold resistor. Prove mathematically why it failed.', rubric: 'Decoding resistor: 100Ω. Current: I = 7.4/100 = 74mA. Conclude 74mA destroys 12mA sensor.' },
-                { id: 'YGG_2', number: 2, section: 'Y', type: 'openEnded', points: 10, text: 'Reverse-engineer: Drop 5V across a resistor at 10mA. Calculate resistance, select best E12 value, and write the exact four color bands.', rubric: 'R = V/I (5/0.010 = 500Ω). E12 closest is 470Ω. Bands: Yellow, Violet, Brown, Gold.' },
-                { id: 'YGG_3', number: 3, section: 'Y', type: 'openEnded', points: 10, text: 'A fully charged 8.4V battery powers a 2.0V LED. Calculate the *minimum* E12 resistor value to ensure current NEVER exceeds 25mA.', rubric: 'Drop: 8.4 - 2.0 = 6.4V. Resistance: 6.4/0.025 = 256Ω. Nearest HIGHER E12 safety value: 270Ω.' }
-            ]
-        };
+        // Questions and config are loaded from the Google Sheet via Apps Script on page load
+        var questions = {};
+        var pendingSet = null;
+
+        window.addEventListener(‘load’, function () {
+            fetch(examConfig.appsScriptUrl + ‘?action=questions’)
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (data.success && data.questions) {
+                        questions = data.questions;
+                        if (data.config) { applyConfig(data.config); }
+                        document.getElementById(‘loadingScreen’).classList.remove(‘active’);
+                        document.getElementById(‘setSelectionScreen’).classList.add(‘active’);
+                    } else {
+                        showLoadError(‘Failed to load exam questions. Please refresh or contact your teacher.’);
+                    }
+                })
+                .catch(function () {
+                    showLoadError(‘Could not connect to the server. Check your internet connection and refresh.’);
+                });
+        });
+
+        function applyConfig(config) {
+            if (config.exam_title) {
+                document.title = config.exam_title;
+                document.getElementById(‘examTitle’).textContent = config.exam_title;
+                document.getElementById(‘examHeaderTitle’).textContent = config.exam_title;
+            }
+            if (config.exam_subtitle) {
+                document.getElementById(‘examSubtitle’).textContent = config.exam_subtitle;
+            }
+            if (config.class_options) {
+                var classes = config.class_options.split(‘,’).map(function (c) { return c.trim(); }).filter(Boolean);
+                var sel = document.getElementById(‘studentClass’);
+                sel.innerHTML = ‘<option value="">-- Select --</option>’;
+                classes.forEach(function (cls) {
+                    sel.innerHTML += ‘<option value="’ + cls + ‘">’ + cls + ‘</option>’;
+                });
+            }
+        }
+
+        function showLoadError(msg) {
+            document.getElementById(‘loadingScreen’).innerHTML =
+                ‘<div class="container" style="text-align:center; margin-top:120px;">’ +
+                ‘<h2 style="color:var(--error-color);">Error</h2>’ +
+                ‘<p style="margin-top:10px; color:var(--text-muted);">’ + msg + ‘</p>’ +
+                ‘</div>’;
+        }
 
         // --- GLOBAL VARIABLES ---
         let selectedSet = null;
@@ -607,6 +637,44 @@
         let tabSwitches = 0;
         let penaltyPoints = 0;
         let answers = { mc: {}, openEnded: {}, ygg: {} };
+
+        // --- SET PREVIEW ---
+        function previewSet(setLetter) {
+            pendingSet = setLetter;
+            var qs = questions[setLetter];
+            if (!qs || !qs.length) { selectSet(setLetter); return; }
+
+            var setLabels = {
+                A: 'SET A (Standard) — Max Grade: 2.3',
+                B: 'SET B (Intermediate) — Max Grade: 3.3',
+                C: 'SET C (Advanced) — Max Grade: 4.0'
+            };
+            document.getElementById('previewSetTitle').textContent = setLabels[setLetter] || ('SET ' + setLetter);
+
+            var list = document.getElementById('previewQuestionList');
+            list.innerHTML = '';
+            qs.forEach(function (q, i) {
+                var typeLabel = q.type === 'mc'
+                    ? '(Multiple Choice, ' + q.points + ' pts)'
+                    : '(Open-Ended, ' + q.points + ' pts)';
+                list.innerHTML +=
+                    '<div style="margin-bottom:14px; padding:12px; background:var(--bg-color); border-radius:6px; border-left:3px solid var(--primary-color);">' +
+                    '<div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">Question ' + (i + 1) + ' ' + typeLabel + '</div>' +
+                    '<div style="font-weight:600;">' + escapeHtml(q.text) + '</div>' +
+                    '</div>';
+            });
+            document.getElementById('previewModal').classList.add('active');
+        }
+
+        function confirmPreview() {
+            document.getElementById('previewModal').classList.remove('active');
+            selectSet(pendingSet);
+        }
+
+        function cancelPreview() {
+            document.getElementById('previewModal').classList.remove('active');
+            pendingSet = null;
+        }
 
         // --- INIT ---
         function selectSet(setLetter) {
@@ -645,9 +713,14 @@
             container.innerHTML = '';
             questions[selectedSet].forEach((q, i) => container.appendChild(createQuestionCard(q, i + 1, 'openEnded')));
 
-            const yggContainer = document.getElementById('yggdrasilContainer');
-            yggContainer.innerHTML = '';
-            questions.Yggdrasil.forEach((q, i) => yggContainer.appendChild(createQuestionCard(q, i + 1, 'ygg')));
+            var hasYgg = questions.Yggdrasil && questions.Yggdrasil.length > 0;
+            document.querySelector('.yggdrasil-header').style.display = hasYgg ? '' : 'none';
+            document.getElementById('yggdrasilContainer').style.display = hasYgg ? '' : 'none';
+            if (hasYgg) {
+                const yggContainer = document.getElementById('yggdrasilContainer');
+                yggContainer.innerHTML = '';
+                questions.Yggdrasil.forEach((q, i) => yggContainer.appendChild(createQuestionCard(q, i + 1, 'ygg')));
+            }
         }
 
         function createQuestionCard(q, num, targetDict) {
@@ -664,7 +737,7 @@
                 });
                 html += '</div>';
             } else {
-                html += `<textarea placeholder="Type answer/calculations..." onchange="answers.${targetDict}['${q.id}']=this.value"></textarea>`;
+                html += `<textarea placeholder="Type answer/calculations..." oninput="answers.${targetDict}['${q.id}']=this.value"></textarea>`;
             }
             card.innerHTML = html;
             return card;
@@ -751,9 +824,9 @@
                 questionId: q.id, text: answers.openEnded[q.id] || "", points: q.points, rubric: q.rubric
             }));
 
-            const yggArr = questions.Yggdrasil.map(q => ({
-                questionId: q.id, text: answers.ygg[q.id] || "", points: q.points, rubric: q.rubric
-            }));
+            const yggArr = (questions.Yggdrasil && questions.Yggdrasil.length > 0)
+                ? questions.Yggdrasil.map(q => ({ questionId: q.id, text: answers.ygg[q.id] || "", points: q.points, rubric: q.rubric }))
+                : [];
 
             fetch(examConfig.appsScriptUrl, {
                 method: 'POST',
@@ -809,21 +882,24 @@
                     const fb = data.openFeedback.find(f => f.questionId === q.id);
                     fbText = fb ? `<span style="color:var(--primary-color); font-weight:bold;">${fb.score}/${fb.maxScore} pts</span><br>${fb.feedback}` : 'Error';
                 }
-                appendResultRow(tbody, i + 1, ans, fbText);
+                appendResultRow(tbody, i + 1, q.text, ans, fbText);
             });
 
-            questions.Yggdrasil.forEach((q, i) => {
-                if (answers.ygg[q.id] && answers.ygg[q.id].trim().length > 2) {
-                    const fb = data.yggFeedback.find(f => f.questionId === q.id);
-                    const fbText = fb ? `<span style="color:var(--yggdrasil-color); font-weight:bold;">Boss Score: ${fb.score}/${fb.maxScore}</span><br>${fb.feedback}` : 'Error';
-                    appendResultRow(tbody, `Boss ${i + 1}`, answers.ygg[q.id], fbText);
-                }
-            });
+            if (questions.Yggdrasil && questions.Yggdrasil.length > 0) {
+                questions.Yggdrasil.forEach((q, i) => {
+                    if (answers.ygg[q.id] && answers.ygg[q.id].trim().length > 2) {
+                        const fb = data.yggFeedback.find(f => f.questionId === q.id);
+                        const fbText = fb ? `<span style="color:var(--yggdrasil-color); font-weight:bold;">Boss Score: ${fb.score}/${fb.maxScore}</span><br>${fb.feedback}` : 'Error';
+                        appendResultRow(tbody, `Boss ${i + 1}`, q.text, answers.ygg[q.id], fbText);
+                    }
+                });
+            }
         }
 
-        function appendResultRow(tbody, qNum, ansText, fbText) {
+        function appendResultRow(tbody, qNum, questionText, ansText, fbText) {
             tbody.innerHTML += `<tr>
                 <td><b>${qNum}</b></td>
+                <td><details><summary>📋 View Question</summary><div>${escapeHtml(questionText)}</div></details></td>
                 <td>${fbText}</td>
                 <td><details><summary>👀 View Answer</summary><div>${escapeHtml(ansText)}</div></details></td>
             </tr>`;
