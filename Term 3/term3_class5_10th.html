@@ -602,7 +602,7 @@
                     if (data.success && data.questions) {
                         questions = data.questions;
                         if (data.config) { applyConfig(data.config); }
-                        document.getElementById('loadingScreen').classList.remove('active');
+                        document.getElementById('loadingScreen').style.display = 'none';
                         if (data.config && data.config.exam_active === 'false') {
                             document.getElementById('examClosedScreen').style.display = 'block';
                         } else {
