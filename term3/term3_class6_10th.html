@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Assignment Quiz &mdash; Grade 10 Electronics Project</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+            color: #1e293b;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 740px;
+        }
+
+        /* ── Screens ── */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        /* ── Group size screen ── */
+        .group-eyebrow {
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .group-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 10px;
+            line-height: 1.25;
+        }
+
+        .group-subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 1.05rem;
+            margin-bottom: 52px;
+        }
+
+        .group-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .group-btn {
+            flex: 1;
+            max-width: 260px;
+            padding: 36px 24px 28px;
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: border-color 0.18s, background 0.18s, transform 0.18s, box-shadow 0.18s;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .group-btn:hover {
+            border-color: #6366f1;
+            background: #eef2ff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(99,102,241,0.14);
+        }
+
+        .group-btn .num {
+            display: block;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #6366f1;
+            margin-bottom: 6px;
+            line-height: 1;
+        }
+
+        /* ── Progress bar ── */
+        .progress-wrap { margin-bottom: 36px; }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .progress-track {
+            height: 5px;
+            background: #e2e8f0;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #818cf8, #6366f1);
+            border-radius: 99px;
+            transition: width 0.35s cubic-bezier(.4,0,.2,1);
+            width: 10%;
+        }
+
+        /* ── Question ── */
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.55;
+            margin-bottom: 28px;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .answer-card {
+            padding: 18px 16px;
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 0.97rem;
+            color: #334155;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.55;
+            transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
+            font-family: inherit;
+            width: 100%;
+        }
+
+        .answer-card:hover {
+            border-color: #6366f1;
+            background: #eef2ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(99,102,241,0.13);
+        }
+
+        .back-btn {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #6366f1;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 0;
+            font-family: inherit;
+            transition: color 0.15s;
+        }
+
+        .back-btn:hover { color: #4338ca; }
+
+        /* ── Results ── */
+        .results-heading {
+            text-align: center;
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .results-sub {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.97rem;
+            margin-bottom: 30px;
+        }
+
+        .notice-banner {
+            display: none;
+            background: #fefce8;
+            border: 1.5px solid #fde047;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+            color: #713f12;
+            line-height: 1.65;
+        }
+
+        .role-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px 22px;
+            margin-bottom: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .role-card.rank-1 {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+
+        .role-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .role-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #0f172a;
+        }
+
+        .role-pct {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #6366f1;
+        }
+
+        .role-desc {
+            font-size: 0.88rem;
+            color: #64748b;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .bar-track {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #818cf8, #6366f1);
+            border-radius: 99px;
+            width: 0%;
+            transition: width 0.85s cubic-bezier(.4,0,.2,1);
+        }
+
+        .tiebreak-note {
+            text-align: center;
+            font-size: 0.83rem;
+            color: #94a3b8;
+            margin: 22px 0 26px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .restart-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #6366f1;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.18s, transform 0.18s;
+        }
+
+        .restart-btn:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 520px) {
+            .answers-grid { grid-template-columns: 1fr; }
+            .group-buttons { flex-direction: column; align-items: center; }
+            .group-btn { max-width: 100%; width: 100%; }
+            .group-title { font-size: 1.6rem; }
+            .question-text { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ────── Step 1: Group size ────── -->
+    <div id="screen-group" class="screen active">
+        <p class="group-eyebrow">Electronics Project &mdash; Team Roles</p>
+        <h1 class="group-title">Before we begin&hellip;</h1>
+        <p class="group-subtitle">How many people are in your group?</p>
+        <div class="group-buttons">
+            <button class="group-btn" onclick="selectGroup(3)">
+                <span class="num">3</span>members
+            </button>
+            <button class="group-btn" onclick="selectGroup(4)">
+                <span class="num">4</span>members
+            </button>
+        </div>
+    </div>
+
+    <!-- ────── Step 2: Quiz ────── -->
+    <div id="screen-quiz" class="screen">
+        <div class="progress-wrap">
+            <div class="progress-meta">
+                <span id="q-label">Question 1 of 10</span>
+                <span id="q-pct">10%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="prog-fill"></div>
+            </div>
+        </div>
+        <p class="question-text" id="q-text"></p>
+        <div class="answers-grid" id="answers-grid"></div>
+        <button class="back-btn" id="back-btn" onclick="goBack()">&#8592; Back</button>
+    </div>
+
+    <!-- ────── Step 3: Results ────── -->
+    <div id="screen-results" class="screen">
+        <h2 class="results-heading">Your Role Fit</h2>
+        <p class="results-sub">Ranked from highest to lowest fit for your group</p>
+        <div id="notice-3" class="notice-banner">
+            <strong>In a 3-member group, all members share the Verifier responsibility. Everyone checks the work.</strong>
+        </div>
+        <div id="results-list"></div>
+        <p class="tiebreak-note">If two people in your group have the same top role, compare your second-fit role and discuss as a team.</p>
+        <button class="restart-btn" onclick="restart()">Start Over</button>
+    </div>
+
+</div>
+<script>
+    var questions = [
+        {
+            q: "When you start a new project, what do you do first?",
+            a: [
+                { text: "I draw it out and write down how it works", role: "A" },
+                { text: "I check if the numbers and logic make sense", role: "B" },
+                { text: "I start building and figure things out as I go", role: "C" },
+                { text: "I make a checklist to test whether it will work", role: "D" }
+            ]
+        },
+        {
+            q: "In a group project, which job feels most natural to you?",
+            a: [
+                { text: "Writing the report and making everything clear", role: "A" },
+                { text: "Doing the calculations and making sure figures are right", role: "B" },
+                { text: "Being the person who physically makes the thing", role: "C" },
+                { text: "Being the person who checks that everything is correct", role: "D" }
+            ]
+        },
+        {
+            q: "What kind of mistake bothers you most?",
+            a: [
+                { text: "When an explanation is confusing or incomplete", role: "A" },
+                { text: "When someone's numbers are wrong", role: "B" },
+                { text: "When something is assembled in the wrong order", role: "C" },
+                { text: "When nobody bothers to test if it actually works", role: "D" }
+            ]
+        },
+        {
+            q: "In a test or exam, what do you tend to do?",
+            a: [
+                { text: "Write detailed explanations even when a short answer would do", role: "A" },
+                { text: "Check my calculations at least twice before moving on", role: "B" },
+                { text: "Prefer practical tasks over written questions", role: "C" },
+                { text: "Go back and verify all my answers at the end", role: "D" }
+            ]
+        },
+        {
+            q: "What is your favourite type of class activity?",
+            a: [
+                { text: "Creating a diagram or visual explanation of a concept", role: "A" },
+                { text: "Solving a maths or logic problem", role: "B" },
+                { text: "Making or assembling something with my hands", role: "C" },
+                { text: "Testing something to see if it works as expected", role: "D" }
+            ]
+        },
+        {
+            q: "A friend asks for help understanding something complicated. What do you do?",
+            a: [
+                { text: "Draw a diagram and talk them through it step by step", role: "A" },
+                { text: "Show them the formula and work through the numbers together", role: "B" },
+                { text: "Show them physically how to do it", role: "C" },
+                { text: "Ask them questions to find exactly where the confusion is", role: "D" }
+            ]
+        },
+        {
+            q: "What are you most proud of in your schoolwork?",
+            a: [
+                { text: "When my written work is clear and well-presented", role: "A" },
+                { text: "When my calculations are perfectly correct", role: "B" },
+                { text: "When I successfully build or make something", role: "C" },
+                { text: "When I catch an error before it becomes a bigger problem", role: "D" }
+            ]
+        },
+        {
+            q: "When something in a project is not working, you usually:",
+            a: [
+                { text: "Re-read the instructions and explain the problem to the team", role: "A" },
+                { text: "Check the numbers to find where the calculation went wrong", role: "B" },
+                { text: "Try adjusting something physical to see if it fixes it", role: "C" },
+                { text: "Systematically test each part until you find the fault", role: "D" }
+            ]
+        },
+        {
+            q: "Which word describes you best?",
+            a: [
+                { text: "Communicator", role: "A" },
+                { text: "Analyst", role: "B" },
+                { text: "Maker", role: "C" },
+                { text: "Inspector", role: "D" }
+            ]
+        },
+        {
+            q: "At the end of a session, what feels most satisfying?",
+            a: [
+                { text: "Having a complete and well-documented record of everything", role: "A" },
+                { text: "Knowing all the numbers and predictions checked out", role: "B" },
+                { text: "Having something physical built and working", role: "C" },
+                { text: "Having confirmed that everything functions correctly", role: "D" }
+            ]
+        }
+    ];
+
+    var roleInfo = {
+        A: { name: "Role A — Theory Writer",  desc: "Draws, writes, explains, documents, communicates visually" },
+        B: { name: "Role B — Calculator",      desc: "Works with numbers, formulas, logic, precision, step-by-step reasoning" },
+        C: { name: "Role C — Builder",         desc: "Hands-on, physical assembly, making things, practical tasks" },
+        D: { name: "Role D — Verifier",        desc: "Testing, checking, finding errors, systematic quality control" }
+    };
+
+    var groupSize = 0;
+    var currentQ  = 0;
+    var answers   = [];
+
+    function showScreen(id) {
+        var screens = document.querySelectorAll('.screen');
+        for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+        document.getElementById(id).classList.add('active');
+    }
+
+    function selectGroup(n) {
+        groupSize = n;
+        currentQ  = 0;
+        answers   = new Array(10).fill(null);
+        renderQuestion(0);
+        showScreen('screen-quiz');
+    }
+
+    function renderQuestion(idx) {
+        currentQ = idx;
+        var q    = questions[idx];
+        var pct  = Math.round(((idx + 1) / 10) * 100);
+
+        document.getElementById('q-label').textContent  = 'Question ' + (idx + 1) + ' of 10';
+        document.getElementById('q-pct').textContent    = pct + '%';
+        document.getElementById('prog-fill').style.width = pct + '%';
+        document.getElementById('q-text').textContent   = q.q;
+
+        var grid = document.getElementById('answers-grid');
+        grid.innerHTML = '';
+        q.a.forEach(function(opt) {
+            var btn = document.createElement('button');
+            btn.className   = 'answer-card';
+            btn.textContent = opt.text;
+            (function(role) {
+                btn.addEventListener('click', function() {
+                    answers[idx] = role;
+                    if (idx < 9) {
+                        renderQuestion(idx + 1);
+                    } else {
+                        showResults();
+                    }
+                });
+            })(opt.role);
+            grid.appendChild(btn);
+        });
+
+        var backBtn = document.getElementById('back-btn');
+        backBtn.style.display = idx === 0 ? 'none' : 'flex';
+    }
+
+    function goBack() {
+        if (currentQ > 0) renderQuestion(currentQ - 1);
+    }
+
+    function showResults() {
+        var counts = { A: 0, B: 0, C: 0, D: 0 };
+        answers.forEach(function(r) { if (r) counts[r]++; });
+
+        var display;
+        if (groupSize === 3) {
+            var total3 = (counts.A + counts.B + counts.C) || 1;
+            display = ['A', 'B', 'C'].map(function(r) {
+                return { key: r, pct: Math.round((counts[r] / total3) * 100) };
+            });
+            document.getElementById('notice-3').style.display = 'block';
+        } else {
+            display = ['A', 'B', 'C', 'D'].map(function(r) {
+                return { key: r, pct: Math.round((counts[r] / 10) * 100) };
+            });
+            document.getElementById('notice-3').style.display = 'none';
+        }
+
+        display.sort(function(a, b) { return b.pct - a.pct; });
+
+        var list = document.getElementById('results-list');
+        list.innerHTML = '';
+        display.forEach(function(item, rankIdx) {
+            var info = roleInfo[item.key];
+            var card = document.createElement('div');
+            card.className = 'role-card' + (rankIdx === 0 ? ' rank-1' : '');
+            card.innerHTML =
+                '<div class="role-top-row">' +
+                    '<span class="role-name">' + info.name + '</span>' +
+                    '<span class="role-pct">' + item.pct + '%</span>' +
+                '</div>' +
+                '<p class="role-desc">' + info.desc + '</p>' +
+                '<div class="bar-track"><div class="bar-fill" data-pct="' + item.pct + '"></div></div>';
+            list.appendChild(card);
+        });
+
+        showScreen('screen-results');
+
+        /* Animate bars on next two frames to ensure CSS transition fires */
+        requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+                var bars = document.querySelectorAll('.bar-fill');
+                for (var i = 0; i < bars.length; i++) {
+                    bars[i].style.width = bars[i].getAttribute('data-pct') + '%';
+                }
+            });
+        });
+    }
+
+    function restart() {
+        groupSize = 0;
+        currentQ  = 0;
+        answers   = [];
+        showScreen('screen-group');
+    }
+</script>
+</body>
+</html>
